@@ -13,9 +13,9 @@ private:
 	//壁などに衝突したときに参照する構造体
 	struct NextMoveInfo {
 		//次フレームの位置
-		Vector3 nextPos;
+		Vector3 nextPos = {};
 		//次フレームの移動量
-		Vector3 nextVel;
+		Vector3 nextVel = {};
 		//次フレームに衝突するか
 		bool isCollisionNextFrame = false;
 	};
@@ -103,10 +103,10 @@ public:
 #pragma region Setter
 
 	/// <summary>
-	/// ブロックの配列ポインタセット
+	/// ステージポインタセット
 	/// </summary>
 	/// <param name="blocks"></param>
-	void SetPBlocks(Stage* stage) { this->stage = stage; }
+	void SetPStage(Stage* stage) { this->stage = stage; }
 #pragma endregion
 
 #pragma region Getter

@@ -106,7 +106,7 @@ public:
 	/// ブロックの配列ポインタセット
 	/// </summary>
 	/// <param name="blocks"></param>
-	void SetPBlocks(Stage* stage) { this->stage = stage; }
+	void SetPStage(Stage* stage) { this->stage = stage; }
 #pragma endregion
 
 #pragma region Getter

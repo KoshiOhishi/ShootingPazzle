@@ -23,8 +23,8 @@ void Editor::Initialize()
 
 	//カメラ初期化
 	camera.Initialize();
-	camera.SetPositionAndDistance({ 0,50.0f,-70.0f }, 15.0f);
-	camera.SetRotation(45, 0, 0);
+	camera.SetPositionAndDistance({ 0,70.0f,-50.0f }, 15.0f);
+	camera.SetRotation(60, 0, 0);
 
 	//カメラをセット
 	Object3D::SetCamera(&camera);
@@ -35,10 +35,10 @@ void Editor::Initialize()
 	timer.Start();
 
 	//ステージ取得
-	stage.LoadStage("");
+	stage.LoadStage("./StageData/test.spb");
 
 	//弾初期化
-	myBullet.SetPBlocks(&stage);
+	myBullet.SetPStage(&stage);
 	myBullet.Initialize();
 
 	//フェーズ初期化

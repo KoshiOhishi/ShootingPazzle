@@ -16,10 +16,16 @@
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
 #include "Stage.h"
+#include "StartLane.h"
 
 enum EditorMode {
 	MODE_ADD,
-	MODE_DELETE
+	MODE_DELETE,
+	MODE_OPTION
+};
+
+enum OptionMode {
+	OPTION_SET_STARTLANE
 };
 
 class Editor :
@@ -42,11 +48,14 @@ private:
 	int blockType = BLOCKTYPE_SQUARE;
 	int shapeType = SHAPETYPE_NO_LEFTTOP;
 	//現在のカーソル位置
-	StagePos nowCursolPos;
+	StageVec2 nowCursolPos;
+	//オプションでのモード
+	int optionMode = OPTION_SET_STARTLANE;
 
 	//表示用オブジェクト
 	SquareBlock squareBlock;
 	TriangleBlock triangleBlock[4];
+	StartLane startLane[2];
 
 	//SaveLoad用名前格納
 	std::string ioname;
@@ -66,9 +75,11 @@ public:
 	void UpdateAdd();
 	void UpdateDelete();
 	void UpdateObject();
+	void UpdateStartLane();
 
 	void DrawEdit();
 
+	void DrawStartLane();
 	void DrawBlock();
 
 	void Save();

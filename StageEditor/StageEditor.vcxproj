@@ -184,6 +184,7 @@
     <ClCompile Include="MyBullet.cpp" />
     <ClCompile Include="SquareBlock.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="StartLane.cpp" />
     <ClCompile Include="TriangleBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +196,7 @@
     <ClInclude Include="MyBullet.h" />
     <ClInclude Include="SquareBlock.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="StartLane.h" />
     <ClInclude Include="TriangleBlock.h" />
   </ItemGroup>
   <ItemGroup>

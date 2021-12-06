@@ -19,9 +19,10 @@ void MyBullet::CreateModel()
 void MyBullet::Initialize()
 {
 	//パラメータ初期化
-	const float INIT_POS_Z = -45;
+	float z;
+	GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, stage->GetStageSize(), nullptr, &z);
 
-	position = { 0, ONE_CELL_LENGTH / 2, INIT_POS_Z };
+	position = { 0, ONE_CELL_LENGTH / 2, z };
 	velocity = { 0,0,0 };
 	speed = 1.0f;
 	shotAngle = 90;
@@ -33,6 +34,8 @@ void MyBullet::Initialize()
 	//矢印オブジェクト
 	objArrow.Initialize();
 	objArrow.SetObjModel(&modelArrow);
+
+	nextMoveInfo = {};
 }
 
 void MyBullet::Update()
@@ -71,13 +74,13 @@ void MyBullet::UpdateBeforeShoot()
 {
 	//射出前、位置を決めさせる
 	if (GameUtility::GetNowPhase() == PHASE_SETPOS) {
-
+		float z;
+		GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, stage->GetStageSize(), nullptr, &z);
 		//マウスのx座標をもとに位置セット
-		const float INIT_POS_Z = -45;
 		Vector3 pos = {
 			(Mouse::GetMousePos().x - DX12Util::GetWindowWidth() / 2) / 12,
 			ONE_CELL_LENGTH / 2,
-			INIT_POS_Z };
+			z };
 
 		//値を丸める
 		if (pos.x < -45) {

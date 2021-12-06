@@ -6,9 +6,9 @@
 /// <summary>
 /// ステージ座標 左上が原点
 /// </summary>
-struct StagePos {
-	int x = 0;
-	int y = 0;
+struct StageVec2 {
+	unsigned short x = 0;
+	unsigned short y = 0;
 };
 
 /// <summary>
@@ -23,10 +23,10 @@ class Stage
 {
 //エディット用なので公開でOK
 public:
-	int width = 20;
-	int depth = 20;
+	StageVec2 stageSize = { 20,20 };
 	std::vector<Block*> blocks;
 	Floor floor;
+	unsigned short startLaneZ = stageSize.y - 2;
 
 public:
 	Stage(){}
@@ -54,13 +54,13 @@ public:
 	/// <param name="stagePos">ステージ上の座標</param>
 	/// <param name="blockType">ブロックの種類</param>
 	/// <param name="shapeType">オプションの形状指定</param>
-	void AddBlock(const StagePos& stagePos, int blockType, int shapeType = 0);
+	void AddBlock(const StageVec2& stagePos, int blockType, int shapeType = 0);
 
 	/// <summary>
 	/// ブロックを削除 (引数の位置になにもない場合は削除しない)
 	/// </summary>
 	/// <param name="stagePos"></param>
-	void DeleteBlock(const StagePos& stagePos);
+	void DeleteBlock(const StageVec2& stagePos);
 
 	/// <summary>
 	/// 既にブロックが配置されているかチェック

@@ -27,17 +27,20 @@ void Stage::LoadStage(std::string filename)
 	file.open(filename, std::ios_base::binary);
 	//開けなかったらブロックなしデータを生成
 	if (!file.is_open()) {
-		width = 20;
-		depth = 20;
-		floor.CreateModel(width * ONE_CELL_LENGTH, depth * ONE_CELL_LENGTH);
+		stageSize.x = 20;
+		stageSize.y = 20;
+		startLaneZ = stageSize.y - 2;
+		floor.CreateModel(stageSize.x * ONE_CELL_LENGTH, stageSize.y * ONE_CELL_LENGTH);
 		floor.Initialize();
+		return;
 	}
 
 	//ステージ情報格納
 	StageHeader header;
 	file.read((char*)&header, sizeof(header));
-	width = header.width;
-	depth = header.depth;
+	stageSize.x = header.width;
+	stageSize.y = header.depth;
+	startLaneZ = header.startLineZ;
 
 	//ブロック情報格納
 	for (int i = 0; i < header.objectCount; i++) {
@@ -45,8 +48,8 @@ void Stage::LoadStage(std::string filename)
 		file.read((char*)&object, sizeof(object));
 
 		float x, z;
-		StagePos pos = { object.stagePosX, object.stagePosY };
-		GameUtility::CalcStagePos2WorldPos(pos, width, depth, &x, &z);
+		StageVec2 pos = { object.stagePosX, object.stagePosY };
+		GameUtility::CalcStagePos2WorldPos(pos, stageSize, &x, &z);
 
 		//SquareBlock
 		if (object.type == 0) {
@@ -86,7 +89,7 @@ void Stage::LoadStage(std::string filename)
 
 	file.close();
 
-	floor.CreateModel(width * ONE_CELL_LENGTH, depth * ONE_CELL_LENGTH);
+	floor.CreateModel(stageSize.x * ONE_CELL_LENGTH, stageSize.y * ONE_CELL_LENGTH);
 	floor.Initialize();
 }
 
@@ -106,10 +109,10 @@ void Stage::Draw()
 	floor.Draw();
 }
 
-void Stage::AddBlock(const StagePos& stagePos, int blockType, int shapeType)
+void Stage::AddBlock(const StageVec2& stagePos, int blockType, int shapeType)
 {
 	float x, z;
-	GameUtility::CalcStagePos2WorldPos(stagePos, width, depth, &x, &z);
+	GameUtility::CalcStagePos2WorldPos(stagePos, stageSize, &x, &z);
 
 	//既にブロックが配置されていたらリターン
 	if (CheckExistBlock(x, z) != -1) {
@@ -132,10 +135,10 @@ void Stage::AddBlock(const StagePos& stagePos, int blockType, int shapeType)
 	}
 }
 
-void Stage::DeleteBlock(const StagePos& stagePos)
+void Stage::DeleteBlock(const StageVec2& stagePos)
 {
 	float x, z;
-	GameUtility::CalcStagePos2WorldPos(stagePos, width, depth, &x, &z);
+	GameUtility::CalcStagePos2WorldPos(stagePos, stageSize, &x, &z);
 
 	//ブロックが配置されていなかったらリターン
 	int deleteIndex = CheckExistBlock(x, z);

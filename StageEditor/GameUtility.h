@@ -21,6 +21,7 @@ struct StageHeader
 {
 	unsigned short width = 20;
 	unsigned short depth = 20;
+	unsigned short startLineZ = depth - 12;
 	unsigned short objectCount = 0;
 };
 
@@ -53,7 +54,7 @@ public:
 	/// <param name="worldX">ワールド座標x</param>
 	/// <param name="worldZ">ワールド座標z</param>
 	/// <returns></returns>
-	static const StagePos& CalcWorldPos2StagePos(float worldX, float worldZ, float stageWidth, float stageDepth);
+	static const StageVec2& CalcWorldPos2StagePos(float worldX, float worldZ, const StageVec2& stageSize);
 
 	/// <summary>
 	/// ステージ上の座標からワールド座標のxz平面に変換
@@ -61,5 +62,5 @@ public:
 	/// <param name="stagePos">ステージ上の座標</param>
 	/// <param name="dstWorldX">ワールド座標x</param>
 	/// <param name="dstWorldZ">ワールド座標z</param>
-	static void CalcStagePos2WorldPos(const StagePos& stagePos, float stageWidth, float stageDepth, float* dstWorldX = nullptr, float* dstWorldZ = nullptr);
+	static void CalcStagePos2WorldPos(const StageVec2& stagePos, const StageVec2& stageSize, float* dstWorldX = nullptr, float* dstWorldZ = nullptr);
 };

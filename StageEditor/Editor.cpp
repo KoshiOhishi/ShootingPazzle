@@ -47,6 +47,9 @@ void Editor::Initialize()
 		triangleBlock[i].Initialize(0, 0, ONE_CELL_LENGTH / 2);
 		triangleBlock[i].SetShapeType(i);
 	}
+	for (int i = 0; i < _countof(startLane); i++) {
+		startLane[i].Initialize(stage.stageSize);
+	}
 }
 
 void Editor::Update()
@@ -180,8 +183,8 @@ void Editor::UpdateEdit()
 void Editor::UpdateAdd()
 {
 	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.width ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.depth) {
+	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
+		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
 		return;
 	}
 
@@ -193,8 +196,8 @@ void Editor::UpdateAdd()
 void Editor::UpdateDelete()
 {
 	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.width ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.depth) {
+	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
+		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
 		return;
 	}
 
@@ -207,16 +210,39 @@ void Editor::UpdateObject()
 {
 	//ブロック位置をカーソル位置に
 	float x, z;
-	GameUtility::CalcStagePos2WorldPos(nowCursolPos, stage.width, stage.depth, &x, &z);
+	GameUtility::CalcStagePos2WorldPos(nowCursolPos, stage.stageSize, &x, &z);
 	squareBlock.SetBlockPos(x, z);
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].SetBlockPos(x, z);
 	}
 
 	//更新
+	UpdateStartLane();
 	squareBlock.Update();
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].Update();
+	}
+}
+
+void Editor::UpdateStartLane()
+{
+	//0...設置されたスタートレーン
+	startLane[0].SetPosition(stage.startLaneZ);
+	startLane[0].Update();
+	//1...カーソル位置に描画されるスタートレーン
+	if (mode == MODE_OPTION && optionMode == OPTION_SET_STARTLANE) {
+		startLane[1].SetPosition(nowCursolPos.y);
+		startLane[1].Update();
+
+		//ステージ範囲外なら即リターン
+		if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
+			nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+			return;
+		}
+
+		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
+			stage.startLaneZ = nowCursolPos.y;
+		}
 	}
 }
 
@@ -224,6 +250,9 @@ void Editor::DrawEdit()
 {
 	//ステージ描画
 	stage.Draw();
+
+	//スタートレーン描画
+	DrawStartLane();
 
 	if (mode == MODE_ADD) {
 		//カーソル位置にブロック描画
@@ -234,11 +263,22 @@ void Editor::DrawEdit()
 	}
 }
 
+void Editor::DrawStartLane()
+{
+	DX12Util::ClearDepthBuffer();
+	//0...設置されたスタートレーン
+	startLane[0].Draw();
+	//1...カーソル位置に描画されるスタートレーン
+	if (mode == MODE_OPTION && optionMode == OPTION_SET_STARTLANE) {
+		startLane[1].Draw();
+	}
+}
+
 void Editor::DrawBlock()
 {
 	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.width ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.depth) {
+	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
+		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
 		return;
 	}
 
@@ -260,8 +300,9 @@ void Editor::Save()
 
 	//ファイルヘッダー
 	StageHeader header = {};
-	header.width = stage.width;
-	header.depth = stage.depth;
+	header.width = stage.stageSize.x;
+	header.depth = stage.stageSize.y;
+	header.startLineZ = stage.startLaneZ;
 	header.objectCount = stage.blocks.size();
 
 	file.write((char*)&header, sizeof(header));
@@ -287,8 +328,8 @@ void Editor::Save()
 			object.type = 4;
 		}
 
-		StagePos pos = GameUtility::CalcWorldPos2StagePos(
-			stage.blocks[i]->GetPosition().x, stage.blocks[i]->GetPosition().z, stage.width, stage.depth);
+		StageVec2 pos = GameUtility::CalcWorldPos2StagePos(
+			stage.blocks[i]->GetPosition().x, stage.blocks[i]->GetPosition().z, stage.stageSize);
 		object.stagePosX = pos.x;
 		object.stagePosY = pos.y;
 
@@ -313,6 +354,7 @@ void Editor::UpdateImgui()
 	ImGui::RadioButton("Add", &mode, MODE_ADD);
 	ImGui::SameLine();
 	ImGui::RadioButton("Delete", &mode, MODE_DELETE);
+	ImGui::RadioButton("Option", &mode, MODE_OPTION);
 	if (mode == MODE_ADD) {
 		ImGui::Text("BlockType");
 		ImGui::RadioButton("Square", &blockType, BLOCKTYPE_SQUARE);
@@ -334,6 +376,18 @@ void Editor::UpdateImgui()
 			stage.LoadStage("");
 			//後ほどここにマップの大きさを変える処理
 		}
+	}
+	else if (mode == MODE_OPTION) {
+		//ステージサイズ変更
+		//static int width = stage.stageSize.x;
+		//static int depth = stage.stageSize.y;
+		//ImGui::SliderInt("StageWidth", &width, 5, 100);
+		//ImGui::SliderInt("StageDepth", &depth, 5, 100);
+		//stage.stageSize.x = width;
+		//stage.stageSize.y = depth;
+		//オプションモード選択
+		ImGui::Text("OptionMode");
+		ImGui::RadioButton("SetStartLane", &optionMode, OPTION_SET_STARTLANE);
 	}
 
 	ImGui::NewLine();
@@ -360,7 +414,7 @@ void Editor::CalcNowCursolPos()
 	//マウスと地面との当たり判定
 	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage.floor.GetPlane(), nullptr, &mouse);
 	//DebugText::Print("WorldPos:(" + std::to_string(mouse.x) + ", " + std::to_string(mouse.z) + ")", 0, 0);
-	StagePos newPos = GameUtility::CalcWorldPos2StagePos(mouse.x, mouse.z, stage.width, stage.depth);
+	StageVec2 newPos = GameUtility::CalcWorldPos2StagePos(mouse.x, mouse.z, stage.stageSize);
 	nowCursolPos = newPos;
 
 	//DebugText::Print("StagePos:(" + std::to_string(nowCursolPos.x) + ", " + std::to_string(nowCursolPos.y) + ")", 0, 20);
