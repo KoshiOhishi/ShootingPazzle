@@ -1,0 +1,2 @@
+libはGithubに載ってないので入れなおす必要あり
+中身はfbx_sdk\includeとlib
