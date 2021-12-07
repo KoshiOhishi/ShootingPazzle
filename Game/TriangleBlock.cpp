@@ -129,3 +129,20 @@ void TriangleBlock::UpdateCollision()
 		break;
 	}
 }
+
+void TriangleBlock::DecrementBreakupCount()
+{
+	if (isBreakable == false) {
+		return;
+	}
+
+	breakupCount--;
+	if (breakupCount <= 0) {
+		Breakup();
+	}
+}
+
+void TriangleBlock::Breakup()
+{
+	//ここに爆発エフェクト入れる
+}

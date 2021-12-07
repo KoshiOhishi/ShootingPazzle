@@ -55,6 +55,7 @@ void Stage::LoadStage(std::string filename)
 		if (object.type == 0) {
 			SquareBlock* newBlock = new SquareBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock LT
@@ -62,6 +63,7 @@ void Stage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_LEFTTOP);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock RT
@@ -69,6 +71,7 @@ void Stage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTTOP);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock LB
@@ -76,6 +79,7 @@ void Stage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_LEFTBOTTOM);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock RB
@@ -83,6 +87,7 @@ void Stage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTBOTTOM);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 	}
@@ -96,6 +101,13 @@ void Stage::LoadStage(std::string filename)
 void Stage::Update()
 {
 	for (int i = 0; i < blocks.size(); i++) {
+		//ƒuƒƒbƒN‚ª‰ó‚ê‚Ä‚¢‚½‚çíœ
+		if (blocks[i]->isBreakup()) {
+			delete blocks[i];
+			blocks.erase(blocks.begin() + i);
+			i--;
+			continue;
+		}
 		if (blocks[i]) blocks[i]->Update();
 	}
 	floor.Update();

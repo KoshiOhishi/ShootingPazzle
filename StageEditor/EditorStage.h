@@ -38,8 +38,9 @@ public:
 	/// </summary>
 	/// <param name="stagePos">ステージ上の座標</param>
 	/// <param name="blockType">ブロックの種類</param>
+	/// <param name="breakupCount">壊れるまでの衝突回数　0で壊れないブロック</param>
 	/// <param name="shapeType">オプションの形状指定</param>
-	void AddBlock(const StageVec2& stagePos, int blockType, int shapeType = 0);
+	void AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int shapeType = 0);
 
 	/// <summary>
 	/// ブロックを削除 (引数の位置になにもない場合は削除しない)

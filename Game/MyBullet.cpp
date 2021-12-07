@@ -203,6 +203,10 @@ void MyBullet::CheckCollision()
 				newPos += velocity * speed * mul;
 				//新しい移動量で残りの長さを移動
 				newPos += nextMoveInfo.nextVel * speed * (1.0f - mul);
+
+
+				//ブロックの壊れるまでのカウントを減らす
+				stage->GetBlocks()[i]->DecrementBreakupCount();
 			}
 		}
 	}

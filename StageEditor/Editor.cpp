@@ -191,7 +191,7 @@ void Editor::UpdateAdd()
 	}
 
 	if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-		stage.AddBlock(nowCursolPos, blockType, shapeType);
+		stage.AddBlock(nowCursolPos, blockType, breakupCount, shapeType);
 	}
 }
 
@@ -214,6 +214,12 @@ void Editor::UpdateObject()
 	squareBlock.SetStagePos(nowCursolPos);
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].SetStagePos(nowCursolPos);
+	}
+
+	//breakupCountによってブロックの色を変える
+	squareBlock.SetBreakupCount(breakupCount);
+	for (int i = 0; i < _countof(triangleBlock); i++) {
+		triangleBlock[i].SetBreakupCount(breakupCount);
 	}
 
 	//更新
@@ -337,6 +343,7 @@ void Editor::Save()
 			stage.blocks[i]->GetPosition().x, stage.blocks[i]->GetPosition().z);
 		object.stagePosX = pos.x;
 		object.stagePosY = pos.y;
+		object.breakupCount = stage.blocks[i]->GetBreakupCount();
 
 		file.write((char*)&object, sizeof(object));
 	}
@@ -346,9 +353,15 @@ void Editor::Save()
 
 void Editor::Load()
 {
+	//ステージロード
 	stage.LoadStage("./StageData/" + ioname + ".spb");
+	//ImGuiのスライダーの値を初期化しておく
 	sliderWidth = stage.stageSize.x;
 	sliderDepth = stage.stageSize.y;
+	//スタートレーンモデル再生成
+	for (int i = 0; i < _countof(startLane); i++) {
+		startLane[i].CreateModel();
+	}
 }
 
 void Editor::UpdateImgui()
@@ -375,6 +388,11 @@ void Editor::UpdateImgui()
 			ImGui::RadioButton("No_LeftBottom", &shapeType, SHAPETYPE_NO_LEFTBOTTOM);
 			ImGui::RadioButton("No_RightBottom", &shapeType, SHAPETYPE_NO_RIGHTBOTTOM);
 		}
+
+		static int sliderBreakupCount = 0;
+		ImGui::SliderInt("BreakupCount", &sliderBreakupCount, 0, 2);
+		breakupCount = sliderBreakupCount;
+
 	}
 	else if (mode == MODE_DELETE) {
 		ImGui::NewLine();

@@ -23,8 +23,8 @@ void Editor::Initialize()
 
 	//カメラ初期化
 	camera.Initialize();
-	camera.SetPositionAndDistance({ 0,70.0f,-50.0f }, 15.0f);
-	camera.SetRotation(60, 0, 0);
+	camera.SetPositionAndDistance({ 0,130.0f,-50.0f }, 15.0f);
+	camera.SetRotation(75, 0, 0);
 
 	//カメラをセット
 	Object3D::SetCamera(&camera);
@@ -35,11 +35,17 @@ void Editor::Initialize()
 	timer.Start();
 
 	//ステージ取得
-	stage.LoadStage("./StageData/test.spb");
+	stage.LoadStage("../StageEditor/StageData/test.spb");
 
 	//弾初期化
 	myBullet.SetPStage(&stage);
 	myBullet.Initialize();
+
+	//背景初期化
+	modelBG.CreateFromOBJ("sky");
+	objBG.Initialize();
+	objBG.SetObjModel(&modelBG);
+	objBG.SetScale(2, 2, 2);
 
 	//フェーズ初期化
 	GameUtility::SetNowPhase(PHASE_SETPOS);
@@ -153,6 +159,7 @@ void Editor::Update()
 	light.Update();
 	camera.Update();
 	timer.Update();
+	objBG.Update();
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
 
@@ -174,6 +181,8 @@ void Editor::Draw()
 	DX12Util::ClearDepthBuffer();
 
 	//オブジェクト描画ここから
+	//背景描画
+	objBG.Draw();
 
 	//弾描画
 	myBullet.Draw();

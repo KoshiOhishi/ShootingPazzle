@@ -44,6 +44,7 @@ struct StageObject
 	unsigned short stagePosX = 0;
 	unsigned short stagePosY = 0;
 	char type = 0;
+	unsigned short breakupCount = 0;	//ブロックが何回の衝突で壊れるか (読み込み時0だと壊れないブロックになる)
 };
 
 class GameUtility

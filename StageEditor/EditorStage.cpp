@@ -55,6 +55,7 @@ void EditorStage::LoadStage(std::string filename)
 		if (object.type == 0) {
 			SquareBlock* newBlock = new SquareBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock LT
@@ -62,6 +63,7 @@ void EditorStage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_LEFTTOP);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock RT
@@ -69,6 +71,7 @@ void EditorStage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTTOP);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock LB
@@ -76,6 +79,7 @@ void EditorStage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_LEFTBOTTOM);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock RB
@@ -83,6 +87,7 @@ void EditorStage::LoadStage(std::string filename)
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
 			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTBOTTOM);
+			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 	}
@@ -109,7 +114,7 @@ void EditorStage::Draw()
 	floor.Draw();
 }
 
-void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, int shapeType)
+void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int shapeType)
 {
 	//既にブロックが配置されていたらリターン
 	if (CheckExistBlock(stagePos) != -1) {
@@ -120,14 +125,14 @@ void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, int shapeTy
 	if (blockType == BLOCKTYPE_SQUARE) {
 		SquareBlock* newBlock = new SquareBlock;
 		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
-
+		newBlock->SetBreakupCount(breakupCount);
 		blocks.emplace_back(newBlock);
 	}
 	else if (blockType == BLOCKTYPE_TRIANGLE) {
 		TriangleBlock* newBlock = new TriangleBlock;
 		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
 		newBlock->SetShapeType(shapeType);
-
+		newBlock->SetBreakupCount(breakupCount);
 		blocks.emplace_back(newBlock);
 	}
 }

@@ -46,6 +46,8 @@ private:
 	int mode = MODE_ADD;
 	int blockType = BLOCKTYPE_SQUARE;
 	int shapeType = SHAPETYPE_NO_LEFTTOP;
+	//壊れるまでの衝突回数　0で壊れないブロック
+	int breakupCount = 0;
 	//現在のカーソル位置
 	StageVec2 nowCursolPos;
 	//オプションでのモード

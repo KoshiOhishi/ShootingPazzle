@@ -63,3 +63,20 @@ void SquareBlock::UpdateCollision()
 	capsule[3].start = bottomLeft;
 	capsule[3].end = topLeft;
 }
+
+void SquareBlock::DecrementBreakupCount()
+{
+	if (isBreakable == false) {
+		return;
+	}
+
+	breakupCount--;
+	if (breakupCount <= 0) {
+		Breakup();
+	}
+}
+
+void SquareBlock::Breakup()
+{
+	//ここに爆発エフェクト入れる
+}

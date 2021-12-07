@@ -35,6 +35,16 @@ public:
 	/// </summary>
 	void UpdateCollision() override;
 
+	/// <summary>
+	/// 壊れるまでのカウントを1減らす 0になったらBreakup()を呼ぶ
+	/// </summary>
+	void DecrementBreakupCount() override;
+
+	/// <summary>
+	/// ブロックを壊す
+	/// </summary>
+	void Breakup() override;
+
 	std::string GetObjectType() override { return "SquareBlock"; }
 };
 

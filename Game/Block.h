@@ -11,6 +11,9 @@ class Block
 protected:
 	std::vector<Capsule> capsule;
 	Object3D object;
+	//衝突後に壊れるブロックか
+	bool isBreakable = false;
+	unsigned short breakupCount = 0;
 
 public:
 
@@ -45,12 +48,28 @@ public:
 	/// <returns>ブロックの種類</returns>
 	virtual std::string GetObjectType() = 0;
 
+	/// <summary>
+	/// 壊れるまでのカウントを1減らす 0になったらBreakup()を呼ぶ
+	/// </summary>
+	virtual void DecrementBreakupCount() = 0;
+
+	/// <summary>
+	/// ブロックを壊す
+	/// </summary>
+	virtual void Breakup() = 0;
+
 #pragma region Setter
 	/// <summary>
 	/// 座標セット (Y座標固定)
 	/// </summary>
-	/// <param name="pos"></param>
+	/// <param name="pos">ステージ上の座標</param>
 	void SetStagePos(const StageVec2& pos);
+
+	/// <summary>
+	/// 壊れるかどうかのフラグセット
+	/// </summary>
+	/// <param name="isBreakable"></param>
+	void SetBreakupCount(unsigned short breakupCount);
 
 #pragma endregion
 #pragma region Getter
@@ -64,6 +83,24 @@ public:
 	const std::vector<Capsule> GetCapsule()const {
 		return capsule;
 	}
+
+	/// <summary>
+	/// 壊れるブロックかどうか
+	/// </summary>
+	/// <returns></returns>
+	bool IsBreakable() { return isBreakable; }
+
+	/// <summary>
+	/// 壊れるまでの回数を返す
+	/// </summary>
+	/// <returns></returns>
+	unsigned short GetBreakupCount() {return breakupCount;}
+
+	/// <summary>
+	/// ブロックが壊れているかどうか
+	/// </summary>
+	/// <returns></returns>
+	bool isBreakup() { return isBreakable && breakupCount <= 0; }
 
 #pragma endregion
 };

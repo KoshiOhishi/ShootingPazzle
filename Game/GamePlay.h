@@ -33,6 +33,10 @@ private:
 	//ステージ
 	Stage stage;
 
+	//背景
+	Object3D objBG;
+	ObjModel modelBG;
+
 public:
 	Editor(){}
 	~Editor(){}

@@ -358,13 +358,9 @@
   E:\K019G1301\ライブラリ\Game\DX12Library\Shader\TextShaderHeader.hlsli
   E:\K019G1301\ライブラリ\Game\DX12Library\Shader\TextVertexShader.hlsl
   359 個のファイルをコピーしました
-  Editor.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(38,36): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(311,42): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
+  StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.pdb (部分的 -> 完全な PDB)
+E:\K019G1301\????\ShootingPazzle\x64\Debug\StageEditor.pdb : fatal error CMF1107: 
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\grid.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\System\debugfont.png
