@@ -3,22 +3,6 @@
 #include "Block.h"
 #include "Floor.h"
 
-/// <summary>
-/// ステージ座標 左上が原点
-/// </summary>
-struct StageVec2 {
-	unsigned short x = 0;
-	unsigned short y = 0;
-};
-
-/// <summary>
-/// ブロックタイプ
-/// </summary>
-enum BlockType {
-	BLOCKTYPE_SQUARE,
-	BLOCKTYPE_TRIANGLE
-};
-
 class Stage
 {
 private:

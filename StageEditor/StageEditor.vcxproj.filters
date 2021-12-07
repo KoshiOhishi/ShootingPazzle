@@ -13,72 +13,72 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\Gameから参照">
+      <UniqueIdentifier>{fda07e5f-9fed-4260-bf99-99b04a4b9f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Gameから参照">
+      <UniqueIdentifier>{d77b5396-c43b-4bb2-a688-a554eeb5f6fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Block.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyBullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Floor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameUtility.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="MyBullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SquareBlock.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TriangleBlock.cpp">
+    <ClCompile Include="EditorStage.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="StartLane.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\Block.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\Floor.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\MyBullet.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\GameUtility.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\SquareBlock.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\TriangleBlock.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Block.h">
+    <ClInclude Include="EditorStage.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyBullet.h">
+    <ClInclude Include="StartLane.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Floor.h">
+    <ClInclude Include="..\Game\MyBullet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameUtility.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="..\Game\Block.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
-    <ClInclude Include="MyBullet.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="..\Game\Floor.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
-    <ClInclude Include="SquareBlock.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="..\Game\GameUtility.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="..\Game\SquareBlock.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
-    <ClInclude Include="TriangleBlock.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="StartLane.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="..\Game\TriangleBlock.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,7 +157,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -175,33 +175,34 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Block.cpp" />
-    <ClCompile Include="EnemyBullet.cpp" />
-    <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="..\Game\Block.cpp" />
+    <ClCompile Include="..\Game\Floor.cpp" />
+    <ClCompile Include="..\Game\GameUtility.cpp" />
+    <ClCompile Include="..\Game\MyBullet.cpp" />
+    <ClCompile Include="..\Game\SquareBlock.cpp" />
+    <ClCompile Include="..\Game\TriangleBlock.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="GameUtility.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyBullet.cpp" />
-    <ClCompile Include="SquareBlock.cpp" />
-    <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="EditorStage.cpp" />
     <ClCompile Include="StartLane.cpp" />
-    <ClCompile Include="TriangleBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Block.h" />
-    <ClInclude Include="EnemyBullet.h" />
-    <ClInclude Include="Floor.h" />
+    <ClInclude Include="..\Game\Block.h" />
+    <ClInclude Include="..\Game\Floor.h" />
+    <ClInclude Include="..\Game\GameUtility.h" />
+    <ClInclude Include="..\Game\MyBullet.h" />
+    <ClInclude Include="..\Game\SquareBlock.h" />
+    <ClInclude Include="..\Game\TriangleBlock.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="GameUtility.h" />
-    <ClInclude Include="MyBullet.h" />
-    <ClInclude Include="SquareBlock.h" />
-    <ClInclude Include="Stage.h" />
+    <ClInclude Include="EditorStage.h" />
     <ClInclude Include="StartLane.h" />
-    <ClInclude Include="TriangleBlock.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Game\Game.vcxproj">
+      <Project>{4ceaea20-0a24-491b-bc24-e19408ffc9c5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

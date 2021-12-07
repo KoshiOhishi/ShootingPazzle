@@ -12,10 +12,9 @@
 #include "CollisionManager.h"
 
 #include "MyBullet.h"
-#include "EnemyBullet.h"
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
-#include "Stage.h"
+#include "EditorStage.h"
 #include "StartLane.h"
 
 enum EditorMode {
@@ -39,7 +38,7 @@ private:
 	//タイマー
 	Timer timer;
 	//ステージ
-	Stage stage;
+	EditorStage stage;
 
 
 	//Editor
@@ -62,6 +61,10 @@ private:
 
 	//文字入力中か
 	bool isEnteringIOName = false;
+
+	//ImGuiスライダーWidthDepth
+	int sliderWidth;
+	int sliderDepth;
 
 public:
 	Editor(){}
@@ -92,4 +95,9 @@ public:
 	/// 現在のステージ上のカーソルの位置を取得
 	/// </summary>
 	void CalcNowCursolPos();
+
+	/// <summary>
+	/// ステージを再構築する
+	/// </summary>
+	void ReCreateStage(unsigned short width, unsigned short depth);
 };

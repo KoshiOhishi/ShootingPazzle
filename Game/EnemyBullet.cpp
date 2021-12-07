@@ -81,8 +81,6 @@ void EnemyBullet::ChangeVelocity(const Vector3& blockPos)
 	//Šp“x‚©‚ç“–‚½‚Á‚½–Ê‚ðŽZo
 	float vecAngle = atan2(vec.z, vec.x);
 
-	const float PI = 3.14159265359f;
-
 	//’e‚Ì¶‚É“–‚½‚Á‚½‚Æ‚«
 	if ((vecAngle >= 0 && vecAngle < PI / 4) || (vecAngle >= PI * -1 / 4 && vecAngle < 0)) {
 		velocity.x *= -1;

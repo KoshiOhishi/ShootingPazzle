@@ -2,12 +2,26 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "Block.h"
-#include "Stage.h"
 
 #define PI 3.14159265359f
 //1マスの長さ
 #define ONE_CELL_LENGTH (float)5.0f
+
+/// <summary>
+/// ステージ座標 左上が原点
+/// </summary>
+struct StageVec2 {
+	unsigned short x = 0;
+	unsigned short y = 0;
+};
+
+/// <summary>
+/// ブロックタイプ
+/// </summary>
+enum BlockType {
+	BLOCKTYPE_SQUARE,
+	BLOCKTYPE_TRIANGLE
+};
 
 //ゲームフェーズ
 enum Phase
@@ -38,6 +52,8 @@ class GameUtility
 private:
 	//現在のフェーズ
 	static int nowPhase;
+	//ステージサイズを格納するポインタ
+	static StageVec2* pStageSize;
 
 public:
 	/// <summary>
@@ -46,6 +62,8 @@ public:
 	static void StaticInitialize();
 
 	static void SetNowPhase(int phase) { nowPhase = phase; }
+	static void SetPStageSize(StageVec2* pStageSize) { GameUtility::pStageSize = pStageSize; }
+
 	static int GetNowPhase() { return nowPhase; }
 
 	/// <summary>
@@ -54,7 +72,7 @@ public:
 	/// <param name="worldX">ワールド座標x</param>
 	/// <param name="worldZ">ワールド座標z</param>
 	/// <returns></returns>
-	static const StageVec2& CalcWorldPos2StagePos(float worldX, float worldZ, const StageVec2& stageSize);
+	static const StageVec2& CalcWorldPos2StagePos(float worldX, float worldZ);
 
 	/// <summary>
 	/// ステージ上の座標からワールド座標のxz平面に変換
@@ -62,5 +80,5 @@ public:
 	/// <param name="stagePos">ステージ上の座標</param>
 	/// <param name="dstWorldX">ワールド座標x</param>
 	/// <param name="dstWorldZ">ワールド座標z</param>
-	static void CalcStagePos2WorldPos(const StageVec2& stagePos, const StageVec2& stageSize, float* dstWorldX = nullptr, float* dstWorldZ = nullptr);
+	static void CalcStagePos2WorldPos(const StageVec2& stagePos, float* dstWorldX = nullptr, float* dstWorldZ = nullptr);
 };

@@ -12,7 +12,6 @@
 #include "CollisionManager.h"
 
 #include "MyBullet.h"
-#include "EnemyBullet.h"
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
 #include "Stage.h"

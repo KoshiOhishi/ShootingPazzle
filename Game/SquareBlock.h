@@ -18,7 +18,7 @@ public:
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	void Initialize(float posX, float posZ, float sphereRadius) override;
+	void Initialize(const StageVec2& pos, float sphereRadius) override;
 
 	/// <summary>
 	/// XV
@@ -35,6 +35,6 @@ public:
 	/// </summary>
 	void UpdateCollision() override;
 
-	const std::string& GetObjectType() override { return "SquareBlock"; }
+	std::string GetObjectType() override { return "SquareBlock"; }
 };
 

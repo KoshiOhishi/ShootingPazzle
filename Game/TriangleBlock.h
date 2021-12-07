@@ -27,7 +27,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(float posX, float posZ, float sphereRadius) override;
+	void Initialize(const StageVec2& pos, float sphereRadius) override;
 
 	/// <summary>
 	/// 三角形の形をセット
@@ -50,5 +50,5 @@ public:
 	/// </summary>
 	void UpdateCollision() override;
 
-	const std::string& GetObjectType() override { return "TriangleBlock"; }
+	std::string GetObjectType() override { return "TriangleBlock_" + std::to_string(shapeType); }
 };

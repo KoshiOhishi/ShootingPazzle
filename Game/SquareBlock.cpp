@@ -13,7 +13,7 @@ SquareBlock::~SquareBlock()
 {
 }
 
-void SquareBlock::Initialize(float posX, float posZ, float sphereRadius)
+void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 {
 	//オブジェクト生成
 	object.Initialize();
@@ -26,7 +26,8 @@ void SquareBlock::Initialize(float posX, float posZ, float sphereRadius)
 		capsule[i].radius = sphereRadius;
 	}
 
-	object.SetPosition(posX, ONE_CELL_LENGTH / 2, posZ);
+	SetStagePos(pos);
+
 	UpdateCollision();
 }
 

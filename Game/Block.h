@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "CollisionPrimitive.h"
+#include "GameUtility.h"
 
 class Block
 {
@@ -21,7 +22,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	virtual void Initialize(float posX, float posZ, float sphereRadius) = 0;
+	virtual void Initialize(const StageVec2& pos, float sphereRadius) = 0;
 
 	/// <summary>
 	/// 更新
@@ -42,14 +43,15 @@ public:
 	/// ブロックの種類を取得する
 	/// </summary>
 	/// <returns>ブロックの種類</returns>
-	virtual const std::string& GetObjectType() = 0;
+	virtual std::string GetObjectType() = 0;
 
 #pragma region Setter
 	/// <summary>
 	/// 座標セット (Y座標固定)
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetBlockPos(float x, float z);
+	void SetStagePos(const StageVec2& pos);
+
 #pragma endregion
 #pragma region Getter
 

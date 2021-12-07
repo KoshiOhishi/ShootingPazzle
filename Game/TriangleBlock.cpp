@@ -13,7 +13,7 @@ TriangleBlock::~TriangleBlock()
 {
 }
 
-void TriangleBlock::Initialize(float posX, float posZ, float sphereRadius)
+void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
 {
 	//オブジェクト生成
 	object.Initialize();
@@ -34,7 +34,8 @@ void TriangleBlock::Initialize(float posX, float posZ, float sphereRadius)
 		capsule[i].radius = sphereRadius;
 	}
 
-	object.SetPosition(posX, ONE_CELL_LENGTH / 2, posZ);
+	SetStagePos(pos);
+
 
 	UpdateCollision();
 }

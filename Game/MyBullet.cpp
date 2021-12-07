@@ -20,7 +20,7 @@ void MyBullet::Initialize()
 {
 	//パラメータ初期化
 	float z;
-	GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, stage->GetStageSize(), nullptr, &z);
+	GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, nullptr, &z);
 
 	position = { 0, ONE_CELL_LENGTH / 2, z };
 	velocity = { 0,0,0 };
@@ -74,23 +74,16 @@ void MyBullet::UpdateBeforeShoot()
 {
 	//射出前、位置を決めさせる
 	if (GameUtility::GetNowPhase() == PHASE_SETPOS) {
+		//スタート位置のz座標取得
 		float z;
-		GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, stage->GetStageSize(), nullptr, &z);
-		//マウスのx座標をもとに位置セット
-		Vector3 pos = {
-			(Mouse::GetMousePos().x - DX12Util::GetWindowWidth() / 2) / 12,
-			ONE_CELL_LENGTH / 2,
-			z };
+		GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, nullptr, &z);
 
-		//値を丸める
-		if (pos.x < -45) {
-			pos.x = -45;
-		}
-		else if (pos.x > 45) {
-			pos.x = 45;
-		}
+		//マウスとレイとの交点のx座標取得
+		Vector3 mouse;
+		Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloor().GetPlane(), nullptr, &mouse);
 
-		position = pos;
+		position = { mouse.x, position.y, z };
+
 		//クリックで決定、角度セットフェーズに移る
 		if (Mouse::IsMouseButtonRelease(MouseButton::LEFT)) {
 			//矢印描画が崩れないように角度決定

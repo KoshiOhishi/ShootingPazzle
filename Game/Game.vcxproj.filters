@@ -39,9 +39,6 @@
     <ClCompile Include="Block.cpp">
       <Filter>ソース ファイル\オブジェクト</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBullet.cpp">
-      <Filter>ソース ファイル\オブジェクト</Filter>
-    </ClCompile>
     <ClCompile Include="TriangleBlock.cpp">
       <Filter>ソース ファイル\オブジェクト</Filter>
     </ClCompile>
@@ -51,10 +48,10 @@
     <ClCompile Include="GameUtility.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Floor.cpp">
+      <Filter>ソース ファイル\オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
       <Filter>ソース ファイル\オブジェクト</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,9 +65,6 @@
     <ClInclude Include="Block.h">
       <Filter>ヘッダー ファイル\オブジェクト</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyBullet.h">
-      <Filter>ヘッダー ファイル\オブジェクト</Filter>
-    </ClInclude>
     <ClInclude Include="TriangleBlock.h">
       <Filter>ヘッダー ファイル\オブジェクト</Filter>
     </ClInclude>
@@ -80,10 +74,10 @@
     <ClInclude Include="GameUtility.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Floor.h">
+      <Filter>ヘッダー ファイル\オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
       <Filter>ヘッダー ファイル\オブジェクト</Filter>
     </ClInclude>
   </ItemGroup>

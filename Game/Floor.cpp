@@ -1,7 +1,10 @@
 #include "Floor.h"
+#include "GameUtility.h"
 
-void Floor::CreateModel(float width, float depth)
+void Floor::CreateModel(const StageVec2& stageSize)
 {
+	float width = stageSize.x * ONE_CELL_LENGTH, depth = stageSize.y * ONE_CELL_LENGTH;
+
 	model.CreateSquare(width, depth, { 0.7f, 0.7f, 0.7f });
 }
 

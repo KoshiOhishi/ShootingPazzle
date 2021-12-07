@@ -6,7 +6,7 @@
 
 //現在のフェーズ
 int GameUtility::nowPhase;
-
+StageVec2* GameUtility::pStageSize = nullptr;
 
 void GameUtility::StaticInitialize()
 {
@@ -15,23 +15,27 @@ void GameUtility::StaticInitialize()
 	SquareBlock::CreateModel();
 }
 
-const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ, const StageVec2& stageSize)
+const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ)
 {
+	assert(pStageSize);
+
 	StageVec2 result;
-	result.x = (worldX + stageSize.x * ONE_CELL_LENGTH / 2) / ONE_CELL_LENGTH;
-	result.y = -(worldZ - stageSize.y * ONE_CELL_LENGTH / 2) / ONE_CELL_LENGTH;
+	result.x = (worldX + pStageSize->x * ONE_CELL_LENGTH / 2) / ONE_CELL_LENGTH;
+	result.y = -(worldZ - pStageSize->y * ONE_CELL_LENGTH / 2) / ONE_CELL_LENGTH;
 
 	return result;
 }
 
-void GameUtility::CalcStagePos2WorldPos(const StageVec2& stagePos, const StageVec2& stageSize, float* dstWorldX, float* dstWorldZ)
+void GameUtility::CalcStagePos2WorldPos(const StageVec2& stagePos, float* dstWorldX, float* dstWorldZ)
 {
+	assert(pStageSize);
+
 	if (dstWorldX) {
-		*dstWorldX = stagePos.x * ONE_CELL_LENGTH - stageSize.x * ONE_CELL_LENGTH / 2;
+		*dstWorldX = stagePos.x * ONE_CELL_LENGTH - pStageSize->x * ONE_CELL_LENGTH / 2;
 		*dstWorldX += ONE_CELL_LENGTH / 2;
 	}
 	if (dstWorldZ) {
-		*dstWorldZ = -stagePos.y * ONE_CELL_LENGTH + stageSize.y * ONE_CELL_LENGTH / 2;
+		*dstWorldZ = -stagePos.y * ONE_CELL_LENGTH + pStageSize->y * ONE_CELL_LENGTH / 2;
 		*dstWorldZ -= ONE_CELL_LENGTH / 2;
 	}
 }

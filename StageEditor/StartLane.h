@@ -7,12 +7,14 @@ class StartLane
 private:
 	Object3D object;
 	ObjModel model;
-	StageVec2 stageSize;
+	StageVec2* stageSize;
 
 public:
-	void Initialize(const StageVec2& stageSize);
+	void Initialize(StageVec2* stageSize);
 	void Update();
 	void Draw();
+
+	void CreateModel();
 
 	void SetPosition(unsigned short stagePosZ);
 };
