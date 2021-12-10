@@ -1,8 +1,8 @@
 #pragma once
-#include "Block.h"
+#include "BaseBlock.h"
 
 class SquareBlock :
-	public Block
+	public BaseBlock
 {
 private:
 	//³l–Ê‘Ìƒ‚ƒfƒ‹

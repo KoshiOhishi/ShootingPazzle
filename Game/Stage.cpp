@@ -3,6 +3,8 @@
 #include "Stage.h"
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
+#include "NormalFloor.h"
+#include "HoleFloor.h"
 #include "GameUtility.h"
 
 Stage::~Stage()
@@ -11,6 +13,10 @@ Stage::~Stage()
 		if (blocks[i]) delete blocks[i];
 	}
 	blocks.clear();
+	for (int i = 0; i < floors.size(); i++) {
+		if (floors[i]) delete floors[i];
+	}
+	floors.clear();
 }
 
 void Stage::LoadStage(std::string filename)
@@ -20,6 +26,10 @@ void Stage::LoadStage(std::string filename)
 		if (blocks[i]) delete blocks[i];
 	}
 	blocks.clear();
+	for (int i = 0; i < floors.size(); i++) {
+		if (floors[i]) delete floors[i];
+	}
+	floors.clear();
 
 	//GameUtilityにステージサイズを渡す
 	GameUtility::SetPStageSize(&stageSize);
@@ -32,8 +42,18 @@ void Stage::LoadStage(std::string filename)
 		stageSize.x = 20;
 		stageSize.y = 20;
 		startLaneZ = stageSize.y - 2;
-		floor.CreateModel(stageSize);
-		floor.Initialize();
+		//全マスに床ブロック(ノーマル)
+		for (int i = 0; i < stageSize.y; i++) {
+			for (int j = 0; j < stageSize.x; j++) {
+				StageVec2 pos = { i,j };
+				NormalFloor* newFloor = new NormalFloor;
+				newFloor->Initialize(pos);
+				floors.emplace_back(newFloor);
+			}
+		}
+		//床当たり判定初期化
+		floorCollision.distance = 0;
+		floorCollision.normal = { 0,1,0 };	//法線方向は上
 		return;
 	}
 
@@ -45,8 +65,8 @@ void Stage::LoadStage(std::string filename)
 	startLaneZ = header.startLineZ;
 
 	//ブロック情報格納
-	for (int i = 0; i < header.objectCount; i++) {
-		StageObject object;
+	for (int i = 0; i < header.blockCount; i++) {
+		StageBlock object;
 		file.read((char*)&object, sizeof(object));
 
 		StageVec2 pos = { object.stagePosX, object.stagePosY };
@@ -54,14 +74,14 @@ void Stage::LoadStage(std::string filename)
 		//SquareBlock
 		if (object.type == 0) {
 			SquareBlock* newBlock = new SquareBlock;
-			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
+			newBlock->Initialize(pos, sphereRadius);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 		//TriangleBlock LT
 		else if (object.type == 1) {
 			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
+			newBlock->Initialize(pos, sphereRadius);
 			newBlock->SetShapeType(SHAPETYPE_NO_LEFTTOP);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
@@ -69,7 +89,7 @@ void Stage::LoadStage(std::string filename)
 		//TriangleBlock RT
 		else if (object.type == 2) {
 			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
+			newBlock->Initialize(pos, sphereRadius);
 			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTTOP);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
@@ -77,7 +97,7 @@ void Stage::LoadStage(std::string filename)
 		//TriangleBlock LB
 		else if (object.type == 3) {
 			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
+			newBlock->Initialize(pos, sphereRadius);
 			newBlock->SetShapeType(SHAPETYPE_NO_LEFTBOTTOM);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
@@ -85,21 +105,55 @@ void Stage::LoadStage(std::string filename)
 		//TriangleBlock RB
 		else if (object.type == 4) {
 			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, ONE_CELL_LENGTH / 2);
+			newBlock->Initialize(pos, sphereRadius);
 			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTBOTTOM);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
 	}
 
+	//床情報格納
+	//ステージデータで指定された箇所は指定されたデータを格納、それ以外はノーマルブロック
+	for (int i = 0; i < header.floorCount; i++) {
+		StageFloor object;
+		file.read((char*)&object, sizeof(object));
+
+		StageVec2 pos = { object.stagePosX, object.stagePosY };
+
+		if (object.type == 0) {
+			NormalFloor* newFloor = new NormalFloor;
+			newFloor->Initialize(pos);
+			floors.emplace_back(newFloor);
+		}
+		else if (object.type == 1) {
+
+		}
+		else if (object.type == 2) {
+
+		}
+		else if (object.type == 3) {
+
+		}
+		else if (object.type == 4) {
+
+		}
+	}
+
 	file.close();
 
-	floor.CreateModel(stageSize);
-	floor.Initialize();
+	InsertHole();
+
+	//床当たり判定初期化
+	floorCollision.distance = 0;
+	floorCollision.normal = { 0,1,0 };	//法線方向は上
 }
 
 void Stage::Update()
 {
+	for (int i = 0; i < floors.size(); i++) {
+		if (floors[i]) floors[i]->Update();
+	}
+
 	for (int i = 0; i < blocks.size(); i++) {
 		//ブロックが壊れていたら削除
 		if (blocks[i]->isBreakup()) {
@@ -110,13 +164,43 @@ void Stage::Update()
 		}
 		if (blocks[i]) blocks[i]->Update();
 	}
-	floor.Update();
 }
 
 void Stage::Draw()
 {
+	for (int i = 0; i < floors.size(); i++) {
+		if (floors[i]) floors[i]->Draw();
+	}
+
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i]) blocks[i]->Draw();
 	}
-	floor.Draw();
+}
+
+void Stage::InsertHole()
+{
+	for (unsigned short i = 0; i < stageSize.y; i++) {
+		for (unsigned short j = 0; j < stageSize.x; j++) {
+			//そのマスになにかしらが配置されていなければ挿入
+			if (CheckExistFloor({ i,j }) == -1) {
+				HoleFloor* newFloor = new HoleFloor;
+				newFloor->Initialize({ i,j });
+				floors.emplace_back(newFloor);
+			}
+		}
+	}
+}
+
+int Stage::CheckExistFloor(const StageVec2& stagePos)
+{
+	float x, z;
+	GameUtility::CalcStagePos2WorldPos(stagePos, &x, &z);
+
+	for (int i = 0; i < floors.size(); i++) {
+		if (x == floors[i]->GetPosition().x && z == floors[i]->GetPosition().z) {
+			return i;
+		}
+	}
+
+	return -1;
 }

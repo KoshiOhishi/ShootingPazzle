@@ -3,7 +3,7 @@
 #include "ObjModel.h"
 #include "Vector3.h"
 #include "CollisionPrimitive.h"
-#include "Block.h"
+#include "BaseBlock.h"
 #include "CollisionManager.h"
 #include "Stage.h"
 
@@ -21,6 +21,9 @@ private:
 	};
 
 private:
+	//”¼Œa
+	static const float RADIUS;
+
 	//‹…ƒ‚ƒfƒ‹
 	static ObjModel modelSphere;
 	//–îˆóƒ‚ƒfƒ‹

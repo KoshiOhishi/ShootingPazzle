@@ -25,6 +25,18 @@
     <Filter Include="ヘッダー ファイル\オブジェクト">
       <UniqueIdentifier>{66f31cb0-e060-4400-9d56-829850570440}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\オブジェクト\Block">
+      <UniqueIdentifier>{a62af054-6eb6-4805-a7a5-2ab542bf9100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\オブジェクト\Block">
+      <UniqueIdentifier>{351a480c-7577-454c-8673-e87b8ac8f564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\オブジェクト\Floor">
+      <UniqueIdentifier>{cd84730b-c6f7-4e00-9aa1-560c3077d040}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\オブジェクト\Floor">
+      <UniqueIdentifier>{b18ce594-14ed-4d24-917e-05bc93a824ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GamePlay.cpp">
@@ -36,23 +48,29 @@
     <ClCompile Include="MyBullet.cpp">
       <Filter>ソース ファイル\オブジェクト</Filter>
     </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>ソース ファイル\オブジェクト</Filter>
-    </ClCompile>
-    <ClCompile Include="TriangleBlock.cpp">
-      <Filter>ソース ファイル\オブジェクト</Filter>
-    </ClCompile>
-    <ClCompile Include="SquareBlock.cpp">
-      <Filter>ソース ファイル\オブジェクト</Filter>
-    </ClCompile>
     <ClCompile Include="GameUtility.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Floor.cpp">
-      <Filter>ソース ファイル\オブジェクト</Filter>
-    </ClCompile>
     <ClCompile Include="Stage.cpp">
       <Filter>ソース ファイル\オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseBlock.cpp">
+      <Filter>ソース ファイル\オブジェクト\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseFloor.cpp">
+      <Filter>ソース ファイル\オブジェクト\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="SquareBlock.cpp">
+      <Filter>ソース ファイル\オブジェクト\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangleBlock.cpp">
+      <Filter>ソース ファイル\オブジェクト\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalFloor.cpp">
+      <Filter>ソース ファイル\オブジェクト\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="HoleFloor.cpp">
+      <Filter>ソース ファイル\オブジェクト\Floor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,23 +80,29 @@
     <ClInclude Include="MyBullet.h">
       <Filter>ヘッダー ファイル\オブジェクト</Filter>
     </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>ヘッダー ファイル\オブジェクト</Filter>
-    </ClInclude>
-    <ClInclude Include="TriangleBlock.h">
-      <Filter>ヘッダー ファイル\オブジェクト</Filter>
-    </ClInclude>
-    <ClInclude Include="SquareBlock.h">
-      <Filter>ヘッダー ファイル\オブジェクト</Filter>
-    </ClInclude>
     <ClInclude Include="GameUtility.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Floor.h">
-      <Filter>ヘッダー ファイル\オブジェクト</Filter>
-    </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>ヘッダー ファイル\オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseBlock.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseFloor.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareBlock.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleBlock.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalFloor.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="HoleFloor.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

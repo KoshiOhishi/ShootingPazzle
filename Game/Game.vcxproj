@@ -185,22 +185,26 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Block.cpp" />
-    <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="BaseBlock.cpp" />
+    <ClCompile Include="BaseFloor.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="GameUtility.cpp" />
+    <ClCompile Include="HoleFloor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyBullet.cpp" />
+    <ClCompile Include="NormalFloor.cpp" />
     <ClCompile Include="SquareBlock.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TriangleBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Block.h" />
-    <ClInclude Include="Floor.h" />
+    <ClInclude Include="BaseBlock.h" />
+    <ClInclude Include="BaseFloor.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GameUtility.h" />
+    <ClInclude Include="HoleFloor.h" />
     <ClInclude Include="MyBullet.h" />
+    <ClInclude Include="NormalFloor.h" />
     <ClInclude Include="SquareBlock.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TriangleBlock.h" />

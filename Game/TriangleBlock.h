@@ -1,5 +1,5 @@
 #pragma once
-#include "Block.h"
+#include "BaseBlock.h"
 
 enum ShapeType {
 	SHAPETYPE_NO_LEFTTOP,	//左上の角がない三角形
@@ -9,7 +9,7 @@ enum ShapeType {
 };
 
 class TriangleBlock :
-    public Block
+    public BaseBlock
 {
 private:
 	//三角形の向き

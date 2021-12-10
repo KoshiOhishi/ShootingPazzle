@@ -23,6 +23,14 @@ enum BlockType {
 	BLOCKTYPE_TRIANGLE
 };
 
+enum FloorType {
+	FLOORTYPE_NORMAL,
+	FLOORTYPE_MOVE_LEFT,
+	FLOORTYPE_MOVE_RIGHT,
+	FLOORTYPE_MOVE_UP,
+	FLOORTYPE_MOVE_DOWN
+};
+
 //ゲームフェーズ
 enum Phase
 {
@@ -36,15 +44,23 @@ struct StageHeader
 	unsigned short width = 20;
 	unsigned short depth = 20;
 	unsigned short startLineZ = depth - 12;
-	unsigned short objectCount = 0;
+	unsigned short blockCount = 0;
+	unsigned short floorCount = 0;
 };
 
-struct StageObject
+struct StageBlock
 {
 	unsigned short stagePosX = 0;
 	unsigned short stagePosY = 0;
 	char type = 0;
 	unsigned short breakupCount = 0;	//ブロックが何回の衝突で壊れるか (読み込み時0だと壊れないブロックになる)
+};
+
+struct StageFloor
+{
+	unsigned short stagePosX = 0;
+	unsigned short stagePosY = 0;
+	char type = 0;
 };
 
 class GameUtility

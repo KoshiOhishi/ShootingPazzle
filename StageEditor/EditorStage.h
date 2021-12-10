@@ -1,16 +1,19 @@
 #pragma once
 #include <vector>
-#include "Block.h"
-#include "Floor.h"
+#include "BaseBlock.h"
+#include "BaseFloor.h"
 #include "GameUtility.h"
 
 class EditorStage
 {
 //エディット用なので公開でOK
 public:
+	const float sphereRadius = ONE_CELL_LENGTH / 2;
+
 	StageVec2 stageSize = { 20,20 };
-	std::vector<Block*> blocks;
-	Floor floor;
+	std::vector<BaseBlock*> blocks;
+	std::vector<BaseFloor*> floors;
+	Plane floorCollision;
 	unsigned short startLaneZ = stageSize.y - 2;
 
 public:
@@ -54,5 +57,27 @@ public:
 	/// <param name="stagePos">ステージ上の座標</param>
 	/// <returns>存在すればブロック配列のインデックス、なければ-1を返す</returns>
 	int CheckExistBlock(const StageVec2& stagePos);
+
+	/// <summary>
+	/// 床ブロックを追加 (引数の位置に既にブロックが配置されていたら追加しない)
+	/// </summary>
+	/// <param name="stagePos">ステージ上の座標</param>
+	/// <param name="floorType">床ブロックの種類</param>
+	void AddFloor(const StageVec2& stagePos, int floorType);
+
+	/// <summary>
+	/// 床ブロックを削除 (引数の位置になにもない場合は削除しない)
+	/// </summary>
+	/// <param name="stagePos"></param>
+	void DeleteFloor(const StageVec2& stagePos);
+
+	/// <summary>
+	/// 既に床ブロックが配置されているかチェック
+	/// </summary>
+	/// <param name="stagePos">ステージ上の座標</param>
+	/// <returns>存在すればブロック配列のインデックス、なければ-1を返す</returns>
+	int CheckExistFloor(const StageVec2& stagePos);
+
+	const Plane& GetFloorCollision()const { return floorCollision; }
 };
 

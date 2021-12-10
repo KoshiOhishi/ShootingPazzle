@@ -17,8 +17,8 @@ void Editor::Initialize()
 {
 	//ライト初期化
 	light.Initialize();
-	light.SetLightDir({ 1,1,1 });
-	light.SetLightColor({ 1,1,1 });
+	light.SetLightDir({ 0,-1,0 });
+	light.SetLightColor({ 0.8f, 0.8f, 0.8f });
 	Object3D::SetLight(&light);
 
 	//カメラ初期化
@@ -193,11 +193,11 @@ void Editor::Draw()
 	//背景描画
 	objBG.Draw();
 
-	//弾描画
-	myBullet.Draw();
-
 	//ステージ描画
 	stage.Draw();
+
+	//弾描画
+	myBullet.Draw();
 	
 
 	//オブジェクト描画ここまで

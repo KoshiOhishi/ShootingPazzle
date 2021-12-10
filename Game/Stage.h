@@ -1,14 +1,17 @@
 #pragma once
 #include <vector>
-#include "Block.h"
-#include "Floor.h"
+#include "BaseBlock.h"
+#include "BaseFloor.h"
 
 class Stage
 {
 private:
+	const float sphereRadius = ONE_CELL_LENGTH / 2;
+
 	StageVec2 stageSize = { 20,20 };
-	std::vector<Block*> blocks;
-	Floor floor;
+	std::vector<BaseBlock*> blocks;
+	std::vector<BaseFloor*> floors;
+	Plane floorCollision;
 	unsigned short startLaneZ = stageSize.y - 2;
 
 public:
@@ -32,15 +35,45 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 床ブロック空きマスに穴オブジェクトを挿入
+	/// </summary>
+	void InsertHole();
+
+	/// <summary>
+	/// 床ブロックが既に配置されているかを返す
+	/// </summary>
+	/// <param name="stagePos">ステージ基準座標</param>
+	/// <returns>既に配置されていればfloorsのインデックス、なければ-1を返す</returns>
+	int CheckExistFloor(const StageVec2& stagePos);
+
+	/// <summary>
 	/// ブロック配置取得
 	/// </summary>
 	/// <returns></returns>
-	std::vector<Block*>& GetBlocks() { return blocks; }
+	std::vector<BaseBlock*>& GetBlocks() { return blocks; }
 
-	const Floor& GetFloor()const { return floor; }
+	/// <summary>
+	/// 床ブロック配置取得
+	/// </summary>
+	/// <returns></returns>
+	std::vector<BaseFloor*>& GetFloors() { return floors; }
 
+	/// <summary>
+	/// マウスと床の当たり判定に使用する板コリジョン取得
+	/// </summary>
+	/// <returns></returns>
+	const Plane& GetFloorCollision()const { return floorCollision; }
+
+	/// <summary>
+	/// スタートレーンのz座標取得
+	/// </summary>
+	/// <returns></returns>
 	unsigned short GetStartLaneZ() { return startLaneZ; }
 
+	/// <summary>
+	/// ステージサイズを取得 単位はマス
+	/// </summary>
+	/// <returns></returns>
 	const StageVec2& GetStageSize() { return stageSize; }
 };
 

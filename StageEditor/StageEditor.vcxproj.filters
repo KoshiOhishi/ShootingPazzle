@@ -33,12 +33,6 @@
     <ClCompile Include="Editor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\Game\Block.cpp">
-      <Filter>ソース ファイル\Gameから参照</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Game\Floor.cpp">
-      <Filter>ソース ファイル\Gameから参照</Filter>
-    </ClCompile>
     <ClCompile Include="..\Game\MyBullet.cpp">
       <Filter>ソース ファイル\Gameから参照</Filter>
     </ClCompile>
@@ -49,6 +43,15 @@
       <Filter>ソース ファイル\Gameから参照</Filter>
     </ClCompile>
     <ClCompile Include="..\Game\TriangleBlock.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\BaseBlock.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\BaseFloor.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\NormalFloor.cpp">
       <Filter>ソース ファイル\Gameから参照</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,12 +68,6 @@
     <ClInclude Include="Editor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Block.h">
-      <Filter>ヘッダー ファイル\Gameから参照</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Floor.h">
-      <Filter>ヘッダー ファイル\Gameから参照</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\GameUtility.h">
       <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
@@ -78,6 +75,15 @@
       <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\TriangleBlock.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\BaseBlock.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\BaseFloor.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\NormalFloor.h">
       <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
   </ItemGroup>

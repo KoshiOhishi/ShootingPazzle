@@ -3,6 +3,7 @@
 #include "MyBullet.h"
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
+#include "NormalFloor.h"
 
 //現在のフェーズ
 int GameUtility::nowPhase;
@@ -13,6 +14,7 @@ void GameUtility::StaticInitialize()
 	MyBullet::CreateModel();
 	TriangleBlock::CreateModel();
 	SquareBlock::CreateModel();
+	NormalFloor::CreateModel();
 }
 
 const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ)

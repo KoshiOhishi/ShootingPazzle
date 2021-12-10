@@ -8,11 +8,12 @@
 
 ObjModel MyBullet::modelSphere;
 ObjModel MyBullet::modelArrow;
+const float MyBullet::RADIUS = ONE_CELL_LENGTH / 2;
 
 void MyBullet::CreateModel()
 {
 	//モデル生成
-	modelSphere.CreateSphere(20, 20, ONE_CELL_LENGTH / 2, true);
+	modelSphere.CreateSphere(20, 20, RADIUS, true);
 	modelArrow.CreateSquareTex(8, "Arrow.png", { 1,1,1 });
 }
 
@@ -22,7 +23,7 @@ void MyBullet::Initialize()
 	float z;
 	GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, nullptr, &z);
 
-	position = { 0, ONE_CELL_LENGTH / 2, z };
+	position = { 0, RADIUS, z };
 	velocity = { 0,0,0 };
 	speed = 1.0f;
 	shotAngle = 90;
@@ -112,15 +113,15 @@ void MyBullet::DecideShootPos()
 
 	//マウスとレイとの交点のx座標取得
 	Vector3 mouse;
-	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloor().GetPlane(), nullptr, &mouse);
+	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloorCollision(), nullptr, &mouse);
 
 	//ステージの外、またはブロックと衝突していたら位置更新しない
 	if (IsOutStage(mouse)) { return; }
 	for (int i = 0; i < stage->GetBlocks().size(); i++) {
 		Vector3 blockPos = stage->GetBlocks()[i]->GetPosition();
-		Vector3 sub = { ONE_CELL_LENGTH / 2, ONE_CELL_LENGTH / 2, ONE_CELL_LENGTH / 2 };
+		Vector3 sub = { RADIUS, RADIUS, RADIUS };
 		Vector3 spherePos = { mouse.x, position.y, position.z };
-		Sphere sphere{ spherePos, ONE_CELL_LENGTH / 2 };
+		Sphere sphere{ spherePos, RADIUS };
 		AABB aabb{ blockPos - sub, blockPos + sub };
 
 		if (Collision::CheckAABB2Sphere(aabb, sphere)) {
@@ -136,7 +137,7 @@ float MyBullet::DecideShootAngle()
 	Vector3 center = position;
 	Vector3 mouse = {};
 
-	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloor().GetPlane(), nullptr, &mouse);
+	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloorCollision(), nullptr, &mouse);
 	//マウスのy座標を地面と平行に
 	mouse.y = position.y;
 
@@ -198,7 +199,6 @@ void MyBullet::CheckCollision()
 	//Todo:	このままだとブロックが増えると当たり判定が厳しいので
 	//		どうにかして軽くさせる
 
-
 	//レイ更新
 	UpdateRay();
 
@@ -207,6 +207,8 @@ void MyBullet::CheckCollision()
 
 	//レイとブロックが衝突するか
 	for (int i = 0; i < stage->GetBlocks().size(); i++) {
+		bool isCollision = false;
+
 		//ブロックが持つ各カプセル判定において
 		for (int j = 0; j < stage->GetBlocks()[i]->GetCapsule().size(); j++) {
 			float distance = 0;
@@ -240,11 +242,51 @@ void MyBullet::CheckCollision()
 				//新しい移動量で残りの長さを移動
 				newPos += nextMoveInfo.nextVel * speed * (1.0f - mul);
 
-
-				//ブロックの壊れるまでのカウントを減らす
-				stage->GetBlocks()[i]->DecrementBreakupCount();
+				isCollision = true;
 			}
 		}
+
+		//当たっていればブロックの壊れるまでのカウントを減らす
+		if (isCollision) {
+			stage->GetBlocks()[i]->DecrementBreakupCount();
+		}
+	}
+
+	//球と床ギミックとの判定
+	for (int i = 0; i < stage->GetFloors().size(); i++) {
+		//一定の距離以上の位置にあるものは判定しない
+		Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
+		floorPos.y = position.y;
+		float lengthSq = (floorPos - position).LengthSq();
+		if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
+			continue;
+		}
+
+		//ノーマルブロックは特に何もしない
+		if (stage->GetFloors()[i]->GetObjectType() == "NormalFloor") {
+			continue;
+		}
+		//穴
+		else if (stage->GetFloors()[i]->GetObjectType() == "HoleFloor") {
+			float length = sqrt(lengthSq);
+			//距離が半径の1/2で落ちたとみていいだろう
+			if (length < RADIUS / 2) {
+				velocity += { 0, -0.1f, 0 };
+				velocity = velocity.Normalize();
+				break;
+			}
+			else if (length < RADIUS) {
+				//少し穴のほうに寄せる
+				Vector3 myBullet2Holl = floorPos - position;
+				myBullet2Holl = myBullet2Holl.Normalize();
+
+				velocity += (myBullet2Holl * 0.25f);	//←---
+				velocity = velocity.Normalize();//			　|
+				break;//									　|
+			}//												　| 
+		}//													　|
+		//													　|
+		//ToDo:穴オブジェクトは連結した穴の中心を求めてそれを | ここの代わりに足す処理を追加する
 	}
 }
 
@@ -256,8 +298,8 @@ void MyBullet::UpdateRay()
 
 bool MyBullet::IsOutStage(const Vector3& pos)
 {
-	Vector3 floorPos = stage->GetFloor().GetFloorPos();
-	Vector2 floorSize = stage->GetFloor().GetFloorSize();
+	Vector3 floorPos = { 0,0,0 };
+	Vector2 floorSize = { stage->GetStageSize().x * ONE_CELL_LENGTH, stage->GetStageSize().y * ONE_CELL_LENGTH };
 	return pos.x < floorPos.x - floorSize.x / 2 ||
 		pos.x > floorPos.x + floorSize.x / 2 ||
 		pos.z < floorPos.y - floorSize.y / 2 ||

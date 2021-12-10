@@ -14,6 +14,7 @@
 #include "MyBullet.h"
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
+#include "NormalFloor.h"
 #include "EditorStage.h"
 #include "StartLane.h"
 
@@ -21,6 +22,11 @@ enum EditorMode {
 	MODE_ADD,
 	MODE_DELETE,
 	MODE_OPTION
+};
+
+enum ObjectType {
+	OBJECTTYPE_BLOCK,
+	OBJECTTYPE_FLOOR
 };
 
 enum OptionMode {
@@ -44,8 +50,10 @@ private:
 	//Editor
 	//モード
 	int mode = MODE_ADD;
+	int objectType = OBJECTTYPE_BLOCK;
 	int blockType = BLOCKTYPE_SQUARE;
 	int shapeType = SHAPETYPE_NO_LEFTTOP;
+	int floorType = FLOORTYPE_NORMAL;
 	//壊れるまでの衝突回数　0で壊れないブロック
 	int breakupCount = 0;
 	//現在のカーソル位置
@@ -57,6 +65,7 @@ private:
 	SquareBlock squareBlock;
 	TriangleBlock triangleBlock[4];
 	StartLane startLane[2];
+	NormalFloor normalFloor;
 
 	//SaveLoad用名前格納
 	std::string ioname;

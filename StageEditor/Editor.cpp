@@ -52,6 +52,7 @@ void Editor::Initialize()
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].Initialize(&stage.stageSize);
 	}
+	normalFloor.Initialize({ 0,0 });
 }
 
 void Editor::Update()
@@ -190,8 +191,14 @@ void Editor::UpdateAdd()
 		return;
 	}
 
-	if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-		stage.AddBlock(nowCursolPos, blockType, breakupCount, shapeType);
+	if (objectType == OBJECTTYPE_BLOCK) {
+		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
+			stage.AddBlock(nowCursolPos, blockType, breakupCount, shapeType);
+		}	}
+	else if (objectType == OBJECTTYPE_FLOOR) {
+		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
+			stage.AddFloor(nowCursolPos, floorType);
+		}
 	}
 }
 
@@ -203,8 +210,15 @@ void Editor::UpdateDelete()
 		return;
 	}
 
-	if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-		stage.DeleteBlock(nowCursolPos);
+	if (objectType == OBJECTTYPE_BLOCK) {
+		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
+			stage.DeleteBlock(nowCursolPos);
+		}
+	}
+	else if (objectType == OBJECTTYPE_FLOOR) {
+		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
+			stage.DeleteFloor(nowCursolPos);
+		}
 	}
 }
 
@@ -215,6 +229,7 @@ void Editor::UpdateObject()
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].SetStagePos(nowCursolPos);
 	}
+	normalFloor.SetStagePos(nowCursolPos);
 
 	//breakupCountによってブロックの色を変える
 	squareBlock.SetBreakupCount(breakupCount);
@@ -228,6 +243,7 @@ void Editor::UpdateObject()
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].Update();
 	}
+	normalFloor.Update();
 }
 
 void Editor::UpdateStartLane()
@@ -261,7 +277,12 @@ void Editor::DrawEdit()
 
 	if (mode == MODE_ADD) {
 		//カーソル位置にブロック描画
-		DrawBlock();
+		if (objectType == OBJECTTYPE_BLOCK) {
+			DrawBlock();
+		}
+		else if (objectType == OBJECTTYPE_FLOOR) {
+
+		}
 	}
 	else if (mode == MODE_DELETE) {
 
@@ -293,11 +314,30 @@ void Editor::DrawBlock()
 		return;
 	}
 
-	if (blockType == BLOCKTYPE_SQUARE) {
-		squareBlock.Draw();
+	if (objectType == OBJECTTYPE_BLOCK) {
+		if (blockType == BLOCKTYPE_SQUARE) {
+			squareBlock.Draw();
+		}
+		else if (blockType == BLOCKTYPE_TRIANGLE) {
+			triangleBlock[shapeType].Draw();
+		}
 	}
-	else if (blockType == BLOCKTYPE_TRIANGLE) {
-		triangleBlock[shapeType].Draw();
+	else if (objectType == OBJECTTYPE_FLOOR) {
+		if (floorType == FLOORTYPE_NORMAL) {
+			normalFloor.Draw();
+		}
+		else if (floorType == FLOORTYPE_MOVE_LEFT) {
+
+		}
+		else if (floorType == FLOORTYPE_MOVE_RIGHT) {
+
+		}
+		else if (floorType == FLOORTYPE_MOVE_UP) {
+
+		}
+		else if (floorType == FLOORTYPE_MOVE_DOWN) {
+
+		}
 	}
 }
 
@@ -314,13 +354,14 @@ void Editor::Save()
 	header.width = stage.stageSize.x;
 	header.depth = stage.stageSize.y;
 	header.startLineZ = stage.startLaneZ;
-	header.objectCount = stage.blocks.size();
+	header.blockCount = stage.blocks.size();
+	header.floorCount = stage.floors.size();
 
 	file.write((char*)&header, sizeof(header));
 
 	//データ部
 	for (int i = 0; i < stage.blocks.size(); i++) {
-		StageObject object = {};
+		StageBlock object = {};
 		std::string blockType = stage.blocks[i]->GetObjectType();
 
 		if (blockType == "SquareBlock") {
@@ -348,6 +389,35 @@ void Editor::Save()
 		file.write((char*)&object, sizeof(object));
 	}
 
+	for (int i = 0; i < stage.floors.size(); i++) {
+		StageFloor object = {};
+		std::string floorType = stage.floors[i]->GetObjectType();
+
+		if (floorType == "NormalFloor") {
+			object.type = 0;
+		}
+		else if (floorType == "MoveFloor_Left") {
+			object.type = 1;
+		}
+		else if (floorType == "MoveFloor_Right") {
+			object.type = 2;
+		}
+		else if (floorType == "MoveFloor_Up") {
+			object.type = 3;
+		}
+		else if (floorType == "MoveFloor_Down") {
+			object.type = 4;
+		}
+
+		StageVec2 pos = GameUtility::CalcWorldPos2StagePos(
+			stage.floors[i]->GetPosition().x, stage.floors[i]->GetPosition().z);
+
+		object.stagePosX = pos.x;
+		object.stagePosY = pos.y;
+
+		file.write((char*)&object, sizeof(object));
+	}
+
 	file.close();
 }
 
@@ -370,38 +440,75 @@ void Editor::UpdateImgui()
 	ImguiHelper::BeginCommand("Settings");
 	ImguiHelper::SetWindowSize(200, 720);
 	ImguiHelper::SetWindowPos(1280 - 200, 0);
+	//Mode
 	ImGui::Text("Mode");
 	ImGui::RadioButton("Add", &mode, MODE_ADD);
 	ImGui::SameLine();
 	ImGui::RadioButton("Delete", &mode, MODE_DELETE);
 	ImGui::RadioButton("Option", &mode, MODE_OPTION);
+
 	if (mode == MODE_ADD) {
-		ImGui::Text("BlockType");
-		ImGui::RadioButton("Square", &blockType, BLOCKTYPE_SQUARE);
+		//ObjectType
+		ImGui::Text("ObjectType");
+		ImGui::RadioButton("Block", &objectType, OBJECTTYPE_BLOCK);
 		ImGui::SameLine();
-		ImGui::RadioButton("Triangle", &blockType, BLOCKTYPE_TRIANGLE);
+		ImGui::RadioButton("Floor", &objectType, OBJECTTYPE_FLOOR);
 
-		if (blockType == BLOCKTYPE_TRIANGLE) {
-			ImGui::Text("TriangleType");
-			ImGui::RadioButton("No_LeftTop", &shapeType, SHAPETYPE_NO_LEFTTOP);
-			ImGui::RadioButton("No_RightTop", &shapeType, SHAPETYPE_NO_RIGHTTOP);
-			ImGui::RadioButton("No_LeftBottom", &shapeType, SHAPETYPE_NO_LEFTBOTTOM);
-			ImGui::RadioButton("No_RightBottom", &shapeType, SHAPETYPE_NO_RIGHTBOTTOM);
+		if (objectType == OBJECTTYPE_BLOCK) {
+			ImGui::Text("BlockType");
+			ImGui::RadioButton("Square", &blockType, BLOCKTYPE_SQUARE);
+			ImGui::SameLine();
+			ImGui::RadioButton("Triangle", &blockType, BLOCKTYPE_TRIANGLE);
+
+			if (blockType == BLOCKTYPE_TRIANGLE) {
+				ImGui::Text("TriangleType");
+				ImGui::RadioButton("No_LeftTop", &shapeType, SHAPETYPE_NO_LEFTTOP);
+				ImGui::RadioButton("No_RightTop", &shapeType, SHAPETYPE_NO_RIGHTTOP);
+				ImGui::RadioButton("No_LeftBottom", &shapeType, SHAPETYPE_NO_LEFTBOTTOM);
+				ImGui::RadioButton("No_RightBottom", &shapeType, SHAPETYPE_NO_RIGHTBOTTOM);
+			}
+
+			static int sliderBreakupCount = 0;
+			ImGui::SliderInt("BreakupCount", &sliderBreakupCount, 0, 2);
+			breakupCount = sliderBreakupCount;
 		}
-
-		static int sliderBreakupCount = 0;
-		ImGui::SliderInt("BreakupCount", &sliderBreakupCount, 0, 2);
-		breakupCount = sliderBreakupCount;
+		else if (objectType == OBJECTTYPE_FLOOR) {
+			ImGui::Text("FloorType");
+			ImGui::RadioButton("Normal", &floorType, FLOORTYPE_NORMAL);
+			ImGui::RadioButton("MoveLeft", &floorType, FLOORTYPE_MOVE_LEFT);
+			ImGui::RadioButton("MoveRight", &floorType, FLOORTYPE_MOVE_RIGHT);
+			ImGui::RadioButton("MoveUp", &floorType, FLOORTYPE_MOVE_UP);
+			ImGui::RadioButton("MoveDown", &floorType, FLOORTYPE_MOVE_DOWN);
+		}
 
 	}
 	else if (mode == MODE_DELETE) {
-		ImGui::NewLine();
-		if (ImGui::Button("All Delete")) {
-			//全て削除
-			for (int i = 0; i < stage.blocks.size(); i++) {
+		//ObjectType
+		ImGui::Text("ObjectType");
+		ImGui::RadioButton("Block", &objectType, OBJECTTYPE_BLOCK);
+		ImGui::SameLine();
+		ImGui::RadioButton("Floor", &objectType, OBJECTTYPE_FLOOR);
+
+		if (objectType == OBJECTTYPE_BLOCK) {
+			ImGui::NewLine();
+			if (ImGui::Button("All Delete")) {
+				//全て削除
+				for (int i = 0; i < stage.blocks.size(); i++) {
 					if (stage.blocks[i]) delete stage.blocks[i];
 					stage.blocks.erase(stage.blocks.begin() + i);
 					i--;
+				}
+			}
+		}
+		else if (objectType == OBJECTTYPE_FLOOR) {
+			ImGui::NewLine();
+			if (ImGui::Button("All Delete")) {
+				//全て削除
+				for (int i = 0; i < stage.floors.size(); i++) {
+					if (stage.floors[i]) delete stage.floors[i];
+					stage.floors.erase(stage.floors.begin() + i);
+					i--;
+				}
 			}
 		}
 	}
@@ -440,7 +547,7 @@ void Editor::CalcNowCursolPos()
 {
 	Vector3 mouse;
 	//マウスと地面との当たり判定
-	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage.floor.GetPlane(), nullptr, &mouse);
+	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage.GetFloorCollision(), nullptr, &mouse);
 	//DebugText::Print("WorldPos:(" + std::to_string(mouse.x) + ", " + std::to_string(mouse.z) + ")", 0, 0);
 	StageVec2 newPos = GameUtility::CalcWorldPos2StagePos(mouse.x, mouse.z);
 	nowCursolPos = newPos;
@@ -464,10 +571,22 @@ void Editor::ReCreateStage(unsigned short width, unsigned short depth)
 		stage.blocks[i]->SetStagePos(stagePos);
 	}
 
+	for (int i = 0; i < stage.floors.size(); i++) {
+		//CalcWorldPos2StagePosでstage.stageSizeが参照されるので変更前の値を代入
+		stage.stageSize = prev;
+		Vector3 wpos = stage.floors[i]->GetPosition();
+		StageVec2 stagePos = GameUtility::CalcWorldPos2StagePos(wpos.x, wpos.z);
+
+		//SetStagePosで変更後の座標にするために新ステージサイズを代入
+		stage.stageSize.x = width;
+		stage.stageSize.y = depth;
+		stage.floors[i]->SetStagePos(stagePos);
+	}
+
 	stage.stageSize.x = width;
 	stage.stageSize.y = depth;
 
-	//オブジェクトがステージ外に配置されていたら削除
+	//ブロックがステージ外に配置されていたら削除
 	for (int i = 0; i < stage.blocks.size(); i++) {
 
 		Vector3 wpos = stage.blocks[i]->GetPosition();
@@ -481,8 +600,20 @@ void Editor::ReCreateStage(unsigned short width, unsigned short depth)
 		}
 	}
 
-	//床モデル再生成
-	stage.floor.CreateModel(stage.stageSize);
+	//床ブロックがステージ外に配置されていたら削除
+	for (int i = 0; i < stage.floors.size(); i++) {
+
+		Vector3 wpos = stage.floors[i]->GetPosition();
+		StageVec2 stagePos = GameUtility::CalcWorldPos2StagePos(wpos.x, wpos.z);
+
+		if (stagePos.x < 0 || stagePos.x >= stage.stageSize.x ||
+			stagePos.y < 0 || stagePos.y >= stage.stageSize.y) {
+			if (stage.floors[i]) delete stage.floors[i];
+			stage.floors.erase(stage.floors.begin() + i);
+			i--;
+		}
+	}
+
 	stage.startLaneZ = stage.stageSize.y - 2;
 
 	//スタートレーンモデル再生成

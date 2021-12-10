@@ -175,10 +175,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Game\Block.cpp" />
-    <ClCompile Include="..\Game\Floor.cpp" />
+    <ClCompile Include="..\Game\BaseBlock.cpp" />
+    <ClCompile Include="..\Game\BaseFloor.cpp" />
     <ClCompile Include="..\Game\GameUtility.cpp" />
     <ClCompile Include="..\Game\MyBullet.cpp" />
+    <ClCompile Include="..\Game\NormalFloor.cpp" />
     <ClCompile Include="..\Game\SquareBlock.cpp" />
     <ClCompile Include="..\Game\TriangleBlock.cpp" />
     <ClCompile Include="Editor.cpp" />
@@ -187,10 +188,11 @@
     <ClCompile Include="StartLane.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Game\Block.h" />
-    <ClInclude Include="..\Game\Floor.h" />
+    <ClInclude Include="..\Game\BaseBlock.h" />
+    <ClInclude Include="..\Game\BaseFloor.h" />
     <ClInclude Include="..\Game\GameUtility.h" />
     <ClInclude Include="..\Game\MyBullet.h" />
+    <ClInclude Include="..\Game\NormalFloor.h" />
     <ClInclude Include="..\Game\SquareBlock.h" />
     <ClInclude Include="..\Game\TriangleBlock.h" />
     <ClInclude Include="Editor.h" />
