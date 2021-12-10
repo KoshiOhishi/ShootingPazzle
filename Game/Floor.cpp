@@ -3,9 +3,10 @@
 
 void Floor::CreateModel(const StageVec2& stageSize)
 {
-	float width = stageSize.x * ONE_CELL_LENGTH, depth = stageSize.y * ONE_CELL_LENGTH;
+	size.x = stageSize.x * ONE_CELL_LENGTH;
+	size.y = stageSize.y * ONE_CELL_LENGTH;
 
-	model.CreateSquare(width, depth, { 0.7f, 0.7f, 0.7f });
+	model.CreateSquare(size.x, size.y, { 0.7f, 0.7f, 0.7f });
 }
 
 void Floor::Initialize()

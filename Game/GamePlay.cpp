@@ -117,10 +117,19 @@ void Editor::Update()
 #pragma endregion
 #pragma region オブジェクト
 
+	objBG.AddRotation(0, 0.1f, 0);
+
 #ifdef _DEBUG
 	//リセット
 	if (Keyboard::IsKeyTrigger(DIK_R)) {
-		Initialize();
+		//ステージ取得
+		stage.LoadStage("../StageEditor/StageData/test.spb");
+
+		//弾初期化
+		myBullet.Initialize();
+
+		//フェーズ初期化
+		GameUtility::SetNowPhase(PHASE_SETPOS);
 	}
 
 #endif

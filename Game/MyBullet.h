@@ -34,6 +34,10 @@ private:
 	float speed = 2.0f;
 	//射出角度
 	float shotAngle = 0;
+	//摩擦
+	float friction = 0.0005f;
+	//重力
+	float gravity = 0;
 	//射出フラグ
 	bool isShoot = false;
 	//レイ
@@ -76,6 +80,11 @@ public:
 	void UpdateBeforeShoot();
 
 	/// <summary>
+	/// 弾を撃つ位置を決める
+	/// </summary>
+	void DecideShootPos();
+
+	/// <summary>
 	/// 弾を撃つ角度を決める
 	/// </summary>
 	float DecideShootAngle();
@@ -99,6 +108,12 @@ public:
 	/// レイの位置方角更新
 	/// </summary>
 	void UpdateRay();
+
+	/// <summary>
+	/// 引数の位置がステージの外にあるか
+	/// </summary>
+	/// <returns></returns>
+	bool IsOutStage(const Vector3& pos);
 
 #pragma region Setter
 

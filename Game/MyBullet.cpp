@@ -26,6 +26,8 @@ void MyBullet::Initialize()
 	velocity = { 0,0,0 };
 	speed = 1.0f;
 	shotAngle = 90;
+	friction = 0.0005f;
+	gravity = 0;
 	isShoot = false;
 
 	//球オブジェクト
@@ -74,15 +76,8 @@ void MyBullet::UpdateBeforeShoot()
 {
 	//射出前、位置を決めさせる
 	if (GameUtility::GetNowPhase() == PHASE_SETPOS) {
-		//スタート位置のz座標取得
-		float z;
-		GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, nullptr, &z);
 
-		//マウスとレイとの交点のx座標取得
-		Vector3 mouse;
-		Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloor().GetPlane(), nullptr, &mouse);
-
-		position = { mouse.x, position.y, z };
+		DecideShootPos();
 
 		//クリックで決定、角度セットフェーズに移る
 		if (Mouse::IsMouseButtonRelease(MouseButton::LEFT)) {
@@ -107,6 +102,33 @@ void MyBullet::UpdateBeforeShoot()
 			GameUtility::SetNowPhase(PHASE_AFTERSHOOT);
 		}
 	}
+}
+
+void MyBullet::DecideShootPos()
+{
+	//スタート位置のz座標取得
+	float z;
+	GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, nullptr, &z);
+
+	//マウスとレイとの交点のx座標取得
+	Vector3 mouse;
+	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloor().GetPlane(), nullptr, &mouse);
+
+	//ステージの外、またはブロックと衝突していたら位置更新しない
+	if (IsOutStage(mouse)) { return; }
+	for (int i = 0; i < stage->GetBlocks().size(); i++) {
+		Vector3 blockPos = stage->GetBlocks()[i]->GetPosition();
+		Vector3 sub = { ONE_CELL_LENGTH / 2, ONE_CELL_LENGTH / 2, ONE_CELL_LENGTH / 2 };
+		Vector3 spherePos = { mouse.x, position.y, position.z };
+		Sphere sphere{ spherePos, ONE_CELL_LENGTH / 2 };
+		AABB aabb{ blockPos - sub, blockPos + sub };
+
+		if (Collision::CheckAABB2Sphere(aabb, sphere)) {
+			return;
+		}
+	}
+
+	position = { mouse.x, position.y, z };
 }
 
 float MyBullet::DecideShootAngle()
@@ -154,6 +176,20 @@ void MyBullet::Move()
 	else {
 		//通常座標更新
 		position += velocity * speed;
+	}
+
+	speed -= friction;
+	if (speed < 0) {
+		speed = 0;
+	}
+
+	//床の上にいなかったら重力適用
+	if (IsOutStage(position)) {
+		gravity += 0.02f;
+		position.y -= gravity;
+	}
+	else {
+		gravity = 0;
 	}
 }
 
@@ -216,4 +252,14 @@ void MyBullet::UpdateRay()
 {
 	ray.start = position;
 	ray.dir = velocity;
+}
+
+bool MyBullet::IsOutStage(const Vector3& pos)
+{
+	Vector3 floorPos = stage->GetFloor().GetFloorPos();
+	Vector2 floorSize = stage->GetFloor().GetFloorSize();
+	return pos.x < floorPos.x - floorSize.x / 2 ||
+		pos.x > floorPos.x + floorSize.x / 2 ||
+		pos.z < floorPos.y - floorSize.y / 2 ||
+		pos.z > floorPos.y + floorSize.y / 2;
 }
