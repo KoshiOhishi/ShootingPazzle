@@ -40,22 +40,22 @@ void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
 	UpdateCollision();
 }
 
-void TriangleBlock::SetShapeType(int shapeType)
+void TriangleBlock::SetTriangleType(int shapeType)
 {
-	this->shapeType = shapeType;
+	this->triangleType = shapeType;
 
 	//タイプによって回転
-	switch (this->shapeType) {
-	case SHAPETYPE_NO_LEFTTOP:
+	switch (this->triangleType) {
+	case TRIANGLETYPE_NO_LEFTTOP:
 		object.SetRotation(0, 180, 0);
 		break;
-	case SHAPETYPE_NO_RIGHTTOP:
+	case TRIANGLETYPE_NO_RIGHTTOP:
 		object.SetRotation(0, 270, 0);
 		break;
-	case SHAPETYPE_NO_LEFTBOTTOM:
+	case TRIANGLETYPE_NO_LEFTBOTTOM:
 		object.SetRotation(0, 90, 0);
 		break;
-	case SHAPETYPE_NO_RIGHTBOTTOM:
+	case TRIANGLETYPE_NO_RIGHTBOTTOM:
 		//そのまま
 		break;
 	}
@@ -83,8 +83,8 @@ void TriangleBlock::UpdateCollision()
 	Vector3 bottomRight = { position.x + ONE_CELL_LENGTH / 2, position.y, position.z - ONE_CELL_LENGTH / 2 };	//右手前
 
 	//カプセルの値更新
-	switch (this->shapeType) {
-	case SHAPETYPE_NO_LEFTTOP:
+	switch (this->triangleType) {
+	case TRIANGLETYPE_NO_LEFTTOP:
 		capsule[0].start = topRight;
 		capsule[0].end = bottomRight;
 
@@ -95,7 +95,7 @@ void TriangleBlock::UpdateCollision()
 		capsule[2].end = topRight;
 		break;
 
-	case SHAPETYPE_NO_RIGHTTOP:
+	case TRIANGLETYPE_NO_RIGHTTOP:
 		capsule[0].start = topLeft;
 		capsule[0].end = bottomRight;
 
@@ -106,7 +106,7 @@ void TriangleBlock::UpdateCollision()
 		capsule[2].end = topLeft;
 		break;
 
-	case SHAPETYPE_NO_LEFTBOTTOM:
+	case TRIANGLETYPE_NO_LEFTBOTTOM:
 		capsule[0].start = topLeft;
 		capsule[0].end = topRight;
 
@@ -117,7 +117,7 @@ void TriangleBlock::UpdateCollision()
 		capsule[2].end = topLeft;
 		break;
 
-	case SHAPETYPE_NO_RIGHTBOTTOM:
+	case TRIANGLETYPE_NO_RIGHTBOTTOM:
 		capsule[0].start = topLeft;
 		capsule[0].end = topRight;
 

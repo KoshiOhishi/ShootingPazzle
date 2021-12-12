@@ -4,6 +4,7 @@
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
 #include "NormalFloor.h"
+#include "TurnFloor.h"
 
 //現在のフェーズ
 int GameUtility::nowPhase;
@@ -15,6 +16,7 @@ void GameUtility::StaticInitialize()
 	TriangleBlock::CreateModel();
 	SquareBlock::CreateModel();
 	NormalFloor::CreateModel();
+	TurnFloor::CreateModel();
 }
 
 const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ)

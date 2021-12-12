@@ -72,6 +72,9 @@
     <ClCompile Include="HoleFloor.cpp">
       <Filter>ソース ファイル\オブジェクト\Floor</Filter>
     </ClCompile>
+    <ClCompile Include="TurnFloor.cpp">
+      <Filter>ソース ファイル\オブジェクト\Floor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlay.h">
@@ -102,6 +105,9 @@
       <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
     </ClInclude>
     <ClInclude Include="HoleFloor.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="TurnFloor.h">
       <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
     </ClInclude>
   </ItemGroup>

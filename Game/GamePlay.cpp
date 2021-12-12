@@ -119,7 +119,7 @@ void Editor::Update()
 
 	objBG.AddRotation(0, 0.1f, 0);
 
-#ifdef _DEBUG
+
 	//リセット
 	if (Keyboard::IsKeyTrigger(DIK_R)) {
 		//ステージ取得
@@ -131,9 +131,6 @@ void Editor::Update()
 		//フェーズ初期化
 		GameUtility::SetNowPhase(PHASE_SETPOS);
 	}
-
-#endif
-
 
 #pragma endregion
 #pragma region ImGui

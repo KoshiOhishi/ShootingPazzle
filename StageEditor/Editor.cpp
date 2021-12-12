@@ -47,12 +47,16 @@ void Editor::Initialize()
 	squareBlock.Initialize({ 0,0 }, ONE_CELL_LENGTH / 2);
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].Initialize({ 0,0 }, ONE_CELL_LENGTH / 2);
-		triangleBlock[i].SetShapeType(i);
+		triangleBlock[i].SetTriangleType(i);
 	}
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].Initialize(&stage.stageSize);
 	}
 	normalFloor.Initialize({ 0,0 });
+	for (int i = 0; i < _countof(turnFloor); i++) {
+		turnFloor[i].Initialize({ 0,0 });
+		turnFloor[i].SetTurnType(i);
+	}
 }
 
 void Editor::Update()
@@ -193,7 +197,7 @@ void Editor::UpdateAdd()
 
 	if (objectType == OBJECTTYPE_BLOCK) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-			stage.AddBlock(nowCursolPos, blockType, breakupCount, shapeType);
+			stage.AddBlock(nowCursolPos, blockType, breakupCount);
 		}	}
 	else if (objectType == OBJECTTYPE_FLOOR) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
@@ -230,6 +234,9 @@ void Editor::UpdateObject()
 		triangleBlock[i].SetStagePos(nowCursolPos);
 	}
 	normalFloor.SetStagePos(nowCursolPos);
+	for (int i = 0; i < _countof(turnFloor); i++) {
+		turnFloor[i].SetStagePos(nowCursolPos);
+	}
 
 	//breakupCountによってブロックの色を変える
 	squareBlock.SetBreakupCount(breakupCount);
@@ -244,6 +251,9 @@ void Editor::UpdateObject()
 		triangleBlock[i].Update();
 	}
 	normalFloor.Update();
+	for (int i = 0; i < _countof(turnFloor); i++) {
+		turnFloor[i].Update();
+	}
 }
 
 void Editor::UpdateStartLane()
@@ -281,7 +291,7 @@ void Editor::DrawEdit()
 			DrawBlock();
 		}
 		else if (objectType == OBJECTTYPE_FLOOR) {
-
+			DrawFloor();
 		}
 	}
 	else if (mode == MODE_DELETE) {
@@ -314,30 +324,39 @@ void Editor::DrawBlock()
 		return;
 	}
 
-	if (objectType == OBJECTTYPE_BLOCK) {
-		if (blockType == BLOCKTYPE_SQUARE) {
-			squareBlock.Draw();
-		}
-		else if (blockType == BLOCKTYPE_TRIANGLE) {
-			triangleBlock[shapeType].Draw();
-		}
+	if (blockType == BLOCKTYPE_SQUARE) {
+		squareBlock.Draw();
 	}
-	else if (objectType == OBJECTTYPE_FLOOR) {
-		if (floorType == FLOORTYPE_NORMAL) {
-			normalFloor.Draw();
-		}
-		else if (floorType == FLOORTYPE_MOVE_LEFT) {
+	else if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTTOP) {
+		triangleBlock[TRIANGLETYPE_NO_LEFTTOP].Draw();
+	}
+	else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTTOP) {
+		triangleBlock[TRIANGLETYPE_NO_RIGHTTOP].Draw();
+	}
+	else if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM) {
+		triangleBlock[TRIANGLETYPE_NO_LEFTBOTTOM].Draw();
+	}
+	else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM) {
+		triangleBlock[TRIANGLETYPE_NO_RIGHTBOTTOM].Draw();
+	}	
+}
 
-		}
-		else if (floorType == FLOORTYPE_MOVE_RIGHT) {
-
-		}
-		else if (floorType == FLOORTYPE_MOVE_UP) {
-
-		}
-		else if (floorType == FLOORTYPE_MOVE_DOWN) {
-
-		}
+void Editor::DrawFloor()
+{
+	if (floorType == FLOORTYPE_NORMAL) {
+		normalFloor.Draw();
+	}
+	else if (floorType == FLOORTYPE_TURN_LEFT) {
+		turnFloor[TURNTYPE_LEFT].Draw();
+	}
+	else if (floorType == FLOORTYPE_TURN_RIGHT) {
+		turnFloor[TURNTYPE_RIGHT].Draw();
+	}
+	else if (floorType == FLOORTYPE_TURN_UP) {
+		turnFloor[TURNTYPE_UP].Draw();
+	}
+	else if (floorType == FLOORTYPE_TURN_DOWN) {
+		turnFloor[TURNTYPE_DOWN].Draw();
 	}
 }
 
@@ -396,16 +415,16 @@ void Editor::Save()
 		if (floorType == "NormalFloor") {
 			object.type = 0;
 		}
-		else if (floorType == "MoveFloor_Left") {
+		else if (floorType == "TurnFloor_0") {
 			object.type = 1;
 		}
-		else if (floorType == "MoveFloor_Right") {
+		else if (floorType == "TurnFloor_1") {
 			object.type = 2;
 		}
-		else if (floorType == "MoveFloor_Up") {
+		else if (floorType == "TurnFloor_2") {
 			object.type = 3;
 		}
-		else if (floorType == "MoveFloor_Down") {
+		else if (floorType == "TurnFloor_3") {
 			object.type = 4;
 		}
 
@@ -438,13 +457,14 @@ void Editor::UpdateImgui()
 {
 	//ImGui
 	ImguiHelper::BeginCommand("Settings");
-	ImguiHelper::SetWindowSize(200, 720);
-	ImguiHelper::SetWindowPos(1280 - 200, 0);
+	ImguiHelper::SetWindowSize(250, 720);
+	ImguiHelper::SetWindowPos(1280 - 250, 0);
 	//Mode
 	ImGui::Text("Mode");
 	ImGui::RadioButton("Add", &mode, MODE_ADD);
 	ImGui::SameLine();
 	ImGui::RadioButton("Delete", &mode, MODE_DELETE);
+	ImGui::SameLine();
 	ImGui::RadioButton("Option", &mode, MODE_OPTION);
 
 	if (mode == MODE_ADD) {
@@ -457,16 +477,10 @@ void Editor::UpdateImgui()
 		if (objectType == OBJECTTYPE_BLOCK) {
 			ImGui::Text("BlockType");
 			ImGui::RadioButton("Square", &blockType, BLOCKTYPE_SQUARE);
-			ImGui::SameLine();
-			ImGui::RadioButton("Triangle", &blockType, BLOCKTYPE_TRIANGLE);
-
-			if (blockType == BLOCKTYPE_TRIANGLE) {
-				ImGui::Text("TriangleType");
-				ImGui::RadioButton("No_LeftTop", &shapeType, SHAPETYPE_NO_LEFTTOP);
-				ImGui::RadioButton("No_RightTop", &shapeType, SHAPETYPE_NO_RIGHTTOP);
-				ImGui::RadioButton("No_LeftBottom", &shapeType, SHAPETYPE_NO_LEFTBOTTOM);
-				ImGui::RadioButton("No_RightBottom", &shapeType, SHAPETYPE_NO_RIGHTBOTTOM);
-			}
+			ImGui::RadioButton("Triangle_No_LeftTop", &blockType, BLOCKTYPE_TRIANGLE_NO_LEFTTOP);
+			ImGui::RadioButton("Triangle_No_RightTop", &blockType, BLOCKTYPE_TRIANGLE_NO_RIGHTTOP);
+			ImGui::RadioButton("Triangle_No_LeftBottom", &blockType, BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM);
+			ImGui::RadioButton("Triangle_No_RightBottom", &blockType, BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM);
 
 			static int sliderBreakupCount = 0;
 			ImGui::SliderInt("BreakupCount", &sliderBreakupCount, 0, 2);
@@ -475,10 +489,10 @@ void Editor::UpdateImgui()
 		else if (objectType == OBJECTTYPE_FLOOR) {
 			ImGui::Text("FloorType");
 			ImGui::RadioButton("Normal", &floorType, FLOORTYPE_NORMAL);
-			ImGui::RadioButton("MoveLeft", &floorType, FLOORTYPE_MOVE_LEFT);
-			ImGui::RadioButton("MoveRight", &floorType, FLOORTYPE_MOVE_RIGHT);
-			ImGui::RadioButton("MoveUp", &floorType, FLOORTYPE_MOVE_UP);
-			ImGui::RadioButton("MoveDown", &floorType, FLOORTYPE_MOVE_DOWN);
+			ImGui::RadioButton("Turn_Left", &floorType, FLOORTYPE_TURN_LEFT);
+			ImGui::RadioButton("Turn_Right", &floorType, FLOORTYPE_TURN_RIGHT);
+			ImGui::RadioButton("Turn_Up", &floorType, FLOORTYPE_TURN_UP);
+			ImGui::RadioButton("Turn_Down", &floorType, FLOORTYPE_TURN_DOWN);
 		}
 
 	}

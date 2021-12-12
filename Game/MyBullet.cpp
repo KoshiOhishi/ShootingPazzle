@@ -114,6 +114,7 @@ void MyBullet::DecideShootPos()
 	//マウスとレイとの交点のx座標取得
 	Vector3 mouse;
 	Collision::CheckRay2Plane(Mouse::GetMouseRay(), stage->GetFloorCollision(), nullptr, &mouse);
+	mouse.z = z;
 
 	//ステージの外、またはブロックと衝突していたら位置更新しない
 	if (IsOutStage(mouse)) { return; }
@@ -185,12 +186,14 @@ void MyBullet::Move()
 	}
 
 	//床の上にいなかったら重力適用
-	if (IsOutStage(position)) {
-		gravity += 0.02f;
+	bool isFall = position.y < -RADIUS;
+	if (IsOutStage(position) || isFall) {
+		gravity += 0.025f;
 		position.y -= gravity;
 	}
 	else {
 		gravity = 0;
+		position.y = RADIUS;
 	}
 }
 
@@ -252,42 +255,39 @@ void MyBullet::CheckCollision()
 		}
 	}
 
-	//球と床ギミックとの判定
-	for (int i = 0; i < stage->GetFloors().size(); i++) {
-		//一定の距離以上の位置にあるものは判定しない
-		Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
-		floorPos.y = position.y;
-		float lengthSq = (floorPos - position).LengthSq();
-		if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
-			continue;
-		}
+	////球と床ギミックとの判定
+	//for (int i = 0; i < stage->GetFloors().size(); i++) {
+	//	//一定の距離以上の位置にあるものは判定しない
+	//	Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
+	//	floorPos.y = position.y;
+	//	float lengthSq = (floorPos - position).LengthSq();
+	//	if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
+	//		continue;
+	//	}
 
-		//ノーマルブロックは特に何もしない
-		if (stage->GetFloors()[i]->GetObjectType() == "NormalFloor") {
-			continue;
-		}
-		//穴
-		else if (stage->GetFloors()[i]->GetObjectType() == "HoleFloor") {
-			float length = sqrt(lengthSq);
-			//距離が半径の1/2で落ちたとみていいだろう
-			if (length < RADIUS / 2) {
-				velocity += { 0, -0.1f, 0 };
-				velocity = velocity.Normalize();
-				break;
-			}
-			else if (length < RADIUS) {
-				//少し穴のほうに寄せる
-				Vector3 myBullet2Holl = floorPos - position;
-				myBullet2Holl = myBullet2Holl.Normalize();
+	//	//ノーマルブロックは特に何もしない
+	//	if (stage->GetFloors()[i]->GetObjectType() == "NormalFloor") {
+	//		continue;
+	//	}
+	//	//穴
+	//	else if (stage->GetFloors()[i]->GetObjectType() == "HoleFloor") {
+	//		float length = sqrt(lengthSq);
+	//		//距離が半径の1/2で落ちたとみていいだろう
+	//		if (length < RADIUS / 2) {
+	//			velocity += { 0, -0.1f, 0 };
+	//			velocity = velocity.Normalize();
+	//			break;
+	//		}
+	//		else if (length < RADIUS) {
+	//			//少し穴のほうに寄せる
+	//			Vector3 myBullet2Holl = floorPos - position;
+	//			myBullet2Holl = myBullet2Holl.Normalize();
 
-				velocity += (myBullet2Holl * 0.25f);	//←---
-				velocity = velocity.Normalize();//			　|
-				break;//									　|
-			}//												　| 
-		}//													　|
-		//													　|
-		//ToDo:穴オブジェクトは連結した穴の中心を求めてそれを | ここの代わりに足す処理を追加する
-	}
+	//			//velocity += (myBullet2Holl * 0.25f);
+	//			//velocity = velocity.Normalize();
+	//		}
+	//	}
+	//}
 }
 
 void MyBullet::UpdateRay()
@@ -298,10 +298,32 @@ void MyBullet::UpdateRay()
 
 bool MyBullet::IsOutStage(const Vector3& pos)
 {
+	bool isOutside = false,
+		isHole = false;
+
 	Vector3 floorPos = { 0,0,0 };
 	Vector2 floorSize = { stage->GetStageSize().x * ONE_CELL_LENGTH, stage->GetStageSize().y * ONE_CELL_LENGTH };
-	return pos.x < floorPos.x - floorSize.x / 2 ||
+	isOutside = pos.x < floorPos.x - floorSize.x / 2 ||
 		pos.x > floorPos.x + floorSize.x / 2 ||
 		pos.z < floorPos.y - floorSize.y / 2 ||
 		pos.z > floorPos.y + floorSize.y / 2;
+
+	//球と床ギミックとの判定
+	for (int i = 0; i < stage->GetFloors().size(); i++) {
+		//一定の距離以上の位置にあるものは判定しない
+		Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
+		floorPos.y = pos.y;
+		float lengthSq = (floorPos - pos).LengthSq();
+		if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
+			continue;
+		}
+		//穴
+		if (stage->GetFloors()[i]->GetObjectType() == "HoleFloor") {
+			isHole = true;
+			break;
+		}
+	}
+
+	return isOutside || isHole;
+
 }

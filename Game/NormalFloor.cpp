@@ -6,7 +6,7 @@ ObjModel NormalFloor::modelBox;
 void NormalFloor::CreateModel()
 {
     //ÉÇÉfÉãê∂ê¨
-    modelBox.CreateBox(ONE_CELL_LENGTH, ONE_CELL_LENGTH, ONE_CELL_LENGTH);
+    modelBox.CreateFromOBJ("NormalFloor");
 }
 
 void NormalFloor::Initialize(const StageVec2& pos)

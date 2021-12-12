@@ -15,6 +15,7 @@
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
 #include "NormalFloor.h"
+#include "TurnFloor.h"
 #include "EditorStage.h"
 #include "StartLane.h"
 
@@ -52,7 +53,6 @@ private:
 	int mode = MODE_ADD;
 	int objectType = OBJECTTYPE_BLOCK;
 	int blockType = BLOCKTYPE_SQUARE;
-	int shapeType = SHAPETYPE_NO_LEFTTOP;
 	int floorType = FLOORTYPE_NORMAL;
 	//壊れるまでの衝突回数　0で壊れないブロック
 	int breakupCount = 0;
@@ -66,6 +66,7 @@ private:
 	TriangleBlock triangleBlock[4];
 	StartLane startLane[2];
 	NormalFloor normalFloor;
+	TurnFloor turnFloor[4];
 
 	//SaveLoad用名前格納
 	std::string ioname;
@@ -95,6 +96,7 @@ public:
 
 	void DrawStartLane();
 	void DrawBlock();
+	void DrawFloor();
 
 	void Save();
 

@@ -4,6 +4,7 @@
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
 #include "NormalFloor.h"
+#include "TurnFloor.h"
 #include "GameUtility.h"
 
 EditorStage::~EditorStage()
@@ -81,7 +82,7 @@ void EditorStage::LoadStage(std::string filename)
 		else if (object.type == 1) {
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetShapeType(SHAPETYPE_NO_LEFTTOP);
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTTOP);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
@@ -89,7 +90,7 @@ void EditorStage::LoadStage(std::string filename)
 		else if (object.type == 2) {
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTTOP);
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTTOP);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
@@ -97,7 +98,7 @@ void EditorStage::LoadStage(std::string filename)
 		else if (object.type == 3) {
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetShapeType(SHAPETYPE_NO_LEFTBOTTOM);
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTBOTTOM);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
@@ -105,7 +106,7 @@ void EditorStage::LoadStage(std::string filename)
 		else if (object.type == 4) {
 			TriangleBlock* newBlock = new TriangleBlock;
 			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetShapeType(SHAPETYPE_NO_RIGHTBOTTOM);
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTBOTTOM);
 			newBlock->SetBreakupCount(object.breakupCount);
 			blocks.emplace_back(newBlock);
 		}
@@ -125,16 +126,28 @@ void EditorStage::LoadStage(std::string filename)
 			floors.emplace_back(newFloor);
 		}
 		else if (object.type == 1) {
-
+			TurnFloor* newFloor = new TurnFloor;
+			newFloor->Initialize(pos);
+			newFloor->SetTurnType(TURNTYPE_LEFT);
+			floors.emplace_back(newFloor);
 		}
 		else if (object.type == 2) {
-
+			TurnFloor* newFloor = new TurnFloor;
+			newFloor->Initialize(pos);
+			newFloor->SetTurnType(TURNTYPE_RIGHT);
+			floors.emplace_back(newFloor);
 		}
 		else if (object.type == 3) {
-
+			TurnFloor* newFloor = new TurnFloor;
+			newFloor->Initialize(pos);
+			newFloor->SetTurnType(TURNTYPE_UP);
+			floors.emplace_back(newFloor);
 		}
 		else if (object.type == 4) {
-
+			TurnFloor* newFloor = new TurnFloor;
+			newFloor->Initialize(pos);
+			newFloor->SetTurnType(TURNTYPE_DOWN);
+			floors.emplace_back(newFloor);
 		}
 	}
 
@@ -167,7 +180,7 @@ void EditorStage::Draw()
 	}
 }
 
-void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int shapeType)
+void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount)
 {
 	//既にブロックが配置されていたらリターン
 	if (CheckExistBlock(stagePos) != -1) {
@@ -181,11 +194,22 @@ void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned sh
 		newBlock->SetBreakupCount(breakupCount);
 		blocks.emplace_back(newBlock);
 	}
-	else if (blockType == BLOCKTYPE_TRIANGLE) {
+	else {
 		TriangleBlock* newBlock = new TriangleBlock;
 		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
-		newBlock->SetShapeType(shapeType);
 		newBlock->SetBreakupCount(breakupCount);
+		if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTTOP) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTTOP);
+		}
+		else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTTOP) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTTOP);
+		}
+		else if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTBOTTOM);
+		}
+		else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTBOTTOM);
+		}
 		blocks.emplace_back(newBlock);
 	}
 }
@@ -230,13 +254,29 @@ void EditorStage::AddFloor(const StageVec2& stagePos, int floorType)
 		newFloor->Initialize(stagePos);
 		floors.emplace_back(newFloor);
 	}
-	else if (floorType == FLOORTYPE_MOVE_LEFT) {
+	else if (floorType == FLOORTYPE_TURN_LEFT) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_LEFT);
+		floors.emplace_back(newFloor);
 	}
-	else if (floorType == FLOORTYPE_MOVE_RIGHT) {
+	else if (floorType == FLOORTYPE_TURN_RIGHT) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_RIGHT);
+		floors.emplace_back(newFloor);
 	}
-	else if (floorType == FLOORTYPE_MOVE_UP) {
+	else if (floorType == FLOORTYPE_TURN_UP) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_UP);
+		floors.emplace_back(newFloor);
 	}
-	else if (floorType == FLOORTYPE_MOVE_DOWN) {
+	else if (floorType == FLOORTYPE_TURN_DOWN) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_DOWN);
+		floors.emplace_back(newFloor);
 	}
 }
 

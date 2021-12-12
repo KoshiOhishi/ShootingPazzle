@@ -1,11 +1,11 @@
 #pragma once
 #include "BaseBlock.h"
 
-enum ShapeType {
-	SHAPETYPE_NO_LEFTTOP,	//左上の角がない三角形
-	SHAPETYPE_NO_RIGHTTOP,	//右上の角がない三角形
-	SHAPETYPE_NO_LEFTBOTTOM,	//左下の角がない三角形
-	SHAPETYPE_NO_RIGHTBOTTOM,	//右下の角がない三角形
+enum TriangleType {
+	TRIANGLETYPE_NO_LEFTTOP,	//左上の角がない三角形
+	TRIANGLETYPE_NO_RIGHTTOP,	//右上の角がない三角形
+	TRIANGLETYPE_NO_LEFTBOTTOM,	//左下の角がない三角形
+	TRIANGLETYPE_NO_RIGHTBOTTOM,	//右下の角がない三角形
 };
 
 class TriangleBlock :
@@ -13,7 +13,7 @@ class TriangleBlock :
 {
 private:
 	//三角形の向き
-	int shapeType;
+	int triangleType;
 	//正四面体モデル
 	static ObjModel modelTriangle;
 
@@ -33,7 +33,7 @@ public:
 	/// 三角形の形をセット
 	/// </summary>
 	/// <param name="syapeType"></param>
-	void SetShapeType(int shapeType);
+	void SetTriangleType(int shapeType);
 
 	/// <summary>
 	/// 更新
@@ -60,5 +60,5 @@ public:
 	/// </summary>
 	void Breakup() override;
 
-	std::string GetObjectType() override { return "TriangleBlock_" + std::to_string(shapeType); }
+	std::string GetObjectType() override { return "TriangleBlock_" + std::to_string(triangleType); }
 };

@@ -196,6 +196,7 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
     <ClCompile Include="SquareBlock.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TriangleBlock.cpp" />
+    <ClCompile Include="TurnFloor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseBlock.h" />
@@ -208,6 +209,7 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
     <ClInclude Include="SquareBlock.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TriangleBlock.h" />
+    <ClInclude Include="TurnFloor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
