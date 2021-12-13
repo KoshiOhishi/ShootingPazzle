@@ -1,14 +1,13 @@
 #include "OBJ.hlsli"
 
-VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
+VSOutput main(VSInput input)
 {
-	//ピクセルシェーダに渡す値
+	//ジオメトリシェーダに渡す値
 	VSOutput output;
-	output.svpos = pos;
-	output.worldpos = pos;
-	output.normal = normal.xyz;
-	output.uv = uv;
-	output.mag = mag;
+		
+	output.svpos = input.pos;
+	output.normal = input.normal;
+	output.uv = input.uv;
 
 	return output;
 }

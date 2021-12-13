@@ -40,7 +40,7 @@ void Object3D::CreateDescHeap()
 	assert(SUCCEEDED(result));
 }
 
-void Object3D::CreateGraphicsPipeline(ObjectType objectType, PipelineData& pipelineData)
+void Object3D::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
@@ -181,7 +181,6 @@ void Object3D::CreateGraphicsPipeline(ObjectType objectType, PipelineData& pipel
 
 	// ブレンドステートの設定
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
-	gpipeline.BlendState.RenderTarget[1] = blenddesc;
 
 	//透明部分の深度値書き込み禁止
 	gpipeline.BlendState.AlphaToCoverageEnable = true;
@@ -255,6 +254,15 @@ void Object3D::Initialize()
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), //アップロード可能
 		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataShare) + 0xff) & ~0xff),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(constBuffShare.ReleaseAndGetAddressOf())
+	);
+
+	result = device->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), //アップロード可能
+		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataTransform) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
@@ -298,17 +306,21 @@ void Object3D::Update()
 		HRESULT result;
 
 		//定数バッファへデータ転送
-		ConstBufferDataTransform* constMap = nullptr;
-		result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
+		ConstBufferDataShare* constMap = nullptr;
+		result = constBuffShare->Map(0, nullptr, (void**)&constMap);
 		if (SUCCEEDED(result)) {
-			constMap->color = color;
 			constMap->viewproj = matViewProjection;
-			constMap->world = matWorld;
 			constMap->cameraPos = cameraPos;
-			constMap->mag = mag;
-			constBuffTransform->Unmap(0, nullptr);
+			constBuffShare->Unmap(0, nullptr);
 		}
 
+		ConstBufferDataTransform* constMap2 = nullptr;
+		result = constBuffTransform->Map(0, nullptr, (void**)&constMap2);
+		if (SUCCEEDED(result)) {
+			constMap2->data.color = color;
+			constMap2->data.world = matWorld;
+			constBuffTransform->Unmap(0, nullptr);
+		}
 	}
 	else if (objectType == OBJECTTYPE_FBX) {
 
@@ -322,13 +334,19 @@ void Object3D::Update()
 		HRESULT result;
 
 		//定数バッファへデータ転送
-		ConstBufferDataTransform* constMap = nullptr;
-		result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
+		ConstBufferDataShare* constMap = nullptr;
+		result = constBuffShare->Map(0, nullptr, (void**)&constMap);
 		if (SUCCEEDED(result)) {
-			constMap->color = color;
 			constMap->viewproj = matViewProjection;
-			constMap->world = modelTransform * matWorld;
 			constMap->cameraPos = cameraPos;
+			constBuffShare->Unmap(0, nullptr);
+		}
+
+		ConstBufferDataTransform* constMap2 = nullptr;
+		result = constBuffTransform->Map(0, nullptr, (void**)&constMap2);
+		if (SUCCEEDED(result)) {
+			constMap2->data.color = color;
+			constMap2->data.world = modelTransform * matWorld;
 			constBuffTransform->Unmap(0, nullptr);
 		}
 
@@ -382,7 +400,9 @@ void Object3D::Draw()
 		DX12Util::GetCmdList()->SetGraphicsRootSignature(objRootsignature.Get());
 
 		//定数バッファビューをセット
-		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransform->GetGPUVirtualAddress());
 		//ライトの描画
 		light->Draw(3);
 		//モデル描画
@@ -402,7 +422,9 @@ void Object3D::Draw()
 		//プリミティブ形状を設定
 		DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		//定数バッファビューをセット
-		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransform->GetGPUVirtualAddress());
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
 		//ライトの描画

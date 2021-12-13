@@ -25,12 +25,13 @@ void ObjModel::Draw()
 	//定数バッファのセット
 	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
 
+
 	//デスクリプタヒープのセット
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
 	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// シェーダリソースビューをセット
-	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(4, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 
 	//描画コマンド
 	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);

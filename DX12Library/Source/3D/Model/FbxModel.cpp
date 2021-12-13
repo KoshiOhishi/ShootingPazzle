@@ -194,7 +194,7 @@ void FbxModel::Draw()
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//シェーダーリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	cmdList->SetGraphicsRootDescriptorTable(6, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 
 	//描画コマンド
 	//2番目の引数を変える(インスタンシング)

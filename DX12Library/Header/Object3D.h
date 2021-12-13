@@ -37,15 +37,24 @@ public: //定数
 
 public: //サブクラス
 
-	//定数バッファ用データ構造体(座標変換行列用)
-	struct ConstBufferDataTransform
+	struct ConstBufferDataShare
+	{
+		XMMATRIX viewproj;	//ビュープロジェクション行列
+		Vector3 cameraPos;	//カメラ座標(ワールド座標)
+	};
+
+	//インスタンシング描画用構造体(座標変換行列用)
+	struct InstanceData
 	{
 		Vector4 color;		//色
-		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
-		Vector3 cameraPos;	//カメラ座標(ワールド座標)
-		float mag;
 	};
+
+	struct ConstBufferDataTransform
+	{
+		InstanceData data;
+	};
+
 
 	//定数バッファ用データ構造体(スキニング)
 	struct ConstBufferDataSkin
@@ -79,7 +88,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="objectType">生成するパイプラインが使用されるオブジェクトの種類</param>
 	/// <param name="pipelineData">パイプライン設定変数</param>
-	static void CreateGraphicsPipeline(ObjectType objectType, PipelineData& pipelineData);
+	static void CreateGraphicsPipeline(int objectType, PipelineData& pipelineData);
 
 	//getter
 	static ID3D12DescriptorHeap* GetDescHeap() { return Object3D::basicDescHeap.Get(); }
@@ -108,12 +117,6 @@ protected: //静的メンバ変数
 	static ComPtr<ID3D12RootSignature> objRootsignature;
 	//OBJパイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> objPipelinestate;
-
-
-//テスト用 後々消すこと
-public:
-	float mag = 0.0f;
-
 
 public: //メンバ関数
 
@@ -359,7 +362,10 @@ public:
 #pragma endregion
 
 protected: //メンバ変数
-//定数バッファ
+	//定数バッファ(共有データ)
+	ComPtr<ID3D12Resource> constBuffShare;
+
+	//定数バッファ(座標変換行列用)
 	ComPtr<ID3D12Resource> constBuffTransform;
 
 	//定数バッファ(スキン)

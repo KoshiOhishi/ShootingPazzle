@@ -50,17 +50,17 @@ SkinOutput ComputeSkin(VSInput input)
 
 //エントリーポイント
 VSOutput main(VSInput input)
-{
+{	
 	//スキニング計算
 	SkinOutput skinned = ComputeSkin(input);
 	//法線にワールド行列によるスケーリング・回転を適用
-	float4 wnormal = normalize(mul(world, float4(skinned.normal, 0)));
-	float4 wpos = mul(world, skinned.pos);
+	float4 wnormal = normalize(mul(data.world, float4(skinned.normal, 0)));
+	float4 wpos = mul(data.world, skinned.pos);
 
 	//ピクセルシェーダーに渡す値
 	VSOutput output;
 	//行列による座標変換
-	output.svpos = mul(mul(viewproj, world), skinned.pos);
+	output.svpos = mul(mul(viewproj, data.world), skinned.pos);
 	//ワールド法線を次のステージに渡す
 	output.normal = wnormal.xyz;
 	//入力値をそのままステージに渡す
