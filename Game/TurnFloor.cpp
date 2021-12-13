@@ -45,4 +45,9 @@ void TurnFloor::SetTurnType(int turnType)
 {
 	this->turnType = turnType;
 	object.SetObjModel(&modelBox[turnType]);
+
+	//上と下の場合、オブジェクトを180度回転させる
+	if (turnType == TURNTYPE_UP || turnType == TURNTYPE_DOWN) {
+		object.SetRotation(0,180,0);
+	}
 }

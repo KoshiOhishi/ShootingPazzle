@@ -233,7 +233,7 @@ void Initialize(){
 }
 void Update() {
 
-	//FPSManager::Initialize(60);
+	FPSManager::Initialize(60);
 	//インプット更新
 	Input::Update();
 
@@ -263,7 +263,9 @@ void Update() {
 	DX12Util::EndDraw();
 
 	//FPSを調整
-	//FPSManager::AdjustFPS();
+	FPSManager::AdjustFPS();
+
+	DebugText::Print(std::to_string(FPSManager::GetFPS()), 0, 0);
 
 }
 void Finalize() {

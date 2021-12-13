@@ -91,15 +91,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;DX12Library.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)DX12Library\fbx_sdk\lib;$(ProjectDir)DX12Library\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DX12Library\lib\fbx_sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "E:\K019G1301\ライブラリ\Game\DX12Library" "$(ProjectDir)DX12Library" /i /y /h /e</Command>
+      <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
@@ -112,15 +112,15 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;DX12Library.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)DX12Library\fbx_sdk\lib;$(ProjectDir)DX12Library\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DX12Library\lib\fbx_sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "E:\K019G1301\ライブラリ\Game\DX12Library" "$(ProjectDir)DX12Library" /i /y /h /e</Command>
+      <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
@@ -135,18 +135,18 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;DX12Library.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)DX12Library\fbx_sdk\lib;$(ProjectDir)DX12Library\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DX12Library\lib\fbx_sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "E:\K019G1301\ライブラリ\Game\DX12Library" "$(ProjectDir)DX12Library" /i /y /h /e</Command>
+      <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
@@ -161,18 +161,18 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)DX12Library\fbx_sdk\include;$(ProjectDir)DX12Library\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;DX12Library.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)DX12Library\fbx_sdk\lib;$(ProjectDir)DX12Library\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DX12Library\lib\fbx_sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "E:\K019G1301\ライブラリ\Game\DX12Library" "$(ProjectDir)DX12Library" /i /y /h /e</Command>
+      <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
@@ -182,6 +182,9 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\DX12Library\DX12Library.vcxproj">
+      <Project>{3c5961e3-ed70-4b9a-8af1-194e602d94fa}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

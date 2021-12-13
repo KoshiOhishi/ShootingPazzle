@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs />
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\BasicGeometryShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\BasicPixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\BasicVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\FBXPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\FBXVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\NoShadePixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\NoShadeVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\OBJGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\OBJPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\OBJVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\PostEffectTestPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\PostEffectTestVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\SpritePixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\SpriteVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\TextPixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\ライブラリ\x64\Release\TextVertexShader.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

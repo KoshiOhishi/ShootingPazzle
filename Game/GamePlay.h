@@ -26,8 +26,6 @@ private:
 	Light light;
 	//カメラ
 	Camera camera;
-	//タイマー
-	Timer timer;
 	//弾
 	MyBullet myBullet;
 	//ステージ

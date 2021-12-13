@@ -9,9 +9,9 @@
 #include "ImguiHelper.h"
 #include "GameUtility.h"
 
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx12.h"
+#include "../imgui/imgui.h"
+#include "../imgui/imgui_impl_win32.h"
+#include "../imgui/imgui_impl_dx12.h"
 
 void Editor::Initialize()
 {
@@ -23,16 +23,12 @@ void Editor::Initialize()
 
 	//カメラ初期化
 	camera.Initialize();
-	camera.SetPositionAndDistance({ 0,130.0f,-50.0f }, 15.0f);
+	camera.SetPositionAndDistance({ 0,100.0f,-40.0f }, 15.0f);
 	camera.SetRotation(75, 0, 0);
 
 	//カメラをセット
 	Object3D::SetCamera(&camera);
 	Mouse::SetCamera(&camera);
-
-	//タイマーセット
-	timer.SetTimer(0, 1000000);
-	timer.Start();
 
 	//ステージ取得
 	stage.LoadStage("../StageEditor/StageData/test.spb");
@@ -164,7 +160,6 @@ void Editor::Update()
 #pragma region アップデート
 	light.Update();
 	camera.Update();
-	timer.Update();
 	objBG.Update();
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);

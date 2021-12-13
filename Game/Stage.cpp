@@ -182,7 +182,9 @@ void Stage::Update()
 void Stage::Draw()
 {
 	for (int i = 0; i < floors.size(); i++) {
-		if (floors[i]) floors[i]->Draw();
+		if (floors[i]) {
+			floors[i]->Draw();
+		}
 	}
 
 	for (int i = 0; i < blocks.size(); i++) {

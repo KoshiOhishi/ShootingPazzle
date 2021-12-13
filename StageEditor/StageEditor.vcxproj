@@ -205,6 +205,9 @@
     <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\DX12Library\DX12Library.vcxproj">
+      <Project>{3c5961e3-ed70-4b9a-8af1-194e602d94fa}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Game\Game.vcxproj">
       <Project>{4ceaea20-0a24-491b-bc24-e19408ffc9c5}</Project>
     </ProjectReference>

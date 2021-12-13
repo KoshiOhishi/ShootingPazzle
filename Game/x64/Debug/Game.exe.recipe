@@ -5,7 +5,56 @@
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
-  <ContentFiles />
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\BasicGeometryShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\BasicPixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\BasicVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\NoShadePixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\NoShadeVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\PostEffectTestPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\PostEffectTestVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\SpritePixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\SpriteVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\TextPixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\TextVertexShader.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />
 </Project>

@@ -1,0 +1,123 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\BasicPixelShader.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\BasicVertexShader.cso
+E:\K019G1301\���C�u����\DX12Library\Shader\FBXPS.hlsl(103,56): warning X4000: use of potentially uninitialized variable (BRDF)
+  
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\FBXPS.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\FBXVS.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\NoShadePixelShader.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\NoShadeVertexShader.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\OBJPS.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\OBJVS.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\PostEffectTestPS.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\PostEffectTestVS.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\SpritePixelShader.cso
+  compilation object save succeeded; see E:\K019G1301\ライブラリ\Debug\SpriteVertexShader.cso
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1091,5): warning MSB8027: Imgui.cpp という名前の複数のファイルでは、同じ場所に出力が生成されます。これにより、不適切なビルド結果が生じる可能性があります。関連するファイルは Imgui.cpp, imgui\imgui.cpp です。
+  Camera.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\ライブラリ\DX12Library\Camera.cpp(49,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Camera.cpp(51,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Collision.cpp
+E:\K019G1301\ライブラリ\DX12Library\Collision.cpp(218,10): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  CollisionPrimitive.cpp
+  DX12Util.cpp
+E:\K019G1301\ライブラリ\DX12Library\DX12Util.cpp(93,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\DX12Util.cpp(263,39): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
+  Easing.cpp
+E:\K019G1301\ライブラリ\DX12Library\Easing.cpp(239,25): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  FbxLoader.cpp
+E:\K019G1301\ライブラリ\DX12Library\FbxLoader.cpp(393,27): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\FbxLoader.cpp(470,23): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  FbxModel.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Imgui.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_dx12.cpp
+E:\K019G1301\ライブラリ\DX12Library\imgui\imgui_impl_dx12.cpp(432,39): error C2338: Can't pack descriptor handle into TexID, 32-bit not supported yet.
+  imgui_impl_win32.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Object3D.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\ライブラリ\DX12Library\Object3D.cpp(310,21): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  FPSManager.cpp
+E:\K019G1301\ライブラリ\DX12Library\FPSManager.cpp(20,11): warning C4244: '初期化中': 'LONGLONG' から 'double' への変換です。データが失われる可能性があります。
+  Interpolation.cpp
+  Light.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  ObjModel.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(42,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(354,23): warning C4244: '=': 'size_t' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(356,24): warning C4244: '=': 'size_t' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(396,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(415,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(626,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(825,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(1067,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xmemory(714,1): warning C4267: '初期化中': 'size_t' から '_Objty' に変換しました。データが失われているかもしれません。
+          with
+          [
+              _Objty=unsigned short
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(726): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,unsigned int>(_Alloc &,_Objty *const ,unsigned int &&)' のリファレンスを確認してください
+          with
+          [
+              _Alloc=std::allocator<unsigned short>,
+              _Ty=unsigned short,
+              _Objty=unsigned short
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(726): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,unsigned int>(_Alloc &,_Objty *const ,unsigned int &&)' のリファレンスを確認してください
+          with
+          [
+              _Alloc=std::allocator<unsigned short>,
+              _Ty=unsigned short,
+              _Objty=unsigned short
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(744): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<unsigned short>>::_Emplace_back_with_unused_capacity<_Ty>(_Ty &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=unsigned int
+          ]
+E:\K019G1301\ライブラリ\DX12Library\ObjModel.cpp(140): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<unsigned short>>::emplace_back<unsigned int>(unsigned int &&)' のリファレンスを確認してください
+  コードを生成中...
+E:\K019G1301\ライブラリ\DX12Library\Easing.cpp(358): warning C4715: 'Easing::GetFuncName': 値を返さないコントロール パスがあります。
+  コンパイル中...
+  Object3D_old.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  DebugText.cpp
+E:\K019G1301\ライブラリ\DX12Library\DebugText.cpp(28,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\DebugText.cpp(49,76): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\DebugText.cpp(49,52): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  Input.cpp
+  PostEffect.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\ライブラリ\DX12Library\Input.h(5,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+E:\K019G1301\ライブラリ\DX12Library\PostEffect.cpp(19,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+E:\K019G1301\ライブラリ\DX12Library\PostEffect.cpp(69,100): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\PostEffect.cpp(69,71): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\PostEffect.cpp(277,22): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  Scene.cpp
+  SceneManager.cpp
+E:\K019G1301\ライブラリ\DX12Library\SceneManager.cpp(18,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\ライブラリ\DX12Library\SceneManager.cpp(31,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  Sound.cpp
+  Sprite.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(256,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(256,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(261,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(261,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(431,18): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(434,19): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(437,22): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\ライブラリ\DX12Library\Sprite.cpp(440,23): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
+  Timer.cpp
+E:\K019G1301\ライブラリ\DX12Library\Timer.cpp(34,58): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  XAudio2VoiceCallback.cpp
+  コードを生成中...
