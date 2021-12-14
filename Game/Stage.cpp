@@ -22,6 +22,10 @@ Stage::~Stage()
 
 void Stage::LoadStage(std::string filename)
 {
+	NormalFloor::StaticInitialize();
+	TurnFloor::StaticInitialize();
+	HoleFloor::StaticInitialize();
+
 	//ÉfÅ[É^èâä˙âª
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i]) delete blocks[i];
@@ -181,14 +185,16 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	for (int i = 0; i < floors.size(); i++) {
-		if (floors[i]) {
-			floors[i]->Draw();
-		}
-	}
+	NormalFloor::Draw();
+	TurnFloor::Draw();
 
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i]) blocks[i]->Draw();
+	}
+
+	NormalFloor::ResetIndex();
+	for (int i = 0; i < 4; i++) {
+		TurnFloor::ResetIndex(i);
 	}
 }
 

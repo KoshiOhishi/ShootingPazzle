@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Initialize();
 
 	//シーンセット
-	SceneManager::AddScene(new Editor(), "GamePlay");
+	SceneManager::AddScene(new GamePlay(), "GamePlay");
 	SceneManager::SetScene("GamePlay");
 
 	//タイマー
@@ -164,12 +164,12 @@ void Initialize(){
 		// SRV（テクスチャ）
 		pipelineData.rootparams[6].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
-		Object3D::CreateGraphicsPipeline(Object3D::ObjectType::OBJECTTYPE_FBX, pipelineData);
+		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
 
 		//シェーダ変えてインスタンシングも
 		pipelineData.vertexShaderFileName = L"Shader/InstancingFBXVS.hlsl";
 		pipelineData.pixelShaderFileName = L"Shader/InstancingFBXPS.hlsl";
-		InstancingObject::CreateGraphicsPipeline(Object3D::ObjectType::OBJECTTYPE_FBX, pipelineData);
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
 	}
 #pragma endregion
 #pragma region OBJパイプライン生成
@@ -218,13 +218,13 @@ void Initialize(){
 		// SRV（テクスチャ）
 		pipelineData.rootparams[4].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
-		Object3D::CreateGraphicsPipeline(Object3D::ObjectType::OBJECTTYPE_OBJ, pipelineData);
+		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
 
 		//シェーダ変えてインスタンシングも
 		pipelineData.vertexShaderFileName = L"Shader/InstancingOBJVS.hlsl";
 		pipelineData.pixelShaderFileName = L"Shader/InstancingOBJPS.hlsl";
-		pipelineData.geometryShaderFileName = L"Shader/InstancingOBJGS.hlsl";
-		InstancingObject::CreateGraphicsPipeline(Object3D::ObjectType::OBJECTTYPE_OBJ, pipelineData);
+		pipelineData.geometryShaderFileName = nullptr;// L"Shader/InstancingOBJGS.hlsl";
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
 	}
 #pragma endregion
 	//オブジェクト管理クラス初期化

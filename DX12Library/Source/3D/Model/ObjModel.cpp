@@ -11,7 +11,7 @@ int ObjModel::loadCount = 0;
 
 using namespace DirectX;
 
-void ObjModel::Draw()
+void ObjModel::Draw(int instancingCount)
 {
 	//インデックスバッファのセットコマンド
 	DX12Util::GetCmdList()->IASetIndexBuffer(&ibView);
@@ -34,7 +34,7 @@ void ObjModel::Draw()
 	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(4, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 
 	//描画コマンド
-	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), instancingCount, 0, 0, 0);
 }
 
 void ObjModel::CreateFromOBJ(const std::string & modelname, bool smoothing)

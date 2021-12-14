@@ -18,7 +18,7 @@
 
 #define PI 3.14159265359f
 
-class Editor :
+class GamePlay :
 	public Scene
 {
 private:
@@ -36,8 +36,8 @@ private:
 	ObjModel modelBG;
 
 public:
-	Editor(){}
-	~Editor(){}
+	GamePlay(){}
+	~GamePlay(){}
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;

@@ -5,6 +5,7 @@
 #include "TriangleBlock.h"
 #include "NormalFloor.h"
 #include "TurnFloor.h"
+#include "HoleFloor.h"
 
 //現在のフェーズ
 int GameUtility::nowPhase;

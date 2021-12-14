@@ -180,6 +180,7 @@ void MyBullet::Move()
 		position += velocity * speed;
 	}
 
+	//摩擦
 	speed -= friction;
 	if (speed < 0) {
 		speed = 0;
@@ -255,39 +256,60 @@ void MyBullet::CheckCollision()
 		}
 	}
 
-	////球と床ギミックとの判定
-	//for (int i = 0; i < stage->GetFloors().size(); i++) {
-	//	//一定の距離以上の位置にあるものは判定しない
-	//	Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
-	//	floorPos.y = position.y;
-	//	float lengthSq = (floorPos - position).LengthSq();
-	//	if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
-	//		continue;
-	//	}
+	//球と床ギミックとの判定
+	for (int i = 0; i < stage->GetFloors().size(); i++) {
+		//一定の距離以上の位置にあるものは判定しない
+		Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
+		floorPos.y = position.y;
+		float lengthSq = (floorPos - position).LengthSq();
+		if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
+			continue;
+		}
 
-	//	//ノーマルブロックは特に何もしない
-	//	if (stage->GetFloors()[i]->GetObjectType() == "NormalFloor") {
-	//		continue;
-	//	}
-	//	//穴
-	//	else if (stage->GetFloors()[i]->GetObjectType() == "HoleFloor") {
-	//		float length = sqrt(lengthSq);
-	//		//距離が半径の1/2で落ちたとみていいだろう
-	//		if (length < RADIUS / 2) {
-	//			velocity += { 0, -0.1f, 0 };
-	//			velocity = velocity.Normalize();
-	//			break;
-	//		}
-	//		else if (length < RADIUS) {
-	//			//少し穴のほうに寄せる
-	//			Vector3 myBullet2Holl = floorPos - position;
-	//			myBullet2Holl = myBullet2Holl.Normalize();
-
-	//			//velocity += (myBullet2Holl * 0.25f);
-	//			//velocity = velocity.Normalize();
-	//		}
-	//	}
-	//}
+		//ノーマルブロックは特に何もしない
+		if (stage->GetFloors()[i]->GetObjectType() == "NormalFloor") {
+			continue;
+		}
+		else {
+			float length = sqrt(lengthSq);
+			//距離が半径の1/2で乗ったとみていいだろう
+			if (length < RADIUS) {
+				//方向転換ブロック(左)
+				if (stage->GetFloors()[i]->GetObjectType() == "TurnFloor_0") {
+					if (velocity.x != -1) {
+						//ここにエフェクト関数
+					}
+					velocity = { -1,0,0 };
+					velocity = velocity.Normalize();
+				}
+				//方向転換ブロック(右)
+				else if (stage->GetFloors()[i]->GetObjectType() == "TurnFloor_1") {
+					if (velocity.x != 1) {
+						//ここにエフェクト関数
+					}
+					velocity = { 1,0,0 };
+					velocity = velocity.Normalize();
+				}
+				//方向転換ブロック(上)
+				else if (stage->GetFloors()[i]->GetObjectType() == "TurnFloor_2") {
+					if (velocity.z != 1) {
+						//ここにエフェクト関数
+					}
+					velocity = { 0,0,1 };
+					velocity = velocity.Normalize();
+				}
+				//方向転換ブロック(下)
+				else if (stage->GetFloors()[i]->GetObjectType() == "TurnFloor_3") {
+					if (velocity.z != -1) {
+						//ここにエフェクト関数
+					}
+					velocity = { 0,0,-1 };
+					velocity = velocity.Normalize();
+				}
+				break;
+			}
+		}
+	}
 }
 
 void MyBullet::UpdateRay()

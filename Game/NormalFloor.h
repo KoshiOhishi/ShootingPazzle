@@ -4,10 +4,12 @@ class NormalFloor :
     public BaseFloor
 {
 private:
+	static InstancingObjectDraw instancingObjectDraw;
 	static ObjModel modelBox;
 
 public:
 	static void CreateModel();
+	static void StaticInitialize();
 
 	/// <summary>
 	/// ‰Šú‰»
@@ -22,13 +24,14 @@ public:
 	/// <summary>
 	/// •`‰æ
 	/// </summary>
-	void Draw() override;
+	static void Draw();
 
 	/// <summary>
 	/// “–‚½‚è”»’èXV
 	/// </summary>
 	void UpdateCollision() override;
 
+	static void ResetIndex() { instancingObjectDraw.ResetIndex(); }
 
 	virtual std::string GetObjectType() override { return "NormalFloor"; }
 };

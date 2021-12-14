@@ -1,6 +1,7 @@
 #include "NormalFloor.h"
 #include "GameUtility.h"
 
+InstancingObjectDraw NormalFloor::instancingObjectDraw;
 ObjModel NormalFloor::modelBox;
 
 void NormalFloor::CreateModel()
@@ -9,14 +10,17 @@ void NormalFloor::CreateModel()
     modelBox.CreateFromOBJ("NormalFloor");
 }
 
+void NormalFloor::StaticInitialize()
+{
+	instancingObjectDraw.Initialize();
+	instancingObjectDraw.SetObjModel(&modelBox);
+}
+
 void NormalFloor::Initialize(const StageVec2& pos)
 {
 	//オブジェクト生成
 	object.Initialize();
-	object.SetObjModel(&modelBox);
-
-	//見分けつかないのでモデル作るまで色変える
-	object.SetColor(0.5f, 0.5f, 0.5f, 1);
+	object.SetColor({ 0.5f,0.5f,0.5f,1 });
 
 	SetStagePos(pos);
 
@@ -25,13 +29,14 @@ void NormalFloor::Initialize(const StageVec2& pos)
 
 void NormalFloor::Update()
 {
-	object.Update();
+	object.Update(instancingObjectDraw);
 	UpdateCollision();
 }
 
 void NormalFloor::Draw()
 {
-	object.Draw();
+	instancingObjectDraw.Update();
+	instancingObjectDraw.Draw();
 }
 
 void NormalFloor::UpdateCollision()

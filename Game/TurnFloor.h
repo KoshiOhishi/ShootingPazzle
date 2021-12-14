@@ -13,11 +13,14 @@ class TurnFloor :
     public BaseFloor
 {
 private:
+	static InstancingObjectDraw instancingObjectDraw[4];
 	static ObjModel modelBox[4];
 	int turnType;
 
 public:
 	static void CreateModel();
+
+	static void StaticInitialize();
 
 	/// <summary>
 	/// ‰Šú‰»
@@ -30,9 +33,9 @@ public:
 	void Update() override;
 
 	/// <summary>
-	/// •`‰æ
+	/// ‚·‚×‚Ä•`‰æ
 	/// </summary>
-	void Draw() override;
+	static void Draw(int index = -1);
 
 	/// <summary>
 	/// “–‚½‚è”»’èXV
@@ -46,5 +49,7 @@ public:
 	/// </summary>
 	/// <param name="turnType">TURNTYPE_...</param>
 	void SetTurnType(int turnType);
+
+	static void ResetIndex(int turnType) { instancingObjectDraw[turnType].ResetIndex(); }
 };
 

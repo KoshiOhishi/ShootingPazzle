@@ -42,9 +42,10 @@ struct VSInput
 struct VSOutput
 {
 	float4 svpos : SV_POSITION; // システム用頂点座標
+	float4 wpos : POSITION;
 	float3 normal : NORMAL; // 法線ベクトル
-//float4 color : COLOR;	//色
 	float2 uv : TEXCOORD; // uv値
+	float4 color : COLOR;	//色
 };
 
 // ジオメトリシェーダーからピクセルシェーダーへのやり取りに使用する構造体

@@ -313,7 +313,10 @@ void DX12Util::EndDraw()
 	ID3D12CommandList* cmdLists[] = { cmdList.Get() }; // コマンドリストの配列
 	cmdQueue->ExecuteCommandLists(1, cmdLists);
 
-	//13.コマンドリストの実行完了を待つ
+	//13.バッファをフリップ(裏表の入替え)
+	swapchain->Present(1, 0);
+
+	//14.コマンドリストの実行完了を待つ
 	cmdQueue->Signal(fence.Get(), ++fenceVal);
 	if (fence->GetCompletedValue() != fenceVal) {
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
@@ -322,15 +325,11 @@ void DX12Util::EndDraw()
 		CloseHandle(event);
 	}
 
-	//14.コマンドアロケーターのリセット
+	//15.コマンドアロケーターのリセット
 	cmdAllocator->Reset(); // キューをクリア
 
-	//15.コマンドリストのリセット
+	//16.コマンドリストのリセット
 	cmdList->Reset(cmdAllocator.Get(), nullptr); // 再びコマンドリストを貯める準備
-
-
-	//16.バッファをフリップ(裏表の入替え)
-	swapchain->Present(1, 0);
 }
 
 void DX12Util::End()

@@ -5,6 +5,7 @@
 #include "TriangleBlock.h"
 #include "NormalFloor.h"
 #include "TurnFloor.h"
+#include "HoleFloor.h"
 #include "GameUtility.h"
 
 EditorStage::~EditorStage()
@@ -21,6 +22,9 @@ EditorStage::~EditorStage()
 
 void EditorStage::LoadStage(std::string filename)
 {
+	NormalFloor::StaticInitialize();
+	TurnFloor::StaticInitialize();
+
 	//ÉfÅ[É^èâä˙âª
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i]) delete blocks[i];
@@ -171,9 +175,8 @@ void EditorStage::Update()
 
 void EditorStage::Draw()
 {
-	for (int i = 0; i < floors.size(); i++) {
-		if (floors[i]) floors[i]->Draw();
-	}
+	NormalFloor::Draw();
+	TurnFloor::Draw();
 
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i]) blocks[i]->Draw();

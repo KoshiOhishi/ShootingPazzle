@@ -25,7 +25,7 @@ enum EditorMode {
 	MODE_OPTION
 };
 
-enum ObjectType {
+enum EditObjectType {
 	OBJECTTYPE_BLOCK,
 	OBJECTTYPE_FLOOR
 };
@@ -65,8 +65,10 @@ private:
 	SquareBlock squareBlock;
 	TriangleBlock triangleBlock[4];
 	StartLane startLane[2];
-	NormalFloor normalFloor;
-	TurnFloor turnFloor[4];
+	Object3D objNormalFloor;
+	Object3D objTurnFloor[4];
+	ObjModel modelNormalFloor;
+	ObjModel modelTurnFloor[4];
 
 	//SaveLoad—p–¼‘OŠi”[
 	std::string ioname;

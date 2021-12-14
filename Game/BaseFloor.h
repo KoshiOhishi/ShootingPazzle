@@ -1,5 +1,5 @@
 #pragma once
-#include "Object3D.h"
+#include "InstancingObject.h"
 #include "ObjModel.h"
 #include "CollisionPrimitive.h"
 #include "GameUtility.h"
@@ -7,7 +7,7 @@
 class BaseFloor
 {
 protected:
-	Object3D object;
+	InstancingObject object;
 
 public:
 
@@ -25,11 +25,6 @@ public:
 	/// 更新
 	/// </summary>
 	virtual void Update() = 0;
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	virtual void Draw() = 0;
 
 	/// <summary>
 	/// 当たり判定更新

@@ -8,6 +8,7 @@ class HoleFloor :
 private:
 
 public:
+	static void StaticInitialize();
 
 	/// <summary>
 	/// ‰Šú‰»
@@ -22,7 +23,7 @@ public:
 	/// <summary>
 	/// •`‰æ
 	/// </summary>
-	void Draw() override;
+	static void Draw();
 
 	/// <summary>
 	/// “–‚½‚è”»’èXV

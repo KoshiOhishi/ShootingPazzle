@@ -13,6 +13,7 @@
 #include "Timer.h"
 #include "ImguiHelper.h"
 #include "Object3D.h"
+#include "InstancingObject.h"
 #include "RenderText.h"
 #include "GameUtility.h"
 
@@ -40,8 +41,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Initialize();
 
 	//シーンセット
-	SceneManager::AddScene(new Editor(), "GamePlay");
-	SceneManager::SetScene("GamePlay");
+	SceneManager::AddScene(new Editor(), "Editor");
+	SceneManager::SetScene("Editor");
 
 	//タイマー
 	timer = new Timer(0, INT_MAX);
@@ -68,7 +69,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	return 0;
 }
 
-void Initialize(){
+void Initialize() {
 #ifdef _DEBUG
 	//デバッグレイヤーをオンに
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(debugController.ReleaseAndGetAddressOf()))))
@@ -147,21 +148,28 @@ void Initialize(){
 		pipelineData.descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 		//ルートパラメータ
-		pipelineData.rootparams.resize(6);
-		// CBV（座標変換行列用）
+		pipelineData.rootparams.resize(7);
+		// CBV（共有情報用）
 		pipelineData.rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-		// SRV（テクスチャ）
-		pipelineData.rootparams[1].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（座標変換行列用）
+		pipelineData.rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（モデル用）
-		pipelineData.rootparams[2].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
+		pipelineData.rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（ライト用）
-		pipelineData.rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+		pipelineData.rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（スキニング用）
-		pipelineData.rootparams[4].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
+		pipelineData.rootparams[4].InitAsConstantBufferView(4, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（マテリアル用）
-		pipelineData.rootparams[5].InitAsConstantBufferView(4, 0, D3D12_SHADER_VISIBILITY_ALL);
+		pipelineData.rootparams[5].InitAsConstantBufferView(5, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ）
+		pipelineData.rootparams[6].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
-		Object3D::CreateGraphicsPipeline(Object3D::ObjectType::OBJECTTYPE_FBX, pipelineData);
+		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
+
+		//シェーダ変えてインスタンシングも
+		pipelineData.vertexShaderFileName = L"Shader/InstancingFBXVS.hlsl";
+		pipelineData.pixelShaderFileName = L"Shader/InstancingFBXPS.hlsl";
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
 	}
 #pragma endregion
 #pragma region OBJパイプライン生成
@@ -198,17 +206,25 @@ void Initialize(){
 		pipelineData.descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 		//ルートパラメータ
-		pipelineData.rootparams.resize(4);
-		// CBV（座標変換行列用）
+		pipelineData.rootparams.resize(5);
+		// CBV（共有情報用）
 		pipelineData.rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-		// SRV（テクスチャ）
-		pipelineData.rootparams[1].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（座標変換行列用）
+		pipelineData.rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（モデル用）
-		pipelineData.rootparams[2].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
+		pipelineData.rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（ライト用）
-		pipelineData.rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+		pipelineData.rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ）
+		pipelineData.rootparams[4].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
-		Object3D::CreateGraphicsPipeline(Object3D::ObjectType::OBJECTTYPE_OBJ, pipelineData);
+		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
+
+		//シェーダ変えてインスタンシングも
+		pipelineData.vertexShaderFileName = L"Shader/InstancingOBJVS.hlsl";
+		pipelineData.pixelShaderFileName = L"Shader/InstancingOBJPS.hlsl";
+		pipelineData.geometryShaderFileName = nullptr;// L"Shader/InstancingOBJGS.hlsl";
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
 	}
 #pragma endregion
 	//オブジェクト管理クラス初期化
@@ -233,7 +249,7 @@ void Initialize(){
 }
 void Update() {
 
-	//FPSManager::Initialize(60);
+	FPSManager::Initialize(60);
 	//インプット更新
 	Input::Update();
 
@@ -263,7 +279,9 @@ void Update() {
 	DX12Util::EndDraw();
 
 	//FPSを調整
-	//FPSManager::AdjustFPS();
+	FPSManager::AdjustFPS();
+
+	DebugText::Print(std::to_string(FPSManager::GetFPS()), 0, 0);
 
 }
 void Finalize() {

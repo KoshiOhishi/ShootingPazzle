@@ -10,9 +10,9 @@
 #include "ImguiHelper.h"
 #include "GameUtility.h"
 
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx12.h"
+#include "../DX12Library/imgui/imgui.h"
+#include "../DX12Library/imgui/imgui_impl_win32.h"
+#include "../DX12Library/imgui/imgui_impl_dx12.h"
 
 void Editor::Initialize()
 {
@@ -52,10 +52,21 @@ void Editor::Initialize()
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].Initialize(&stage.stageSize);
 	}
-	normalFloor.Initialize({ 0,0 });
-	for (int i = 0; i < _countof(turnFloor); i++) {
-		turnFloor[i].Initialize({ 0,0 });
-		turnFloor[i].SetTurnType(i);
+	modelNormalFloor.CreateFromOBJ("NormalFloor");
+	objNormalFloor.Initialize();
+	objNormalFloor.SetObjModel(&modelNormalFloor);
+	objNormalFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
+	modelTurnFloor[TURNTYPE_LEFT].CreateFromOBJ("TurnFloor_Left");
+	modelTurnFloor[TURNTYPE_RIGHT].CreateFromOBJ("TurnFloor_Right");
+	modelTurnFloor[TURNTYPE_UP].CreateFromOBJ("TurnFloor_Up");
+	modelTurnFloor[TURNTYPE_DOWN].CreateFromOBJ("TurnFloor_Down");
+	for (int i = 0; i < _countof(objTurnFloor); i++) {
+		objTurnFloor[i].Initialize();
+		objTurnFloor[i].SetObjModel(&modelTurnFloor[i]);
+		objTurnFloor[i].SetColor(0.5f, 0.5f, 0.5f, 1);
+		if (i >= 2) {
+			objTurnFloor[i].SetRotation(0, 180, 0);
+		}
 	}
 }
 
@@ -133,8 +144,6 @@ void Editor::Update()
 	timer.Update();
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
-	//ステージ更新
-	stage.Update();
 
 #pragma endregion
 
@@ -176,6 +185,8 @@ void Editor::UpdateEdit()
 {
 	UpdateImgui();
 	CalcNowCursolPos();
+	//ステージ更新
+	stage.Update();
 	UpdateObject();
 
 	if (mode == MODE_ADD) {
@@ -233,9 +244,12 @@ void Editor::UpdateObject()
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].SetStagePos(nowCursolPos);
 	}
-	normalFloor.SetStagePos(nowCursolPos);
-	for (int i = 0; i < _countof(turnFloor); i++) {
-		turnFloor[i].SetStagePos(nowCursolPos);
+
+	float x, z;
+	GameUtility::CalcStagePos2WorldPos(nowCursolPos, &x, &z);
+	objNormalFloor.SetPosition({x, -ONE_CELL_LENGTH / 2, z});
+	for (int i = 0; i < _countof(objTurnFloor); i++) {
+		objTurnFloor[i].SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
 	}
 
 	//breakupCountによってブロックの色を変える
@@ -250,9 +264,9 @@ void Editor::UpdateObject()
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].Update();
 	}
-	normalFloor.Update();
-	for (int i = 0; i < _countof(turnFloor); i++) {
-		turnFloor[i].Update();
+	objNormalFloor.Update();
+	for (int i = 0; i < _countof(objTurnFloor); i++) {
+		objTurnFloor[i].Update();
 	}
 }
 
@@ -343,20 +357,26 @@ void Editor::DrawBlock()
 
 void Editor::DrawFloor()
 {
+	//ステージ範囲外なら即リターン
+	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
+		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+		return;
+	}
+
 	if (floorType == FLOORTYPE_NORMAL) {
-		normalFloor.Draw();
+		objNormalFloor.Draw();
 	}
 	else if (floorType == FLOORTYPE_TURN_LEFT) {
-		turnFloor[TURNTYPE_LEFT].Draw();
+		objTurnFloor[TURNTYPE_LEFT].Draw();
 	}
 	else if (floorType == FLOORTYPE_TURN_RIGHT) {
-		turnFloor[TURNTYPE_RIGHT].Draw();
+		objTurnFloor[TURNTYPE_RIGHT].Draw();
 	}
 	else if (floorType == FLOORTYPE_TURN_UP) {
-		turnFloor[TURNTYPE_UP].Draw();
+		objTurnFloor[TURNTYPE_UP].Draw();
 	}
 	else if (floorType == FLOORTYPE_TURN_DOWN) {
-		turnFloor[TURNTYPE_DOWN].Draw();
+		objTurnFloor[TURNTYPE_DOWN].Draw();
 	}
 }
 

@@ -174,7 +174,7 @@ void FbxModel::TransferMaterial()
 	assert(SUCCEEDED(result));
 }
 
-void FbxModel::Draw()
+void FbxModel::Draw(int instancingCount)
 {
 	ID3D12GraphicsCommandList* cmdList = DX12Util::GetCmdList();
 
@@ -198,7 +198,7 @@ void FbxModel::Draw()
 
 	//描画コマンド
 	//2番目の引数を変える(インスタンシング)
-	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced((UINT)indices.size(), instancingCount, 0, 0, 0);
 }
 
 void FbxModel::CreateFromFBX(const string& modelName)

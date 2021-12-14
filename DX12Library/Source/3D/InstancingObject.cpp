@@ -4,12 +4,12 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-ComPtr<ID3D12RootSignature> InstancingObject::instancingFbxRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> InstancingObject::instancingFbxPipelinestate = nullptr;
-ComPtr<ID3D12RootSignature> InstancingObject::instancingObjRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> InstancingObject::instancingObjPipelinestate = nullptr;
+ComPtr<ID3D12RootSignature> InstancingObjectDraw::instancingFbxRootsignature = nullptr;
+ComPtr<ID3D12PipelineState> InstancingObjectDraw::instancingFbxPipelinestate = nullptr;
+ComPtr<ID3D12RootSignature> InstancingObjectDraw::instancingObjRootsignature = nullptr;
+ComPtr<ID3D12PipelineState> InstancingObjectDraw::instancingObjPipelinestate = nullptr;
 
-void InstancingObject::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData)
+void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
@@ -206,7 +206,7 @@ void InstancingObject::CreateGraphicsPipeline(int objectType, PipelineData& pipe
 
 }
 
-void InstancingObject::Initialize()
+void InstancingObjectDraw::Initialize()
 {
 	HRESULT result;
 
@@ -238,7 +238,7 @@ void InstancingObject::Initialize()
 	name = typeid(*this).name();
 }
 
-void InstancingObject::Update()
+void InstancingObjectDraw::Update()
 {
 	XMMATRIX matScale, matRot, matTrans;
 
@@ -330,17 +330,94 @@ void InstancingObject::Update()
 	}
 }
 
-void InstancingObject::Draw()
+void InstancingObjectDraw::Draw()
 {
+	if (objectType == OBJECTTYPE_OBJ) {
+		//モデルの割り当てがなければ描画しない
+		if (objModel == nullptr) {
+			return;
+		}
+
+		//パイプラインステートの設定
+		DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
+		//ルートシグネチャの設定
+		DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingObjRootsignature.Get());
+
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransform->GetGPUVirtualAddress());
+		//ライトの描画
+		light->Draw(3);
+		//モデル描画
+		objModel->Draw(index);
+
+	}
+	else if (objectType == OBJECTTYPE_FBX) {
+		//モデルの割り当てがなければ描画しない
+		if (fbxModel == nullptr) {
+			return;
+		}
+
+		//パイプラインステートの設定
+		DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate.Get());
+		//ルートシグネチャの設定
+		DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingFbxRootsignature.Get());
+		//プリミティブ形状を設定
+		DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransform->GetGPUVirtualAddress());
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
+		//ライトの描画
+		light->Draw(3);
+		//モデル描画
+		fbxModel->Draw(index);
+	}
+
+	ResetIndex();
 }
 
-void InstancingObject::UpdateBuffer(int index)
+void InstancingObjectDraw::UpdateConstBuff(const InstanceData& constBuffData)
 {
-	ConstBufferDataInstancing* constMap = nullptr;
+	InstancingObjectDraw::ConstBufferDataInstancing* constMap = nullptr;
 	HRESULT result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		constMap->data[index].color = color;
-		constMap->data[index].world = matWorld;
+		constMap->data[index].color = constBuffData.color;
+		constMap->data[index].world = constBuffData.world;
 		constBuffTransform->Unmap(0, nullptr);
 	}
+
+	index++;
+}
+
+void InstancingObject::Initialize(const Vector3& pos, const Vector3& rot, const Vector3& scale, const Vector4& color)
+{
+	SetPosition(pos);
+	SetRotation(rot);
+	SetScale(scale);
+	SetColor(color);
+}
+
+void InstancingObject::Update(InstancingObjectDraw& instancingObjectDraw)
+{
+	XMMATRIX matScale, matRot, matTrans;
+
+	//スケール、回転、平行移動行列の計算
+	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
+	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+
+	//ワールド行列の合成
+	matWorld = XMMatrixIdentity();	//変形をリセット
+	matWorld *= matScale;			//ワールド行列にスケーリングを反映
+	matWorld *= matRot;				//ワールド行列に回転を反映
+	matWorld *= matTrans;			//ワールド行列に平行移動を反映
+
+	instancingObjectDraw.UpdateConstBuff({ color, matWorld });
 }

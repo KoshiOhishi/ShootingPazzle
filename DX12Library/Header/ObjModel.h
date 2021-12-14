@@ -108,7 +108,7 @@ private:
 
 //メンバ関数
 public:
-	void Draw();
+	void Draw(int instancingCount = 1);
 
 	/// <summary>
 	/// OBJファイルからモデルを作成する（フォルダ名と中身の名前は同一のものにしてください。）

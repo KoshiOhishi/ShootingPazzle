@@ -19,6 +19,26 @@
 
 class BaseCollider;
 
+//オブジェクトの種類
+enum ObjectType
+{
+	OBJECTTYPE_OBJ,
+	OBJECTTYPE_FBX
+};
+
+struct ConstBufferDataShare
+{
+	DirectX::XMMATRIX viewproj;	//ビュープロジェクション行列
+	Vector3 cameraPos;	//カメラ座標(ワールド座標)
+};
+
+//インスタンシング描画用構造体(座標変換行列用)
+struct InstanceData
+{
+	Vector4 color;		//色
+	DirectX::XMMATRIX world;		//ワールド行列
+};
+
 class Object3D
 {
 protected: //エイリアス
@@ -37,19 +57,6 @@ public: //定数
 
 public: //サブクラス
 
-	struct ConstBufferDataShare
-	{
-		XMMATRIX viewproj;	//ビュープロジェクション行列
-		Vector3 cameraPos;	//カメラ座標(ワールド座標)
-	};
-
-	//インスタンシング描画用構造体(座標変換行列用)
-	struct InstanceData
-	{
-		Vector4 color;		//色
-		XMMATRIX world;		//ワールド行列
-	};
-
 	struct ConstBufferDataTransform
 	{
 		InstanceData data;
@@ -60,13 +67,6 @@ public: //サブクラス
 	struct ConstBufferDataSkin
 	{
 		XMMATRIX bones[MAX_BONES];
-	};
-
-	//オブジェクトの種類
-	enum ObjectType
-	{
-		OBJECTTYPE_OBJ,
-		OBJECTTYPE_FBX
 	};
 
 	//ビルボードタイプ
@@ -201,32 +201,32 @@ public:
 	/// スケールの取得
 	/// </summary>
 	/// <returns>座標</returns>
-	const Vector3& GetScale() { return scale; }
+	const Vector3& GetScale() const { return scale; }
 
 	/// <summary>
 	/// 回転角の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	const Vector3& GetRotation() { return rotation; }
+	const Vector3& GetRotation() const { return rotation; }
 
 
 	/// <summary>
 	/// 座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	const Vector3& GetPosition() { return position; }
+	const Vector3& GetPosition() const { return position; }
 
 	/// <summary>
 	/// 色(RGBA)を取得する
 	/// </summary>
 	/// <returns>色(RGBA)</returns>
-	const Vector4& GetColor() { return color; }
+	const Vector4& GetColor() const { return color; }
 
 	/// <summary>
 	/// 色(RGBA)を0～255の数値で取得する
 	/// </summary>
 	/// <returns>色(RGBA)、0～255の範囲</returns>
-	const Vector4& GetColorAs0To255() {
+	const Vector4& GetColorAs0To255() const {
 		Vector4 c = { color.x * 255,color.y * 255 ,color.z * 255 ,color.w * 255 };
 		return c;
 	}
@@ -235,25 +235,25 @@ public:
 	/// ワールド行列の取得
 	/// </summary>
 	/// <returns>ワールド行列</returns>
-	const XMMATRIX& GetMatWorld() { return matWorld; }
+	const XMMATRIX& GetMatWorld() const { return matWorld; }
 
 	/// <summary>
 	/// objモデルを取得
 	/// </summary>
 	/// <returns>objモデル</returns>
-	inline ObjModel* GetObjModel() { return objModel; }
+	inline ObjModel* GetObjModel() const { return objModel; }
 
 	/// <summary>
 	/// クラス名取得
 	/// </summary>
 	/// <returns></returns>
-	const char* GetObjectName() { return name; }
+	const char* GetObjectName() const { return name; }
 
 	/// <summary>
 	/// コライダー取得
 	/// </summary>
 	/// <returns></returns>
-	const BaseCollider* GetCollider() { return collider; }
+	const BaseCollider* GetCollider() const { return collider; }
 
 #pragma endregion
 

@@ -125,7 +125,7 @@ public: //メンバ関数
 	void CreateBuffers(ID3D12Device* device);
 
 	//描画
-	void Draw();
+	void Draw(int instancingCount = 1);
 
 	//マテリアルパラメータ転送
 	void TransferMaterial();

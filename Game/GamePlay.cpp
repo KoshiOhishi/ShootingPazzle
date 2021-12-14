@@ -13,7 +13,7 @@
 #include "../imgui/imgui_impl_win32.h"
 #include "../imgui/imgui_impl_dx12.h"
 
-void Editor::Initialize()
+void GamePlay::Initialize()
 {
 	//ライト初期化
 	light.Initialize();
@@ -45,17 +45,15 @@ void Editor::Initialize()
 
 	//フェーズ初期化
 	GameUtility::SetNowPhase(PHASE_SETPOS);
-
 }
 
-void Editor::Update()
+void GamePlay::Update()
 {
 	// DirectX 毎フレーム処理 ここから
 
 	//入力処理ここから
 
 #pragma region カメラ
-#ifdef _DEBUG
 	//カメラ移動
 	if (Keyboard::IsKeyPush(DIK_W)) {
 		camera.MoveCamera(0, 0, 1, false, true, false);
@@ -106,7 +104,6 @@ void Editor::Update()
 			camera.SetRotation(f);
 		}
 	}
-#endif
 #pragma endregion
 #pragma region サウンド
 
@@ -172,7 +169,7 @@ void Editor::Update()
 #pragma endregion
 }
 
-void Editor::Draw()
+void GamePlay::Draw()
 {
 	//背景スプライト描画ここから
 	Sprite::BeginDraw();

@@ -2,6 +2,7 @@
 #include "GameUtility.h"
 
 ObjModel TurnFloor::modelBox[4];
+InstancingObjectDraw TurnFloor::instancingObjectDraw[4];
 
 void TurnFloor::CreateModel()
 {
@@ -12,13 +13,19 @@ void TurnFloor::CreateModel()
 	modelBox[TURNTYPE_DOWN].CreateFromOBJ("TurnFloor_Down");
 }
 
+void TurnFloor::StaticInitialize()
+{
+	for (int i = 0; i < 4; i++) {
+		instancingObjectDraw[i].Initialize();
+		instancingObjectDraw[i].SetObjModel(&modelBox[i]);
+	}
+}
+
 void TurnFloor::Initialize(const StageVec2& pos)
 {
 	//オブジェクト生成
 	object.Initialize();
-
-	//見分けつかないのでモデル作るまで色変える
-	object.SetColor(0.5f, 0.5f, 0.5f, 1);
+	object.SetColor({ 0.5f,0.5f,0.5f,1 });
 
 	SetStagePos(pos);
 
@@ -27,13 +34,23 @@ void TurnFloor::Initialize(const StageVec2& pos)
 
 void TurnFloor::Update()
 {
-	object.Update();
+	object.Update(instancingObjectDraw[turnType]);
 	UpdateCollision();
 }
 
-void TurnFloor::Draw()
+void TurnFloor::Draw(int index)
 {
-	object.Draw();
+	if (index == -1) {
+		for (int i = 0; i < 4; i++) {
+			instancingObjectDraw[i].Update();
+			instancingObjectDraw[i].Draw();
+		}
+	}
+	else {
+		if (index < -1 || index >= 4) { return; }
+		instancingObjectDraw[index].Update();
+		instancingObjectDraw[index].Draw();
+	}
 }
 
 void TurnFloor::UpdateCollision()
@@ -44,10 +61,9 @@ void TurnFloor::UpdateCollision()
 void TurnFloor::SetTurnType(int turnType)
 {
 	this->turnType = turnType;
-	object.SetObjModel(&modelBox[turnType]);
 
 	//上と下の場合、オブジェクトを180度回転させる
 	if (turnType == TURNTYPE_UP || turnType == TURNTYPE_DOWN) {
-		object.SetRotation(0,180,0);
+		object.SetRotation({0, 180, 0});
 	}
 }
