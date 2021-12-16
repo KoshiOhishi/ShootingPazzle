@@ -6,6 +6,8 @@
 #include "GameUtility.h"
 #include "Input.h"
 
+#include "BreakFloor.h"
+
 ObjModel MyBullet::modelSphere;
 ObjModel MyBullet::modelArrow;
 const float MyBullet::RADIUS = ONE_CELL_LENGTH / 2;
@@ -52,12 +54,13 @@ void MyBullet::Update()
 		objArrow.Update();
 	}
 	else {
+		//衝突が起こるかチェック
+		CheckCollision();
+		ApplyGravity();
 		Move();
 		//球更新
 		objSphere.SetPosition(position);
 		objSphere.Update();
-		//次フレームで衝突が起こるかチェック
-		CheckCollision();
 	}
 
 }
@@ -185,11 +188,13 @@ void MyBullet::Move()
 	if (speed < 0) {
 		speed = 0;
 	}
+}
 
+void MyBullet::ApplyGravity()
+{
 	//床の上にいなかったら重力適用
-	bool isFall = position.y < -RADIUS;
-	if (IsOutStage(position) || isFall) {
-		gravity += 0.025f;
+	if (IsOutStage(position)) {
+		gravity += 0.01f;
 		position.y -= gravity;
 	}
 	else {
@@ -200,11 +205,11 @@ void MyBullet::Move()
 
 void MyBullet::CheckCollision()
 {
-	//Todo:	このままだとブロックが増えると当たり判定が厳しいので
-	//		どうにかして軽くさせる
-
 	//レイ更新
 	UpdateRay();
+
+	//球が半分以上落ちきったら衝突判定を無視
+	if (position.y < 0) { return; }
 
 	//レイとカプセルの距離の最短算出用
 	float alreadyHitDistance = FLT_MAX;
@@ -212,6 +217,17 @@ void MyBullet::CheckCollision()
 	//レイとブロックが衝突するか
 	for (int i = 0; i < stage->GetBlocks().size(); i++) {
 		bool isCollision = false;
+
+		//球とブロックとの距離算出
+		Vector3 blockPos = stage->GetBlocks()[i]->GetPosition();
+		blockPos.y = position.y;	//xz平面で算出したい
+		float lengthSq = (blockPos - position).LengthSq();
+
+		//対象ブロックから遠かったら判定しない
+		bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH * 2;
+		if (nearFloor == false) {
+			continue;
+		}
 
 		//ブロックが持つ各カプセル判定において
 		for (int j = 0; j < stage->GetBlocks()[i]->GetCapsule().size(); j++) {
@@ -222,22 +238,22 @@ void MyBullet::CheckCollision()
 
 			//自球からのレイとブロックのカプセルが当たっているか
 			bool isHitRay2Capsule = Collision::CheckRay2Capsule(ray, stage->GetBlocks()[i]->GetCapsule()[j], &distance, nullptr, nullptr, &normal);
-			//次のフレームで衝突するか
-			bool isHitNextFlame = distance < nextMoveLength;
+			//次の移動で衝突するか
+			bool isHitNextMove = distance < nextMoveLength;
 			//既に当たったカプセルとの距離が短いか
 			bool isHitCorrectCapsule = distance < alreadyHitDistance;
 
-			if (isHitRay2Capsule && isHitNextFlame && isHitCorrectCapsule) {
+			if (isHitRay2Capsule && isHitNextMove && isHitCorrectCapsule) {
 				//既に当たったカプセルとの距離更新
 				alreadyHitDistance = distance;
 
 				//NextMoveInfoに情報を書き込む
 				nextMoveInfo.isCollisionNextFrame = true;
 
-				//次フレームの移動量計算(反射ベクトル)
+				//次の移動のベクトル計算(反射ベクトル)
 				nextMoveInfo.nextVel = (velocity - 2.0f * velocity.Dot(normal) * normal);
 
-				//次フレームの位置計算
+				//次の移動後の位置計算
 				Vector3& newPos = nextMoveInfo.nextPos;
 				newPos = position;
 				float mul = (distance / nextMoveLength);
@@ -258,22 +274,35 @@ void MyBullet::CheckCollision()
 
 	//球と床ギミックとの判定
 	for (int i = 0; i < stage->GetFloors().size(); i++) {
-		//一定の距離以上の位置にあるものは判定しない
-		Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
-		floorPos.y = position.y;
-		float lengthSq = (floorPos - position).LengthSq();
-		if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
-			continue;
-		}
 
 		//ノーマルブロックは特に何もしない
 		if (stage->GetFloors()[i]->GetObjectType() == "NormalFloor") {
 			continue;
 		}
+
+		//球と床ブロックとの距離算出
+		Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
+		floorPos.y = position.y;	//xz平面で算出したい
+		float lengthSq = (floorPos - position).LengthSq();
+
+		//対象床ブロックから遠かったら判定しない
+		bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH * 3 / 2;
+		if (nearFloor == false) {
+			continue;
+		}
+
+		if (stage->GetFloors()[i]->GetObjectType() == "BreakFloor"){
+			BreakFloor* floor = dynamic_cast<BreakFloor*>(stage->GetFloors()[i]);
+
+			//球が床ブロックから離れた時を検知させるためにフラグをセット
+			//(検知はBreakFloorのUpdate()で行う)
+			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH;
+			floor->SetOnFloor(onFloor);
+		}
 		else {
-			float length = sqrt(lengthSq);
-			//距離が半径の1/2で乗ったとみていいだろう
-			if (length < RADIUS) {
+			//中心に近い位置に乗ったら有効
+			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH / 4;
+			if (onFloor) {
 				//方向転換ブロック(左)
 				if (stage->GetFloors()[i]->GetObjectType() == "TurnFloor_0") {
 					if (velocity.x != -1) {
@@ -321,7 +350,7 @@ void MyBullet::UpdateRay()
 bool MyBullet::IsOutStage(const Vector3& pos)
 {
 	bool isOutside = false,
-		isHole = false;
+		isHole = true;
 
 	Vector3 floorPos = { 0,0,0 };
 	Vector2 floorSize = { stage->GetStageSize().x * ONE_CELL_LENGTH, stage->GetStageSize().y * ONE_CELL_LENGTH };
@@ -330,19 +359,45 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 		pos.z < floorPos.y - floorSize.y / 2 ||
 		pos.z > floorPos.y + floorSize.y / 2;
 
-	//球と床ギミックとの判定
-	for (int i = 0; i < stage->GetFloors().size(); i++) {
-		//一定の距離以上の位置にあるものは判定しない
-		Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
-		floorPos.y = pos.y;
-		float lengthSq = (floorPos - pos).LengthSq();
-		if (lengthSq > ONE_CELL_LENGTH * ONE_CELL_LENGTH) {
-			continue;
-		}
-		//穴
-		if (stage->GetFloors()[i]->GetObjectType() == "HoleFloor") {
-			isHole = true;
-			break;
+	if (GameUtility::GetNowPhase() != PHASE_AFTERSHOOT) {
+		return isOutside;
+	}
+
+	//床ブロックより下にいるとき、球は落ちきっているので床との判定をスルー
+	if (pos.y >= -RADIUS) {
+		//球と床ギミックとの判定
+		for (int i = 0; i < stage->GetFloors().size(); i++) {
+			//一定の距離以上の位置にあるものは判定しない
+			Vector3 floorPos = stage->GetFloors()[i]->GetPosition();
+			floorPos.y = pos.y;
+			float lengthSq = (floorPos - pos).LengthSq();
+
+			//対象床ブロックに乗っていなかったら判定しない
+			bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH;
+			if (nearFloor == false) {
+				continue;
+			}
+
+			//乗ってる床ブロックが穴以外なら穴に落ちていない可能性
+			if (stage->GetFloors()[i]->GetObjectType() != "HoleFloor") {
+				if (pos.y >= RADIUS) {
+					isHole = false;
+				}
+				//スピードが0.5以上なら復帰
+				else if (speed >= 0.5f) {
+					isHole = false;
+					//落ちている状態から復帰するときは高さに応じてスピードを落とす
+					if (pos.y < ONE_CELL_LENGTH / 2) {
+						speed -= (ONE_CELL_LENGTH / 2 - pos.y) * 0.5f;
+					}
+				}
+				else {
+					//床ブロックの側面と反射させる
+					velocity *= -1;
+				}
+
+				break;
+			}
 		}
 	}
 

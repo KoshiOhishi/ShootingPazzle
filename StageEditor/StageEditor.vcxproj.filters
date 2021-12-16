@@ -57,6 +57,9 @@
     <ClCompile Include="..\Game\TurnFloor.cpp">
       <Filter>ソース ファイル\Gameから参照</Filter>
     </ClCompile>
+    <ClCompile Include="..\Game\BreakFloor.cpp">
+      <Filter>ソース ファイル\Gameから参照</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorStage.h">
@@ -90,6 +93,9 @@
       <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\TurnFloor.h">
+      <Filter>ヘッダー ファイル\Gameから参照</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\BreakFloor.h">
       <Filter>ヘッダー ファイル\Gameから参照</Filter>
     </ClInclude>
   </ItemGroup>

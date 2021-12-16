@@ -1,15 +1,33 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Release\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJPS.cso
-E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingOBJVS.hlsl(16,2-24): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJVS.cso
-  InstancingObject.cpp
+  SphereCollider.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(163,69): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(178,170): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-  DX12Util.cpp
+  AABBCollider.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(280,39): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(288,73): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(288,59): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  Collision.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  CollisionManager.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  CollisionPrimitive.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  MeshCollider.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Object3D.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Object3D.cpp(193,69): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Object3D.cpp(208,170): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+  TouchableObject.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  PostEffect.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(19,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(69,100): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(69,71): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(278,22): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  Input.cpp
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Input\Input.cpp(208,49): warning C4244: '引数': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Input\Input.cpp(232,23): warning C4244: '引数': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Input\Input.cpp(232,18): warning C4244: '引数': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+  SceneManager.cpp
   DX12Library.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Release\DX12Library.lib

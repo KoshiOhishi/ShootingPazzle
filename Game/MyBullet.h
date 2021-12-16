@@ -58,9 +58,9 @@ public:
 	static void CreateModel();
 
 public:
-	MyBullet(){}
+	MyBullet() {}
 
-	~MyBullet(){}
+	~MyBullet() {}
 
 	/// <summary>
 	/// 初期化
@@ -101,6 +101,11 @@ public:
 	/// 弾を動かす
 	/// </summary>
 	void Move();
+
+	/// <summary>
+	/// 重力を適用
+	/// </summary>
+	void ApplyGravity();
 
 	/// <summary>
 	/// 衝突チェック

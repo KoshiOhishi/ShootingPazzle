@@ -52,6 +52,7 @@ void Editor::Initialize()
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].Initialize(&stage.stageSize);
 	}
+#pragma region 表示用オブジェクト初期化
 	modelNormalFloor.CreateFromOBJ("NormalFloor");
 	objNormalFloor.Initialize();
 	objNormalFloor.SetObjModel(&modelNormalFloor);
@@ -68,6 +69,11 @@ void Editor::Initialize()
 			objTurnFloor[i].SetRotation(0, 180, 0);
 		}
 	}
+	modelBreakFloor.CreateFromOBJ("BreakFloor");
+	objBreakFloor.Initialize();
+	objBreakFloor.SetObjModel(&modelBreakFloor);
+	objBreakFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
+#pragma endregion
 }
 
 void Editor::Update()
@@ -251,6 +257,7 @@ void Editor::UpdateObject()
 	for (int i = 0; i < _countof(objTurnFloor); i++) {
 		objTurnFloor[i].SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
 	}
+	objBreakFloor.SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
 
 	//breakupCountによってブロックの色を変える
 	squareBlock.SetBreakupCount(breakupCount);
@@ -268,6 +275,7 @@ void Editor::UpdateObject()
 	for (int i = 0; i < _countof(objTurnFloor); i++) {
 		objTurnFloor[i].Update();
 	}
+	objBreakFloor.Update();
 }
 
 void Editor::UpdateStartLane()
@@ -378,6 +386,9 @@ void Editor::DrawFloor()
 	else if (floorType == FLOORTYPE_TURN_DOWN) {
 		objTurnFloor[TURNTYPE_DOWN].Draw();
 	}
+	else if (floorType == FLOORTYPE_BREAK) {
+		objBreakFloor.Draw();
+	}
 }
 
 void Editor::Save()
@@ -447,6 +458,9 @@ void Editor::Save()
 		else if (floorType == "TurnFloor_3") {
 			object.type = 4;
 		}
+		else if (floorType == "BreakFloor") {
+			object.type = 5;
+		}
 
 		StageVec2 pos = GameUtility::CalcWorldPos2StagePos(
 			stage.floors[i]->GetPosition().x, stage.floors[i]->GetPosition().z);
@@ -513,6 +527,7 @@ void Editor::UpdateImgui()
 			ImGui::RadioButton("Turn_Right", &floorType, FLOORTYPE_TURN_RIGHT);
 			ImGui::RadioButton("Turn_Up", &floorType, FLOORTYPE_TURN_UP);
 			ImGui::RadioButton("Turn_Down", &floorType, FLOORTYPE_TURN_DOWN);
+			ImGui::RadioButton("Break", &floorType, FLOORTYPE_BREAK);
 		}
 
 	}

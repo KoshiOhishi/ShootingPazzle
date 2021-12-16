@@ -5,6 +5,7 @@
 #include "TriangleBlock.h"
 #include "NormalFloor.h"
 #include "TurnFloor.h"
+#include "BreakFloor.h"
 #include "HoleFloor.h"
 
 //現在のフェーズ
@@ -18,6 +19,7 @@ void GameUtility::StaticInitialize()
 	SquareBlock::CreateModel();
 	NormalFloor::CreateModel();
 	TurnFloor::CreateModel();
+	BreakFloor::CreateModel();
 }
 
 const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ)

@@ -177,6 +177,7 @@
   <ItemGroup>
     <ClCompile Include="..\Game\BaseBlock.cpp" />
     <ClCompile Include="..\Game\BaseFloor.cpp" />
+    <ClCompile Include="..\Game\BreakFloor.cpp" />
     <ClCompile Include="..\Game\GameUtility.cpp" />
     <ClCompile Include="..\Game\MyBullet.cpp" />
     <ClCompile Include="..\Game\NormalFloor.cpp" />
@@ -191,6 +192,7 @@
   <ItemGroup>
     <ClInclude Include="..\Game\BaseBlock.h" />
     <ClInclude Include="..\Game\BaseFloor.h" />
+    <ClInclude Include="..\Game\BreakFloor.h" />
     <ClInclude Include="..\Game\GameUtility.h" />
     <ClInclude Include="..\Game\MyBullet.h" />
     <ClInclude Include="..\Game\NormalFloor.h" />

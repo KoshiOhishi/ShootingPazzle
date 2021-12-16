@@ -67,8 +67,10 @@ private:
 	StartLane startLane[2];
 	Object3D objNormalFloor;
 	Object3D objTurnFloor[4];
+	Object3D objBreakFloor;
 	ObjModel modelNormalFloor;
 	ObjModel modelTurnFloor[4];
+	ObjModel modelBreakFloor;
 
 	//SaveLoad—p–¼‘OŠi”[
 	std::string ioname;

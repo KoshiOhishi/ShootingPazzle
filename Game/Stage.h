@@ -15,7 +15,7 @@ private:
 	unsigned short startLaneZ = stageSize.y - 2;
 
 public:
-	Stage(){}
+	Stage() {}
 	~Stage();
 
 	/// <summary>
@@ -45,6 +45,41 @@ public:
 	/// <param name="stagePos">ステージ基準座標</param>
 	/// <returns>既に配置されていればfloorsのインデックス、なければ-1を返す</returns>
 	int CheckExistFloor(const StageVec2& stagePos);
+
+	/// <summary>
+	/// ブロックを追加 (引数の位置に既にブロックが配置されていたら追加しない)
+	/// </summary>
+	/// <param name="stagePos">ステージ上の座標</param>
+	/// <param name="blockType">ブロックの種類</param>
+	/// <param name="breakupCount">壊れるまでの衝突回数　0で壊れないブロック</param>
+	/// <param name="shapeType">オプションの形状指定</param>
+	void AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount);
+
+	/// <summary>
+	/// ブロックを削除 (引数の位置になにもない場合は削除しない)
+	/// </summary>
+	/// <param name="stagePos"></param>
+	void DeleteBlock(const StageVec2& stagePos);
+
+	/// <summary>
+	/// 既にブロックが配置されているかチェック
+	/// </summary>
+	/// <param name="stagePos">ステージ上の座標</param>
+	/// <returns>存在すればブロック配列のインデックス、なければ-1を返す</returns>
+	int CheckExistBlock(const StageVec2& stagePos);
+
+	/// <summary>
+	/// 床ブロックを追加 (引数の位置に既にブロックが配置されていたら追加しない)
+	/// </summary>
+	/// <param name="stagePos">ステージ上の座標</param>
+	/// <param name="floorType">床ブロックの種類</param>
+	void AddFloor(const StageVec2& stagePos, int floorType);
+
+	/// <summary>
+	/// 床ブロックを削除 (引数の位置になにもない場合は削除しない)
+	/// </summary>
+	/// <param name="stagePos"></param>
+	void DeleteFloor(const StageVec2& stagePos);
 
 	/// <summary>
 	/// ブロック配置取得

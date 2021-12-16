@@ -38,6 +38,9 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): mes
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\grid.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\BreakFloor\BreakFloor.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\BreakFloor\BreakFloor.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\BreakFloor\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\NormalFloor\NormalFloor.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\NormalFloor\NormalFloor.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\NormalFloor\uv.png
@@ -60,7 +63,7 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): mes
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\TurnFloor_Up.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\TurnFloor_Up.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\uv.png
-  25 個のファイルをコピーしました
+  28 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

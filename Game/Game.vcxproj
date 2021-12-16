@@ -190,6 +190,7 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
   <ItemGroup>
     <ClCompile Include="BaseBlock.cpp" />
     <ClCompile Include="BaseFloor.cpp" />
+    <ClCompile Include="BreakFloor.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="GameUtility.cpp" />
     <ClCompile Include="HoleFloor.cpp" />
@@ -204,6 +205,7 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
   <ItemGroup>
     <ClInclude Include="BaseBlock.h" />
     <ClInclude Include="BaseFloor.h" />
+    <ClInclude Include="BreakFloor.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GameUtility.h" />
     <ClInclude Include="HoleFloor.h" />

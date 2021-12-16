@@ -6,6 +6,7 @@
 #include "NormalFloor.h"
 #include "HoleFloor.h"
 #include "TurnFloor.h"
+#include "BreakFloor.h"
 #include "GameUtility.h"
 
 Stage::~Stage()
@@ -25,6 +26,7 @@ void Stage::LoadStage(std::string filename)
 	NormalFloor::StaticInitialize();
 	TurnFloor::StaticInitialize();
 	HoleFloor::StaticInitialize();
+	BreakFloor::StaticInitialize();
 
 	//データ初期化
 	for (int i = 0; i < blocks.size(); i++) {
@@ -75,46 +77,7 @@ void Stage::LoadStage(std::string filename)
 		file.read((char*)&object, sizeof(object));
 
 		StageVec2 pos = { object.stagePosX, object.stagePosY };
-
-		//SquareBlock
-		if (object.type == 0) {
-			SquareBlock* newBlock = new SquareBlock;
-			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetBreakupCount(object.breakupCount);
-			blocks.emplace_back(newBlock);
-		}
-		//TriangleBlock LT
-		else if (object.type == 1) {
-			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTTOP);
-			newBlock->SetBreakupCount(object.breakupCount);
-			blocks.emplace_back(newBlock);
-		}
-		//TriangleBlock RT
-		else if (object.type == 2) {
-			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTTOP);
-			newBlock->SetBreakupCount(object.breakupCount);
-			blocks.emplace_back(newBlock);
-		}
-		//TriangleBlock LB
-		else if (object.type == 3) {
-			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTBOTTOM);
-			newBlock->SetBreakupCount(object.breakupCount);
-			blocks.emplace_back(newBlock);
-		}
-		//TriangleBlock RB
-		else if (object.type == 4) {
-			TriangleBlock* newBlock = new TriangleBlock;
-			newBlock->Initialize(pos, sphereRadius);
-			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTBOTTOM);
-			newBlock->SetBreakupCount(object.breakupCount);
-			blocks.emplace_back(newBlock);
-		}
+		AddBlock(pos, object.type, object.breakupCount);
 	}
 
 	//床情報格納
@@ -124,36 +87,7 @@ void Stage::LoadStage(std::string filename)
 		file.read((char*)&object, sizeof(object));
 
 		StageVec2 pos = { object.stagePosX, object.stagePosY };
-
-		if (object.type == 0) {
-			NormalFloor* newFloor = new NormalFloor;
-			newFloor->Initialize(pos);
-			floors.emplace_back(newFloor);
-		}
-		else if (object.type == 1) {
-			TurnFloor* newFloor = new TurnFloor;
-			newFloor->Initialize(pos);
-			newFloor->SetTurnType(TURNTYPE_LEFT);
-			floors.emplace_back(newFloor);
-		}
-		else if (object.type == 2) {
-			TurnFloor* newFloor = new TurnFloor;
-			newFloor->Initialize(pos);
-			newFloor->SetTurnType(TURNTYPE_RIGHT);
-			floors.emplace_back(newFloor);
-		}
-		else if (object.type == 3) {
-			TurnFloor* newFloor = new TurnFloor;
-			newFloor->Initialize(pos);
-			newFloor->SetTurnType(TURNTYPE_UP);
-			floors.emplace_back(newFloor);
-		}
-		else if (object.type == 4) {
-			TurnFloor* newFloor = new TurnFloor;
-			newFloor->Initialize(pos);
-			newFloor->SetTurnType(TURNTYPE_DOWN);
-			floors.emplace_back(newFloor);
-		}
+		AddFloor(pos, object.type);
 	}
 
 	file.close();
@@ -187,6 +121,7 @@ void Stage::Draw()
 {
 	NormalFloor::Draw();
 	TurnFloor::Draw();
+	BreakFloor::Draw();
 
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i]) blocks[i]->Draw();
@@ -210,6 +145,124 @@ void Stage::InsertHole()
 			}
 		}
 	}
+}
+
+void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount)
+{
+	//既にブロックが配置されていたらリターン
+	if (CheckExistBlock(stagePos) != -1) {
+		return;
+	}
+
+	//種類ごとにブロック追加
+	if (blockType == BLOCKTYPE_SQUARE) {
+		SquareBlock* newBlock = new SquareBlock;
+		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
+		newBlock->SetBreakupCount(breakupCount);
+		blocks.emplace_back(newBlock);
+	}
+	else {
+		TriangleBlock* newBlock = new TriangleBlock;
+		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
+		newBlock->SetBreakupCount(breakupCount);
+		if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTTOP) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTTOP);
+		}
+		else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTTOP) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTTOP);
+		}
+		else if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTBOTTOM);
+		}
+		else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM) {
+			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTBOTTOM);
+		}
+		blocks.emplace_back(newBlock);
+	}
+}
+
+void Stage::DeleteBlock(const StageVec2& stagePos)
+{
+	//ブロックが配置されていなかったらリターン
+	int deleteIndex = CheckExistBlock(stagePos);
+	if (deleteIndex == -1) {
+		return;
+	}
+
+	//ブロック削除
+	if (blocks[deleteIndex]) delete blocks[deleteIndex];
+	blocks.erase(blocks.begin() + deleteIndex);
+}
+
+int Stage::CheckExistBlock(const StageVec2& stagePos)
+{
+	float x, z;
+	GameUtility::CalcStagePos2WorldPos(stagePos, &x, &z);
+
+	for (int i = 0; i < blocks.size(); i++) {
+		if (x == blocks[i]->GetPosition().x && z == blocks[i]->GetPosition().z) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+void Stage::AddFloor(const StageVec2& stagePos, int floorType)
+{
+	//既に床ブロックが配置されていたらリターン
+	if (CheckExistFloor(stagePos) != -1) {
+		return;
+	}
+
+	//種類ごとに床ブロック追加
+	if (floorType == FLOORTYPE_NORMAL) {
+		NormalFloor* newFloor = new NormalFloor;
+		newFloor->Initialize(stagePos);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_TURN_LEFT) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_LEFT);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_TURN_RIGHT) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_RIGHT);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_TURN_UP) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_UP);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_TURN_DOWN) {
+		TurnFloor* newFloor = new TurnFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetTurnType(TURNTYPE_DOWN);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_BREAK) {
+		BreakFloor* newFloor = new BreakFloor;
+		newFloor->Initialize(stagePos);
+		floors.emplace_back(newFloor);
+	}
+}
+
+void Stage::DeleteFloor(const StageVec2& stagePos)
+{
+	//床ブロックが配置されていなかったらリターン
+	int deleteIndex = CheckExistFloor(stagePos);
+	if (deleteIndex == -1) {
+		return;
+	}
+
+	//床ブロック削除
+	if (floors[deleteIndex]) delete floors[deleteIndex];
+	floors.erase(floors.begin() + deleteIndex);
 }
 
 int Stage::CheckExistFloor(const StageVec2& stagePos)

@@ -8,14 +8,6 @@
 #include "ObjModel.h"
 #include "Vector3.h"
 
-/*
-ToDo:現在当たり判定の可視で「モデル生成→描画→次フレームで削除、再生成」の流れで頂点を更新していて
-	大変重い処理になっている。
-	つまるところ、ObjModelを改造して頂点を外部から弄れるようにしたモデルクラスを作成し、
-	そちらを使用したほうが生成が1回で済むだろう
-
-*/
-
 /// <summary>
 /// 球
 /// </summary>
@@ -84,4 +76,9 @@ struct Capsule
 	Vector3 start = { -1,0,0 };
 	Vector3 end = { 1,0,0 };
 	float radius = 0.5;
+};
+
+struct Point
+{
+	Vector3 pos;
 };
