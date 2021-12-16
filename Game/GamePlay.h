@@ -30,6 +30,8 @@ private:
 	MyBullet myBullet;
 	//ステージ
 	Stage stage;
+	//ステージパス
+
 
 	//背景
 	Object3D objBG;

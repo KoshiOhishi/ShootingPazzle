@@ -6,14 +6,13 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include "Vector2.h"
+#include "Vector3.h"
 #pragma comment(lib, "d3d12.lib")
 
 class ObjModel
 {
 	using XMMATRIX = DirectX::XMMATRIX;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using string = std::string;
 
@@ -26,19 +25,19 @@ class ObjModel
 public:
 	struct Vertex
 	{
-		XMFLOAT3 pos;	 //xyz座標
-		XMFLOAT3 normal; //法線ベクトル
-		XMFLOAT2 uv;	//uv座標
+		Vector3 pos;	 //xyz座標
+		Vector3 normal; //法線ベクトル
+		Vector2 uv;	//uv座標
 	};
 
 	// 定数バッファ用データ構造体B1
 	struct ConstBufferDataB1
 	{
-		XMFLOAT3 ambient;	//アンビエント係数
+		Vector3 ambient;	//アンビエント係数
 		float pad1;			//パディング
-		XMFLOAT3 diffuse;	//ディフューズ係数
+		Vector3 diffuse;	//ディフューズ係数
 		float pad2;			//パディング
-		XMFLOAT3 specular;	//スペキュラー係数
+		Vector3 specular;	//スペキュラー係数
 		float alpha;		//アルファ
 	};
 
@@ -46,9 +45,9 @@ public:
 	struct Material
 	{
 		std::string name;	//マテリアル名
-		XMFLOAT3 ambient;	//アンビエント影響度
-		XMFLOAT3 diffuse;	//ディフューズ影響度
-		XMFLOAT3 specular;	//スペキュラー影響度
+		Vector3 ambient;	//アンビエント影響度
+		Vector3 diffuse;	//ディフューズ影響度
+		Vector3 specular;	//スペキュラー影響度
 		float alpha;		//アルファ
 		std::string textureFilename;	//テクスチャファイル名
 		//コンストラクタ
@@ -150,7 +149,7 @@ public:
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreateBox(float width, float height, float depth, bool smoothing = false, XMFLOAT3 ambient = {0.5f,0.5f,0.5f}, XMFLOAT3 diffuse = { 0.5f,0.5f,0.5f }, XMFLOAT3 specular = { 0,0,0 });
+	void CreateBox(float width, float height, float depth, bool smoothing = false, const Vector3& ambient = {0.5f,0.5f,0.5f}, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 	/// <summary>
 	/// 球ポリゴンを作成
@@ -161,7 +160,7 @@ public:
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreateSphere(int vertexX, int vertexY, float radius, bool smoothing = false, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0.5f,0.5f,0.5f }, XMFLOAT3 specular = { 0,0,0 });
+	void CreateSphere(int vertexX, int vertexY, float radius, bool smoothing = false, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 	/// <summary>
 	/// 円柱ポリゴンを作成
@@ -172,7 +171,7 @@ public:
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreatePoll(int vertex, float radius, float height, bool smoothing = false, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0.5f,0.5f,0.5f }, XMFLOAT3 specular = { 0,0,0 });
+	void CreatePoll(int vertex, float radius, float height, bool smoothing = false, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 	/// <summary>
 	/// 三角形板ポリゴンを作成
@@ -183,7 +182,7 @@ public:
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreateTriangle(XMFLOAT3 p1, XMFLOAT3 p2, XMFLOAT3 p3, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0.5f,0.5f,0.5f }, XMFLOAT3 specular = { 0,0,0 });
+	void CreateTriangle(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 	/// <summary>
 	/// 四角形板ポリゴンを作成
@@ -193,7 +192,7 @@ public:
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreateSquare(float width, float height, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0.5f,0.5f,0.5f }, XMFLOAT3 specular = { 0,0,0 });
+	void CreateSquare(float width, float height, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 	/// <summary>
 	/// テクスチャあり四角形板ポリゴンを作成
@@ -203,7 +202,7 @@ public:
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreateSquareTex(float standardLength, string texName, XMFLOAT3 ambient = { 0.5f,0.5f,0.5f }, XMFLOAT3 diffuse = { 0.5f,0.5f,0.5f }, XMFLOAT3 specular = { 0,0,0 });
+	void CreateSquareTex(float standardLength, const string& texName, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 #pragma region Getter
 	/// <summary>

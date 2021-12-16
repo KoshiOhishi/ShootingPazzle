@@ -124,61 +124,61 @@ private: //メンバ変数
 	//Getter
 public:
 	//ビュープロジェクション行列取得
-	XMMATRIX GetViewProjection() { return matView * matProjection; }
+	const XMMATRIX& GetViewProjection()const;
 
 	//ビルボード行列取得
-	XMMATRIX GetBillboard() { return matBillboard; }
+	const XMMATRIX& GetBillboard()const { return matBillboard; }
 
 	//Y軸回りビルボード行列取得
-	XMMATRIX GetBillboardY() { return matBillboardY; }
+	const XMMATRIX& GetBillboardY()const { return matBillboardY; }
 
 	/// <summary>
 	/// 視点座標取得
 	/// </summary>
 	/// <returns>視点座標</returns>
-	Vector3 GetPosition() { return eye; }
+	const Vector3& GetPosition()const { return eye; }
 
 	/// <summary>
 	/// 注視点座標取得
 	/// </summary>
 	/// <returns>注視点座標</returns>
-	Vector3 GetTarget() { return target; }
+	const Vector3& GetTarget()const { return target; }
 
 	/// <summary>
 	/// 上方向ベクトル取得
 	/// </summary>
 	/// <returns>上方向ベクトル</returns>
-	Vector3 GetUpVec() { return up; }
+	const Vector3& GetUpVec()const { return up; }
 
 	/// <summary>
 	/// 視点座標から注視点座標の距離を取得
 	/// </summary>
 	/// <returns>視点座標から注視点座標の距離</returns>
-	float GetDistance();
+	const float GetDistance()const;
 
 	/// <summary>
 	/// カメラの回転角を取得
 	/// </summary>
 	/// <returns>回転角(x = pitch, y = yaw, z = roll)</returns>
-	Vector3 GetRotation() { return rotation; }
+	const Vector3& GetRotation()const { return rotation; }
 
 	/// <summary>
 	/// カメラの回転行列を取得
 	/// </summary>
 	/// <returns>回転行列</returns>
-	XMMATRIX GetRotMatrix() { return matRotation; }
+	const XMMATRIX& GetRotMatrix()const { return matRotation; }
 
 	/// <summary>
 	/// ビュー行列を取得
 	/// </summary>
 	/// <returns>ビュー行列を</returns>
-	XMMATRIX GetViewMatrix() { return matView; }
+	const XMMATRIX& GetViewMatrix()const { return matView; }
 
 	/// <summary>
 	/// 射影変換行列を取得
 	/// </summary>
 	/// <returns>射影変換行列</returns>
-	XMMATRIX GetProjectionMatrix() { return matProjection; }
+	const XMMATRIX& GetProjectionMatrix()const { return matProjection; }
 
 
 	//Setter

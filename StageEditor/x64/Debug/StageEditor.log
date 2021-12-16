@@ -29,28 +29,6 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   30 個のファイルをコピーしました
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  GameUtility.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.cpp(30,60): warning C4244: '=': 'float' から 'unsigned short' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.cpp(31,61): warning C4244: '=': 'float' から 'unsigned short' への変換です。データが失われる可能性があります。
-  MyBullet.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-  Editor.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(50,36): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(407,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(408,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
-  main.cpp
-  コードを生成中...
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.cpp(33): warning C4172: ローカル変数またはテンポラリのアドレスを返します: result
-DX12Library.lib(fbxwriter3ds.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriter3ds.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(3dscamr.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(3dscamr.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(3dslites.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(3dslites.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Floor.png

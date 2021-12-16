@@ -236,7 +236,13 @@ void Camera::UpdateViewMatrix()
 #pragma endregion
 }
 
-float Camera::GetDistance()
+const XMMATRIX& Camera::GetViewProjection()const
+{
+	XMMATRIX tmp = matView * matProjection;
+	return tmp;
+}
+
+const float Camera::GetDistance()const
 {
 	XMVECTOR sub = XMLoadFloat3(&target) - XMLoadFloat3(&eye);
 	XMVECTOR t = XMVector3Length(sub);

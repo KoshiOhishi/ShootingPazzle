@@ -37,7 +37,7 @@ void ObjModel::Draw(int instancingCount)
 	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), instancingCount, 0, 0, 0);
 }
 
-void ObjModel::CreateFromOBJ(const std::string & modelname, bool smoothing)
+void ObjModel::CreateFromOBJ(const std::string& modelname, bool smoothing)
 {
 	HRESULT result;
 	vertices.clear();
@@ -54,9 +54,9 @@ void ObjModel::CreateFromOBJ(const std::string & modelname, bool smoothing)
 		assert(0);
 	}
 
-	vector<XMFLOAT3> positions;	//頂点座標
-	vector<XMFLOAT3> normals;	//法線ベクトル
-	vector<XMFLOAT2> texcoords;	//テクスチャUV
+	vector<Vector3> positions;	//頂点座標
+	vector<Vector3> normals;	//法線ベクトル
+	vector<Vector2> texcoords;	//テクスチャUV
 	//1行ずつ読み込む
 	string line;
 	while (getline(file, line)) {
@@ -81,7 +81,7 @@ void ObjModel::CreateFromOBJ(const std::string & modelname, bool smoothing)
 		//先頭文字列がvなら頂点座標
 		if (key == "v") {
 			//X,Y,Z座標読み込み
-			XMFLOAT3 position{};
+			Vector3 position{};
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
@@ -96,7 +96,7 @@ void ObjModel::CreateFromOBJ(const std::string & modelname, bool smoothing)
 		//先頭文字列がvtならテクスチャ
 		if (key == "vt") {
 			//U,V成分読み込み
-			XMFLOAT2 texcoord{};
+			Vector2 texcoord{};
 			line_stream >> texcoord.x;
 			line_stream >> texcoord.y;
 			//V方向反転
@@ -108,7 +108,7 @@ void ObjModel::CreateFromOBJ(const std::string & modelname, bool smoothing)
 		//先頭文字列がvnなら法線ベクトル
 		if (key == "vn") {
 			//X,Y,Z成分読み込み
-			XMFLOAT3 normal{};
+			Vector3 normal{};
 			line_stream >> normal.x;
 			line_stream >> normal.y;
 			line_stream >> normal.z;
@@ -158,7 +158,7 @@ void ObjModel::CreateFromOBJ(const std::string & modelname, bool smoothing)
 	CreateBuffers();
 }
 
-void ObjModel::LoadMaterial(const std::string & directoryPath, const std::string & filename)
+void ObjModel::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 	bool isLoadTexture = false;
 
@@ -233,7 +233,7 @@ void ObjModel::LoadMaterial(const std::string & directoryPath, const std::string
 	}
 }
 
-bool ObjModel::LoadTexture(const std::string & directoryPath, const std::string & filename)
+bool ObjModel::LoadTexture(const std::string& directoryPath, const std::string& filename)
 {
 	HRESULT result = S_FALSE;
 
@@ -294,7 +294,7 @@ bool ObjModel::LoadTexture(const std::string & directoryPath, const std::string 
 
 }
 
-bool ObjModel::LoadTextureReturnTexSize(const std::string & directoryPath, const std::string & filename, float* texWidth, float* texHeight)
+bool ObjModel::LoadTextureReturnTexSize(const std::string& directoryPath, const std::string& filename, float* texWidth, float* texHeight)
 {
 	HRESULT result = S_FALSE;
 
@@ -490,7 +490,7 @@ void ObjModel::CalculateSmoothedVertexNormals()
 
 }
 
-void ObjModel::CreateBox(float width, float height, float depth, bool smoothing, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
+void ObjModel::CreateBox(float width, float height, float depth, bool smoothing, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();
@@ -506,8 +506,8 @@ void ObjModel::CreateBox(float width, float height, float depth, bool smoothing,
 
 	material.textureFilename = "System/white1x1.png";
 	//デフォルトテクスチャを貼る
-	LoadTexture("Resources/" , material.textureFilename);
-	
+	LoadTexture("Resources/", material.textureFilename);
+
 	float x = width / 2;
 	float y = height / 2;
 	float z = depth / 2;
@@ -515,18 +515,18 @@ void ObjModel::CreateBox(float width, float height, float depth, bool smoothing,
 	//頂点セット
 #pragma region 頂点セット
 	Vertex vertex{};
-	XMFLOAT3 samplePos[8];
-	XMFLOAT2 sampleUV[4];
+	Vector3 samplePos[8];
+	Vector2 sampleUV[4];
 	//手前
 	samplePos[0] = { -x, -y, -z };//左下
 	samplePos[1] = { -x,  y, -z };//左上
-	samplePos[2] = {  x, -y, -z };//右下
-	samplePos[3] = {  x,  y, -z };//右上
+	samplePos[2] = { x, -y, -z };//右下
+	samplePos[3] = { x,  y, -z };//右上
 	//奥
 	samplePos[4] = { -x, -y,  z };//左下
 	samplePos[5] = { -x,  y,  z };//左上
-	samplePos[6] = {  x, -y,  z };//右下
-	samplePos[7] = {  x,  y,  z };//右上
+	samplePos[6] = { x, -y,  z };//右下
+	samplePos[7] = { x,  y,  z };//右上
 
 	sampleUV[0] = { 0,1 };//左下
 	sampleUV[1] = { 0,0 };//左上
@@ -627,7 +627,7 @@ void ObjModel::CreateBox(float width, float height, float depth, bool smoothing,
 		indices.emplace_back(i);
 	}
 
-	
+
 	//法線の計算
 	for (int i = 0; i < vertices.size() / 3; i++)
 	{
@@ -658,12 +658,12 @@ void ObjModel::CreateBox(float width, float height, float depth, bool smoothing,
 	if (smoothing) {
 		CalculateSmoothedVertexNormals();
 	}
-	
+
 	//バッファ作成
 	CreateBuffers();
 }
 
-void ObjModel::CreateSphere(int vertexX, int vertexY, float radius, bool smoothing, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
+void ObjModel::CreateSphere(int vertexX, int vertexY, float radius, bool smoothing, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();
@@ -736,7 +736,7 @@ void ObjModel::CreateSphere(int vertexX, int vertexY, float radius, bool smoothi
 			indice[1] = 2;
 			indice[2] = i + 2;
 		}
-		for (int j = 0; j < 3; j++) 
+		for (int j = 0; j < 3; j++)
 		{
 			vertices.emplace_back(v[j]);
 			//エッジ平滑化用のデータを追加
@@ -797,11 +797,11 @@ void ObjModel::CreateSphere(int vertexX, int vertexY, float radius, bool smoothi
 				v[4] = side[i][j];		//左上
 				v[5] = side[i][j + 1];		//右上
 				indice[0] = (i + 1) * vertexX + j + 2;
-				indice[1] = (i) * vertexX + j + 2;
+				indice[1] = (i)*vertexX + j + 2;
 				indice[2] = (i + 1) * vertexX + j + 1 + 2;
 				indice[3] = (i + 1) * vertexX + j + 1 + 2;
-				indice[4] = (i) * vertexX + j + 2;
-				indice[5] = (i) * vertexX + j + 1 + 2;
+				indice[4] = (i)*vertexX + j + 2;
+				indice[5] = (i)*vertexX + j + 1 + 2;
 
 			}
 			else
@@ -813,11 +813,11 @@ void ObjModel::CreateSphere(int vertexX, int vertexY, float radius, bool smoothi
 				v[4] = side[i][j];		//左上
 				v[5] = side[i][0];		//右上
 				indice[0] = (i + 1) * vertexX + j + 2;
-				indice[1] = (i)* vertexX + j + 2;
+				indice[1] = (i)*vertexX + j + 2;
 				indice[2] = (i + 1) * vertexX + 2;
 				indice[3] = (i + 1) * vertexX + 2;
-				indice[4] = (i)* vertexX + j + 2;
-				indice[5] = (i)* vertexX + 2;
+				indice[4] = (i)*vertexX + j + 2;
+				indice[5] = (i)*vertexX + 2;
 			}
 			for (int k = 0; k < 6; k++)
 			{
@@ -873,7 +873,7 @@ void ObjModel::CreateSphere(int vertexX, int vertexY, float radius, bool smoothi
 	CreateBuffers();
 }
 
-void ObjModel::CreatePoll(int vertex, float radius, float height, bool smoothing, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
+void ObjModel::CreatePoll(int vertex, float radius, float height, bool smoothing, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();
@@ -1126,7 +1126,7 @@ void ObjModel::CreatePoll(int vertex, float radius, float height, bool smoothing
 	CreateBuffers();
 }
 
-void ObjModel::CreateTriangle(XMFLOAT3 p1, XMFLOAT3 p2, XMFLOAT3 p3, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
+void ObjModel::CreateTriangle(const Vector3& p1, const Vector3& p2, const Vector3& p3, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();
@@ -1185,7 +1185,7 @@ void ObjModel::CreateTriangle(XMFLOAT3 p1, XMFLOAT3 p2, XMFLOAT3 p3, XMFLOAT3 am
 	CreateBuffers();
 }
 
-void ObjModel::CreateSquare(float width, float height, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
+void ObjModel::CreateSquare(float width, float height, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();
@@ -1251,7 +1251,7 @@ void ObjModel::CreateSquare(float width, float height, XMFLOAT3 ambient, XMFLOAT
 
 }
 
-void ObjModel::CreateSquareTex(float standardLength, std::string texName, XMFLOAT3 ambient, XMFLOAT3 diffuse, XMFLOAT3 specular)
+void ObjModel::CreateSquareTex(float standardLength, const std::string& texName, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();

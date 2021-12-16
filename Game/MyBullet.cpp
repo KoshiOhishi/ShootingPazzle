@@ -194,7 +194,7 @@ void MyBullet::ApplyGravity()
 {
 	//床の上にいなかったら重力適用
 	if (IsOutStage(position)) {
-		gravity += 0.01f;
+		gravity += 0.02f;
 		position.y -= gravity;
 	}
 	else {
@@ -383,17 +383,17 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 				if (pos.y >= RADIUS) {
 					isHole = false;
 				}
-				//スピードが0.5以上なら復帰
-				else if (speed >= 0.5f) {
+				//スピードが0.5以上かつ床より半分以上上の位置にいれば復帰
+				else if (speed >= 0.5f && pos.y > 0) {
 					isHole = false;
 					//落ちている状態から復帰するときは高さに応じてスピードを落とす
-					if (pos.y < ONE_CELL_LENGTH / 2) {
-						speed -= (ONE_CELL_LENGTH / 2 - pos.y) * 0.5f;
-					}
+					speed -= (ONE_CELL_LENGTH / 2 - pos.y) * 0.5f;
+					
 				}
 				else {
 					//床ブロックの側面と反射させる
-					velocity *= -1;
+					velocity.x *= -1;
+					velocity.z *= -1;
 				}
 
 				break;

@@ -299,9 +299,9 @@ void Object3D::Update()
 	if (objectType == OBJECTTYPE_OBJ) {
 
 		//ビュープロジェクション行列
-		const XMMATRIX& matViewProjection = camera->GetViewProjection();
+		XMMATRIX matViewProjection = camera->GetViewProjection();
 		//カメラ座標
-		const Vector3& cameraPos = camera->GetPosition();
+		Vector3 cameraPos = camera->GetPosition();
 
 		HRESULT result;
 
@@ -325,11 +325,11 @@ void Object3D::Update()
 	else if (objectType == OBJECTTYPE_FBX) {
 
 		//ビュープロジェクション行列
-		const XMMATRIX& matViewProjection = camera->GetViewProjection();
+		XMMATRIX matViewProjection = camera->GetViewProjection();
 		//モデルのメッシュトランスフォーム
-		const XMMATRIX& modelTransform = fbxModel->GetModelTransForm();
+		XMMATRIX modelTransform = fbxModel->GetModelTransForm();
 		//カメラ座標
-		const Vector3& cameraPos = camera->GetPosition();
+		Vector3 cameraPos = camera->GetPosition();
 
 		HRESULT result;
 

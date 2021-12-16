@@ -88,7 +88,7 @@ private:
 	/// </summary>
 	/// <param name="fZ"></param>
 	/// <returns></returns>
-	static Vector3 CalcPosScreenToWorld(float fZ);
+	static const Vector3& CalcPosScreenToWorld(float fZ);
 
 public:
 	//メンバ関数の宣言
@@ -129,7 +129,7 @@ public:
 	/// マウス1フレーム移動量
 	/// </summary>
 	/// <returns>移動量</returns>
-	static Vector2 GetMouseMove();
+	static const Vector2& GetMouseMove();
 
 	/// <summary>
 	/// マウス1フレームホイール移動量
@@ -142,12 +142,12 @@ public:
 	/// </summary>
 	/// <param name="isRelative">ウィンドウ左上を0とするか</param>
 	/// <returns>座標</returns>
-	static Vector2 GetMousePos(bool isRelative = true);
+	static const Vector2& GetMousePos(bool isRelative = true);
 
 	/// <summary>
 	/// マウス座標セット
 	/// </summary>
-	static void SetMousePos(Vector2 pos, bool isRelative = true);
+	static void SetMousePos(const Vector2& pos, bool isRelative = true);
 
 	/// <summary>
 	/// カメラをセット
@@ -159,5 +159,5 @@ public:
 	/// マウスと3Dオブジェクトの当たり判定に使用するレイを返す
 	/// </summary>
 	/// <returns>レイ</returns>
-	static Ray GetMouseRay() { return ray; }
+	static const Ray& GetMouseRay() { return ray; }
 };

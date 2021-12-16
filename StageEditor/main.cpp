@@ -246,10 +246,11 @@ void Initialize() {
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();
 
+	FPSManager::SetFPS(0, true);
+
 }
 void Update() {
 
-	FPSManager::Initialize(60);
 	//インプット更新
 	Input::Update();
 
@@ -279,9 +280,7 @@ void Update() {
 	DX12Util::EndDraw();
 
 	//FPSを調整
-	FPSManager::AdjustFPS();
-
-	DebugText::Print(std::to_string(FPSManager::GetFPS()), 0, 0);
+	FPSManager::Update();
 
 }
 void Finalize() {

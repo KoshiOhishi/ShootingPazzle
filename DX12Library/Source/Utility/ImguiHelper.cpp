@@ -44,7 +44,7 @@ void ImguiHelper::Finalize()
 }
 
 
-void ImguiHelper::BeginCommand(string windowName)
+void ImguiHelper::BeginCommand(const string& windowName)
 {
 	AllNewFrame();
 	ImGui::Begin(windowName.c_str());
@@ -71,7 +71,7 @@ void ImguiHelper::AllNewFrame()
 	ImGui::NewFrame();
 }
 
-void ImguiHelper::SetWindowSize(XMFLOAT2 size, ImGuiCond cond)
+void ImguiHelper::SetWindowSize(const Vector2& size, ImGuiCond cond)
 {
 	ImGui::SetWindowSize(ImVec2(size.x, size.y), cond);
 }
@@ -81,7 +81,7 @@ void ImguiHelper::SetWindowSize(float width, float height, ImGuiCond cond)
 	ImGui::SetWindowSize(ImVec2(width, height), cond);
 }
 
-void ImguiHelper::SetWindowPos(XMFLOAT2 pos, ImGuiCond cond)
+void ImguiHelper::SetWindowPos(const Vector2& pos, ImGuiCond cond)
 {
 	ImGui::SetWindowPos(windowName.c_str(), ImVec2(pos.x, pos.y), cond);
 }

@@ -197,13 +197,13 @@ void RenderText::StaticInitialize()
 	);
 }
 
-void RenderText::SetFontData(FontData fontData)
+void RenderText::SetFontData(const FontData& fontData)
 {
 	fd = fontData;
 	changeFD = true;
 }
 
-void RenderText::FirstInit(wstring str)
+void RenderText::Initialize(const wstring& str)
 {
 	HRESULT result = S_FALSE;
 
@@ -218,7 +218,7 @@ void RenderText::FirstInit(wstring str)
 	prevStr = str;
 }
 
-void RenderText::CreateFontTexture(FontData fontData, wstring str)
+void RenderText::CreateFontTexture(const FontData& fontData, const wstring& str)
 {
 	HRESULT result = S_FALSE;
 
@@ -472,7 +472,7 @@ void RenderText::CreateFontTexture(FontData fontData, wstring str)
 	changeFD = false;
 }
 
-bool RenderText::IsReCreate(wstring str)
+bool RenderText::IsReCreate(const wstring& str)
 {
 	bool flag = false;
 
@@ -485,24 +485,17 @@ bool RenderText::IsReCreate(wstring str)
 	return flag || changeFD;
 }
 
-void RenderText::DrawString(float x, float y, wstring str)
+void RenderText::DrawString(float x, float y, const wstring& str)
 {
 	//生成されていなかったらここで生成
 	if (number == -1) {
-		FirstInit(str);
+		Initialize(str);
 		CreateFontTexture(fd, str);
 	}
 	//文字変更などで再生成が必要なら再生成
 	else if (IsReCreate(str)) {
 		CreateFontTexture(fd, str);
 	}
-
-	//パイプラインステートの設定
-	DX12Util::GetCmdList()->SetPipelineState(pipelineState.Get());
-	//ルートシグネチャの設定
-	DX12Util::GetCmdList()->SetGraphicsRootSignature(rootSignature.Get());
-	//プリミティブ形状を設定
-	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	//座標代入
 	position = DirectX::XMVectorSet(x, y, 0, 0);
@@ -519,6 +512,12 @@ void RenderText::DrawString(float x, float y, wstring str)
 	constMap->mat = matWorld * matProjection;		//行列の合成
 	constBuff->Unmap(0, nullptr);
 
+	//パイプラインステートの設定
+	DX12Util::GetCmdList()->SetPipelineState(pipelineState.Get());
+	//ルートシグネチャの設定
+	DX12Util::GetCmdList()->SetGraphicsRootSignature(rootSignature.Get());
+	//プリミティブ形状を設定
+	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	//デスクリプタヒープの配列
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };

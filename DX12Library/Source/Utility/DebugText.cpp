@@ -45,9 +45,9 @@ void DebugText::Print(const std::string& text, float x, float y, float scale)
 		int fontIndexX = fontIndex % fontLineCount;
 
 		//ç¿ïWåvéZ
-		sprites[spriteIndex].SetPosition(Sprite::XMFLOAT2({x + fontWidth * scale * i, y}));
+		sprites[spriteIndex].SetPosition(Vector2({x + fontWidth * scale * i, y}));
 		sprites[spriteIndex].SetDrawRectangle(fontIndexX * fontWidth, fontIndexY * fontHeight, fontWidth, fontHeight);
-		sprites[spriteIndex].SetScale(Sprite::XMFLOAT2({fontWidth * scale, fontHeight * scale}));
+		sprites[spriteIndex].SetScale(Vector2({fontWidth * scale, fontHeight * scale}));
 
 		//ï∂éöÇ1Ç¬êiÇﬂÇÈ
 		spriteIndex++;

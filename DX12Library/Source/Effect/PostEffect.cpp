@@ -119,7 +119,7 @@ void PostEffect::Draw()
 	//ワールド行列の更新
 	matWorld = XMMatrixIdentity();
 	matWorld *= XMMatrixRotationZ(XMConvertToRadians(rotation));
-	matWorld *= XMMatrixTranslationFromVector(position);
+	matWorld *= XMMatrixTranslation(position.x, position.y, 0);
 
 	//行列の転送
 	ConstBufferData* constMap = nullptr;

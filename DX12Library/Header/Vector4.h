@@ -11,7 +11,7 @@ struct Vector4 : public DirectX::XMFLOAT4
 	/// 零ベクトルを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector4& Zero();
+	const Vector4& Zero() const;
 
 	//単項演算子オーバーロード
 	Vector4 operator+() const;

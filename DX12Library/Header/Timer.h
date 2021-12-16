@@ -53,24 +53,24 @@ public:
 	/// タイマーが開始しているかを取得
 	/// </summary>
 	/// <returns></returns>
-	bool GetIsStart() { return isStart; }
+	bool GetIsStart()const { return isStart; }
 
 	/// <summary>
 	/// 開始値を取得
 	/// </summary>
 	/// <returns></returns>
-	int GetStartTime() { return startTime; }
+	int GetStartTime()const { return startTime; }
 
 	/// <summary>
 	/// 終了値を取得
 	/// </summary>
 	/// <returns></returns>
-	int GetEndTime() { return endTime; }
+	int GetEndTime()const { return endTime; }
 
 	/// <summary>
 	/// 現在値を取得
 	/// </summary>
 	/// <returns></returns>
-	int GetNowTime() { return nowTime; }
+	int GetNowTime()const { return nowTime; }
 };
 

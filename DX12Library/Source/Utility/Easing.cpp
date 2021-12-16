@@ -254,7 +254,7 @@ void Easing::Reset()
 	paramTimer.Reset();
 }
 
-std::string Easing::GetFuncName(int type)
+const std::string& Easing::GetFuncName(int type)
 {
 	if (type < -1 || type > 29) {
 		return "NONE";

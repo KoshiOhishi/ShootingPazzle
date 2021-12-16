@@ -23,7 +23,7 @@ struct Quaternion
 	/// <param name="z"></param>
 	/// <param name="w"></param>
 	/// <returns>クォータニオン</returns>
-	static Quaternion CreateQuaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f);
+	static const Quaternion& CreateQuaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f);
 
 	/// <summary>
 	/// 任意軸まわりの回転の指定から作成したクォータニオンを返す
@@ -31,7 +31,7 @@ struct Quaternion
 	/// <param name="v">回転するベクトル</param>
 	/// <param name="angle">角度(Digrees)</param>
 	/// <returns>クォータニオン</returns>
-	static Quaternion CreateQuaternion(const Vector3& v, float angle);
+	static const Quaternion& CreateQuaternion(const Vector3& v, float angle);
 
 	/// <summary>
 	/// ベクトルを回転したクォータニオンを返す
@@ -39,42 +39,42 @@ struct Quaternion
 	/// <param name="v">回転するベクトル</param>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>クォータニオン</returns>
-	static Quaternion CreateQuaternion(const Vector3& v, const Quaternion& q);
+	static const Quaternion& CreateQuaternion(const Vector3& v, const Quaternion& q);
 
 	/// <summary>
 	/// 回転行列から作成したクォータニオンを返す
 	/// </summary>
 	/// <param name="m">回転行列</param>
 	/// <returns>クォータニオン</returns>
-	static Quaternion CreateQuaternion(const Matrix4& m);
+	static const Quaternion& CreateQuaternion(const Matrix4& m);
 
 	/// <summary>
 	/// 内積を求める
 	/// </summary>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>内積</returns>
-	float Dot(const Quaternion& q) const;
+	const float Dot(const Quaternion& q) const;
 
 	/// <summary>
 	/// ノルムを求める
 	/// </summary>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>ノルム(長さ)</returns>
-	float Length() const;
+	const float Length() const;
 
 	/// <summary>
 	/// 正規化する
 	/// </summary>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>正規化したクォータニオン</returns>
-	Quaternion& Normalize()const;
+	const Quaternion& Normalize()const;
 
 	/// <summary>
 	/// 共役四元数を求める
 	/// </summary>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>共役四元数</returns>
-	Quaternion& Conjugate()const;
+	const Quaternion& Conjugate()const;
 
 	/// <summary>
 	/// 球面補間したクォータニオンを返す
@@ -83,7 +83,7 @@ struct Quaternion
 	/// <param name="q2">終了クォータニオン</param>
 	/// <param name="t">パラメータ (0～1)</param>
 	/// <returns>クォータニオン</returns>
-	static Quaternion& SLerp(const Quaternion& q1, const Quaternion& q2, float t);
+	static const Quaternion& SLerp(const Quaternion& q1, const Quaternion& q2, float t);
 
 	/// <summary>
 	/// 線形補間したクォータニオンを返す
@@ -92,21 +92,21 @@ struct Quaternion
 	/// <param name="q2">終了クォータニオン</param>
 	/// <param name="t">パラメータ (0～1)</param>
 	/// <returns>クォータニオン</returns>
-	static Quaternion& Lerp(const Quaternion& q1, const Quaternion& q2, float t);
+	static const Quaternion& Lerp(const Quaternion& q1, const Quaternion& q2, float t);
 
 	/// <summary>
 	/// クォータニオンから回転した行列を返す
 	/// </summary>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>クォータニオン</returns>
-	static Matrix4 Rotate(const Quaternion& q);
+	static const Matrix4& Rotate(const Quaternion& q);
 
 	/// <summary>
 	/// 回転軸の算出
 	/// </summary>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>回転軸ベクトル</returns>
-	static Vector3 GetAxis(const Quaternion& q);
+	static const Vector3& GetAxis(const Quaternion& q);
 };
 
 //単項演算子オーバーロード

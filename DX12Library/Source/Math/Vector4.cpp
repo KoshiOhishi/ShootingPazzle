@@ -13,7 +13,7 @@ Vector4::Vector4(float x, float y, float z, float w)
 	this->w = w;
 }
 
-Vector4& Vector4::Zero()
+const Vector4& Vector4::Zero() const
 {
 	return Vector4();
 }

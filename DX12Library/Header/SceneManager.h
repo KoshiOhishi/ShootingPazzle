@@ -15,8 +15,8 @@ private:
 	static int sceneNum;
 
 public:
-	static void AddScene(Scene* scene, string sceneName);
-	static void SetScene(string sceneName);
+	static void AddScene(Scene* scene, const string& sceneName);
+	static void SetScene(const string& sceneName);
 	static void DeleteScene();
 
 	static void Initialize();

@@ -9,6 +9,8 @@
 #include <DirectXTex.h>
 #include <fbxsdk.h>
 #include "FbxLoader.h"
+#include "Vector2.h"
+#include "Vector3.h"
 
 struct Node
 {
@@ -51,7 +53,7 @@ public: //サブクラス
 	struct Material
 	{
 		//アルベド
-		DirectX::XMFLOAT3 baseColor = { 1,1,1 };
+		Vector3 baseColor = { 1,1,1 };
 		//金属度(0 or 1)
 		float metalness = 0.0f;
 		//鏡面反射度(0 ～ 1)
@@ -64,9 +66,6 @@ private: //エイリアス
 	//Microsoft::WRL::を省略
 	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	//DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using TexMetadata = DirectX::TexMetadata;
 	using ScratchImage = DirectX::ScratchImage;
@@ -81,9 +80,9 @@ public: //サブクラス
 	//頂点データ構造体
 	struct VertexPosNormalUVSkin
 	{
-		DirectX::XMFLOAT3 pos;	//xyz座標
-		DirectX::XMFLOAT3 normal;	//法線ベクトル
-		DirectX::XMFLOAT2 uv;	//uv座標
+		Vector3 pos;	//xyz座標
+		Vector3 normal;	//法線ベクトル
+		Vector2 uv;	//uv座標
 		UINT boneIndex[MAX_BONE_INDICES];	//ボーン　番号
 		float boneWeight[MAX_BONE_INDICES];	//ボーン　重み
 	};
@@ -91,11 +90,11 @@ public: //サブクラス
 	// 定数バッファ用データ構造体B1
 	struct ConstBufferDataB1
 	{
-		XMFLOAT3 ambient;	//アンビエント係数
+		Vector3 ambient;	//アンビエント係数
 		float pad1;			//パディング
-		XMFLOAT3 diffuse;	//ディフューズ係数
+		Vector3 diffuse;	//ディフューズ係数
 		float pad2;			//パディング
-		XMFLOAT3 specular;	//スペキュラー係数
+		Vector3 specular;	//スペキュラー係数
 		float alpha;		//アルファ
 	};
 
@@ -103,7 +102,7 @@ public: //サブクラス
 	struct ConstBufferDataMaterial
 	{
 		//アルベド
-		DirectX::XMFLOAT3 baseColor;
+		Vector3 baseColor;
 		//金属度
 		float metalness;
 		//鏡面反射度
@@ -144,13 +143,13 @@ public: //Getter
 	//シーン取得
 	FbxScene* GetFbxScene() { return fbxScene; }
 
-	const DirectX::XMFLOAT3& GetBaseColor() { return material.baseColor; }
+	const Vector3& GetBaseColor() { return material.baseColor; }
 	float GetMetalness() { return material.metalness; }
 	float GetSpecular() { return material.specular; }
 	float GetRoughness() { return material.roughness; }
 
 //Setter
-	void SetBaseColor(const DirectX::XMFLOAT3& _baseColor) { material.baseColor = _baseColor; }
+	void SetBaseColor(const Vector3& _baseColor) { material.baseColor = _baseColor; }
 	void SetMetalness(float _metalness) { material.metalness = _metalness; }
 	void SetSpecular(float _specular) { material.specular = _specular; }
 	void SetRoughness(float _roughness) { material.roughness = _roughness; }
@@ -175,11 +174,11 @@ private: //メンバ変数
 	std::vector<unsigned short> indices;
 
 	//アンビエント係数
-	DirectX::XMFLOAT3 ambient = { 1,1,1 };
+	Vector3 ambient = { 1,1,1 };
 	//ディフューズ係数
-	DirectX::XMFLOAT3 diffuse = { 1,1,1 };
+	Vector3 diffuse = { 1,1,1 };
 	//スぺキュラ係数
-	DirectX::XMFLOAT3 specular = { 0, 0, 0 };
+	Vector3 specular = { 0, 0, 0 };
 	//アルファ
 	float alpha = 1;
 	//テクスチャメタデータ

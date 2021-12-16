@@ -120,9 +120,9 @@ private:
 	int number = -1;
 
 private:
-	void FirstInit(wstring str);
-	void CreateFontTexture(FontData fontData, wstring str);
-	bool IsReCreate(wstring str);
+	void Initialize(const wstring& str);
+	void CreateFontTexture(const FontData& fontData, const wstring& str);
+	bool IsReCreate(const wstring& str);
 
 public:
 	/// <summary>
@@ -134,7 +134,7 @@ public:
 	/// フォント情報をセット
 	/// </summary>
 	/// <param name=""></param>
-	void SetFontData(FontData fontData);
+	void SetFontData(const FontData& fontData);
 
 	/// <summary>
 	/// 文字列描画
@@ -143,7 +143,7 @@ public:
 	/// <param name="y">Y座標 (2D)</param>
 	/// <param name="str">文字列</param>
 	/// <param name="fontData">設定済フォントデータ構造体</param>
-	void DrawString(float x, float y, wstring str);
+	void DrawString(float x, float y, const wstring& str);
 
 #pragma region Setter
 	/// <summary>
@@ -170,13 +170,13 @@ public:
 	/// 文字色を返す (各成分0.0～1.0)
 	/// </summary>
 	/// <returns></returns>
-	const XMFLOAT4& GetColor() { return color; }
+	const XMFLOAT4& GetColor()const { return color; }
 
 	/// <summary>
 	/// 文字色を返す (各成分0～255)
 	/// </summary>
 	/// <returns></returns>
-	const XMFLOAT4& GetColorAs0To255() {
+	const XMFLOAT4& GetColorAs0To255()const {
 		XMFLOAT4 c = { color.x * 255, color.y * 255, color.z * 255, color.w * 255 };
 		return c;
 	}

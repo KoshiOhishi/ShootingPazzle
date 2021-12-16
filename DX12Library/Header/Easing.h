@@ -96,14 +96,14 @@ public:
 	/// 開始したかどうかを返す
 	/// </summary>
 	/// <returns>開始したかどうか</returns>
-	bool IsStart() { return paramTimer.GetIsStart(); }
+	bool IsStart()const { return paramTimer.GetIsStart(); }
 
 	/// <summary>
 	/// 関数によって算出された値を取得
 	/// </summary>
 	/// <returns>値</returns>
-	double GetValue() { return value; }
+	double GetValue()const { return value; }
 
-	static std::string GetFuncName(int type);
+	static const std::string& GetFuncName(int type);
 };
 

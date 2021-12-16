@@ -13,33 +13,33 @@ struct Vector2 : public DirectX::XMFLOAT2
 	/// ノルムを求める
 	/// </summary>
 	/// <returns>ノルム(長さ)</returns>
-	float Length() const;
+	const float Length() const;
 
 	/// <summary>
 	/// 正規化したベクトルを返す
 	/// </summary>
 	/// <returns>正規化したベクトル</returns>
-	Vector2& Normalize() const;
+	const Vector2& Normalize() const;
 
 	/// <summary>
 	/// 内積を求める
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns>内積</returns>
-	float Dot(const Vector2& v) const;
+	const float Dot(const Vector2& v) const;
 
 	/// <summary>
 	/// 外積を求める
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns>外積</returns>
-	float Cross(const Vector2& v) const;
+	const float Cross(const Vector2& v) const;
 
 	/// <summary>
 	/// 零ベクトルを取得
 	/// </summary>
 	/// <returns></returns>
-	Vector2& Zero();
+	const Vector2& Zero() const;
 
 	//単項演算子オーバーロード
 	Vector2 operator+() const;

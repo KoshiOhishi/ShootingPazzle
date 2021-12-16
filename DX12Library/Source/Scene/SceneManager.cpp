@@ -7,13 +7,13 @@ SceneManager::string SceneManager::nowScene;
 SceneManager::vector<Scene*> SceneManager::scenes;
 int SceneManager::sceneNum;
 
-void SceneManager::AddScene(Scene * scene, string sceneName)
+void SceneManager::AddScene(Scene* scene, const string& sceneName)
 {
 	scene->SetSceneName(sceneName);
 	scenes.push_back(scene);
 }
 
-void SceneManager::SetScene(string sceneName)
+void SceneManager::SetScene(const string& sceneName)
 {
 	nowScene = sceneName;
 	for (int i = 0; i < scenes.size(); i++)

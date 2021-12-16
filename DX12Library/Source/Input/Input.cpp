@@ -101,7 +101,7 @@ bool Keyboard::IsKeyPush(int keynum)
 	return false;
 }
 
-Vector3 Mouse::CalcPosScreenToWorld(float fZ)
+const Vector3& Mouse::CalcPosScreenToWorld(float fZ)
 {
 	//‹ts—ñ‚ðŽZo
 	Matrix4 invView = DirectX::XMMatrixInverse(nullptr, pCamera->GetViewMatrix());
@@ -203,7 +203,7 @@ bool Mouse::IsMouseButtonPush(int mouseButtonNum)
 	return false;
 }
 
-Vector2 Mouse::GetMouseMove()
+const Vector2& Mouse::GetMouseMove()
 {
 	return Vector2((float)mouseState.lX, mouseState.lY);
 }
@@ -213,7 +213,7 @@ float Mouse::GetMouseWheelMove()
 	return (float)mouseState.lZ;
 }
 
-Vector2 Mouse::GetMousePos(bool isRelative)
+const Vector2& Mouse::GetMousePos(bool isRelative)
 {
 	POINT p{};
 	GetCursorPos(&p);
@@ -232,7 +232,7 @@ Vector2 Mouse::GetMousePos(bool isRelative)
 	return Vector2(p.x, p.y);
 }
 
-void Mouse::SetMousePos(Vector2 pos, bool isRelative)
+void Mouse::SetMousePos(const Vector2& pos, bool isRelative)
 {
 	int posX = (int)pos.x;
 	int posY = (int)pos.y;

@@ -14,39 +14,39 @@ struct Vector3 : public DirectX::XMFLOAT3
 	/// ノルムを求める
 	/// </summary>
 	/// <returns>ノルム(長さ)</returns>
-	float Length() const;
+	const float Length() const;
 
 	/// <summary>
 	/// ノルムの2乗を返す (当たり判定用)
 	/// </summary>
 	/// <returns></returns>
-	float LengthSq() const;
+	const float LengthSq() const;
 
 	/// <summary>
 	/// 正規化したベクトルを返す
 	/// </summary>
 	/// <returns>正規化したベクトル</returns>
-	Vector3& Normalize() const;
+	const Vector3& Normalize() const;
 
 	/// <summary>
 	/// 内積を求める
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns>内積</returns>
-	float Dot(const Vector3& v) const;
+	const float Dot(const Vector3& v) const;
 
 	/// <summary>
 	/// 外積を求める
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns>外積</returns>
-	Vector3& Cross(const Vector3& v) const;
+	const Vector3& Cross(const Vector3& v) const;
 
 	/// <summary>
 	/// 零ベクトルを取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3& Zero();
+	const Vector3& Zero() const;
 
 	//単項演算子オーバーロード
 	Vector3 operator+() const;

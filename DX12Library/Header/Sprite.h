@@ -3,15 +3,14 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <unordered_map>
+#include "Vector4.h"
 #include "Vector3.h"
+#include "Vector2.h"
 #pragma comment(lib, "d3d12.lib")
 
 class Sprite
 {
 public:
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	//using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 	template <typename T>
@@ -23,12 +22,12 @@ public:
 
 	{
 		Vector3 pos;	//xyz座標
-		XMFLOAT2 uv;	//uv座標
+		Vector2 uv;	//uv座標
 	};
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
-		XMFLOAT4 color; // 色 (RGBA)
+		Vector4 color; // 色 (RGBA)
 		XMMATRIX mat;	//3D変換行列
 	};
 
@@ -105,11 +104,11 @@ public:
 //メンバ変数
 protected:
 	float rotation = 0.0f;		//Z軸回りの回転角
-	XMVECTOR position{};			//座標
+	Vector2 position{};			//座標
 	XMMATRIX matWorld{};			//ワールド行列
-	XMFLOAT4 color = { 1,1,1,1 };	//色
+	Vector4 color = { 1,1,1,1 };	//色
 	UINT texNumber;				//テクスチャ番号
-	XMFLOAT2 anchorpoint{};		//アンカーポイント
+	Vector2 anchorpoint{};		//アンカーポイント
 	float width = 0;		//横幅
 	float height = 0;		//縦幅
 	bool isFlipX = false;		//左右入れ替え
@@ -130,46 +129,43 @@ public:
 	/// 座標を取得する
 	/// </summary>
 	/// <returns>座標</returns>
-	XMFLOAT2 GetPosition()
-	{
-		return { DirectX::XMVectorGetX(position), DirectX::XMVectorGetY(position) };
-	}
+	const Vector2& GetPosition() const { return position; }
 
 	/// <summary>
 	/// 色情報を取得する
 	/// </summary>
 	/// <returns>色情報</returns>
-	XMFLOAT4 GetColor() { return color; }
+	const Vector4& GetColor() const { return color; }
 
 	/// <summary>
 	/// Z軸周りの回転角を取得する
 	/// </summary>
 	/// <returns>Z軸周りの回転角</returns>
-	float GetRotation() { return rotation; }
+	const float GetRotation() const { return rotation; }
 
 	/// <summary>
 	/// スケールを取得する
 	/// </summary>
 	/// <returns>スケール</returns>
-	XMFLOAT2 GetScale() { return { width,height }; }
+	const Vector2& GetScale() { return { width,height }; }
 
 	/// <summary>
 	/// 横反転フラグを取得する
 	/// </summary>
 	/// <returns>横反転フラグ</returns>
-	bool GetIsFlipX() { return isFlipX; }
+	const bool GetIsFlipX() { return isFlipX; }
 
 	/// <summary>
 	/// 縦反転フラグを取得する
 	/// </summary>
 	/// <returns>縦反転フラグ</returns>
-	bool GetIsFlipY() { return isFlipY; }
+	const bool GetIsFlipY() { return isFlipY; }
 
 	/// <summary>
 	/// 表示フラグを取得する
 	/// </summary>
 	/// <returns>表示フラグ</returns>
-	bool GetIsDisplay() { return isDisplay; }
+	const bool GetIsDisplay() { return isDisplay; }
 
 #pragma endregion
 
@@ -178,50 +174,50 @@ public:
 	/// 座標をセットする
 	/// </summary>
 	/// <param name="pos">座標</param>
-	void SetPosition(XMFLOAT2 pos);
+	void SetPosition(const Vector2& pos);
 
 	/// <summary>
 	/// 色情報をセットする
 	/// </summary>
 	/// <param name="color">色情報</param>
-	void SetColor(XMFLOAT4 color);
+	void SetColor(const Vector4& color);
 
 	/// <summary>
 	/// Z軸周りの回転角をセットする
 	/// </summary>
 	/// <param name="rotation">Z軸周りの回転角</param>
-	void SetRotation(float rotation);
+	void SetRotation(const float rotation);
 
 	/// <summary>
 	/// スケールをセットする
 	/// </summary>
 	/// <param name="scale">スケール</param>
-	void SetScale(XMFLOAT2 scale);
+	void SetScale(const Vector2& scale);
 
 	/// <summary>
 	/// 横反転フラグをセットする
 	/// </summary>
 	/// <param name="isFlipX">横反転フラグ</param>
-	void SetIsFlipX(bool isFlipX);
+	void SetIsFlipX(const bool isFlipX);
 
 	/// <summary>
 	/// 縦反転フラグをセットする
 	/// </summary>
 	/// <param name="isFlipY">縦反転フラグ</param>
-	void SetIsFlipY(bool isFlipY);
+	void SetIsFlipY(const bool isFlipY);
 
 	/// <summary>
 	/// 表示フラグをセットする
 	/// </summary>
 	/// <param name="isDisplay">表示フラグ</param>
-	void SetIsDisplay(bool isDisplay);
+	void SetIsDisplay(const bool isDisplay);
 
 	/// <summary>
 	/// 画像をセット
 	/// </summary>
 	/// <param name="filename">ファイル名</param>
 	/// <param name="loadNewerIfNotFound">画像が見つからなかったときに新しく読み込むかどうか</param>
-	void SetTexture(const wchar_t* filename, bool loadNewerIfNotFound = true);
+	void SetTexture(const wchar_t* filename, const bool loadNewerIfNotFound = true);
 
 	/// <summary>
 	/// 最初に設定されるべき値のセット
@@ -230,7 +226,7 @@ public:
 	/// <param name="posY">Y座標</param>
 	/// <param name="width">横幅</param>
 	/// <param name="height">縦幅</param>
-	void SetInitParams(float posX, float posY, float width, float height);
+	void SetInitParams(const float posX, const float posY, const float width, const float height);
 
 	/// <summary>
 	/// 描画範囲(レクタングル)をセット
@@ -239,13 +235,13 @@ public:
 	/// <param name="tex_y">切り取りy座標</param>
 	/// <param name="tex_width">切り取り横幅(px)</param>
 	/// <param name="tex_height">	切り取り縦幅(px)</param>
-	void SetDrawRectangle(float tex_x, float tex_y, float tex_width, float tex_height);
+	void SetDrawRectangle(const float tex_x, const float tex_y, const float tex_width, const float tex_height);
 
 	/// <summary>
 	/// アンカーポイントをセットする
 	/// </summary>
 	/// <param name="anchorpoint">アンカーポイント</param>
-	void SetAnchorpoint(XMFLOAT2 anchorpoint);
+	void SetAnchorpoint(const Vector2& anchorpoint);
 #pragma endregion
 };
 

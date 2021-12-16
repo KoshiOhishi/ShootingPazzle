@@ -251,7 +251,7 @@ void Sprite::Initialize()
 	//定数バッファにデータを転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->color = XMFLOAT4(1, 1, 1, 1);		//色指定 (RGBA)
+	constMap->color = Vector4(1, 1, 1, 1);		//色指定 (RGBA)
 	constMap->mat = XMMatrixOrthographicOffCenterLH(
 		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//平行投影行列の合成
 	constBuff->Unmap(0, nullptr);
@@ -357,7 +357,7 @@ void Sprite::Draw()
 	//ワールド行列の更新
 	matWorld = XMMatrixIdentity();
 	matWorld *= XMMatrixRotationZ(XMConvertToRadians(rotation));
-	matWorld *= XMMatrixTranslationFromVector(position);
+	matWorld *= XMMatrixTranslation(position.x, position.y, 0);
 
 	//行列の転送
 	ConstBufferData* constMap = nullptr;
@@ -391,19 +391,19 @@ void Sprite::Draw()
 	DX12Util::GetCmdList()->DrawInstanced(4, 1, 0, 0);
 }
 
-void Sprite::SetAnchorpoint(XMFLOAT2 anchorpoint)
+void Sprite::SetAnchorpoint(const Vector2& anchorpoint)
 {
 	this->anchorpoint = anchorpoint;
 	UpdateVertBuff();
 }
 
-void Sprite::SetIsDisplay(bool isDisplay)
+void Sprite::SetIsDisplay(const bool isDisplay)
 {
 	this->isDisplay = isDisplay;
 }
 
 
-void Sprite::SetTexture(const wchar_t* filename, bool loadNewerIfNotFound)
+void Sprite::SetTexture(const wchar_t* filename, const bool loadNewerIfNotFound)
 {
 	if (loadedTextureList.find(filename) != loadedTextureList.end())
 	{
@@ -438,43 +438,43 @@ void Sprite::SetTexture(const wchar_t* filename, bool loadNewerIfNotFound)
 	UpdateVertBuff();
 }
 
-void Sprite::SetPosition(XMFLOAT2 pos)
+void Sprite::SetPosition(const Vector2& pos)
 {
-	position = DirectX::XMVectorSet(pos.x, pos.y, 0, 0);
+	position = pos;
 	UpdateVertBuff();
 }
 
-void Sprite::SetColor(XMFLOAT4 color)
+void Sprite::SetColor(const Vector4& color)
 {
-	color = color;
+	this->color = color;
 	UpdateVertBuff();
 }
 
-void Sprite::SetRotation(float rotation)
+void Sprite::SetRotation(const float rotation)
 {
-	rotation = rotation;
+	this->rotation = rotation;
 	UpdateVertBuff();
 }
 
-void Sprite::SetScale(XMFLOAT2 scale)
+void Sprite::SetScale(const Vector2& scale)
 {
 	width = scale.x; height = scale.y;
 	UpdateVertBuff();
 }
 
-void Sprite::SetIsFlipX(bool isFlipX)
+void Sprite::SetIsFlipX(const bool isFlipX)
 {
 	this->isFlipX = isFlipX;
 	UpdateVertBuff();
 }
 
-void Sprite::SetIsFlipY(bool isFlipY)
+void Sprite::SetIsFlipY(const bool isFlipY)
 {
 	this->isFlipY = isFlipY;
 	UpdateVertBuff();
 }
 
-void Sprite::SetDrawRectangle(float tex_x, float tex_y, float tex_width, float tex_height)
+void Sprite::SetDrawRectangle(const float tex_x, const float tex_y, const float tex_width, const float tex_height)
 {
 	this->tex_x = tex_x;
 	this->tex_y = tex_y;

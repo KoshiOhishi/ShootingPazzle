@@ -62,37 +62,37 @@ Quaternion::Quaternion(const Matrix4& m)
 	*this = result;
 }
 
-Quaternion Quaternion::CreateQuaternion(float x, float y, float z, float w)
+const Quaternion& Quaternion::CreateQuaternion(float x, float y, float z, float w)
 {
 	return Quaternion(x, y, z, w);
 }
 
-Quaternion Quaternion::CreateQuaternion(const Vector3& v, float angle)
+const Quaternion& Quaternion::CreateQuaternion(const Vector3& v, float angle)
 {
 	return Quaternion(v, angle);
 }
 
-Quaternion Quaternion::CreateQuaternion(const Vector3& v, const Quaternion& q)
+const Quaternion& Quaternion::CreateQuaternion(const Vector3& v, const Quaternion& q)
 {
 	return Quaternion(v, q);
 }
 
-Quaternion Quaternion::CreateQuaternion(const Matrix4& m)
+const Quaternion& Quaternion::CreateQuaternion(const Matrix4& m)
 {
 	return Quaternion(m);
 }
 
-float Quaternion::Dot(const Quaternion& q)const
+const float Quaternion::Dot(const Quaternion& q)const
 {
 	return x * q.x + y * q.y + z * q.z + w * q.w;
 }
 
-float Quaternion::Length()const
+const float Quaternion::Length()const
 {
 	return sqrt(this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w);
 }
 
-Quaternion& Quaternion::Normalize()const
+const Quaternion& Quaternion::Normalize()const
 {
 	Quaternion result = *this;
 	float len = this->Length();
@@ -102,13 +102,13 @@ Quaternion& Quaternion::Normalize()const
 	return result;
 }
 
-Quaternion& Quaternion::Conjugate()const
+const Quaternion& Quaternion::Conjugate()const
 {
 	Quaternion result{ -x,-y,-z,w };
 	return result;
 }
 
-Quaternion& Quaternion::SLerp(const Quaternion& q1, const Quaternion& q2, float t)
+const Quaternion& Quaternion::SLerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
 	float cos = q1.Dot(q2);
 	Quaternion t2 = q2;
@@ -126,7 +126,7 @@ Quaternion& Quaternion::SLerp(const Quaternion& q1, const Quaternion& q2, float 
 	return q1 * k0 + t2 * k1;
 }
 
-Quaternion& Quaternion::Lerp(const Quaternion & q1, const Quaternion & q2, float t)
+const Quaternion& Quaternion::Lerp(const Quaternion & q1, const Quaternion & q2, float t)
 {
 	float cos = q1.Dot(q2);
 	Quaternion t2 = q2;
@@ -139,7 +139,7 @@ Quaternion& Quaternion::Lerp(const Quaternion & q1, const Quaternion & q2, float
 	return q1 * k0 + t2 * k1;
 }
 
-Matrix4 Quaternion::Rotate(const Quaternion & q)
+const Matrix4& Quaternion::Rotate(const Quaternion & q)
 {
 	float xx = q.x * q.x * 2.0f;
 	float yy = q.y * q.y * 2.0f;
@@ -159,7 +159,7 @@ Matrix4 Quaternion::Rotate(const Quaternion & q)
 	return result;
 }
 
-Vector3 Quaternion::GetAxis(const Quaternion & q)
+const Vector3& Quaternion::GetAxis(const Quaternion & q)
 {
 	Vector3 result;
 
