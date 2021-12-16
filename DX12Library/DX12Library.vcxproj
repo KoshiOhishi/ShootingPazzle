@@ -75,27 +75,27 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,12 +116,8 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Header" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)imgui\*.h" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(SolutionDir)Game\DX12Library\Shader" /i /y /h /e
-xcopy "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Game\DX12Library\Debug\" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\include" "$(SolutionDir)Game\DX12Library\fbx_sdk\include" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\lib" "$(SolutionDir)Game\DX12Library\fbx_sdk\lib" /i /y /h /e</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -147,12 +143,8 @@ xcopy "$(ProjectDir)lib\fbx_sdk\lib" "$(SolutionDir)Game\DX12Library\fbx_sdk\lib
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Header" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)imgui\*.h" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(SolutionDir)Game\DX12Library\Shader" /i /y /h /e
-xcopy "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Game\DX12Library\Debug\" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\include" "$(SolutionDir)Game\DX12Library\fbx_sdk\include" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\lib" "$(SolutionDir)Game\DX12Library\fbx_sdk\lib" /i /y /h /e</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)DirectXTex\Bin\Desktop_2019_Win10\x64\Debug;%(AdditionalLibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -182,12 +174,8 @@ xcopy "$(ProjectDir)lib\fbx_sdk\lib" "$(SolutionDir)Game\DX12Library\fbx_sdk\lib
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Header" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)imgui\*.h" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(SolutionDir)Game\DX12Library\Shader" /i /y /h /e
-xcopy "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Game\DX12Library\Release\" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\include" "$(SolutionDir)Game\DX12Library\fbx_sdk\include" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\lib" "$(SolutionDir)Game\DX12Library\fbx_sdk\lib" /i /y /h /e</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -217,12 +205,8 @@ xcopy "$(ProjectDir)lib\fbx_sdk\lib" "$(SolutionDir)Game\DX12Library\fbx_sdk\lib
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Header" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)imgui\*.h" "$(SolutionDir)Game\DX12Library\Header" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(SolutionDir)Game\DX12Library\Shader" /i /y /h /e
-xcopy "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Game\DX12Library\Release\" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\include" "$(SolutionDir)Game\DX12Library\fbx_sdk\include" /i /y /h /e
-xcopy "$(ProjectDir)lib\fbx_sdk\lib" "$(SolutionDir)Game\DX12Library\fbx_sdk\lib" /i /y /h /e</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)DirectXTex\Bin\Desktop_2019_Win10\x64\Debug;%(AdditionalLibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
