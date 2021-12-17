@@ -23,8 +23,8 @@ void GamePlay::Initialize()
 
 	//カメラ初期化
 	camera.Initialize();
-	camera.SetPositionAndDistance({ 0,100.0f,-40.0f }, 15.0f);
-	camera.SetRotation(75, 0, 0);
+	camera.SetPositionAndDistance({ 50,50.0f,-40.0f }, 15.0f);
+	camera.SetRotation(60, -60, 0);
 
 	//カメラをセット
 	Object3D::SetCamera(&camera);

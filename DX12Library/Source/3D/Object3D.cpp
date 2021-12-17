@@ -393,11 +393,17 @@ void Object3D::Draw()
 		if (objModel == nullptr) {
 			return;
 		}
+		//Todo:ここなんとかする
+
+		//デスクリプタヒープのセット
+		ID3D12DescriptorHeap* ppHeaps[] = { objModel->descHeapSRV.Get() };
+		DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+		//ルートシグネチャの設定
+		DX12Util::GetCmdList()->SetGraphicsRootSignature(objRootsignature.Get());
 
 		//パイプラインステートの設定
 		DX12Util::GetCmdList()->SetPipelineState(objPipelinestate.Get());
-		//ルートシグネチャの設定
-		DX12Util::GetCmdList()->SetGraphicsRootSignature(objRootsignature.Get());
 
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());

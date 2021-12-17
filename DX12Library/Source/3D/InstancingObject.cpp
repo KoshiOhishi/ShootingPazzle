@@ -338,10 +338,17 @@ void InstancingObjectDraw::Draw()
 			return;
 		}
 
-		//パイプラインステートの設定
-		DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
+		//Todo:ここなんとかする
+
+		//デスクリプタヒープのセット
+		ID3D12DescriptorHeap* ppHeaps[] = { objModel->descHeapSRV.Get() };
+		DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
 		//ルートシグネチャの設定
 		DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingObjRootsignature.Get());
+
+		//パイプラインステートの設定
+		DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
 
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());

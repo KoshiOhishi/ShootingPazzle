@@ -3,6 +3,8 @@
 #include "Matrix4.h"
 #include <cmath>
 
+//Todo:
+
 Quaternion::Quaternion(float x, float y, float z, float w)
 {
 	this->x = x;

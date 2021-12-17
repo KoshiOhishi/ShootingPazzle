@@ -102,6 +102,7 @@ private:
 	//頂点座標スムージング用データ
 	std::unordered_map<unsigned short, std::vector<unsigned short>> smoothData;
 
+public:
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 

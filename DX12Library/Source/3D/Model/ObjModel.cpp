@@ -26,9 +26,9 @@ void ObjModel::Draw(int instancingCount)
 	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
 
 
-	//デスクリプタヒープのセット
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
-	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	////デスクリプタヒープのセット
+	//ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
+	//DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// シェーダリソースビューをセット
 	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(4, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
