@@ -103,7 +103,8 @@
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
+xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e
+xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -124,7 +125,8 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
+xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e
+xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -150,7 +152,8 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
+xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e
+xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -176,7 +179,8 @@ xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
-xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e</Command>
+xcopy "$(ProjectDir)Shader" "$(TargetDir)Shader" /i /y /h /e
+xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

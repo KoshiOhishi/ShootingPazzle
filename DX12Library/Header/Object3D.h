@@ -23,7 +23,9 @@ class BaseCollider;
 enum ObjectType
 {
 	OBJECTTYPE_OBJ,
-	OBJECTTYPE_FBX
+	OBJECTTYPE_FBX,
+	OBJECTTYPE_INSTANCING_OBJ,
+	OBJECTTYPE_INSTANCING_FBX,
 };
 
 struct ConstBufferDataShare
@@ -81,7 +83,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// デスクリプタヒープ生成
 	/// </summary>
-	static void CreateDescHeap();
+	static void StaticInitialize();
 	
 	/// <summary>
 	/// グラフィックスパイプラインの生成
@@ -91,7 +93,7 @@ public: //静的メンバ関数
 	static void CreateGraphicsPipeline(int objectType, PipelineData& pipelineData);
 
 	//getter
-	static ID3D12DescriptorHeap* GetDescHeap() { return Object3D::basicDescHeap.Get(); }
+	static ID3D12DescriptorHeap* GetDescHeap() { return Object3D::descHeapSRV.Get(); }
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { Object3D::device = device; }
@@ -105,8 +107,8 @@ protected: //静的メンバ変数
 	static Camera* camera;
 	//ライト
 	static Light* light;
-	// デスクリプタヒープ
-	static ComPtr <ID3D12DescriptorHeap> basicDescHeap;
+	//SRV用デスクリプタヒープ
+	static ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
 	//FBXルートシグネチャ
 	static ComPtr<ID3D12RootSignature> fbxRootsignature;
@@ -117,6 +119,8 @@ protected: //静的メンバ変数
 	static ComPtr<ID3D12RootSignature> objRootsignature;
 	//OBJパイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> objPipelinestate;
+
+	static int prevDrawObjectType;
 
 public: //メンバ関数
 
@@ -139,6 +143,11 @@ public: //メンバ関数
 	/// 毎フレーム処理
 	/// </summary>
 	virtual void Update();
+
+	/// <summary>
+	/// オブジェクト描画前処理
+	/// </summary>
+	static void BeginDraw();
 
 	/// <summary>
 	/// 描画
@@ -226,7 +235,7 @@ public:
 	/// 色(RGBA)を0～255の数値で取得する
 	/// </summary>
 	/// <returns>色(RGBA)、0～255の範囲</returns>
-	const Vector4& GetColorAs0To255() const {
+	const Vector4 GetColorAs0To255() const {
 		Vector4 c = { color.x * 255,color.y * 255 ,color.z * 255 ,color.w * 255 };
 		return c;
 	}

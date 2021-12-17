@@ -17,7 +17,7 @@ const float Vector2::Length() const
 	return sqrt(x * x + y * y);
 }
 
-const Vector2& Vector2::Normalize() const
+const Vector2 Vector2::Normalize() const
 {
 	float len = Length();
 	Vector2 temp(this->x, this->y);
@@ -38,7 +38,7 @@ const float Vector2::Cross(const Vector2& v) const
 	return x * v.y - y * v.x;
 }
 
-const Vector2& Vector2::Zero() const
+const Vector2 Vector2::Zero() const
 {
 	return Vector2();
 }

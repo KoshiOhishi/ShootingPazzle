@@ -25,13 +25,14 @@ void ObjModel::Draw(int instancingCount)
 	//定数バッファのセット
 	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
 
-
-	////デスクリプタヒープのセット
-	//ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
-	//DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
 	// シェーダリソースビューをセット
-	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(4, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(4, 
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			Object3D::GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
+			texNumber,
+			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		)
+	);
 
 	//描画コマンド
 	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), instancingCount, 0, 0, 0);
@@ -156,6 +157,10 @@ void ObjModel::CreateFromOBJ(const std::string& modelname, bool smoothing)
 	}
 
 	CreateBuffers();
+
+	positions.clear();
+	normals.clear();
+	texcoords.clear();
 }
 
 void ObjModel::LoadMaterial(const std::string& directoryPath, const std::string& filename)
@@ -422,13 +427,6 @@ void ObjModel::CreateBuffers()
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeof(indices[0]) * indices.size();
 
-	//SRV用デスクリプタヒープ生成
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダーから見えるように
-	descHeapDesc.NumDescriptors = 1;//テクスチャ枚数
-	result = DX12Util::GetDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(descHeapSRV.ReleaseAndGetAddressOf()));//生成
-
 	//シェーダリソースビュー(SRV)生成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
 	D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
@@ -440,7 +438,11 @@ void ObjModel::CreateBuffers()
 
 	DX12Util::GetDevice()->CreateShaderResourceView(texBuff.Get(), //ビューと関連付けるバッファ
 		&srvDesc, //テクスチャ設定情報
-		descHeapSRV->GetCPUDescriptorHandleForHeapStart() //ヒープの先頭アドレス
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			Object3D::GetDescHeap()->GetCPUDescriptorHandleForHeapStart(),
+			loadCount,
+			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		)
 	);
 
 	//定数バッファの作成
@@ -461,6 +463,7 @@ void ObjModel::CreateBuffers()
 	constMap1->alpha = material.alpha;
 	constBuffB1->Unmap(0, nullptr);
 
+	texNumber = loadCount;
 	loadCount++;
 }
 

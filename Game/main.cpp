@@ -101,7 +101,7 @@ void Initialize(){
 	Object3D::SetDevice(DX12Util::GetDevice());
 
 	//ヒープ生成
-	Object3D::CreateDescHeap();
+	Object3D::StaticInitialize();
 #pragma region FBXパイプライン生成
 	{
 		//グラフィックパイプライン生成

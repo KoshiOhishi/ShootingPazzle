@@ -174,13 +174,12 @@ void Editor::Draw()
 	DX12Util::ClearDepthBuffer();
 
 	//オブジェクト描画ここから
-
+	Object3D::BeginDraw();
 	DrawEdit();
 
 	//オブジェクト描画ここまで
 
 	//前景スプライト描画ここから
-	DebugText::DrawAll();
 	ImguiHelper::Draw();
 
 	//前景スプライト描画ここまで

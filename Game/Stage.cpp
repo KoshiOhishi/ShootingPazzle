@@ -23,10 +23,6 @@ Stage::~Stage()
 
 void Stage::LoadStage(std::string filename)
 {
-	NormalFloor::StaticInitialize();
-	TurnFloor::StaticInitialize();
-	HoleFloor::StaticInitialize();
-	BreakFloor::StaticInitialize();
 
 	//ƒf[ƒ^‰Šú‰»
 	for (int i = 0; i < blocks.size(); i++) {
@@ -131,6 +127,7 @@ void Stage::Draw()
 	for (int i = 0; i < 4; i++) {
 		TurnFloor::ResetIndex(i);
 	}
+	BreakFloor::ResetIndex();
 }
 
 void Stage::InsertHole()

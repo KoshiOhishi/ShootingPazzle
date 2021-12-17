@@ -23,7 +23,7 @@ const float Vector3::LengthSq() const
 	return (x * x + y * y + z * z);
 }
 
-const Vector3& Vector3::Normalize() const
+const Vector3 Vector3::Normalize() const
 {
 	float len = Length();
 	Vector3 temp(this->x, this->y, this->z);
@@ -39,13 +39,13 @@ const float Vector3::Dot(const Vector3& v) const
 	return x * v.x + y * v.y + z * v.z;
 }
 
-const Vector3& Vector3::Cross(const Vector3& v) const
+const Vector3 Vector3::Cross(const Vector3& v) const
 {
 	Vector3 temp(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 	return temp;
 }
 
-const Vector3& Vector3::Zero() const
+const Vector3 Vector3::Zero() const
 {
 	return Vector3();
 }

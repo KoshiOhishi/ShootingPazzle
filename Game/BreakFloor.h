@@ -52,5 +52,6 @@ public:
 		else return "HoleFloor";
 	}
 
+	static void ResetIndex() { instancingObjectDraw.ResetIndex(); }
 };
 

@@ -33,7 +33,7 @@ public:
 	void Update() override;
 
 	/// <summary>
-	/// ‚·‚×‚Ä•`‰æ
+	/// •`‰æ
 	/// </summary>
 	static void Draw(int index = -1);
 

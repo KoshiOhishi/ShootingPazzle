@@ -19,7 +19,7 @@ struct Vector2 : public DirectX::XMFLOAT2
 	/// 正規化したベクトルを返す
 	/// </summary>
 	/// <returns>正規化したベクトル</returns>
-	const Vector2& Normalize() const;
+	const Vector2 Normalize() const;
 
 	/// <summary>
 	/// 内積を求める
@@ -39,7 +39,7 @@ struct Vector2 : public DirectX::XMFLOAT2
 	/// 零ベクトルを取得
 	/// </summary>
 	/// <returns></returns>
-	const Vector2& Zero() const;
+	const Vector2 Zero() const;
 
 	//単項演算子オーバーロード
 	Vector2 operator+() const;

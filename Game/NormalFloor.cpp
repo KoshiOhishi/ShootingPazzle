@@ -7,6 +7,7 @@ ObjModel NormalFloor::modelBox;
 void NormalFloor::CreateModel()
 {
     //ÉÇÉfÉãê∂ê¨
+    //modelBox.CreateFromOBJ("NormalFloor");
     modelBox.CreateFromOBJ("NormalFloor");
 }
 

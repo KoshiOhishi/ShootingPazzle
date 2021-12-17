@@ -256,7 +256,7 @@ void InstancingObjectDraw::Update()
 	matWorld *= matRot;				//ワールド行列に回転を反映
 	matWorld *= matTrans;			//ワールド行列に平行移動を反映
 
-	if (objectType == OBJECTTYPE_OBJ) {
+	if (objectType == OBJECTTYPE_INSTANCING_OBJ) {
 
 		//ビュープロジェクション行列
 		XMMATRIX matViewProjection = camera->GetViewProjection();
@@ -274,7 +274,7 @@ void InstancingObjectDraw::Update()
 			constBuffShare->Unmap(0, nullptr);
 		}
 	}
-	else if (objectType == OBJECTTYPE_FBX) {
+	else if (objectType == OBJECTTYPE_INSTANCING_FBX) {
 
 		//ビュープロジェクション行列
 		XMMATRIX matViewProjection = camera->GetViewProjection();
@@ -332,23 +332,22 @@ void InstancingObjectDraw::Update()
 
 void InstancingObjectDraw::Draw()
 {
-	if (objectType == OBJECTTYPE_OBJ) {
+	if (index == 0) {
+		return;
+	}
+
+	if (objectType == OBJECTTYPE_INSTANCING_OBJ) {
 		//モデルの割り当てがなければ描画しない
 		if (objModel == nullptr) {
 			return;
 		}
 
-		//Todo:ここなんとかする
-
-		//デスクリプタヒープのセット
-		ID3D12DescriptorHeap* ppHeaps[] = { objModel->descHeapSRV.Get() };
-		DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-		//ルートシグネチャの設定
-		DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingObjRootsignature.Get());
-
-		//パイプラインステートの設定
-		DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
+		if (objectType != prevDrawObjectType) {
+			//ルートシグネチャの設定
+			DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingObjRootsignature.Get());
+			//パイプラインステートの設定
+			DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
+		}
 
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
@@ -365,11 +364,12 @@ void InstancingObjectDraw::Draw()
 		if (fbxModel == nullptr) {
 			return;
 		}
-
-		//パイプラインステートの設定
-		DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate.Get());
-		//ルートシグネチャの設定
-		DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingFbxRootsignature.Get());
+		if (objectType != prevDrawObjectType) {
+			//ルートシグネチャの設定
+			DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingFbxRootsignature.Get());
+			//パイプラインステートの設定
+			DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate.Get());
+		}
 		//プリミティブ形状を設定
 		DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		//定数バッファビューをセット
@@ -385,6 +385,44 @@ void InstancingObjectDraw::Draw()
 	}
 
 	ResetIndex();
+	prevDrawObjectType = objectType;
+}
+
+void InstancingObjectDraw::SetFbxModel(FbxModel* fbxModel)
+{
+	this->fbxModel = fbxModel;
+
+	//定数バッファの生成
+	HRESULT result = device->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), //アップロード可能
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataSkin) + 0xff) & ~0xff),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(constBuffSkin.ReleaseAndGetAddressOf())
+	);
+
+	//定数バッファへデータ転送
+	ConstBufferDataSkin* constMapSkin = nullptr;
+	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
+	if (SUCCEEDED(result)) {
+		for (int i = 0; i < MAX_BONES; i++) {
+			constMapSkin->bones[i] = XMMatrixIdentity();
+		}
+		constBuffSkin->Unmap(0, nullptr);
+	}
+
+	//1フレーム分の時間を60FPSで設定
+	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
+
+	objectType = OBJECTTYPE_INSTANCING_FBX;
+}
+
+void InstancingObjectDraw::SetObjModel(ObjModel* objModel)
+{
+	this->objModel = objModel;
+
+	objectType = OBJECTTYPE_INSTANCING_OBJ;
 }
 
 void InstancingObjectDraw::UpdateConstBuff(const InstanceData& constBuffData)

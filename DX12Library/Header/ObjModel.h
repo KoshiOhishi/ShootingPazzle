@@ -102,12 +102,14 @@ private:
 	//頂点座標スムージング用データ
 	std::unordered_map<unsigned short, std::vector<unsigned short>> smoothData;
 
+	//テクスチャ番号
+	UINT texNumber;
+
 public:
-	//SRV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
 //メンバ関数
 public:
+
 	void Draw(int instancingCount = 1);
 
 	/// <summary>

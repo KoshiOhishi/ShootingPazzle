@@ -176,7 +176,7 @@ public:
 	/// •¶šF‚ğ•Ô‚· (Še¬•ª0`255)
 	/// </summary>
 	/// <returns></returns>
-	const XMFLOAT4& GetColorAs0To255()const {
+	const XMFLOAT4 GetColorAs0To255()const {
 		XMFLOAT4 c = { color.x * 255, color.y * 255, color.z * 255, color.w * 255 };
 		return c;
 	}

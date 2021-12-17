@@ -44,9 +44,21 @@ public:
 	virtual void Update();
 
 	/// <summary>
-	/// 描画　1回のみ呼び出し
+	/// 描画　Object3D::BeginDraw()を忘れずに！
 	/// </summary>
 	virtual void Draw();
+
+	/// <summary>
+	/// モデルのセット
+	/// </summary>
+	/// <param name="fbxModel">FBXモデル</param>
+	virtual void SetFbxModel(FbxModel* fbxModel);
+
+	/// <summary>
+	/// モデルのセット
+	/// </summary>
+	/// <param name="objModel">OBJモデル</param>
+	virtual void SetObjModel(ObjModel* objModel);
 
 	/// <summary>
 	/// 定数バッファに書き込み

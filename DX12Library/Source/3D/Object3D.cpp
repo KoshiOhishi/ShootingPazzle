@@ -17,26 +17,25 @@ using namespace DirectX;
 ID3D12Device* Object3D::device = nullptr;
 Camera* Object3D::camera = nullptr;
 Light* Object3D::light = nullptr;
-ComPtr <ID3D12DescriptorHeap> Object3D::basicDescHeap = nullptr;
+ComPtr <ID3D12DescriptorHeap> Object3D::descHeapSRV = nullptr;
 ComPtr<ID3D12RootSignature> Object3D::fbxRootsignature = nullptr;
 ComPtr<ID3D12PipelineState> Object3D::fbxPipelinestate = nullptr;
 ComPtr<ID3D12RootSignature> Object3D::objRootsignature = nullptr;
 ComPtr<ID3D12PipelineState> Object3D::objPipelinestate = nullptr;
+int Object3D::prevDrawObjectType = -1;
 std::vector<Object3D*> Object3DManager::pObject3DList;
 
-
-void Object3D::CreateDescHeap()
+void Object3D::StaticInitialize()
 {
 	HRESULT result;
 
-	//デスクリプタヒープを生成
-	// 設定構造体
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
+	//SRV用デスクリプタヒープ生成
+	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見える
-	descHeapDesc.NumDescriptors = 32; // SRV1つ
-	// 生成
-	result = DX12Util::GetDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(basicDescHeap.ReleaseAndGetAddressOf()));
+	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダーから見えるように
+	descHeapDesc.NumDescriptors = 1024;//テクスチャ枚数
+	result = DX12Util::GetDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(descHeapSRV.ReleaseAndGetAddressOf()));//生成
+
 	assert(SUCCEEDED(result));
 }
 
@@ -386,6 +385,18 @@ void Object3D::Update()
 	}
 }
 
+void Object3D::BeginDraw()
+{
+	//デスクリプタヒープのセット
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
+	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	//プリミティブ形状を設定
+	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	prevDrawObjectType = -1;
+}
+
 void Object3D::Draw()
 {
 	if (objectType == OBJECTTYPE_OBJ) {
@@ -393,18 +404,14 @@ void Object3D::Draw()
 		if (objModel == nullptr) {
 			return;
 		}
-		//Todo:ここなんとかする
 
-		//デスクリプタヒープのセット
-		ID3D12DescriptorHeap* ppHeaps[] = { objModel->descHeapSRV.Get() };
-		DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+		if (objectType != prevDrawObjectType) {
+			//ルートシグネチャの設定
+			DX12Util::GetCmdList()->SetGraphicsRootSignature(objRootsignature.Get());
 
-		//ルートシグネチャの設定
-		DX12Util::GetCmdList()->SetGraphicsRootSignature(objRootsignature.Get());
-
-		//パイプラインステートの設定
-		DX12Util::GetCmdList()->SetPipelineState(objPipelinestate.Get());
-
+			//パイプラインステートの設定
+			DX12Util::GetCmdList()->SetPipelineState(objPipelinestate.Get());
+		}
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
 		//定数バッファビューをセット
@@ -421,12 +428,12 @@ void Object3D::Draw()
 			return;
 		}
 
-		//パイプラインステートの設定
-		DX12Util::GetCmdList()->SetPipelineState(fbxPipelinestate.Get());
-		//ルートシグネチャの設定
-		DX12Util::GetCmdList()->SetGraphicsRootSignature(fbxRootsignature.Get());
-		//プリミティブ形状を設定
-		DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		if (objectType != prevDrawObjectType) {
+			//ルートシグネチャの設定
+			DX12Util::GetCmdList()->SetGraphicsRootSignature(fbxRootsignature.Get());
+			//パイプラインステートの設定
+			DX12Util::GetCmdList()->SetPipelineState(fbxPipelinestate.Get());
+		}
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
 		//定数バッファビューをセット
@@ -439,7 +446,7 @@ void Object3D::Draw()
 		fbxModel->Draw();
 	}
 
-
+	prevDrawObjectType = objectType;
 }
 
 void Object3D::PlayAnimation()

@@ -179,6 +179,7 @@ void GamePlay::Draw()
 	DX12Util::ClearDepthBuffer();
 
 	//オブジェクト描画ここから
+	Object3D::BeginDraw();
 	//背景描画
 	objBG.Draw();
 
@@ -192,7 +193,6 @@ void GamePlay::Draw()
 	//オブジェクト描画ここまで
 
 	//前景スプライト描画ここから
-	DebugText::DrawAll();
 	ImguiHelper::Draw();
 
 	//前景スプライト描画ここまで

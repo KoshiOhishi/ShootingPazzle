@@ -341,10 +341,16 @@ UINT Sprite::LoadTexture(const wchar_t* filename)
 
 void Sprite::BeginDraw()
 {
-	//パイプラインステートの設定
-	DX12Util::GetCmdList()->SetPipelineState(spritePipelineState.Get());
 	//ルートシグネチャの設定
 	DX12Util::GetCmdList()->SetGraphicsRootSignature(spriteRootSignature.Get());
+
+	//デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
+	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	//パイプラインステートの設定
+	DX12Util::GetCmdList()->SetPipelineState(spritePipelineState.Get());
+
 	//プリミティブ形状を設定
 	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
@@ -365,11 +371,6 @@ void Sprite::Draw()
 	constMap->color = color;
 	constMap->mat = matWorld * matProjection;		//行列の合成
 	constBuff->Unmap(0, nullptr);
-
-
-	//デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
-	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//頂点バッファをセット
 	DX12Util::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);

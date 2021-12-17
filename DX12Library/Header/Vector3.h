@@ -26,7 +26,7 @@ struct Vector3 : public DirectX::XMFLOAT3
 	/// 正規化したベクトルを返す
 	/// </summary>
 	/// <returns>正規化したベクトル</returns>
-	const Vector3& Normalize() const;
+	const Vector3 Normalize() const;
 
 	/// <summary>
 	/// 内積を求める
@@ -40,13 +40,13 @@ struct Vector3 : public DirectX::XMFLOAT3
 	/// </summary>
 	/// <param name="v">ベクトル</param>
 	/// <returns>外積</returns>
-	const Vector3& Cross(const Vector3& v) const;
+	const Vector3 Cross(const Vector3& v) const;
 
 	/// <summary>
 	/// 零ベクトルを取得
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& Zero() const;
+	const Vector3 Zero() const;
 
 	//単項演算子オーバーロード
 	Vector3 operator+() const;

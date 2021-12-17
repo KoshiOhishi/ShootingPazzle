@@ -1,8 +1,8 @@
 #include "TurnFloor.h"
 #include "GameUtility.h"
 
-ObjModel TurnFloor::modelBox[4];
 InstancingObjectDraw TurnFloor::instancingObjectDraw[4];
+ObjModel TurnFloor::modelBox[4];
 
 void TurnFloor::CreateModel()
 {
@@ -61,7 +61,6 @@ void TurnFloor::UpdateCollision()
 void TurnFloor::SetTurnType(int turnType)
 {
 	this->turnType = turnType;
-
 	//上と下の場合、オブジェクトを180度回転させる
 	if (turnType == TURNTYPE_UP || turnType == TURNTYPE_DOWN) {
 		object.SetRotation({0, 180, 0});

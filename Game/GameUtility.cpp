@@ -20,6 +20,10 @@ void GameUtility::StaticInitialize()
 	NormalFloor::CreateModel();
 	TurnFloor::CreateModel();
 	BreakFloor::CreateModel();
+
+	NormalFloor::StaticInitialize();
+	TurnFloor::StaticInitialize();
+	BreakFloor::StaticInitialize();
 }
 
 const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ)
