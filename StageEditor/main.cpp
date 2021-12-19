@@ -169,7 +169,7 @@ void Initialize() {
 		//シェーダ変えてインスタンシングも
 		pipelineData.vertexShaderFileName = L"Shader/InstancingFBXVS.hlsl";
 		pipelineData.pixelShaderFileName = L"Shader/InstancingFBXPS.hlsl";
-		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_INSTANCING_FBX, pipelineData);
 	}
 #pragma endregion
 #pragma region OBJパイプライン生成
@@ -224,7 +224,7 @@ void Initialize() {
 		pipelineData.vertexShaderFileName = L"Shader/InstancingOBJVS.hlsl";
 		pipelineData.pixelShaderFileName = L"Shader/InstancingOBJPS.hlsl";
 		pipelineData.geometryShaderFileName = nullptr;// L"Shader/InstancingOBJGS.hlsl";
-		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_INSTANCING_OBJ, pipelineData);
 	}
 #pragma endregion
 	//オブジェクト管理クラス初期化

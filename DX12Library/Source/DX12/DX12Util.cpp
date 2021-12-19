@@ -153,9 +153,11 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 
 	// 標準設定でコマンドキューを生成
 	D3D12_COMMAND_QUEUE_DESC cmdQueueDesc{};
+	cmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+	cmdQueueDesc.NodeMask = 0;
+	cmdQueueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+	cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 	dev->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(cmdQueue.ReleaseAndGetAddressOf()));
-
-
 
 	// 各種設定をしてスワップチェーンを生成
 	DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
@@ -313,9 +315,6 @@ void DX12Util::EndDraw()
 	ID3D12CommandList* cmdLists[] = { cmdList.Get() }; // コマンドリストの配列
 	cmdQueue->ExecuteCommandLists(1, cmdLists);
 
-	//13.バッファをフリップ(裏表の入替え)
-	swapchain->Present(1, 0);
-
 	//14.コマンドリストの実行完了を待つ
 	cmdQueue->Signal(fence.Get(), ++fenceVal);
 	if (fence->GetCompletedValue() != fenceVal) {
@@ -330,6 +329,9 @@ void DX12Util::EndDraw()
 
 	//16.コマンドリストのリセット
 	cmdList->Reset(cmdAllocator.Get(), nullptr); // 再びコマンドリストを貯める準備
+
+	//13.バッファをフリップ(裏表の入替え)
+	swapchain->Present(1, 0);
 }
 
 void DX12Util::End()

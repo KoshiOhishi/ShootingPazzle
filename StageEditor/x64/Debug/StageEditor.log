@@ -29,7 +29,6 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   30 個のファイルをコピーしました
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
   main.cpp
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Arrow.png

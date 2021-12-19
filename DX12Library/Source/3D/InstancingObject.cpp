@@ -132,7 +132,7 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+	gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -182,7 +182,7 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
 
-	if (objectType == ObjectType::OBJECTTYPE_OBJ) {
+	if (objectType == ObjectType::OBJECTTYPE_INSTANCING_OBJ) {
 		// ルートシグネチャの生成
 		result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(instancingObjRootsignature.ReleaseAndGetAddressOf()));
 		if (FAILED(result)) { assert(0); }
@@ -194,7 +194,7 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 		if (FAILED(result)) { assert(0); }
 
 	}
-	else if (objectType == ObjectType::OBJECTTYPE_FBX) {
+	else if (objectType == ObjectType::OBJECTTYPE_INSTANCING_FBX) {
 		result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(instancingFbxRootsignature.ReleaseAndGetAddressOf()));
 		if (FAILED(result)) { assert(0); }
 
