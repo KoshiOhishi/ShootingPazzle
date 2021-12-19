@@ -54,6 +54,10 @@ private:
 	//矢印オブジェクト
 	Object3D objArrow;
 
+	//出現エフェクト
+	Timer firstEffectTimer;
+
+
 public:
 	static void CreateModel();
 
@@ -76,6 +80,11 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// 出現エフェクト時の更新
+	/// </summary>
+	void UpdateFirstEffect();
 
 	/// <summary>
 	/// 射出前の更新

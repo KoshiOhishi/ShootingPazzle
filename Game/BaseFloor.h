@@ -3,11 +3,14 @@
 #include "ObjModel.h"
 #include "CollisionPrimitive.h"
 #include "GameUtility.h"
+#include "Timer.h"
 
 class BaseFloor
 {
 protected:
 	InstancingObject object;
+
+	int firstEffectType = -1;
 
 public:
 
@@ -25,6 +28,11 @@ public:
 	/// 更新
 	/// </summary>
 	virtual void Update() = 0;
+
+	/// <summary>
+	/// 出現エフェクト時の更新
+	/// </summary>
+	virtual void UpdateFirstEffect(const Timer& timer);
 
 	/// <summary>
 	/// 当たり判定更新

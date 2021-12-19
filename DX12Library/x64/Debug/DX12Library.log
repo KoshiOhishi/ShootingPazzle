@@ -1,7 +1,261 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\BasicGeometryShader.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\BasicPixelShader.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\BasicVertexShader.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\FBXPS.hlsl(103,56): warning X4000: use of potentially uninitialized variable (BRDF)
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXPS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXVS.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingFBXPS.hlsl(103,56): warning X4000: use of potentially uninitialized variable (BRDF)
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingFBXPS.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingFBXVS.hlsl(52,13-28): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingFBXVS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingOBJGS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingOBJPS.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingOBJVS.hlsl(16,2-24): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingOBJVS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\NoShadePixelShader.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\NoShadeVertexShader.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\OBJGS.hlsl(26,3-26): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJGS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJPS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJVS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\PostEffectTestPS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\PostEffectTestVS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\SpritePixelShader.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\SpriteVertexShader.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\TextPixelShader.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\TextVertexShader.cso
+  SphereCollider.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_dx12.cpp
+  imgui_impl_win32.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Sprite.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(256,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(256,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(261,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(261,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(427,18): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(430,19): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(433,22): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(436,23): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
+  AABBCollider.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Camera.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Collision.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  CollisionManager.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  CollisionPrimitive.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  InstancingObject.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(163,69): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(179,170): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+  Light.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  MeshCollider.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  FbxLoader.cpp
+  FbxModel.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  ObjModel.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Model\ObjModel.cpp(43,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Model\ObjModel.cpp(361,23): warning C4244: '=': 'size_t' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Model\ObjModel.cpp(363,24): warning C4244: '=': 'size_t' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Model\ObjModel.cpp(409,60): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Model\ObjModel.cpp(428,58): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xmemory(714,1): warning C4267: '初期化中': 'size_t' から '_Objty' に変換しました。データが失われているかもしれません。
+          with
+          [
+              _Objty=unsigned short
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(726): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,unsigned __int64>(_Alloc &,_Objty *const ,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Alloc=std::allocator<unsigned short>,
+              _Ty=unsigned short,
+              _Objty=unsigned short
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(726): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,unsigned __int64>(_Alloc &,_Objty *const ,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Alloc=std::allocator<unsigned short>,
+              _Ty=unsigned short,
+              _Objty=unsigned short
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(744): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<unsigned short>>::_Emplace_back_with_unused_capacity<_Ty>(_Ty &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=unsigned __int64
+          ]
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Model\ObjModel.cpp(143): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::vector<unsigned short,std::allocator<unsigned short>>::emplace_back<unsigned __int64>(unsigned __int64 &&)' のリファレンスを確認してください
+  コードを生成中...
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Camera.cpp(242): warning C4172: ローカル変数またはテンポラリのアドレスを返します: tmp
+  コンパイル中...
+  Object3D.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Object3D.cpp(192,69): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Object3D.cpp(208,170): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+  TouchableObject.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   DX12Util.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(282,39): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(290,73): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(290,59): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  PostEffect.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(19,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(69,100): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(69,71): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(278,22): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  Input.cpp
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Input\Input.cpp(208,49): warning C4244: '引数': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Input\Input.cpp(232,23): warning C4244: '引数': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Input\Input.cpp(232,18): warning C4244: '引数': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+  Matrix4.cpp
+  Quaternion.cpp
+  Vector2.cpp
+  Vector3.cpp
+  Vector4.cpp
+  SceneManager.cpp
+  Sound.cpp
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(278,33): warning C4267: '=': 'size_t' から 'UINT32' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(371,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(671,10): warning C4552: '-': 式の結果が使用されていません
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(734,44): warning C4838: 'unsigned __int64' から 'UINT32' への変換には縮小変換が必要です
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(734,60): warning C4267: '初期化中': 'size_t' から 'UINT32' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(773,33): warning C4267: '=': 'size_t' から 'UINT32' に変換しました。データが失われているかもしれません。
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\utility(193,48): warning C4267: '初期化中': 'size_t' から '_Ty2' に変換しました。データが失われているかもしれません。
+          with
+          [
+              _Ty2=int
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xmemory(714): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<XAPOEffect *const ,int>::pair<XAPOEffect*&,_Ty,0>(_Other1,_Other2 &&) noexcept' のリファレンスを確認してください
+          with
+          [
+              _Ty=unsigned __int64,
+              _Other1=XAPOEffect *&,
+              _Other2=unsigned __int64
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xmemory(714): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<XAPOEffect *const ,int>::pair<XAPOEffect*&,_Ty,0>(_Other1,_Other2 &&) noexcept' のリファレンスを確認してください
+          with
+          [
+              _Ty=unsigned __int64,
+              _Other1=XAPOEffect *&,
+              _Other2=unsigned __int64
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(591): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,XAPOEffect*&,unsigned __int64>(_Alloc &,_Objty *const ,XAPOEffect *&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Alloc=std::allocator<std::_List_node<std::pair<XAPOEffect *const ,int>,std::_Default_allocator_traits<std::allocator<std::pair<XAPOEffect *const ,int>>>::void_pointer>>,
+              _Ty=std::pair<XAPOEffect *const ,int>,
+              _Objty=std::pair<XAPOEffect *const ,int>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(591): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,XAPOEffect*&,unsigned __int64>(_Alloc &,_Objty *const ,XAPOEffect *&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Alloc=std::allocator<std::_List_node<std::pair<XAPOEffect *const ,int>,std::_Default_allocator_traits<std::allocator<std::pair<XAPOEffect *const ,int>>>::void_pointer>>,
+              _Ty=std::pair<XAPOEffect *const ,int>,
+              _Objty=std::pair<XAPOEffect *const ,int>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xhash(592): message : コンパイル対象の関数 テンプレート インスタンス化 'std::_List_node_emplace_op2<std::allocator<std::_List_node<_Ty,std::_Default_allocator_traits<_Alloc>::void_pointer>>>::_List_node_emplace_op2<XAPOEffect*&,unsigned __int64>(_Alnode &,XAPOEffect *&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=std::pair<XAPOEffect *const ,int>,
+              _Alloc=std::allocator<std::pair<XAPOEffect *const ,int>>,
+              _Alnode=std::allocator<std::_List_node<std::pair<XAPOEffect *const ,int>,std::_Default_allocator_traits<std::allocator<std::pair<XAPOEffect *const ,int>>>::void_pointer>>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xhash(592): message : コンパイル対象の関数 テンプレート インスタンス化 'std::_List_node_emplace_op2<std::allocator<std::_List_node<_Ty,std::_Default_allocator_traits<_Alloc>::void_pointer>>>::_List_node_emplace_op2<XAPOEffect*&,unsigned __int64>(_Alnode &,XAPOEffect *&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=std::pair<XAPOEffect *const ,int>,
+              _Alloc=std::allocator<std::pair<XAPOEffect *const ,int>>,
+              _Alnode=std::allocator<std::_List_node<std::pair<XAPOEffect *const ,int>,std::_Default_allocator_traits<std::allocator<std::pair<XAPOEffect *const ,int>>>::void_pointer>>
+          ]
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(270): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>,bool> std::_Hash<std::_Umap_traits<_Kty,int,std::_Uhash_compare<_Kty,_Hasher,_Keyeq>,_Alloc,false>>::emplace<XAPOEffect*&,unsigned __int64>(XAPOEffect *&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=std::pair<XAPOEffect *const ,int>,
+              _Kty=XAPOEffect *,
+              _Hasher=std::hash<XAPOEffect *>,
+              _Keyeq=std::equal_to<XAPOEffect *>,
+              _Alloc=std::allocator<std::pair<XAPOEffect *const ,int>>
+          ]
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(270): message : コンパイル対象の関数 テンプレート インスタンス化 'std::pair<std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>,bool> std::_Hash<std::_Umap_traits<_Kty,int,std::_Uhash_compare<_Kty,_Hasher,_Keyeq>,_Alloc,false>>::emplace<XAPOEffect*&,unsigned __int64>(XAPOEffect *&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=std::pair<XAPOEffect *const ,int>,
+              _Kty=XAPOEffect *,
+              _Hasher=std::hash<XAPOEffect *>,
+              _Keyeq=std::equal_to<XAPOEffect *>,
+              _Alloc=std::allocator<std::pair<XAPOEffect *const ,int>>
+          ]
+  RenderText.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(235,11): warning C4838: 'const int' から 'BYTE' への変換には縮小変換が必要です
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(372,36): warning C4244: '=': 'float' から 'unsigned char' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(398,2): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(464,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(464,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(469,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(469,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  DebugText.cpp
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\DebugText.cpp(49,76): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\DebugText.cpp(49,52): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  Easing.cpp
+  FPSManager.cpp
+  ImguiHelper.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Timer.cpp
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Timer.cpp(34,58): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  コードを生成中...
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(368): warning C4715: 'Easing::GetFuncName': 値を返さないコントロール パスがあります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(270): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(275): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(278): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(281): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(284): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(287): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(290): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(293): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(296): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(299): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(302): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(305): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(308): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(311): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(314): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(317): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(320): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(323): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(326): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(329): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(332): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(335): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(338): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(341): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(344): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(347): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(350): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(353): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(356): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(359): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(362): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Easing.cpp(365): warning C4172: ローカル変数またはテンポラリのアドレスを返します
   DX12Library.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\DX12Library.lib

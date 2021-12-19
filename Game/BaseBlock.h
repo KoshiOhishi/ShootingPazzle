@@ -5,6 +5,7 @@
 #include "Vector3.h"
 #include "CollisionPrimitive.h"
 #include "GameUtility.h"
+#include "Timer.h"
 
 class BaseBlock
 {
@@ -14,6 +15,8 @@ protected:
 	//衝突後に壊れるブロックか
 	bool isBreakable = false;
 	unsigned short breakupCount = 0;
+
+	int firstEffectType = -1;
 
 public:
 
@@ -36,6 +39,11 @@ public:
 	/// 描画
 	/// </summary>
 	virtual void Draw() = 0;
+
+	/// <summary>
+	/// 出現エフェクト時の更新
+	/// </summary>
+	virtual void UpdateFirstEffect(const Timer& timer);
 
 	/// <summary>
 	/// 当たり判定更新
@@ -64,6 +72,12 @@ public:
 	/// </summary>
 	/// <param name="pos">ステージ上の座標</param>
 	void SetStagePos(const StageVec2& pos);
+
+	/// <summary>
+	/// 座標セット（主にエフェクト用）
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetPosition(const Vector3& pos) { object.SetPosition(pos); }
 
 	/// <summary>
 	/// 壊れるかどうかのフラグセット

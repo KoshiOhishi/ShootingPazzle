@@ -7,6 +7,7 @@
 #include "Input.h"
 
 #include "BreakFloor.h"
+#include "Easing.h"
 
 ObjModel MyBullet::modelSphere;
 ObjModel MyBullet::modelArrow;
@@ -41,15 +42,19 @@ void MyBullet::Initialize()
 	objArrow.SetObjModel(&modelArrow);
 
 	nextMoveInfo = {};
+
+	//エフェクトは最初の読み込みのみ
+	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+		firstEffectTimer.SetTimer(0, 2000);
+		firstEffectTimer.Start();
+	}
 }
 
 void MyBullet::Update()
 {
 	if (GameUtility::GetNowPhase() != PHASE_AFTERSHOOT) {
+		UpdateFirstEffect();
 		UpdateBeforeShoot();
-		//球更新
-		objSphere.SetPosition(position);
-		objSphere.Update();
 		//矢印更新
 		objArrow.Update();
 	}
@@ -58,11 +63,10 @@ void MyBullet::Update()
 		CheckCollision();
 		ApplyGravity();
 		Move();
-		//球更新
-		objSphere.SetPosition(position);
-		objSphere.Update();
 	}
-
+	//球更新
+	objSphere.SetPosition(position);
+	objSphere.Update();
 }
 
 void MyBullet::Draw()
@@ -76,15 +80,33 @@ void MyBullet::Draw()
 	}
 }
 
+void MyBullet::UpdateFirstEffect()
+{
+	if (GameUtility::GetNowPhase() != PHASE_FIRSTEFFECT) {
+		return;
+	}
+
+	firstEffectTimer.Update();
+
+	double y = Easing::GetEaseValue(EASE_OUTBOUNCE, 120, RADIUS, firstEffectTimer, 800, 2000);
+
+	position.y = y;
+
+	if (firstEffectTimer.GetNowTime() >= firstEffectTimer.GetEndTime()) {
+		GameUtility::SetNowPhase(PHASE_SETPOS);
+	}
+}
+
 void MyBullet::UpdateBeforeShoot()
 {
 	//射出前、位置を決めさせる
-	if (GameUtility::GetNowPhase() == PHASE_SETPOS) {
+	if (GameUtility::GetNowPhase() != PHASE_SETANGLE) {
 
 		DecideShootPos();
 
 		//クリックで決定、角度セットフェーズに移る
-		if (Mouse::IsMouseButtonRelease(MouseButton::LEFT)) {
+		if (GameUtility::GetNowPhase() == PHASE_SETPOS &&
+			Mouse::IsMouseButtonRelease(MouseButton::LEFT)) {
 			//矢印描画が崩れないように角度決定
 			DecideShootAngle();
 			//フェーズを移す
@@ -92,7 +114,7 @@ void MyBullet::UpdateBeforeShoot()
 		}
 	}
 	//射出前、角度を決めさせる
-	else if (GameUtility::GetNowPhase() == PHASE_SETANGLE) {
+	else {
 		//角度決定
 		shotAngle = DecideShootAngle();
 
@@ -123,6 +145,7 @@ void MyBullet::DecideShootPos()
 	if (IsOutStage(mouse)) { return; }
 	for (int i = 0; i < stage->GetBlocks().size(); i++) {
 		Vector3 blockPos = stage->GetBlocks()[i]->GetPosition();
+		blockPos.y = position.y;
 		Vector3 sub = { RADIUS, RADIUS, RADIUS };
 		Vector3 spherePos = { mouse.x, position.y, position.z };
 		Sphere sphere{ spherePos, RADIUS };

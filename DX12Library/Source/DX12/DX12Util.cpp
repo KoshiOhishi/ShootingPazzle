@@ -18,25 +18,25 @@
 int DX12Util::window_width = 1280;// 横幅
 int DX12Util::window_height = 720; // 縦幅
 
- WNDCLASSEX DX12Util::w; // ウィンドウクラスの設定
- HWND DX12Util::hwnd;
- LPARAM DX12Util::lparam;
- DX12Util::ComPtr<ID3D12Device> DX12Util::dev;
- DX12Util::ComPtr<IDXGIFactory6> DX12Util::dxgiFactory;
- DX12Util::ComPtr<IDXGISwapChain4> DX12Util::swapchain;
- DX12Util::ComPtr<ID3D12CommandAllocator> DX12Util::cmdAllocator;
- DX12Util::ComPtr<ID3D12GraphicsCommandList> DX12Util::cmdList;
- DX12Util::ComPtr<ID3D12CommandQueue> DX12Util::cmdQueue;
- DX12Util::ComPtr<ID3D12DescriptorHeap> DX12Util::rtvHeaps;
- D3D12_DESCRIPTOR_HEAP_DESC DX12Util::heapDesc;
- std::vector<DX12Util::ComPtr<ID3D12Resource>> DX12Util::backBuffers;
- DX12Util::ComPtr<ID3D12Resource> DX12Util::depthBuffer;
- DX12Util::ComPtr <ID3D12DescriptorHeap> DX12Util::dsvHeap;
- DX12Util::ComPtr<ID3D12Fence> DX12Util::fence;
- UINT64 DX12Util::fenceVal;
+WNDCLASSEX DX12Util::w; // ウィンドウクラスの設定
+HWND DX12Util::hwnd;
+LPARAM DX12Util::lparam;
+DX12Util::ComPtr<ID3D12Device> DX12Util::dev;
+DX12Util::ComPtr<IDXGIFactory6> DX12Util::dxgiFactory;
+DX12Util::ComPtr<IDXGISwapChain4> DX12Util::swapchain;
+DX12Util::ComPtr<ID3D12CommandAllocator> DX12Util::cmdAllocator;
+DX12Util::ComPtr<ID3D12GraphicsCommandList> DX12Util::cmdList;
+DX12Util::ComPtr<ID3D12CommandQueue> DX12Util::cmdQueue;
+DX12Util::ComPtr<ID3D12DescriptorHeap> DX12Util::rtvHeaps;
+D3D12_DESCRIPTOR_HEAP_DESC DX12Util::heapDesc;
+std::vector<DX12Util::ComPtr<ID3D12Resource>> DX12Util::backBuffers;
+DX12Util::ComPtr<ID3D12Resource> DX12Util::depthBuffer;
+DX12Util::ComPtr <ID3D12DescriptorHeap> DX12Util::dsvHeap;
+DX12Util::ComPtr<ID3D12Fence> DX12Util::fence;
+UINT64 DX12Util::fenceVal;
 
- //Imgui
- extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
+//Imgui
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -336,6 +336,28 @@ void DX12Util::EndDraw()
 
 void DX12Util::End()
 {
+	//コマンドリストの実行完了を待つ
+	cmdQueue->Signal(fence.Get(), ++fenceVal);
+	if (fence->GetCompletedValue() != fenceVal) {
+		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
+		fence->SetEventOnCompletion(fenceVal, event);
+		WaitForSingleObject(event, INFINITE);
+		CloseHandle(event);
+	}
+
+	for (UINT i = 0; i < backBuffers.size(); i++){
+		backBuffers[i].Reset();
+	}
+
+	depthBuffer.Reset();
+
+	swapchain.Reset();
+	fence.Reset();
+	cmdList.Reset();
+	cmdAllocator.Reset();
+	cmdQueue.Reset();
+	dev.Reset();
+
 	UnregisterClass(w.lpszClassName, w.hInstance);
 }
 

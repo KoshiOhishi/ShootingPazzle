@@ -2,6 +2,7 @@
 #include <vector>
 #include "BaseBlock.h"
 #include "BaseFloor.h"
+#include "Timer.h"
 
 class Stage
 {
@@ -13,6 +14,9 @@ private:
 	std::vector<BaseFloor*> floors;
 	Plane floorCollision;
 	unsigned short startLaneZ = stageSize.y - 2;
+
+	//出現エフェクト
+	Timer firstEffectTimer;
 
 public:
 	Stage() {}
@@ -33,6 +37,11 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// 出現エフェクト時の更新
+	/// </summary>
+	void UpdateFirstEffect();
 
 	/// <summary>
 	/// 床ブロック空きマスに穴オブジェクトを挿入

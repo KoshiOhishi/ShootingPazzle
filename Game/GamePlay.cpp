@@ -23,8 +23,11 @@ void GamePlay::Initialize()
 
 	//カメラ初期化
 	camera.Initialize();
-	camera.SetPositionAndDistance({ 50,50.0f,-40.0f }, 15.0f);
-	camera.SetRotation(60, -60, 0);
+	//camera.SetPositionAndDistance({ 50,50.0f,-40.0f }, 15.0f);
+	//camera.SetRotation(60, -60, 0);
+
+	camera.SetPositionAndDistance({ 0,100,-40 }, 15.0f);
+	camera.SetRotation(75, 0, 0);
 
 	//カメラをセット
 	Object3D::SetCamera(&camera);
@@ -44,7 +47,7 @@ void GamePlay::Initialize()
 	objBG.SetScale(2, 2, 2);
 
 	//フェーズ初期化
-	GameUtility::SetNowPhase(PHASE_SETPOS);
+	GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
 }
 
 void GamePlay::Update()
@@ -115,6 +118,8 @@ void GamePlay::Update()
 
 	//リセット
 	if (Keyboard::IsKeyTrigger(DIK_R)) {
+		GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
+
 		//ステージ取得
 		stage.LoadStage("../StageEditor/StageData/test.spb");
 
@@ -122,7 +127,7 @@ void GamePlay::Update()
 		myBullet.Initialize();
 
 		//フェーズ初期化
-		GameUtility::SetNowPhase(PHASE_SETPOS);
+		//GameUtility::SetNowPhase(PHASE_SETPOS);
 	}
 
 #pragma endregion

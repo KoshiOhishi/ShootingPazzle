@@ -8,6 +8,7 @@
 #include "TurnFloor.h"
 #include "BreakFloor.h"
 #include "GameUtility.h"
+#include "DebugText.h"
 
 Stage::~Stage()
 {
@@ -23,6 +24,11 @@ Stage::~Stage()
 
 void Stage::LoadStage(std::string filename)
 {
+	//エフェクトは最初の読み込みのみ
+	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+		firstEffectTimer.SetTimer(0, 1000);
+		firstEffectTimer.Start();
+	}
 
 	//データ初期化
 	for (int i = 0; i < blocks.size(); i++) {
@@ -97,6 +103,10 @@ void Stage::LoadStage(std::string filename)
 
 void Stage::Update()
 {
+	//出現エフェクト
+	UpdateFirstEffect();
+
+	//オブジェクト更新
 	for (int i = 0; i < floors.size(); i++) {
 		if (floors[i]) floors[i]->Update();
 	}
@@ -120,7 +130,7 @@ void Stage::Draw()
 	BreakFloor::Draw();
 
 	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i]) blocks[i]->Draw();
+		blocks[i]->Draw();
 	}
 
 	NormalFloor::ResetIndex();
@@ -128,6 +138,27 @@ void Stage::Draw()
 		TurnFloor::ResetIndex(i);
 	}
 	BreakFloor::ResetIndex();
+
+	DebugText::Print(std::to_string(firstEffectTimer.GetNowTime()), 0, 50);
+}
+
+void Stage::UpdateFirstEffect()
+{
+	if (GameUtility::GetNowPhase() != PHASE_FIRSTEFFECT) {
+		return;
+	}
+
+	firstEffectTimer.Update();
+
+	//ブロックが空から降ってくる演出
+	for (int i = 0; i < blocks.size(); i++) {
+		blocks[i]->UpdateFirstEffect(firstEffectTimer);
+	}
+
+	//床が下から出てくる演出
+	for (int i = 0; i < floors.size(); i++) {
+		floors[i]->UpdateFirstEffect(firstEffectTimer);
+	}
 }
 
 void Stage::InsertHole()

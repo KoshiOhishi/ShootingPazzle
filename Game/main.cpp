@@ -20,6 +20,7 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
+
 HRESULT result;
 //ポストエフェクト
 PostEffect* postEffect = nullptr;
@@ -293,7 +294,4 @@ void Finalize() {
 	ImguiHelper::Finalize();
 	DX12Util::End();
 
-#ifdef _DEBUG
-	mDebugDevice->ReportLiveDeviceObjects(D3D12_RLDO_SUMMARY);
-#endif
 }

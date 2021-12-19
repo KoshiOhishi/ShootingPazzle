@@ -38,6 +38,7 @@ enum FloorType {
 //ゲームフェーズ
 enum Phase
 {
+	PHASE_FIRSTEFFECT,
 	PHASE_SETPOS,
 	PHASE_SETANGLE,
 	PHASE_AFTERSHOOT

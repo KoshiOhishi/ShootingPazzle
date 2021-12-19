@@ -2,6 +2,14 @@
 #include <cassert>
 #include <cmath>
 
+const double Easing::c1 = 1.70158;
+const double Easing::c2 = c1 * 1.525;
+const double Easing::c3 = c1 + 1.0;
+const double Easing::c4 = (2.0 * PI) / 3.0;
+const double Easing::c5 = (2.0 * PI) / 4.5;
+const double Easing::n1 = 7.5625;
+const double Easing::d1 = 2.75;
+
 double Easing::Pow(double x, int t)
 {
 	double val = 1;
@@ -12,246 +20,248 @@ double Easing::Pow(double x, int t)
 	return val;
 }
 
-void Easing::Update()
+double Easing::GetEaseValue(int type, double start, double end, double t)
 {
-	paramTimer.Update();
+	//tを0～1にクリップ
+	if (t < 0) {
+		t = 0; 
+	}
+	else if (t > 1) {
+		t = 1; 
+	}
 
-	double x = (double)paramTimer.GetNowTime() / paramTimer.GetEndTime();
+	double value = 0;
 
 	switch (type) {
 
 	case EASE_INSIDE:
-		value = 1.0 - cos((x * PI) / 2.0);
+		value = 1.0 - cos((t * PI) / 2.0);
 		break;
 
 	case EASE_OUTSINE:
-		value = sin((x * PI) / 2.0);
+		value = sin((t * PI) / 2.0);
 		break;
 
 	case EASE_INOUTSINE:
-		value = -(cos(PI * x) - 1.0) / 2.0;
+		value = -(cos(PI * t) - 1.0) / 2.0;
 		break;
 
 	case EASE_INQUAD:
-		value = x * x;
+		value = t * t;
 		break;
 
 	case EASE_OUTQUAD:
-		value = 1.0 - (1.0 - x) * (1.0 - x);
+		value = 1.0 - (1.0 - t) * (1.0 - t);
 		break;
 
 	case EASE_INOUTQUAD:
-		value = x < 0.5 ? 2.0 * x * x : 1.0 - Pow(-2.0 * x + 2, 2) / 2.0;
+		value = t < 0.5 ? 2.0 * t * t : 1.0 - Pow(-2.0 * t + 2, 2) / 2.0;
 		break;
 
 	case EASE_INCUBIC:
-		value = x * x * x;
+		value = t * t * t;
 		break;
 
 	case EASE_OUTCUBIC:
-		value = 1.0 - Pow(1.0 - x, 3);
+		value = 1.0 - Pow(1.0 - t, 3);
 		break;
 
 	case EASE_INOUTCUBIC:
-		value = x < 0.5 ? 4.0 * x * x * x : 1.0 - Pow(-2.0 * x + 2.0, 3) / 2.0;
+		value = t < 0.5 ? 4.0 * t * t * t : 1.0 - Pow(-2.0 * t + 2.0, 3) / 2.0;
 		break;
 
 	case EASE_INQUART:
-		value = x * x * x * x;
+		value = t * t * t * t;
 		break;
 
 	case EASE_OUTQUART:
-		value = 1.0 - Pow(1.0 - x, 4);
+		value = 1.0 - Pow(1.0 - t, 4);
 		break;
 
 	case EASE_INOUTQUART:
-		value = x < 0.5 ? 8.0 * x * x * x * x : 1.0 - Pow(-2.0 * x + 2.0, 4) / 2.0;
+		value = t < 0.5 ? 8.0 * t * t * t * t : 1.0 - Pow(-2.0 * t + 2.0, 4) / 2.0;
 		break;
 
 	case EASE_INQUINT:
-		value = x * x * x * x * x;
+		value = t * t * t * t * t;
 		break;
 
 	case EASE_OUTQUINT:
-		value = 1.0 - Pow(1.0 - x, 5);
+		value = 1.0 - Pow(1.0 - t, 5);
 		break;
 
 	case EASE_INOUTQUINT:
-		value = x < 0.5 ? 16.0 * x * x * x * x * x : 1.0 - Pow(-2.0 * x + 2.0, 5) / 2.0;
+		value = t < 0.5 ? 16.0 * t * t * t * t * t : 1.0 - Pow(-2.0 * t + 2.0, 5) / 2.0;
 		break;
 
 	case EASE_INEXPO:
-		value = x == 0 ? 0 : pow(2.0, 10.0 * x - 10.0);
+		value = t == 0 ? 0 : pow(2.0, 10.0 * t - 10.0);
 		break;
 
 	case EASE_OUTEXPO:
-		value = x == 1 ? 1 : 1 - pow(2.0, -10.0 * x);
+		value = t == 1 ? 1 : 1 - pow(2.0, -10.0 * t);
 		break;
 
 	case EASE_INOUTEXPO:
-		value = x == 0
+		value = t == 0
 			? 0
-			: x == 1
+			: t == 1
 			? 1
-			: x < 0.5 ? pow(2.0, 20.0 * x - 10.0) / 2.0
-			: (2.0 - pow(2.0, -20.0 * x + 10.0)) / 2.0;
+			: t < 0.5 ? pow(2.0, 20.0 * t - 10.0) / 2.0
+			: (2.0 - pow(2.0, -20.0 * t + 10.0)) / 2.0;
 		break;
 
 	case EASE_INCIRC:
-		value = 1.0 - sqrt(1.0 - Pow(x, 2));
+		value = 1.0 - sqrt(1.0 - Pow(t, 2));
 		break;
 
 	case EASE_OUTCIRC:
-		value = sqrt(1.0 - Pow(x - 1.0, 2));
+		value = sqrt(1.0 - Pow(t - 1.0, 2));
 		break;
 
 	case EASE_INOUTCIRC:
-		value = x < 0.5
-			? (1.0 - sqrt(1.0 - Pow(2.0 * x, 2))) / 2.0
-			: (sqrt(1.0 - Pow(-2.0 * x + 2.0, 2)) + 1.0) / 2.0;
+		value = t < 0.5
+			? (1.0 - sqrt(1.0 - Pow(2.0 * t, 2))) / 2.0
+			: (sqrt(1.0 - Pow(-2.0 * t + 2.0, 2)) + 1.0) / 2.0;
 		break;
 
 	case EASE_INBACK:
-		value = c3 * x * x * x - c1 * x * x;
+		value = c3 * t * t * t - c1 * t * t;
 		break;
 
 	case EASE_OUTBACK:
-		value = 1.0 + c3 * Pow(x - 1.0, 3) + c1 * Pow(x - 1.0, 2);
+		value = 1.0 + c3 * Pow(t - 1.0, 3) + c1 * Pow(t - 1.0, 2);
 		break;
 
 	case EASE_INOUTBACK:
-		value = x < 0.5
-			? (pow(2.0 * x, 2) * ((c2 + 1.0) * 2.0 * x - c2)) / 2.0
-			: (pow(2.0 * x - 2.0, 2) * ((c2 + 1.0) * (x * 2.0 - 2.0) + c2) + 2.0) / 2.0;
+		value = t < 0.5
+			? (pow(2.0 * t, 2) * ((c2 + 1.0) * 2.0 * t - c2)) / 2.0
+			: (pow(2.0 * t - 2.0, 2) * ((c2 + 1.0) * (t * 2.0 - 2.0) + c2) + 2.0) / 2.0;
 		break;
 
 	case EASE_INELASTIC:
-		value = x == 0
+		value = t == 0
 			? 0
-			: x == 1.0
+			: t == 1.0
 			? 1.0
-			: -pow(2.0, 10.0 * x - 10.0) * sin((x * 10.0 - 10.75) * c4);
+			: -pow(2.0, 10.0 * t - 10.0) * sin((t * 10.0 - 10.75) * c4);
 		break;
 
 	case EASE_OUTELASTIC:
-		value = x == 0
+		value = t == 0
 			? 0
-			: x == 1
+			: t == 1
 			? 1
-			: pow(2.0, -10.0 * x) * sin((x * 10.0 - 0.75) * c4) + 1.0;
+			: pow(2.0, -10.0 * t) * sin((t * 10.0 - 0.75) * c4) + 1.0;
 		break;
 
 	case EASE_INOUTELASTIC:
-		value = x == 0
+		value = t == 0
 			? 0
-			: x == 1
+			: t == 1
 			? 1
-			: x < 0.5
-			? -(pow(2.0, 20.0 * x - 10.0) * sin((20.0 * x - 11.125) * c5)) / 2.0
-			: (pow(2.0, -20.0 * x + 10.0) * sin((20.0 * x - 11.125) * c5)) / 2.0 + 1.0;
+			: t < 0.5
+			? -(pow(2.0, 20.0 * t - 10.0) * sin((20.0 * t - 11.125) * c5)) / 2.0
+			: (pow(2.0, -20.0 * t + 10.0) * sin((20.0 * t - 11.125) * c5)) / 2.0 + 1.0;
 		break;
 
 	case EASE_INBOUNCE:
-		x = 1.0 - x;
-		if (x < 1.0 / d1) {
-			value = 1.0 - (n1 * x * x);
+		t = 1.0 - t;
+		if (t < 1.0 / d1) {
+			value = 1.0 - (n1 * t * t);
 		}
-		else if (x < 2.0 / d1) {
-			value = 1.0 - (n1 * (x -= 1.5 / d1) * x + 0.75);
+		else if (t < 2.0 / d1) {
+			value = 1.0 - (n1 * (t -= 1.5 / d1) * t + 0.75);
 		}
-		else if (x < 2.5 / d1) {
-			value = 1.0 - (n1 * (x -= 2.25 / d1) * x + 0.9375);
+		else if (t < 2.5 / d1) {
+			value = 1.0 - (n1 * (t -= 2.25 / d1) * t + 0.9375);
 		}
 		else {
-			value = 1.0 - (n1 * (x -= 2.625 / d1) * x + 0.984375);
+			value = 1.0 - (n1 * (t -= 2.625 / d1) * t + 0.984375);
 		}
 		break;
 
 	case EASE_OUTBOUNCE:
-		if (x < 1.0 / d1) {
-			value = n1 * x * x;
+		if (t < 1.0 / d1) {
+			value = n1 * t * t;
 		}
-		else if (x < 2.0 / d1) {
-			value = n1 * (x -= 1.5 / d1) * x + 0.75;
+		else if (t < 2.0 / d1) {
+			value = n1 * (t -= 1.5 / d1) * t + 0.75;
 		}
-		else if (x < 2.5 / d1) {
-			value = n1 * (x -= 2.25 / d1) * x + 0.9375;
+		else if (t < 2.5 / d1) {
+			value = n1 * (t -= 2.25 / d1) * t + 0.9375;
 		}
 		else {
-			value = n1 * (x -= 2.625 / d1) * x + 0.984375;
+			value = n1 * (t -= 2.625 / d1) * t + 0.984375;
 		}
 		break;
 
 	case EASE_INOUTBOUNCE:
-		if (x < 0.5) {
-			x = 1.0 - 2.0 * x;
-			if (x < 1.0 / d1) {
-				value = (1.0 - (n1 * x * x)) / 2.0;
+		if (t < 0.5) {
+			t = 1.0 - 2.0 * t;
+			if (t < 1.0 / d1) {
+				value = (1.0 - (n1 * t * t)) / 2.0;
 			}
-			else if (x < 2.0 / d1) {
-				value = (1.0 - (n1 * (x -= 1.5 / d1) * x + 0.75)) / 2.0;
+			else if (t < 2.0 / d1) {
+				value = (1.0 - (n1 * (t -= 1.5 / d1) * t + 0.75)) / 2.0;
 			}
-			else if (x < 2.5 / d1) {
-				value = (1.0 - (n1 * (x -= 2.25 / d1) * x + 0.9375)) / 2.0;
+			else if (t < 2.5 / d1) {
+				value = (1.0 - (n1 * (t -= 2.25 / d1) * t + 0.9375)) / 2.0;
 			}
 			else {
-				value = (1.0 - (n1 * (x -= 2.625 / d1) * x + 0.984375)) / 2.0;
+				value = (1.0 - (n1 * (t -= 2.625 / d1) * t + 0.984375)) / 2.0;
 			}
 		}
 		else {
-			x = 2.0 * x - 1.0;
-			if (x < 1.0 / d1) {
-				value = (1.0 + (n1 * x * x)) / 2.0;
+			t = 2.0 * t - 1.0;
+			if (t < 1.0 / d1) {
+				value = (1.0 + (n1 * t * t)) / 2.0;
 			}
-			else if (x < 2.0 / d1) {
-				value = (1.0 + (n1 * (x -= 1.5 / d1) * x + 0.75)) / 2.0;
+			else if (t < 2.0 / d1) {
+				value = (1.0 + (n1 * (t -= 1.5 / d1) * t + 0.75)) / 2.0;
 			}
-			else if (x < 2.5 / d1) {
-				value = (1.0 + (n1 * (x -= 2.25 / d1) * x + 0.9375)) / 2.0;
+			else if (t < 2.5 / d1) {
+				value = (1.0 + (n1 * (t -= 2.25 / d1) * t + 0.9375)) / 2.0;
 			}
 			else {
-				value = (1.0 + (n1 * (x -= 2.625 / d1) * x + 0.984375)) / 2.0;
+				value = (1.0 + (n1 * (t -= 2.625 / d1) * t + 0.984375)) / 2.0;
 			}
 		}
 		break;
 
 	default:
-		value = x;
+		value = t;
 		break;
 	}
 
 	double amount = end - start;
 	value = start + amount * value;
+
+	return value;
 }
 
-void Easing::Set(double start, double end, int type, double takesTime)
+double Easing::GetEaseValue(int type, double start, double end, const Timer& timer, double startTime, double endTime)
 {
-	this->start = start;
-	this->end = end;
-	this->type = type;
+	double n = (double)timer.GetNowTime();
+	double s = (double)timer.GetStartTime();
+	double e = (double)timer.GetEndTime();
 
-	//範囲内かチェック
-	if (this->type < -1 || this->type > 29) {
-		assert(0);
-		type = -1;
+	if (startTime != -1) {
+		s = startTime;
+	}
+	if (endTime != -1) {
+		e = endTime;
 	}
 
-	paramTimer.SetTimer(0, takesTime);
-}
+	double a = n - s;
+	double b = e - s;
 
-void Easing::Start()
-{
-	paramTimer.Start();
-}
+	//ゼロ除算
+	if (b == 0) { return 0; }
 
-void Easing::Stop()
-{
-	paramTimer.Stop();
-}
+	double t = a / b;
 
-void Easing::Reset()
-{
-	paramTimer.Reset();
+	return GetEaseValue(type, start, end, t);
 }
 
 const std::string& Easing::GetFuncName(int type)

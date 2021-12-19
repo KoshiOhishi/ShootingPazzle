@@ -1,6 +1,8 @@
 #pragma once
-#include "Timer.h"
 #include <string>
+#include "Timer.h"
+
+//参考:https://easings.net/ja
 
 class Easing
 {
@@ -39,19 +41,13 @@ class Easing
 #define EASE_INOUTBOUNCE 29
 
 private:
-	const double c1 = 1.70158;
-	const double c2 = c1 * 1.525;
-	const double c3 = c1 + 1.0;
-	const double c4 = (2.0 * PI) / 3.0;
-	const double c5 = (2.0 * PI) / 4.5;
-	const double n1 = 7.5625;
-	const double d1 = 2.75;
-
-	Timer paramTimer;
-	int type = 0;
-	double start = 0;
-	double end = 0;
-	double value = 0;
+	static const double c1;
+	static const double c2;
+	static const double c3;
+	static const double c4;
+	static const double c5;
+	static const double n1;
+	static const double d1;
 
 	/// <summary>
 	/// 軽量化pow 自然数乗のときはこっちを使うこと
@@ -59,50 +55,30 @@ private:
 	/// <param name="x">値</param>
 	/// <param name="t">累乗数</param>
 	/// <returns>結果</returns>
-	double Pow(double x, int t);
+	static double Pow(double x, int t);
 
 public:
+	/// <summary>
+	/// イージングをかけた値を取得
+	/// </summary>
+	/// <param name="type">イージングの種類</param>
+	/// <param name="start">t=0の時の値</param>
+	/// <param name="end">t=1の時の値</param>
+	/// <param name="t">0～1の間の数値</param>
+	/// <returns>イージングをかけた値</returns>
+	static double GetEaseValue(int type, double start, double end, double t);
 
 	/// <summary>
-	/// 更新
+	/// イージングをかけた値を取得
 	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 値の設定
-	/// </summary>
-	/// <param name="start">値の開始値</param>
-	/// <param name="end">値の終了値</param>
-	/// <param name="type">easings.netにある関数名</param>
-	/// <param name="takesTime">開始から終了までにかかる時間(ms)</param>
-	void Set(double start, double end, int type = EASE_INSIDE, double takesTime = 1000);
-
-	/// <summary>
-	/// 関数の開始
-	/// </summary>
-	void Start();
-
-	/// <summary>
-	/// 関数の一時停止
-	/// </summary>
-	void Stop();
-
-	/// <summary>
-	/// 関数のリセット
-	/// </summary>
-	void Reset();
-
-	/// <summary>
-	/// 開始したかどうかを返す
-	/// </summary>
-	/// <returns>開始したかどうか</returns>
-	bool IsStart()const { return paramTimer.GetIsStart(); }
-
-	/// <summary>
-	/// 関数によって算出された値を取得
-	/// </summary>
-	/// <returns>値</returns>
-	double GetValue()const { return value; }
+	/// <param name="type">イージングの種類</param>
+	/// <param name="start">t=0の時の値</param>
+	/// <param name="end">t=1の時の値</param>
+	/// <param name="timer">タイマー ※開始-終了を0より大きくすること</param>
+	/// <param name="startTime">t=0の時の時間 それより前は0固定</param>
+	/// <param name="endTime">t=1の時の時間　それ以降は1固定</param>
+	/// <returns>イージングをかけた値</returns>
+	static double GetEaseValue(int type, double start, double end, const Timer& timer, double startTime = -1, double endTime = -1);
 
 	static const std::string& GetFuncName(int type);
 };
