@@ -138,7 +138,7 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i], IID_PPV_ARGS(dev.ReleaseAndGetAddressOf()));
 		if (result == S_OK)
 		{
-			//デバイスを生成できた時点でルー王を抜ける
+			//デバイスを生成できた時点でループを抜ける
 			featureLevel = levels[i];
 			break;
 		}

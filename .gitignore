@@ -2,17 +2,10 @@
 # この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
 ################################################################################
 
-/DX12Library/Resources/PLAYER
 /DX12Library/lib
 /.vs/DX12Library/v16
 /x64
-/DirectXTex
-/Game/Resources
-/Debug
-/Release
 *.lib
 /StageEditor/DX12Library
-/StageEditor/Maya
 /.vs/ShootingPazzle/v16
-/Maya
 /Ignore

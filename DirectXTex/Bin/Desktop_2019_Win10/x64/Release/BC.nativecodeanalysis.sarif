@@ -1,0 +1,376 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.29.30037.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "commandLine": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\bin\\HostX64\\x64\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00007FF7B067FC60 -allChunksReserved -il C:\\Users\\tenni\\AppData\\Local\\Temp\\_CL_c4c14aaeast -typedil -f BC.cpp -W 1 -Ze -D_MSC_EXTENSIONS -Zp16 -pc \\:/ -D_MSC_VER=1929 -D_MSC_FULL_VER=192930037 -D_MSC_BUILD=0 -D_M_AMD64=100 -ZILP448 -D_M_X64=100 -D_WIN64 -D_WIN32 -GR -D_CPPRTTI -nologo -Wall -W4 -diagnostics:column -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -GF -Og -Oi -Ot -Oy -DCODE_ANALYSIS -DWIN32 -DNDEBUG -D_LIB -D_WIN32_WINNT=0x0A00 -D_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS -D_UNICODE -DUNICODE -EHs -D_CPPUNWIND -EHc -MD -D_MT -D_DLL -GS -fpfast -D_M_FP_FAST -permissive- -Zc:wchar_t -Zc:forScope -omp -D_OPENMP=200203 -YuDirectXTexP.h -FpBin\\Desktop_2019_Win10\\x64\\Release\\DirectXTex.pch -FoBin\\Desktop_2019_Win10\\x64\\Release\\BC.obj -FdBin\\Desktop_2019_Win10\\x64\\Release\\DirectXTex.pdb -external:W 4 -Gd -wd 26812 -analyze:projectdirectory E:\\K019G1301\\ライブラリ\\DirectXTex -analyze:rulesetdirectory ;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:quiet -analyze:plugin C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\bin\\HostX64\\x64\\EspXEngine.dll -FC -errorreport:prompt -Zc:twoPhase- -Zc:__cplusplus -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\include -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\atlmfc\\include -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\UnitTest\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\UnitTest\\include -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -external:I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\UnitTest\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um",
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexwic.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "a96e3c3ecda4526cbf32c3f3cd270dc7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexp.h"
+          },
+          "hashes": {
+            "md5": "ee51500eb3e124da1751379b2b331506"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtex.h"
+          },
+          "hashes": {
+            "md5": "202c60f0a364ba2e49ff225abcd660d0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtex.inl"
+          },
+          "hashes": {
+            "md5": "f848536b56272323842e1f132644ee5a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/scoped.h"
+          },
+          "hashes": {
+            "md5": "ed7f509db40fa4efd7164b1ce3bdf450"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtextga.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "9a310a110737bcc913cc2f760d5d73f1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexresize.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "94a96f488cabdd509335937c888d50f2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/filters.h"
+          },
+          "hashes": {
+            "md5": "5b532f03c8f5a95ed9604624eb56cd28"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexpmalpha.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "4a7e7a4fa06cbfcca637914af8addc66"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexnormalmaps.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "a0c686c5377bc5e71dc2c96fd96d8633"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexmisc.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "105289d55aad5539c30c5730be02948c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexmipmaps.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "5a8a7b62a52bc983ee8cf287c557e66f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxteximage.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "74d0ba81e5f6a5572fc38e7bfeaa84b5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexhdr.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "45f8b0701a7cb955d5f01a84f4b1aa6b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexfliprotate.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "b963f611f608d3bb7585716882f8c839"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexdds.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "795d6571dfb01ed1191e0b4b90396f2d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/dds.h"
+          },
+          "hashes": {
+            "md5": "2012988ba40cc38a55af9ffe1955f46b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///E:/K019G1301/ライブラリ/DirectXTex/d3dx12.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "24544b3106d7ed78cf95a4f4858cdb9f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexd3d12.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "293f3fff32bd642dc6dfa73364cfd850"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexd3d11.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "c207a4fa43eda482e0de72c56c91d748"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexconvert.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "2c4d31351af41a03f2f336bdee1d576a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexcompressgpu.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "b1a800709d80b923f7ebedd565ce6ed1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/bcdirectcompute.h"
+          },
+          "hashes": {
+            "md5": "70d208aa65325524df23f52565cbfd04"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/directxtexcompress.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "a98ce99fdbdea617825b830d43c00046"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/bc.h"
+          },
+          "hashes": {
+            "md5": "8fae96ac89be9b442936a644ca90bd1d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/bcdirectcompute.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "8ac09cad3b35d9b64f6b0002fb016a55"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/shaders/compiled/bc7encode_encodeblockcs.inc"
+          },
+          "hashes": {
+            "md5": "f30ded2d1ff4b3833c151fc4e12259ca"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/shaders/compiled/bc7encode_trymode02cs.inc"
+          },
+          "hashes": {
+            "md5": "56066c5fc43793747eca981ebadab4c8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/shaders/compiled/bc7encode_trymode137cs.inc"
+          },
+          "hashes": {
+            "md5": "958e9cbde61cf442b8637cefee8f2d1d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/shaders/compiled/bc7encode_trymode456cs.inc"
+          },
+          "hashes": {
+            "md5": "7c69887827b1b132210b1d1aa890d8e1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/shaders/compiled/bc6hencode_encodeblockcs.inc"
+          },
+          "hashes": {
+            "md5": "ae340d8032c9cea3c50bb0e9295a2b94"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/shaders/compiled/bc6hencode_trymodeg10cs.inc"
+          },
+          "hashes": {
+            "md5": "d281f57564211d3ffa462b83a1f00438"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/shaders/compiled/bc6hencode_trymodele10cs.inc"
+          },
+          "hashes": {
+            "md5": "d38dce52d73a8c690ab4afd7bc2ed628"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/bc6hbc7.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "bb9d6034966ca75465bd6a06088f6478"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/bc4bc5.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "edec27685f4e2c730d5e02f30976e55a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/k019g1301/ライブラリ/directxtex/bc.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "39ffc417197eb5345a5925f2cdc98338"
+          }
+        }
+      ]
+    }
+  ]
+}

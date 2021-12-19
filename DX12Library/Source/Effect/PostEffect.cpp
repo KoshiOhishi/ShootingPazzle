@@ -534,7 +534,8 @@ void PostEffect::CreateGraphicsPipelineState()
 	rootparams[3].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);	//定数バッファビューとして初期化(b1)
 
 	//サンプラーの設定
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MINIMUM_MIN_MAG_MIP_POINT);
+	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_LINEAR);
+	samplerDesc.MaxAnisotropy = 1;
 
 	//ルートシグネチャの生成
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;

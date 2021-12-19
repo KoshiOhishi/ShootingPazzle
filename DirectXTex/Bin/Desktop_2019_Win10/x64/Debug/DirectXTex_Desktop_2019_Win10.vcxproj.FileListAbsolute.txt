@@ -1,0 +1,2 @@
+E:\K019G1301\ライブラリ\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+E:\K019G1301\個人制作\ShootingPazzle\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib

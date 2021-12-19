@@ -276,6 +276,7 @@ void Update() {
 
 	//デバッグテキストの描画
 	DebugText::DrawAll();
+
 	//描画終了処理
 	DX12Util::EndDraw();
 
