@@ -11,6 +11,7 @@ protected:
 	InstancingObject object;
 
 	int firstEffectType = -1;
+	double effectEndTime = -1;
 
 public:
 

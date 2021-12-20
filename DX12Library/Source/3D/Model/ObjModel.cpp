@@ -254,13 +254,13 @@ bool ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
 	result = LoadFromWICFile(
-		wfilepath, WIC_FLAGS_NONE,
+		wfilepath, WIC_FLAGS_FORCE_RGB,
 		&metadata, scratchImg);
 	if (FAILED(result)) {
 		return result;
 	}
 
-	const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
+	const Image* img = scratchImg.GetImages(); // 生データ抽出
 
 	// リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -296,7 +296,6 @@ bool ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 	}
 
 	return true;
-
 }
 
 bool ObjModel::LoadTextureReturnTexSize(const std::string& directoryPath, const std::string& filename, float* texWidth, float* texHeight)

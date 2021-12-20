@@ -26,7 +26,7 @@ void Stage::LoadStage(std::string filename)
 {
 	//エフェクトは最初の読み込みのみ
 	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
-		firstEffectTimer.SetTimer(0, 1000);
+		firstEffectTimer.SetTimer(0, 3500);
 		firstEffectTimer.Start();
 	}
 
@@ -138,8 +138,6 @@ void Stage::Draw()
 		TurnFloor::ResetIndex(i);
 	}
 	BreakFloor::ResetIndex();
-
-	DebugText::Print(std::to_string(firstEffectTimer.GetNowTime()), 0, 50);
 }
 
 void Stage::UpdateFirstEffect()
@@ -158,6 +156,10 @@ void Stage::UpdateFirstEffect()
 	//床が下から出てくる演出
 	for (int i = 0; i < floors.size(); i++) {
 		floors[i]->UpdateFirstEffect(firstEffectTimer);
+	}
+
+	if (firstEffectTimer.GetNowTime() >= firstEffectTimer.GetEndTime()) {
+		GameUtility::SetNowPhase(PHASE_SETPOS);
 	}
 }
 

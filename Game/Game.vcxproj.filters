@@ -78,6 +78,9 @@
     <ClCompile Include="BreakFloor.cpp">
       <Filter>ソース ファイル\オブジェクト\Floor</Filter>
     </ClCompile>
+    <ClCompile Include="GameCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlay.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="BreakFloor.h">
       <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

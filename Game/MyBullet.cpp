@@ -43,9 +43,14 @@ void MyBullet::Initialize()
 
 	nextMoveInfo = {};
 
-	//エフェクトは最初の読み込みのみ
+	//エフェクトタイマー
 	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
-		firstEffectTimer.SetTimer(0, 2000);
+		firstEffectTimer.SetTimer(0, 3500);
+		firstEffectTimer.Start();
+	}
+	//2回目以降は球の演出のみ
+	else {
+		firstEffectTimer.SetTimer(2500, 3500);
 		firstEffectTimer.Start();
 	}
 }
@@ -82,19 +87,11 @@ void MyBullet::Draw()
 
 void MyBullet::UpdateFirstEffect()
 {
-	if (GameUtility::GetNowPhase() != PHASE_FIRSTEFFECT) {
-		return;
-	}
-
 	firstEffectTimer.Update();
 
-	double y = Easing::GetEaseValue(EASE_OUTBOUNCE, 120, RADIUS, firstEffectTimer, 800, 2000);
+	double y = Easing::GetEaseValue(EASE_OUTBOUNCE, 200, RADIUS, firstEffectTimer, 2500, 3500);
 
 	position.y = y;
-
-	if (firstEffectTimer.GetNowTime() >= firstEffectTimer.GetEndTime()) {
-		GameUtility::SetNowPhase(PHASE_SETPOS);
-	}
 }
 
 void MyBullet::UpdateBeforeShoot()

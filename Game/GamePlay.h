@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include "Sprite.h"
 #include "Light.h"
-#include "Camera.h"
+#include "GameCamera.h"
 #include "Object3D.h"
 #include "TouchableObject.h"
 #include "ObjModel.h"
@@ -25,7 +25,7 @@ private:
 	//ライト
 	Light light;
 	//カメラ
-	Camera camera;
+	GameCamera camera;
 	//弾
 	MyBullet myBullet;
 	//ステージ

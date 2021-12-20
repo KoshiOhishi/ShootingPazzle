@@ -9,7 +9,7 @@
 
 class Camera
 {
-private: //エイリアス
+protected: //エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using string = std::string;
@@ -28,10 +28,10 @@ public: //サブクラス
 public: //メンバ関数
 
 	//初期化
-	void Initialize();
+	virtual void Initialize();
 
 	//更新
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// 視点座標を指定分加算する
@@ -89,7 +89,7 @@ public: //メンバ関数
 	/// </summary>
 	void UpdateViewMatrix();
 
-private: //メンバ変数
+protected: //メンバ変数
 
 	// 射影変換行列
 	XMMATRIX matProjection = DirectX::XMMatrixIdentity();
@@ -181,8 +181,8 @@ public:
 	const XMMATRIX& GetProjectionMatrix()const { return matProjection; }
 
 
-	//Setter
-private:
+//Setter
+protected:
 	//視点座標をセット
 	void SetEye(const Vector3& eye);
 	void SetEye(const float x, const float y, const float z);
@@ -193,7 +193,6 @@ private:
 	void SetUpVec(const Vector3& up);
 	void SetUpVec(const float x, const float y, const float z);
 
-private:
 	/// <summary>
 	/// 視点座標、注視点座標、上方向ベクトルをセット (初期化用)
 	/// </summary>

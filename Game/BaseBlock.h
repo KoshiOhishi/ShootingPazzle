@@ -17,6 +17,7 @@ protected:
 	unsigned short breakupCount = 0;
 
 	int firstEffectType = -1;
+	double effectEndTime = -1;
 
 public:
 

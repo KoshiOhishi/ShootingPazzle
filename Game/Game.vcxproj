@@ -195,6 +195,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClCompile Include="BaseBlock.cpp" />
     <ClCompile Include="BaseFloor.cpp" />
     <ClCompile Include="BreakFloor.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="GameUtility.cpp" />
     <ClCompile Include="HoleFloor.cpp" />
@@ -210,6 +211,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClInclude Include="BaseBlock.h" />
     <ClInclude Include="BaseFloor.h" />
     <ClInclude Include="BreakFloor.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GameUtility.h" />
     <ClInclude Include="HoleFloor.h" />

@@ -23,11 +23,6 @@ void GamePlay::Initialize()
 
 	//カメラ初期化
 	camera.Initialize();
-	//camera.SetPositionAndDistance({ 50,50.0f,-40.0f }, 15.0f);
-	//camera.SetRotation(60, -60, 0);
-
-	camera.SetPositionAndDistance({ 0,100,-40 }, 15.0f);
-	camera.SetRotation(75, 0, 0);
 
 	//カメラをセット
 	Object3D::SetCamera(&camera);
@@ -35,6 +30,9 @@ void GamePlay::Initialize()
 
 	//ステージ取得
 	stage.LoadStage("../StageEditor/StageData/test.spb");
+
+	//ステージサイズからカメラ位置セット
+	camera.SetPosFromStageSize(stage.GetStageSize());
 
 	//弾初期化
 	myBullet.SetPStage(&stage);
@@ -44,7 +42,7 @@ void GamePlay::Initialize()
 	modelBG.CreateFromOBJ("sky");
 	objBG.Initialize();
 	objBG.SetObjModel(&modelBG);
-	objBG.SetScale(2, 2, 2);
+	objBG.SetScale(3, 3, 3);
 
 	//フェーズ初期化
 	GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
@@ -118,7 +116,8 @@ void GamePlay::Update()
 
 	//リセット
 	if (Keyboard::IsKeyTrigger(DIK_R)) {
-		GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
+		//完成時はずす
+		//GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
 
 		//ステージ取得
 		stage.LoadStage("../StageEditor/StageData/test.spb");
@@ -126,8 +125,14 @@ void GamePlay::Update()
 		//弾初期化
 		myBullet.Initialize();
 
-		//フェーズ初期化
-		//GameUtility::SetNowPhase(PHASE_SETPOS);
+		//カメラ初期化　完成時はずす
+		//camera.Initialize();
+
+		//ステージサイズからカメラ位置セット　完成時はずす
+		//camera.SetPosFromStageSize(stage.GetStageSize());
+
+		//フェーズ初期化　完成時コメントはずす
+		GameUtility::SetNowPhase(PHASE_SETPOS);
 	}
 
 #pragma endregion
