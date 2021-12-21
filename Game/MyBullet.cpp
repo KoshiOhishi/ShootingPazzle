@@ -228,9 +228,15 @@ void MyBullet::CheckCollision()
 	//レイ更新
 	UpdateRay();
 
-	//球が半分以上落ちきったら衝突判定を無視
-	if (position.y < 0) { return; }
+	//球が落ちきったら衝突判定を無視
+	if (position.y < -RADIUS * 3 * 0.5f) { return; }
 
+	CheckBlockCollision();
+	CheckFloorCollision();
+}
+
+void MyBullet::CheckBlockCollision()
+{
 	//レイとカプセルの距離の最短算出用
 	float alreadyHitDistance = FLT_MAX;
 
@@ -291,7 +297,10 @@ void MyBullet::CheckCollision()
 			stage->GetBlocks()[i]->DecrementBreakupCount();
 		}
 	}
+}
 
+void MyBullet::CheckFloorCollision()
+{
 	//球と床ギミックとの判定
 	for (int i = 0; i < stage->GetFloors().size(); i++) {
 
@@ -311,7 +320,7 @@ void MyBullet::CheckCollision()
 			continue;
 		}
 
-		if (stage->GetFloors()[i]->GetObjectType() == "BreakFloor"){
+		if (stage->GetFloors()[i]->GetObjectType() == "BreakFloor") {
 			BreakFloor* floor = dynamic_cast<BreakFloor*>(stage->GetFloors()[i]);
 
 			//球が床ブロックから離れた時を検知させるためにフラグをセット

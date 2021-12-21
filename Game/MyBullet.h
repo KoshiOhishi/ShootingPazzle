@@ -122,6 +122,16 @@ public:
 	void CheckCollision();
 
 	/// <summary>
+	/// ブロックとの衝突チェック
+	/// </summary>
+	void CheckBlockCollision();
+
+	/// <summary>
+	/// 床との衝突チェック
+	/// </summary>
+	void CheckFloorCollision();
+
+	/// <summary>
 	/// レイの位置方角更新
 	/// </summary>
 	void UpdateRay();

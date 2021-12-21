@@ -115,25 +115,7 @@ void GamePlay::Update()
 
 
 	//リセット
-	if (Keyboard::IsKeyTrigger(DIK_R)) {
-		//完成時はずす
-		//GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
-
-		//ステージ取得
-		stage.LoadStage("../StageEditor/StageData/test.spb");
-
-		//弾初期化
-		myBullet.Initialize();
-
-		//カメラ初期化　完成時はずす
-		//camera.Initialize();
-
-		//ステージサイズからカメラ位置セット　完成時はずす
-		//camera.SetPosFromStageSize(stage.GetStageSize());
-
-		//フェーズ初期化　完成時コメントはずす
-		GameUtility::SetNowPhase(PHASE_SETPOS);
-	}
+	Reset();
 
 #pragma endregion
 #pragma region ImGui
@@ -199,12 +181,44 @@ void GamePlay::Draw()
 	//弾描画
 	myBullet.Draw();
 	
-
 	//オブジェクト描画ここまで
+	DebugText::Print(stage.GetTargetBlockCount(), 0, 100);
 
 	//前景スプライト描画ここから
 	ImguiHelper::Draw();
 
 	//前景スプライト描画ここまで
 
+}
+
+void GamePlay::Reset()
+{
+	if (Keyboard::IsKeyTrigger(DIK_R)) {
+		//ステージ取得
+		stage.LoadStage("../StageEditor/StageData/test.spb");
+
+		//弾初期化
+		myBullet.Initialize();
+
+		//フェーズ初期化　完成時コメントはずす
+		GameUtility::SetNowPhase(PHASE_SETPOS);
+	}
+
+	//デバッグ用　完成版は消す
+	if (Keyboard::IsKeyTrigger(DIK_E)) {
+
+		GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
+
+		//ステージ取得
+		stage.LoadStage("../StageEditor/StageData/test.spb");
+
+		//弾初期化
+		myBullet.Initialize();
+
+		//カメラ初期化　完成時はずす
+		camera.Initialize();
+
+		//ステージサイズからカメラ位置セット　完成時はずす
+		camera.SetPosFromStageSize(stage.GetStageSize());
+	}
 }

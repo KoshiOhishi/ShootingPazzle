@@ -145,4 +145,7 @@ void TriangleBlock::DecrementBreakupCount()
 void TriangleBlock::Breakup()
 {
 	//ここに爆発エフェクト入れる
+
+	//残り目標ブロック数を減らす
+	pStage->DecrementTargetBlockCount();
 }

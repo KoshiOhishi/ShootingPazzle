@@ -16,8 +16,6 @@
 #include "TriangleBlock.h"
 #include "Stage.h"
 
-#define PI 3.14159265359f
-
 class GamePlay :
 	public Scene
 {
@@ -43,5 +41,10 @@ public:
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
+
+	/// <summary>
+	/// 盤面をリセットし、フェーズをSET_POSにもどす
+	/// </summary>
+	void Reset();
 };
 

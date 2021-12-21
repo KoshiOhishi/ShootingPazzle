@@ -79,4 +79,7 @@ void SquareBlock::DecrementBreakupCount()
 void SquareBlock::Breakup()
 {
 	//ここに爆発エフェクト入れる
+
+	//残り目標ブロック数を減らす
+	pStage->DecrementTargetBlockCount();
 }

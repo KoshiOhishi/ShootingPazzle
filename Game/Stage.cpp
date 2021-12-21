@@ -24,6 +24,10 @@ Stage::~Stage()
 
 void Stage::LoadStage(std::string filename)
 {
+	//BaseBlockにポインタセット
+	BaseBlock::SetPStage(this);
+	targetBlockCount = 0;
+
 	//エフェクトは最初の読み込みのみ
 	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
 		firstEffectTimer.SetTimer(0, 3500);
@@ -208,6 +212,11 @@ void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short br
 			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTBOTTOM);
 		}
 		blocks.emplace_back(newBlock);
+	}
+
+	//破壊できるブロックなら目標ブロックカウント増加
+	if (breakupCount > 0) {
+		targetBlockCount++;
 	}
 }
 

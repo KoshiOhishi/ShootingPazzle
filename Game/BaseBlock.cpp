@@ -2,6 +2,8 @@
 #include "GameUtility.h"
 #include "Easing.h"
 
+Stage* BaseBlock::pStage = nullptr;
+
 void BaseBlock::SetStagePos(const StageVec2& pos)
 {
 	float x, z;

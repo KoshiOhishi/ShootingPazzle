@@ -6,17 +6,27 @@
 #include "CollisionPrimitive.h"
 #include "GameUtility.h"
 #include "Timer.h"
+#include "Stage.h"
+
+class Stage;
 
 class BaseBlock
 {
 protected:
+	static Stage* pStage;
+
+	//球との衝突判定用カプセル
 	std::vector<Capsule> capsule;
+	//3Dオブジェクト
 	Object3D object;
 	//衝突後に壊れるブロックか
 	bool isBreakable = false;
+	//あと何回当たれば壊れるか　初期値0で破壊不可能ブロックになる
 	unsigned short breakupCount = 0;
 
+	//出現エフェクトの種類
 	int firstEffectType = -1;
+	//出現エフェクトが終わる時間
 	double effectEndTime = -1;
 
 public:
@@ -68,6 +78,8 @@ public:
 	virtual void Breakup() = 0;
 
 #pragma region Setter
+	static void SetPStage(Stage* pStage) { BaseBlock::pStage = pStage; }
+
 	/// <summary>
 	/// 座標セット (Y座標固定)
 	/// </summary>

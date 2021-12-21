@@ -6,16 +6,24 @@
 
 class Stage
 {
+	friend class BaseBlock;
+
 private:
+	//球半径
 	const float sphereRadius = ONE_CELL_LENGTH / 2;
-
+	//ステージの大きさ マス単位
 	StageVec2 stageSize = { 20,20 };
+	//ブロックコンテナ
 	std::vector<BaseBlock*> blocks;
+	//床ブロックコンテナ
 	std::vector<BaseFloor*> floors;
+	//マウスカーソルと判定を取る用の板コリジョン
 	Plane floorCollision;
+	//球のスタート奥行
 	unsigned short startLaneZ = stageSize.y - 2;
-
-	//出現エフェクト
+	//残り目標破壊ブロック数
+	int targetBlockCount = 0;
+	//出現エフェクトタイマー
 	Timer firstEffectTimer;
 
 public:
@@ -91,6 +99,11 @@ public:
 	void DeleteFloor(const StageVec2& stagePos);
 
 	/// <summary>
+	/// 残り目標破壊ブロック数を減らす
+	/// </summary>
+	void DecrementTargetBlockCount() { targetBlockCount--; }
+
+	/// <summary>
 	/// ブロック配置取得
 	/// </summary>
 	/// <returns></returns>
@@ -119,5 +132,11 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const StageVec2& GetStageSize() { return stageSize; }
+
+	/// <summary>
+	/// 残り目標破壊ブロック数取得
+	/// </summary>
+	/// <returns>残り目標破壊ブロック数</returns>
+	const int GetTargetBlockCount() { return targetBlockCount; }
 };
 
