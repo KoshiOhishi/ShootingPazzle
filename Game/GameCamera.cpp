@@ -61,10 +61,50 @@ void GameCamera::UpdateFirseEffect()
 
 void GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
 {
-	//とりあえず固定
-	beforeEffectPos = { 0,50,-200 };
+	const float ANGLE = 75;
+	float y = 0, z = 0;
+
+
+	StageVec2 size = stageSize;
+
+	//奥行で判定をとるので、横幅と縦幅の差が視界の限界(2.5倍)以上であったら縦横の比率を緩和させる
+	if (size.x >= size.y * 2.0f) {
+		size.y = size.x / 2.0f;
+	}
+
+	//視野の範囲にステージがぴったり入っているか判定
+	const float SIN_ANGLE = -sin((-ANGLE) * PI / 180);
+	const float COS_ANGLE = -cos((-ANGLE) * PI / 180);
+	//手前の余裕があればＯＫ
+	const float SIN_BACKWARD = sin((-ANGLE - CAMERA_VIEWING_ANGLE / 2) * PI / 180);
+	const float COS_BACKWARD = cos((-ANGLE - CAMERA_VIEWING_ANGLE / 2) * PI / 180);
+
+	while (true) {
+		//カメラ位置を斜め手前に加算
+		y += SIN_ANGLE;
+		z += COS_ANGLE;
+
+		//視野の一番下と地面がぶつかる位置算出
+		float d1 = Vector3{ 0,1,0 }.Dot({ 0, SIN_BACKWARD, COS_BACKWARD });
+		float d2 = Vector3{ 0,1,0 }.Dot({ 0,y,z });
+		float t = d2 / -d1;
+		float backwardZ = z + t * COS_BACKWARD;
+
+		//2マス分余裕をとる
+		float adjust = ONE_CELL_LENGTH * 2;
+
+		//視野の下に2マス分以上の余裕があればループを抜ける
+		if (backwardZ <= -size.y / 2 * ONE_CELL_LENGTH - adjust) {
+			break;
+		}
+	}
+	
+	//カメラ移動前座標セット
+	beforeEffectPos = { 0, 50, z - 175 };
 	beforeEffectRot = { 0,0,0 };
 
-	afterEffectPos = { 0, 100, -40 };
-	afterEffectRot = { 75,0,0 };
+	//カメラ移動後座標セット
+	afterEffectPos = { 0, y, z };
+	afterEffectRot = { ANGLE,0,0 };
+
 }

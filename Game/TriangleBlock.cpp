@@ -65,6 +65,20 @@ void TriangleBlock::SetTriangleType(int shapeType)
 
 void TriangleBlock::Update()
 {
+	//とりあえず壊れるブロックは色変えとく
+	if (breakupCount == 2) {
+		//緑
+		object.SetColor(0.5f, 1, 0.5f, 1);
+	}
+	else if (breakupCount == 1) {
+		//赤
+		object.SetColor(1, 0.5f, 0.5f, 1);
+	}
+	else if (breakupCount == 0) {
+		//白
+		object.SetColor(1, 1, 1, 1);
+	}
+
 	object.Update();
 	UpdateCollision();
 }

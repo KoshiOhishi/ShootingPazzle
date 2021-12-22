@@ -247,7 +247,7 @@ void Initialize(){
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();
 
-	FPSManager::SetFPS(0, true);
+	FPSManager::SetFPS(60, true);
 
 }
 void Update() {

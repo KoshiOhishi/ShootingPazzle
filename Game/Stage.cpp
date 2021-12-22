@@ -162,7 +162,7 @@ void Stage::UpdateFirstEffect()
 		floors[i]->UpdateFirstEffect(firstEffectTimer);
 	}
 
-	if (firstEffectTimer.GetNowTime() >= firstEffectTimer.GetEndTime()) {
+	if (firstEffectTimer.GetIsEnd()) {
 		GameUtility::SetNowPhase(PHASE_SETPOS);
 	}
 }

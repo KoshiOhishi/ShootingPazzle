@@ -24,6 +24,7 @@ public: //サブクラス
 
 	static const float CAMERA_NEAR;
 	static const float CAMERA_FAR;
+	static const float CAMERA_VIEWING_ANGLE;
 
 public: //メンバ関数
 

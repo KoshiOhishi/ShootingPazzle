@@ -28,7 +28,7 @@ void MyBullet::Initialize()
 
 	position = { 0, RADIUS, z };
 	velocity = { 0,0,0 };
-	speed = 1.0f;
+	speed = 1.5f;
 	shotAngle = 90;
 	friction = 0.0005f;
 	gravity = 0;
@@ -57,18 +57,30 @@ void MyBullet::Initialize()
 
 void MyBullet::Update()
 {
-	if (GameUtility::GetNowPhase() != PHASE_AFTERSHOOT) {
+	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT || 
+		GameUtility::GetNowPhase() == PHASE_SETPOS ||
+		GameUtility::GetNowPhase() == PHASE_SETANGLE) {
+		//出現エフェクト
 		UpdateFirstEffect();
+		//発射前更新
 		UpdateBeforeShoot();
 		//矢印更新
 		objArrow.Update();
 	}
-	else {
+	else if (GameUtility::GetNowPhase() == PHASE_AFTERSHOOT) {
 		//衝突が起こるかチェック
 		CheckCollision();
+		Move();
 		ApplyGravity();
+		ApplyFriction();
+	}
+	else if (GameUtility::GetNowPhase() == PHASE_CLEAR) {
+		//衝突が起こるかチェック
+		CheckCollision();
+		UpdateClearEffect();
 		Move();
 	}
+
 	//球更新
 	objSphere.SetPosition(position);
 	objSphere.Update();
@@ -87,11 +99,28 @@ void MyBullet::Draw()
 
 void MyBullet::UpdateFirstEffect()
 {
+	if (firstEffectTimer.GetIsEnd() == true) {
+		return;
+	}
+
 	firstEffectTimer.Update();
 
 	double y = Easing::GetEaseValue(EASE_OUTBOUNCE, 200, RADIUS, firstEffectTimer, 2500, 3500);
 
 	position.y = y;
+}
+
+void MyBullet::UpdateClearEffect()
+{
+	//減速→ゆっくり天に昇ってゆく感じ
+	if (speed > 0 && velocity.y < 1) {
+		speed -= 0.1f;
+		if (speed < 0) { speed = 0; }
+	}
+	else {
+		velocity = { 0,1,0 };
+		speed += 0.01f;
+	}
 }
 
 void MyBullet::UpdateBeforeShoot()
@@ -202,7 +231,10 @@ void MyBullet::Move()
 		//通常座標更新
 		position += velocity * speed;
 	}
+}
 
+void MyBullet::ApplyFriction()
+{
 	//摩擦
 	speed -= friction;
 	if (speed < 0) {
@@ -214,7 +246,7 @@ void MyBullet::ApplyGravity()
 {
 	//床の上にいなかったら重力適用
 	if (IsOutStage(position)) {
-		gravity += 0.02f;
+		gravity += 0.1f;
 		position.y -= gravity;
 	}
 	else {
@@ -315,7 +347,7 @@ void MyBullet::CheckFloorCollision()
 		float lengthSq = (floorPos - position).LengthSq();
 
 		//対象床ブロックから遠かったら判定しない
-		bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH * 3 / 2;
+		bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH * 2;
 		if (nearFloor == false) {
 			continue;
 		}
@@ -402,8 +434,8 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 			float lengthSq = (floorPos - pos).LengthSq();
 
 			//対象床ブロックに乗っていなかったら判定しない
-			bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH;
-			if (nearFloor == false) {
+			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH;
+			if (onFloor == false) {
 				continue;
 			}
 

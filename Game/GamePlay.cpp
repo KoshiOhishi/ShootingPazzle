@@ -29,7 +29,7 @@ void GamePlay::Initialize()
 	Mouse::SetCamera(&camera);
 
 	//ステージ取得
-	stage.LoadStage("../StageEditor/StageData/test.spb");
+	stage.LoadStage(stagePass);
 
 	//ステージサイズからカメラ位置セット
 	camera.SetPosFromStageSize(stage.GetStageSize());
@@ -117,6 +117,9 @@ void GamePlay::Update()
 	//リセット
 	Reset();
 
+	//クリアしているか？
+	CheckIsClear();
+
 #pragma endregion
 #pragma region ImGui
 
@@ -195,7 +198,7 @@ void GamePlay::Reset()
 {
 	if (Keyboard::IsKeyTrigger(DIK_R)) {
 		//ステージ取得
-		stage.LoadStage("../StageEditor/StageData/test.spb");
+		stage.LoadStage(stagePass);
 
 		//弾初期化
 		myBullet.Initialize();
@@ -205,12 +208,12 @@ void GamePlay::Reset()
 	}
 
 	//デバッグ用　完成版は消す
-	if (Keyboard::IsKeyTrigger(DIK_E)) {
+	if (Keyboard::IsKeyTrigger(DIK_Q)) {
 
 		GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
 
 		//ステージ取得
-		stage.LoadStage("../StageEditor/StageData/test.spb");
+		stage.LoadStage(stagePass);
 
 		//弾初期化
 		myBullet.Initialize();
@@ -220,5 +223,13 @@ void GamePlay::Reset()
 
 		//ステージサイズからカメラ位置セット　完成時はずす
 		camera.SetPosFromStageSize(stage.GetStageSize());
+	}
+}
+
+void GamePlay::CheckIsClear()
+{
+	//残り目標破壊ブロックが0だったらクリア
+	if (stage.GetTargetBlockCount() <= 0) {
+		GameUtility::SetNowPhase(PHASE_CLEAR);
 	}
 }

@@ -54,9 +54,8 @@ private:
 	//矢印オブジェクト
 	Object3D objArrow;
 
-	//出現エフェクト
+	//出現エフェクトタイマー
 	Timer firstEffectTimer;
-
 
 public:
 	static void CreateModel();
@@ -87,6 +86,11 @@ public:
 	void UpdateFirstEffect();
 
 	/// <summary>
+	/// クリアエフェクト更新
+	/// </summary>
+	void UpdateClearEffect();
+
+	/// <summary>
 	/// 射出前の更新
 	/// </summary>
 	void UpdateBeforeShoot();
@@ -110,6 +114,11 @@ public:
 	/// 弾を動かす
 	/// </summary>
 	void Move();
+
+	/// <summary>
+	/// 摩擦を適用
+	/// </summary>
+	void ApplyFriction();
 
 	/// <summary>
 	/// 重力を適用

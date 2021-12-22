@@ -6,7 +6,7 @@ using namespace DirectX;
 
 const float Camera::CAMERA_NEAR = 0.1f;
 const float Camera::CAMERA_FAR = 1000.0f;
-
+const float Camera::CAMERA_VIEWING_ANGLE = 60.0f;
 
 void Camera::Initialize()
 {
@@ -24,7 +24,7 @@ void Camera::Initialize()
 	//éÀâeçsóÒÇÃçÏê¨
 	//ìßéãìäâe
 	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(60.0f),
+		XMConvertToRadians(CAMERA_VIEWING_ANGLE),
 		(float)DX12Util::GetWindowWidth() / DX12Util::GetWindowHeight(),
 		CAMERA_NEAR,
 		CAMERA_FAR

@@ -56,6 +56,12 @@ public:
 	bool GetIsStart()const { return isStart; }
 
 	/// <summary>
+	/// タイマーが終了値に達しているかを取得
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsEnd()const { return nowTime >= endTime; }
+
+	/// <summary>
 	/// 開始値を取得
 	/// </summary>
 	/// <returns></returns>

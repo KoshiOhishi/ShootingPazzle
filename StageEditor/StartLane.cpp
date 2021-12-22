@@ -7,6 +7,7 @@ void StartLane::Initialize(StageVec2* stageSize)
 	object.Initialize();
 	object.SetObjModel(&model);
 	object.SetRotation(90,0,0);
+	object.SetColor(1,0,0,0.6f);
 }
 
 void StartLane::Update()
@@ -21,7 +22,7 @@ void StartLane::Draw()
 
 void StartLane::CreateModel()
 {
-	model.CreateSquare(stageSize->x * ONE_CELL_LENGTH, ONE_CELL_LENGTH, { 1.0f,0.3f, 0.3f });
+	model.CreateSquare(stageSize->x * ONE_CELL_LENGTH, ONE_CELL_LENGTH, { 1.0f,1.0f,1.0f });
 }
 
 void StartLane::SetPosition(unsigned short stagePosZ)

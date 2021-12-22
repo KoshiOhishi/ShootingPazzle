@@ -29,7 +29,7 @@ private:
 	//ステージ
 	Stage stage;
 	//ステージパス
-	std::string stagePass = ".. / StageEditor/StageData/test.spb";
+	std::string stagePass = "../StageEditor/StageData/40x5.spb";
 
 	//背景
 	Object3D objBG;
@@ -46,5 +46,10 @@ public:
 	/// 盤面をリセットし、フェーズをSET_POSにもどす
 	/// </summary>
 	void Reset();
+
+	/// <summary>
+	/// クリアしているかチェック
+	/// </summary>
+	void CheckIsClear();
 };
 
