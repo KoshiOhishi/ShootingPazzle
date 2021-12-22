@@ -88,8 +88,11 @@ void MyBullet::Update()
 
 void MyBullet::Draw()
 {
+	//出現エフェクト開始以降なら
 	//3Dオブジェクト描画
-	objSphere.Draw();
+	if (firstEffectTimer.GetNowTime() >= firstEffectTimer.GetEndTime() - 1000) {
+		objSphere.Draw();
+	}
 
 	//矢印描画
 	if (GameUtility::GetNowPhase() == PHASE_SETANGLE) {
@@ -105,7 +108,7 @@ void MyBullet::UpdateFirstEffect()
 
 	firstEffectTimer.Update();
 
-	double y = Easing::GetEaseValue(EASE_OUTBOUNCE, 200, RADIUS, firstEffectTimer, 2500, 3500);
+	double y = Easing::GetEaseValue(EASE_OUTBOUNCE, bounceInitPosY, RADIUS, firstEffectTimer, firstEffectTimer.GetEndTime() - 1000, firstEffectTimer.GetEndTime());
 
 	position.y = y;
 }

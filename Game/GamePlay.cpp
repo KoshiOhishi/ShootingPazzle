@@ -32,11 +32,12 @@ void GamePlay::Initialize()
 	stage.LoadStage(stagePass);
 
 	//ステージサイズからカメラ位置セット
-	camera.SetPosFromStageSize(stage.GetStageSize());
+	float bounceY = camera.SetPosFromStageSize(stage.GetStageSize());
 
 	//弾初期化
 	myBullet.SetPStage(&stage);
 	myBullet.Initialize();
+	myBullet.SetBounceInitPosY(bounceY);
 
 	//背景初期化
 	modelBG.CreateFromOBJ("sky");

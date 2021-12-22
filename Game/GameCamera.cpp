@@ -59,7 +59,7 @@ void GameCamera::UpdateFirseEffect()
 	SetRotation(nowRot);
 }
 
-void GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
+float GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
 {
 	const float ANGLE = 75;
 	float y = 0, z = 0;
@@ -107,4 +107,5 @@ void GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
 	afterEffectPos = { 0, y, z };
 	afterEffectRot = { ANGLE,0,0 };
 
+	return y;
 }

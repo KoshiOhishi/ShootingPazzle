@@ -56,6 +56,8 @@ private:
 
 	//出現エフェクトタイマー
 	Timer firstEffectTimer;
+	//跳ねるエフェクトの初期Y座標 カメラの位置と同期させる
+	float bounceInitPosY = 200;
 
 public:
 	static void CreateModel();
@@ -158,6 +160,12 @@ public:
 	/// </summary>
 	/// <param name="blocks"></param>
 	void SetPStage(Stage* stage) { this->stage = stage; }
+
+	/// <summary>
+	/// 跳ねるエフェクトの初期Y座標セット
+	/// </summary>
+	/// <param name="y"> 跳ねるエフェクトの初期Y座標</param>
+	void SetBounceInitPosY(float y) { bounceInitPosY = y; }
 #pragma endregion
 
 #pragma region Getter

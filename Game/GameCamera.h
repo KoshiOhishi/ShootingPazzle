@@ -33,6 +33,7 @@ public:
     /// ステージの大きさからカメラ位置をセット
     /// </summary>
     /// <param name="stageSize">ステージの大きさ</param>
-    void SetPosFromStageSize(const StageVec2& stageSize);
+    /// <returns>セットされたY座標</returns>
+    float SetPosFromStageSize(const StageVec2& stageSize);
 };
 
