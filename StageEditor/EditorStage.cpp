@@ -118,6 +118,13 @@ void EditorStage::Draw()
 	}
 }
 
+void EditorStage::EndDraw()
+{
+	NormalFloor::EndDraw();
+	TurnFloor::EndDraw();
+	BreakFloor::EndDraw();
+}
+
 void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount)
 {
 	//既にブロックが配置されていたらリターン

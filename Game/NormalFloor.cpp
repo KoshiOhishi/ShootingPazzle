@@ -40,6 +40,11 @@ void NormalFloor::Draw()
 	instancingObjectDraw.Draw();
 }
 
+void NormalFloor::EndDraw()
+{
+	instancingObjectDraw.EndDraw();
+}
+
 void NormalFloor::UpdateCollision()
 {
 }

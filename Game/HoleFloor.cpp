@@ -22,6 +22,10 @@ void HoleFloor::Draw()
 {
 }
 
+void HoleFloor::EndDraw()
+{
+}
+
 void HoleFloor::UpdateCollision()
 {
 }

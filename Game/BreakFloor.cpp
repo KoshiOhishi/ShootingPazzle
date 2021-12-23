@@ -49,6 +49,12 @@ void BreakFloor::Draw()
 {
 	instancingObjectDraw.Update();
 	instancingObjectDraw.Draw();
+	instancingObjectDraw.EndDraw();
+}
+
+void BreakFloor::EndDraw()
+{
+	instancingObjectDraw.EndDraw();
 }
 
 void BreakFloor::UpdateCollision()

@@ -181,6 +181,7 @@ void GamePlay::Draw()
 
 	//ステージ描画
 	stage.Draw();
+	stage.EndDraw();
 
 	//弾描画
 	myBullet.Draw();

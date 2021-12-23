@@ -47,6 +47,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 描画終了関数
+	/// </summary>
+	void EndDraw();
+
+	/// <summary>
 	/// 出現エフェクト時の更新
 	/// </summary>
 	void UpdateFirstEffect();

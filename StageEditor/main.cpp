@@ -166,7 +166,7 @@ void Initialize() {
 		//パイプライン生成
 		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
 
-		//シェーダ変えてインスタンシングも
+		//インスタンシングも
 		pipelineData.vertexShaderFileName = L"Shader/InstancingFBXVS.hlsl";
 		pipelineData.pixelShaderFileName = L"Shader/InstancingFBXPS.hlsl";
 		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_INSTANCING_FBX, pipelineData);
@@ -220,7 +220,6 @@ void Initialize() {
 		//パイプライン生成
 		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
 
-		//シェーダ変えてインスタンシングも
 		pipelineData.vertexShaderFileName = L"Shader/InstancingOBJVS.hlsl";
 		pipelineData.pixelShaderFileName = L"Shader/InstancingOBJPS.hlsl";
 		pipelineData.geometryShaderFileName = nullptr;// L"Shader/InstancingOBJGS.hlsl";

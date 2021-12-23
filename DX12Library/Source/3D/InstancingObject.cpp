@@ -221,14 +221,16 @@ void InstancingObjectDraw::Initialize()
 		IID_PPV_ARGS(constBuffShare.ReleaseAndGetAddressOf())
 	);
 
-	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), //アップロード可能
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataInstancing) + 0xff) & ~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(constBuffTransform.ReleaseAndGetAddressOf())
-	);
+	for (int i = 0; i < _countof(constBuffTransforms); i++) {
+		result = device->CreateCommittedResource(
+			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), //アップロード可能
+			D3D12_HEAP_FLAG_NONE,
+			&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataInstancing) + 0xff) & ~0xff),
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(constBuffTransforms[i].ReleaseAndGetAddressOf())
+		);
+	}
 
 	////オブジェクトマネージャーに追加
 	//if (addManager == true) {
@@ -237,6 +239,8 @@ void InstancingObjectDraw::Initialize()
 
 	//クラス名の文字列を取得
 	name = typeid(*this).name();
+
+	datas.resize(MAX_INSTANCECOUNT);
 }
 
 void InstancingObjectDraw::Update()
@@ -329,62 +333,91 @@ void InstancingObjectDraw::Update()
 	if (collider) {
 		collider->Update();
 	}
+
 }
 
 void InstancingObjectDraw::Draw()
 {
-	if (index == 0) {
+	if (drawCount == 0) {
 		return;
 	}
 
-	if (objectType == OBJECTTYPE_INSTANCING_OBJ) {
-		//モデルの割り当てがなければ描画しない
-		if (objModel == nullptr) {
-			return;
+	//定数バッファにデータ転送
+	int roopCount_i = drawCount / MAX_ONCEDRAWCOUNT + 1;
+	InstancingObjectDraw::ConstBufferDataInstancing* constMap = nullptr;
+	for (int i = 0; i < roopCount_i; i++) {
+
+		HRESULT result = constBuffTransforms[i]->Map(0, nullptr, (void**)&constMap);
+		if (SUCCEEDED(result)) {
+
+			int roopCount_j = drawCount > 512 ? 512 : drawCount;
+			for (int j = 0; j < roopCount_j; j++) {
+				constMap->data[j].color = datas[i * MAX_ONCEDRAWCOUNT + j].color;
+				constMap->data[j].world = datas[i * MAX_ONCEDRAWCOUNT + j].world;
+
+			}
+
+			if (objectType == OBJECTTYPE_INSTANCING_OBJ) {
+				//モデルの割り当てがなければ描画しない
+				if (objModel == nullptr) {
+					return;
+				}
+
+				if (objectType != prevDrawObjectType) {
+					//ルートシグネチャの設定
+					DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingObjRootsignature.Get());
+					//パイプラインステートの設定
+					DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
+				}
+
+				//定数バッファビューをセット
+				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
+				//定数バッファビューをセット
+				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransforms[i]->GetGPUVirtualAddress());
+				//ライトの描画
+				light->Draw(3);
+				//モデル描画
+				objModel->Draw(roopCount_j);
+
+				prevDrawObjectType = objectType;
+
+			}
+			else if (objectType == OBJECTTYPE_FBX) {
+				//モデルの割り当てがなければ描画しない
+				if (fbxModel == nullptr) {
+					return;
+				}
+				if (objectType != prevDrawObjectType) {
+					//ルートシグネチャの設定
+					DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingFbxRootsignature.Get());
+					//パイプラインステートの設定
+					DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate.Get());
+				}
+				//定数バッファビューをセット
+				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
+				//定数バッファビューをセット
+				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransforms[i]->GetGPUVirtualAddress());
+				//定数バッファビューをセット
+				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
+				//ライトの描画
+				light->Draw(3);
+				//モデル描画
+				fbxModel->Draw(roopCount_j);
+
+				prevDrawObjectType = objectType;
+			}
+
+			drawCount -= roopCount_j;
 		}
-
-		if (objectType != prevDrawObjectType) {
-			//ルートシグネチャの設定
-			DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingObjRootsignature.Get());
-			//パイプラインステートの設定
-			DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
-		}
-
-		//定数バッファビューをセット
-		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
-		//定数バッファビューをセット
-		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransform->GetGPUVirtualAddress());
-		//ライトの描画
-		light->Draw(3);
-		//モデル描画
-		objModel->Draw(index);
-
+		constBuffTransforms[i]->Unmap(0, nullptr);
 	}
-	else if (objectType == OBJECTTYPE_FBX) {
-		//モデルの割り当てがなければ描画しない
-		if (fbxModel == nullptr) {
-			return;
-		}
-		if (objectType != prevDrawObjectType) {
-			//ルートシグネチャの設定
-			DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingFbxRootsignature.Get());
-			//パイプラインステートの設定
-			DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate.Get());
-		}
-		//定数バッファビューをセット
-		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
-		//定数バッファビューをセット
-		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuffTransform->GetGPUVirtualAddress());
-		//定数バッファビューをセット
-		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
-		//ライトの描画
-		light->Draw(3);
-		//モデル描画
-		fbxModel->Draw(index);
-	}
+}
 
-	ResetIndex();
-	prevDrawObjectType = objectType;
+void InstancingObjectDraw::EndDraw()
+{
+	//ここにカウントリセットを置くことで
+	//現在フレームでDraw()を通らなくても次フレームで0からカウントを開始させる
+	drawCount = 0;
 }
 
 void InstancingObjectDraw::SetFbxModel(FbxModel* fbxModel)
@@ -424,17 +457,11 @@ void InstancingObjectDraw::SetObjModel(ObjModel* objModel)
 	objectType = OBJECTTYPE_INSTANCING_OBJ;
 }
 
-void InstancingObjectDraw::UpdateConstBuff(const InstanceData& constBuffData)
+void InstancingObjectDraw::AddInstancingData(const InstanceData& constBuffData)
 {
-	InstancingObjectDraw::ConstBufferDataInstancing* constMap = nullptr;
-	HRESULT result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
-	if (SUCCEEDED(result)) {
-		constMap->data[index].color = constBuffData.color;
-		constMap->data[index].world = constBuffData.world;
-		constBuffTransform->Unmap(0, nullptr);
-	}
-
-	index++;
+	//エラー起こるかも？
+	datas[drawCount] = constBuffData;
+	drawCount++;
 }
 
 void InstancingObject::Initialize(const Vector3& pos, const Vector3& rot, const Vector3& scale, const Vector4& color)
@@ -463,5 +490,5 @@ void InstancingObject::Update(InstancingObjectDraw& instancingObjectDraw)
 	matWorld *= matRot;				//ワールド行列に回転を反映
 	matWorld *= matTrans;			//ワールド行列に平行移動を反映
 
-	instancingObjectDraw.UpdateConstBuff({ color, matWorld });
+	instancingObjectDraw.AddInstancingData({ color, matWorld });
 }

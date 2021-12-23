@@ -38,6 +38,11 @@ public:
 	static void Draw(int index = -1);
 
 	/// <summary>
+	/// •`‰æI—¹ŠÖ”
+	/// </summary>
+	static void EndDraw();
+
+	/// <summary>
 	/// “–‚½‚è”»’èXV
 	/// </summary>
 	void UpdateCollision() override;
@@ -49,7 +54,5 @@ public:
 	/// </summary>
 	/// <param name="turnType">TURNTYPE_...</param>
 	void SetTurnType(int turnType);
-
-	static void ResetIndex(int turnType) { instancingObjectDraw[turnType].ResetIndex(); }
 };
 

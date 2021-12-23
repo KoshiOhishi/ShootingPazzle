@@ -37,6 +37,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 描画終了関数
+	/// </summary>
+	void EndDraw();
+
+	/// <summary>
 	/// ブロックを追加 (引数の位置に既にブロックが配置されていたら追加しない)
 	/// </summary>
 	/// <param name="stagePos">ステージ上の座標</param>

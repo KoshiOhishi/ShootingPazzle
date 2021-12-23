@@ -318,6 +318,8 @@ void Editor::DrawEdit()
 	else if (mode == MODE_DELETE) {
 
 	}
+
+	stage.EndDraw();
 }
 
 void Editor::DrawStartLane()

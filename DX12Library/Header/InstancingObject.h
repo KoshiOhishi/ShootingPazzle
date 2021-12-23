@@ -1,7 +1,8 @@
 #pragma once
 #include "Object3D.h"
 
-static const int MAX_INSTANCECOUNT = 768;
+static const int MAX_INSTANCECOUNT = 4096;
+static const int MAX_ONCEDRAWCOUNT = 512;
 
 //モデルにつき1つ
 class InstancingObjectDraw :
@@ -18,7 +19,14 @@ protected:
 	//OBJパイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> instancingObjPipelinestate;
 
-	int index = 0;
+	//定数バッファ(座標変換行列用)
+	ComPtr<ID3D12Resource> constBuffTransforms[8];
+
+	//データ格納コンテナ
+	std::vector<InstanceData> datas;
+
+	int drawCount = 0;
+
 public:
 
 	struct ConstBufferDataInstancing
@@ -44,9 +52,14 @@ public:
 	virtual void Update();
 
 	/// <summary>
-	/// 描画　Object3D::BeginDraw()を忘れずに！
+	/// 描画　BeginDraw()を忘れずに！
 	/// </summary>
 	virtual void Draw();
+
+	/// <summary>
+	/// Drawの直後に呼び出し　Drawしなくても呼ぶこと
+	/// </summary>
+	virtual void EndDraw();
 
 	/// <summary>
 	/// モデルのセット
@@ -64,14 +77,12 @@ public:
 	/// 定数バッファに書き込み
 	/// </summary>
 	/// <param name="constBuffData"></param>
-	void UpdateConstBuff(const InstanceData& constBuffData);
+	void AddInstancingData(const InstanceData& constBuffData);
 
 	/// <summary>
-	/// 描画関数を通らないときはこれを書く
+	/// このフレームでは描画させないときに使用
 	/// </summary>
-	void ResetIndex() { index = 0; }
-
-	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuff() { return constBuffTransform; }
+	void NoDraw() { drawCount = 0; }
 };
 
 //各個体に1つ

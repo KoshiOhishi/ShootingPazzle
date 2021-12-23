@@ -13,7 +13,7 @@ cbuffer cbuff0 : register(b0)
 
 cbuffer cbuff1 : register(b1)
 {
-	InstanceData data[768];
+	InstanceData data[512];
 }
 
 cbuffer cbuff2 : register(b2)
@@ -29,6 +29,7 @@ cbuffer cbuff3 : register(b3)
 	float3 lightv; //ライトへの方向の単位ベクトル
 	float3 lightcolor; //ライトの色(RGB)
 }
+
 
 struct VSInput
 {

@@ -37,6 +37,12 @@ void SwitchFloor::Draw()
 {
 	instancingObjectDraw.Update();
 	instancingObjectDraw.Draw();
+	instancingObjectDraw.EndDraw();
+}
+
+void SwitchFloor::EndDraw()
+{
+	instancingObjectDraw.EndDraw();
 }
 
 void SwitchFloor::UpdateCollision()

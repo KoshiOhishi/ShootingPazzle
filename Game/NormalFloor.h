@@ -27,11 +27,14 @@ public:
 	static void Draw();
 
 	/// <summary>
+	/// •`‰æI—¹ŠÖ”
+	/// </summary>
+	static void EndDraw();
+
+	/// <summary>
 	/// “–‚½‚è”»’èXV
 	/// </summary>
 	void UpdateCollision() override;
-
-	static void ResetIndex() { instancingObjectDraw.ResetIndex(); }
 
 	virtual std::string GetObjectType() override { return "NormalFloor"; }
 };

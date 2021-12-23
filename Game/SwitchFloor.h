@@ -38,6 +38,11 @@ public:
 	static void Draw();
 
 	/// <summary>
+	/// •`‰æI—¹ŠÖ”
+	/// </summary>
+	static void EndDraw();
+
+	/// <summary>
 	/// “–‚½‚è”»’èXV
 	/// </summary>
 	void UpdateCollision() override;
@@ -49,8 +54,6 @@ public:
 	/// </summary>
 	/// <param name="switchColor">SWITCH_COLOR...</param>
 	void SetSwitchColor(int switchColor) { this->switchColor = switchColor; }
-
-	static void ResetIndex() { instancingObjectDraw.ResetIndex(); }
 
 };
 

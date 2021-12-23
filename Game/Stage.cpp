@@ -136,12 +136,13 @@ void Stage::Draw()
 	for (int i = 0; i < blocks.size(); i++) {
 		blocks[i]->Draw();
 	}
+}
 
-	NormalFloor::ResetIndex();
-	for (int i = 0; i < 4; i++) {
-		TurnFloor::ResetIndex(i);
-	}
-	BreakFloor::ResetIndex();
+void Stage::EndDraw()
+{
+	NormalFloor::EndDraw();
+	TurnFloor::EndDraw();
+	BreakFloor::EndDraw();
 }
 
 void Stage::UpdateFirstEffect()
