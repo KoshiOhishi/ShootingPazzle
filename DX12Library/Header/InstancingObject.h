@@ -1,7 +1,7 @@
 #pragma once
 #include "Object3D.h"
 
-static const int MAX_INSTANCECOUNT = 512;
+static const int MAX_INSTANCECOUNT = 768;
 
 //ƒ‚ƒfƒ‹‚É‚Â‚«1‚Â
 class InstancingObjectDraw :

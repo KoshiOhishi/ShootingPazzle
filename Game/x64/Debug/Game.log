@@ -30,14 +30,12 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   30 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  MyBullet.cpp
+  GamePlay.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(6): message : 'PI' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(113,15): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(208,40): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
+  main.cpp
+  コードを生成中...
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png

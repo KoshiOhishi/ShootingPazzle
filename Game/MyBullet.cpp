@@ -423,6 +423,7 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 		pos.z < floorPos.y - floorSize.y / 2 ||
 		pos.z > floorPos.y + floorSize.y / 2;
 
+	//Ëo‘O‚ÍŒŠ‚Æ‚Ì”»’è‚ğæ‚ç‚È‚¢
 	if (GameUtility::GetNowPhase() != PHASE_AFTERSHOOT) {
 		return isOutside;
 	}

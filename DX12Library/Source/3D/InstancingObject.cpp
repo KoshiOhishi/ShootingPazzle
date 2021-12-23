@@ -371,8 +371,6 @@ void InstancingObjectDraw::Draw()
 			//パイプラインステートの設定
 			DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate.Get());
 		}
-		//プリミティブ形状を設定
-		DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
 		//定数バッファビューをセット

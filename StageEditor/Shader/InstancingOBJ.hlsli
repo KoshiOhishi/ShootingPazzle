@@ -13,7 +13,7 @@ cbuffer cbuff0 : register(b0)
 
 cbuffer cbuff1 : register(b1)
 {
-	InstanceData data[512];
+	InstanceData data[768];
 }
 
 cbuffer cbuff2 : register(b2)

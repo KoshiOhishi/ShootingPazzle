@@ -81,6 +81,9 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="SwitchFloor.cpp">
+      <Filter>ソース ファイル\オブジェクト\Floor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlay.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="GameCamera.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchFloor.h">
+      <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
