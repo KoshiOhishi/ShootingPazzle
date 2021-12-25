@@ -1,17 +1,11 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Release\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJGS.cso
   compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJPS.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingOBJVS.hlsl(16,2-24): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJVS.cso
   SphereCollider.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  Sprite.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(256,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(256,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(261,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(261,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(427,18): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(430,19): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(433,22): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(436,23): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
   AABBCollider.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   Camera.cpp
@@ -26,11 +20,7 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(436,23
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(163,69): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(179,170): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-  Light.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   MeshCollider.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  FbxModel.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   ObjModel.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
@@ -70,11 +60,6 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Object3D.cpp(192,
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\Object3D.cpp(208,170): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
   TouchableObject.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  DX12Util.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(282,39): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(290,73): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(290,59): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
   PostEffect.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
@@ -160,17 +145,7 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Sound\Sound.cpp(270)
               _Keyeq=std::equal_to<XAPOEffect *>,
               _Alloc=std::allocator<std::pair<XAPOEffect *const ,int>>
           ]
-  RenderText.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(235,11): warning C4838: 'const int' から 'BYTE' への変換には縮小変換が必要です
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(372,36): warning C4244: '=': 'float' から 'unsigned char' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(398,2): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(464,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(464,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(469,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Text\RenderText.cpp(469,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-  コンパイル中...
   Easing.cpp
-  ImguiHelper.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Timer.cpp
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\Timer.cpp(34,58): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
   DX12Library.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Release\DX12Library.lib

@@ -7,6 +7,7 @@
 #include "TurnFloor.h"
 #include "HoleFloor.h"
 #include "BreakFloor.h"
+#include "SwitchFloor.h"
 #include "GameUtility.h"
 
 EditorStage::~EditorStage()
@@ -23,9 +24,6 @@ EditorStage::~EditorStage()
 
 void EditorStage::LoadStage(std::string filename)
 {
-	NormalFloor::StaticInitialize();
-	TurnFloor::StaticInitialize();
-	BreakFloor::StaticInitialize();
 
 	//ÉfÅ[É^èâä˙âª
 	for (int i = 0; i < blocks.size(); i++) {
@@ -112,6 +110,7 @@ void EditorStage::Draw()
 	NormalFloor::Draw();
 	TurnFloor::Draw();
 	BreakFloor::Draw();
+	SwitchFloor::Draw();
 
 	for (int i = 0; i < blocks.size(); i++) {
 		if (blocks[i]) blocks[i]->Draw();
@@ -123,6 +122,7 @@ void EditorStage::EndDraw()
 	NormalFloor::EndDraw();
 	TurnFloor::EndDraw();
 	BreakFloor::EndDraw();
+	SwitchFloor::EndDraw();
 }
 
 void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount)
@@ -226,6 +226,36 @@ void EditorStage::AddFloor(const StageVec2& stagePos, int floorType)
 	else if (floorType == FLOORTYPE_BREAK) {
 		BreakFloor* newFloor = new BreakFloor;
 		newFloor->Initialize(stagePos);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_WHITE) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_WHITE);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_RED) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_RED);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_BLUE) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_BLUE);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_YELLOW) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_YELLOW);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_GREEN) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_GREEN);
 		floors.emplace_back(newFloor);
 	}
 }

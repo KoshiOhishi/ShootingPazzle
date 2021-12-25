@@ -46,7 +46,7 @@ struct Vector3 : public DirectX::XMFLOAT3
 	/// 零ベクトルを取得
 	/// </summary>
 	/// <returns></returns>
-	const Vector3 Zero() const;
+	static const Vector3 Zero();
 
 	//単項演算子オーバーロード
 	Vector3 operator+() const;

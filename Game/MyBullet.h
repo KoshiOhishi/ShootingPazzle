@@ -54,7 +54,7 @@ private:
 	//矢印オブジェクト
 	Object3D objArrow;
 
-	//出現エフェクトタイマー
+	//エフェクトタイマー
 	Timer firstEffectTimer;
 	//跳ねるエフェクトの初期Y座標 カメラの位置と同期させる
 	float bounceInitPosY = 200;

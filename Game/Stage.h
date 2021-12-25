@@ -24,7 +24,7 @@ private:
 	//残り目標破壊ブロック数
 	int targetBlockCount = 0;
 	//出現エフェクトタイマー
-	Timer firstEffectTimer;
+	Timer effectTimer;
 
 public:
 	Stage() {}
@@ -52,9 +52,14 @@ public:
 	void EndDraw();
 
 	/// <summary>
-	/// 出現エフェクト時の更新
+	/// 出現エフェクトの更新
 	/// </summary>
 	void UpdateFirstEffect();
+
+	/// <summary>
+	/// クリアエフェクト更新
+	/// </summary>
+	void UpdateClearEffect();
 
 	/// <summary>
 	/// 床ブロック空きマスに穴オブジェクトを挿入
@@ -109,6 +114,14 @@ public:
 	void DecrementTargetBlockCount() { targetBlockCount--; }
 
 	/// <summary>
+	/// エフェクトタイマーをスタートさせる
+	/// </summary>
+	/// <param name="start"></param>
+	/// <param name="end"></param>
+	/// <param name="speed"></param>
+	void StartEffectTimer(int start, int end, float speed = 1.0);
+
+	/// <summary>
 	/// ブロック配置取得
 	/// </summary>
 	/// <returns></returns>
@@ -144,4 +157,3 @@ public:
 	/// <returns>残り目標破壊ブロック数</returns>
 	const int GetTargetBlockCount() { return targetBlockCount; }
 };
-

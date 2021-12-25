@@ -10,8 +10,12 @@ class BaseFloor
 protected:
 	InstancingObject object;
 
+	//出現エフェクトの種類
 	int firstEffectType = -1;
-	double effectEndTime = -1;
+	//出現エフェクトの終了時間
+	double firstEffectEndTime = -1;
+	//クリアエフェクトの開始時間
+	double clearEffectStartTime = -1;
 
 public:
 
@@ -31,9 +35,15 @@ public:
 	virtual void Update() = 0;
 
 	/// <summary>
-	/// 出現エフェクト時の更新
+	/// 出現エフェクトの更新
 	/// </summary>
 	virtual void UpdateFirstEffect(const Timer& timer);
+
+	/// <summary>
+	/// クリアエフェクトの更新
+	/// </summary>
+	/// <param name="timer"></param>
+	virtual void UpdateClearEffect(const Timer& timer);
 
 	/// <summary>
 	/// 当たり判定更新

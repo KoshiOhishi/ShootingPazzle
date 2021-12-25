@@ -12,51 +12,94 @@ void GameCamera::Initialize()
 	//エフェクトは最初の読み込みのみ
 	//if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT)
 	{
-		firstEffectTimer.SetTimer(0, 3500);
-		firstEffectTimer.Start();
+		effectTimer.SetTimer(0, 3500);
+		effectTimer.Start();
 	}
 }
 
 void GameCamera::Update()
 {
-	UpdateFirseEffect();
+	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+		UpdateFirstEffect();
+	}
+	else if (GameUtility::GetNowPhase() == PHASE_CLEAR) {
+		UpdateClearEffect();
+	}
 
 	Camera::Update();
 }
 
-void GameCamera::UpdateFirseEffect()
+void GameCamera::UpdateFirstEffect()
 {
-	if (GameUtility::GetNowPhase() != PHASE_FIRSTEFFECT) {
-		return;
-	}
+	effectTimer.Update();
 
-	firstEffectTimer.Update();
 	//移動開始時刻（タイマー間指定）
 	double start = 1500;
 	//移動終了時刻（タイマー間指定）
 	double end = 2500;
 
 	//移動量
-	Vector3 move = afterEffectPos - beforeEffectPos;
+	Vector3 move = afterFirstEffectPos - beforeFirstEffectPos;
 	//回転量
-	Vector3 rot = afterEffectRot - beforeEffectRot;
+	Vector3 rot = afterFirstEffectRot - beforeFirstEffectRot;
 
 	//設定する位置
-	Vector3 nowPos = {};
+	Vector3 setPos = {};
 
 	//設定する角度
-	Vector3 nowRot = {};
+	Vector3 setRot = {};
 
-	nowPos.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeEffectPos.x, beforeEffectPos.x + move.x, firstEffectTimer, start, end);
-	nowPos.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeEffectPos.y, beforeEffectPos.y + move.y, firstEffectTimer, start, end);
-	nowPos.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeEffectPos.z, beforeEffectPos.z + move.z, firstEffectTimer, start, end);
+	setPos.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.x, beforeFirstEffectPos.x + move.x, effectTimer, start, end);
+	setPos.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.y, beforeFirstEffectPos.y + move.y, effectTimer, start, end);
+	setPos.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.z, beforeFirstEffectPos.z + move.z, effectTimer, start, end);
 
-	nowRot.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeEffectRot.x, beforeEffectRot.x + rot.x, firstEffectTimer, start, end);
-	nowRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeEffectRot.y, beforeEffectRot.y + rot.y, firstEffectTimer, start, end);
-	nowRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeEffectRot.z, beforeEffectRot.z + rot.z, firstEffectTimer, start, end);
+	setRot.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.x, beforeFirstEffectRot.x + rot.x, effectTimer, start, end);
+	setRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.y, beforeFirstEffectRot.y + rot.y, effectTimer, start, end);
+	setRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.z, beforeFirstEffectRot.z + rot.z, effectTimer, start, end);
 
-	SetPositionAndDistance( nowPos, 15.0f);
-	SetRotation(nowRot);
+	SetPositionAndDistance( setPos, 15.0f);
+	SetRotation(setRot);
+}
+
+void GameCamera::UpdateClearEffect()
+{
+	effectTimer.Update();
+
+	//移動開始時刻（タイマー間指定）
+	double start = 500;
+	//移動終了時刻（タイマー間指定）
+	double end = 4800;
+
+	//目標位置
+	Vector3 targetPos = afterFirstEffectPos - Vector3{0, 0, 200};
+
+	//移動量
+	Vector3 move = targetPos - afterFirstEffectPos;
+	//回転量
+	Vector3 rot = -afterFirstEffectRot - Vector3{ 60,0,0 };
+
+	//設定する位置
+	Vector3 setPos = {};
+
+	//設定する角度
+	Vector3 setRot = {};
+
+	setPos.x = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.x, afterFirstEffectPos.x + move.x, effectTimer, start, end);
+	setPos.y = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.y, afterFirstEffectPos.y + move.y, effectTimer, start, end);
+	setPos.z = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.z, afterFirstEffectPos.z + move.z, effectTimer, start, end);
+
+	setRot.x = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.x, afterFirstEffectRot.x + rot.x, effectTimer, start, end);
+	setRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.y, afterFirstEffectRot.y + rot.y, effectTimer, start, end);
+	setRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.z, afterFirstEffectRot.z + rot.z, effectTimer, start, end);
+
+	SetPositionAndDistance(setPos, 15.0f);
+	SetRotation(setRot);
+}
+
+void GameCamera::SetCameraParamAfterShoot()
+{
+	SetPositionAndDistance(afterFirstEffectPos, 15.0f);
+	SetRotation(afterFirstEffectRot);
 }
 
 float GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
@@ -100,12 +143,18 @@ float GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
 	}
 	
 	//カメラ移動前座標セット
-	beforeEffectPos = { 0, 50, z - 175 };
-	beforeEffectRot = { 0,0,0 };
+	beforeFirstEffectPos = { 0, 50, z - 175 };
+	beforeFirstEffectRot = { 0,0,0 };
 
 	//カメラ移動後座標セット
-	afterEffectPos = { 0, y, z };
-	afterEffectRot = { ANGLE,0,0 };
+	afterFirstEffectPos = { 0, y, z };
+	afterFirstEffectRot = { ANGLE,0,0 };
 
 	return y;
+}
+
+void GameCamera::StartEffectTimer(int start, int end, float speed)
+{
+	effectTimer.SetTimer(start, end, speed);
+	effectTimer.Start();
 }

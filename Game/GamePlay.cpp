@@ -43,7 +43,7 @@ void GamePlay::Initialize()
 	modelBG.CreateFromOBJ("sky");
 	objBG.Initialize();
 	objBG.SetObjModel(&modelBG);
-	objBG.SetScale(3, 3, 3);
+	objBG.SetScale(5, 5, 5);
 
 	//フェーズ初期化
 	GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
@@ -205,6 +205,9 @@ void GamePlay::Reset()
 		//弾初期化
 		myBullet.Initialize();
 
+		//念のためカメラを定位置に
+		camera.SetCameraParamAfterShoot();
+
 		//フェーズ初期化　完成時コメントはずす
 		GameUtility::SetNowPhase(PHASE_SETPOS);
 	}
@@ -231,7 +234,11 @@ void GamePlay::Reset()
 void GamePlay::CheckIsClear()
 {
 	//残り目標破壊ブロックが0だったらクリア
-	if (stage.GetTargetBlockCount() <= 0) {
+	if (GameUtility::GetNowPhase() == PHASE_AFTERSHOOT && 
+		stage.GetTargetBlockCount() <= 0) {
 		GameUtility::SetNowPhase(PHASE_CLEAR);
+		//各種クリアエフェクトタイマースタート
+		stage.StartEffectTimer(0, 10000);
+		camera.StartEffectTimer(0, 5000);
 	}
 }

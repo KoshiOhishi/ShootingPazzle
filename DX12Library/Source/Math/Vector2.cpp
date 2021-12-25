@@ -38,7 +38,7 @@ const float Vector2::Cross(const Vector2& v) const
 	return x * v.y - y * v.x;
 }
 
-const Vector2 Vector2::Zero() const
+const Vector2 Vector2::Zero()
 {
 	return Vector2();
 }

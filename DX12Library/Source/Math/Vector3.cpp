@@ -45,7 +45,7 @@ const Vector3 Vector3::Cross(const Vector3& v) const
 	return temp;
 }
 
-const Vector3 Vector3::Zero() const
+const Vector3 Vector3::Zero()
 {
 	return Vector3();
 }

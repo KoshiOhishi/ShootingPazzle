@@ -3,19 +3,27 @@
 
 enum SwitchColor
 {
+	SWITCH_COLOR_WHITE,
 	SWITCH_COLOR_RED,
 	SWITCH_COLOR_BLUE,
 	SWITCH_COLOR_YELLOW,
 	SWITCH_COLOR_GREEN,
 };
 
+enum SwitchState
+{
+	SWITCH_STATE_OFF,
+	SWITCH_STATE_ON,
+};
+
 class SwitchFloor :
     public BaseFloor
 {
 private:
-	static InstancingObjectDraw instancingObjectDraw;
-	static ObjModel modelBox;
-	int switchColor;
+	static InstancingObjectDraw instancingObjectDraw[2];
+	static ObjModel modelBox[2];
+	int switchColor = SWITCH_COLOR_WHITE;
+	int switchState = SWITCH_STATE_OFF;
 
 public:
 	static void CreateModel();
@@ -47,13 +55,29 @@ public:
 	/// </summary>
 	void UpdateCollision() override;
 
+	/// <summary>
+	/// 現在のステージの色によってモデルを更新
+	/// </summary>
+	void UpdateSwitchState();
+
 	virtual std::string GetObjectType() override { return "SwitchFloor_" + std::to_string(switchColor); }
+
+	/// <summary>
+	/// スイッチの状態取得
+	/// </summary>
+	/// <returns>ON/OFF</returns>
+	int GetSwitchState() { return switchState; }
 
 	/// <summary>
 	/// スイッチの色セット
 	/// </summary>
 	/// <param name="switchColor">SWITCH_COLOR...</param>
-	void SetSwitchColor(int switchColor) { this->switchColor = switchColor; }
+	void SetSwitchColor(int switchColor);
 
+	/// <summary>
+	/// スイッチの状態セット
+	/// </summary>
+	/// <param name="switchState">SWITCH_STATE...</param>
+	void SetSwitchState(int switchState) { this->switchState = switchState; }
 };
 

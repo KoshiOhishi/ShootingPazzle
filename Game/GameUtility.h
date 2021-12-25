@@ -32,7 +32,12 @@ enum FloorType {
 	FLOORTYPE_TURN_RIGHT,
 	FLOORTYPE_TURN_UP,
 	FLOORTYPE_TURN_DOWN,
-	FLOORTYPE_BREAK
+	FLOORTYPE_BREAK,
+	FLOORTYPE_SWITCH_WHITE,
+	FLOORTYPE_SWITCH_RED,
+	FLOORTYPE_SWITCH_BLUE,
+	FLOORTYPE_SWITCH_YELLOW,
+	FLOORTYPE_SWITCH_GREEN,
 };
 
 //ゲームフェーズ
@@ -43,6 +48,16 @@ enum Phase
 	PHASE_SETANGLE,
 	PHASE_AFTERSHOOT,
 	PHASE_CLEAR
+};
+
+//ステージの色
+enum StageColor
+{
+	STAGE_COLOR_WHITE,
+	STAGE_COLOR_RED,
+	STAGE_COLOR_BLUE,
+	STAGE_COLOR_YELLOW,
+	STAGE_COLOR_GREEN,
 };
 
 struct StageHeader
@@ -77,6 +92,8 @@ private:
 	static int nowPhase;
 	//ステージサイズを格納するポインタ
 	static StageVec2* pStageSize;
+	//ステージの現在の色
+	static int stageColor;
 
 public:
 	/// <summary>
@@ -86,8 +103,10 @@ public:
 
 	static void SetNowPhase(int phase) { nowPhase = phase; }
 	static void SetPStageSize(StageVec2* pStageSize) { GameUtility::pStageSize = pStageSize; }
+	static void SetStageColor(int stageColor) { GameUtility::stageColor = stageColor; }
 
-	static int GetNowPhase() { return nowPhase; }
+	static const int GetNowPhase() { return nowPhase; }
+	static const int GetStageColor() { return stageColor; }
 
 	/// <summary>
 	/// ワールド座標のxz平面からステージ上の座標に変換

@@ -39,7 +39,7 @@ struct Vector2 : public DirectX::XMFLOAT2
 	/// 零ベクトルを取得
 	/// </summary>
 	/// <returns></returns>
-	const Vector2 Zero() const;
+	static const Vector2 Zero();
 
 	//単項演算子オーバーロード
 	Vector2 operator+() const;

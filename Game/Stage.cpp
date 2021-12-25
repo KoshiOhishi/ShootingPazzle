@@ -7,6 +7,7 @@
 #include "HoleFloor.h"
 #include "TurnFloor.h"
 #include "BreakFloor.h"
+#include "SwitchFloor.h"
 #include "GameUtility.h"
 #include "DebugText.h"
 
@@ -30,8 +31,8 @@ void Stage::LoadStage(std::string filename)
 
 	//エフェクトは最初の読み込みのみ
 	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
-		firstEffectTimer.SetTimer(0, 3500);
-		firstEffectTimer.Start();
+		effectTimer.SetTimer(0, 3500);
+		effectTimer.Start();
 	}
 
 	//データ初期化
@@ -108,7 +109,12 @@ void Stage::LoadStage(std::string filename)
 void Stage::Update()
 {
 	//出現エフェクト
-	UpdateFirstEffect();
+	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+		UpdateFirstEffect();
+	}
+	else if (GameUtility::GetNowPhase() == PHASE_CLEAR) {
+		UpdateClearEffect();
+	}
 
 	//オブジェクト更新
 	for (int i = 0; i < floors.size(); i++) {
@@ -132,6 +138,7 @@ void Stage::Draw()
 	NormalFloor::Draw();
 	TurnFloor::Draw();
 	BreakFloor::Draw();
+	SwitchFloor::Draw();
 
 	for (int i = 0; i < blocks.size(); i++) {
 		blocks[i]->Draw();
@@ -143,28 +150,40 @@ void Stage::EndDraw()
 	NormalFloor::EndDraw();
 	TurnFloor::EndDraw();
 	BreakFloor::EndDraw();
+	SwitchFloor::EndDraw();
 }
 
 void Stage::UpdateFirstEffect()
 {
-	if (GameUtility::GetNowPhase() != PHASE_FIRSTEFFECT) {
-		return;
-	}
-
-	firstEffectTimer.Update();
+	effectTimer.Update();
 
 	//ブロックが空から降ってくる演出
 	for (int i = 0; i < blocks.size(); i++) {
-		blocks[i]->UpdateFirstEffect(firstEffectTimer);
+		blocks[i]->UpdateFirstEffect(effectTimer);
 	}
 
 	//床が下から出てくる演出
 	for (int i = 0; i < floors.size(); i++) {
-		floors[i]->UpdateFirstEffect(firstEffectTimer);
+		floors[i]->UpdateFirstEffect(effectTimer);
 	}
 
-	if (firstEffectTimer.GetIsEnd()) {
+	if (effectTimer.GetIsEnd()) {
 		GameUtility::SetNowPhase(PHASE_SETPOS);
+	}
+}
+
+void Stage::UpdateClearEffect()
+{
+	effectTimer.Update();
+
+	//ブロックが空から降ってくる演出
+	for (int i = 0; i < blocks.size(); i++) {
+		blocks[i]->UpdateClearEffect(effectTimer);
+	}
+
+	//床が下から出てくる演出
+	for (int i = 0; i < floors.size(); i++) {
+		floors[i]->UpdateClearEffect(effectTimer);
 	}
 }
 
@@ -234,6 +253,12 @@ void Stage::DeleteBlock(const StageVec2& stagePos)
 	blocks.erase(blocks.begin() + deleteIndex);
 }
 
+void Stage::StartEffectTimer(int start, int end, float speed)
+{
+	effectTimer.SetTimer(start, end, speed);
+	effectTimer.Start();
+}
+
 int Stage::CheckExistBlock(const StageVec2& stagePos)
 {
 	float x, z;
@@ -288,6 +313,36 @@ void Stage::AddFloor(const StageVec2& stagePos, int floorType)
 	else if (floorType == FLOORTYPE_BREAK) {
 		BreakFloor* newFloor = new BreakFloor;
 		newFloor->Initialize(stagePos);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_WHITE) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_WHITE);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_RED) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_RED);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_BLUE) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_BLUE);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_YELLOW) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_YELLOW);
+		floors.emplace_back(newFloor);
+	}
+	else if (floorType == FLOORTYPE_SWITCH_GREEN) {
+		SwitchFloor* newFloor = new SwitchFloor;
+		newFloor->Initialize(stagePos);
+		newFloor->SetSwitchColor(SWITCH_COLOR_GREEN);
 		floors.emplace_back(newFloor);
 	}
 }

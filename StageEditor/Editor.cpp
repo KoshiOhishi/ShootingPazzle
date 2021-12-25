@@ -9,6 +9,8 @@
 #include "FbxLoader.h"
 #include "ImguiHelper.h"
 #include "GameUtility.h"
+#include "TurnFloor.h"
+#include "SwitchFloor.h"
 
 #include "../DX12Library/imgui/imgui.h"
 #include "../DX12Library/imgui/imgui_impl_win32.h"
@@ -54,25 +56,16 @@ void Editor::Initialize()
 	}
 #pragma region 表示用オブジェクト初期化
 	modelNormalFloor.CreateFromOBJ("NormalFloor");
-	objNormalFloor.Initialize();
-	objNormalFloor.SetObjModel(&modelNormalFloor);
-	objNormalFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
 	modelTurnFloor[TURNTYPE_LEFT].CreateFromOBJ("TurnFloor_Left");
 	modelTurnFloor[TURNTYPE_RIGHT].CreateFromOBJ("TurnFloor_Right");
 	modelTurnFloor[TURNTYPE_UP].CreateFromOBJ("TurnFloor_Up");
 	modelTurnFloor[TURNTYPE_DOWN].CreateFromOBJ("TurnFloor_Down");
-	for (int i = 0; i < _countof(objTurnFloor); i++) {
-		objTurnFloor[i].Initialize();
-		objTurnFloor[i].SetObjModel(&modelTurnFloor[i]);
-		objTurnFloor[i].SetColor(0.5f, 0.5f, 0.5f, 1);
-		if (i >= 2) {
-			objTurnFloor[i].SetRotation(0, 180, 0);
-		}
-	}
-	modelBreakFloor.CreateFromOBJ("BreakFloor");
-	objBreakFloor.Initialize();
-	objBreakFloor.SetObjModel(&modelBreakFloor);
-	objBreakFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
+	modelSwitchFloor[SWITCH_STATE_OFF].CreateFromOBJ("SwitchFloor_OFF");
+	modelSwitchFloor[SWITCH_STATE_ON].CreateFromOBJ("SwitchFloor_ON");
+
+	objDispFloor.Initialize();
+	objDispFloor.SetObjModel(&modelNormalFloor);
+	objDispFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
 #pragma endregion
 }
 
@@ -244,6 +237,8 @@ void Editor::UpdateDelete()
 
 void Editor::UpdateObject()
 {
+	UpdateDispObject();
+
 	//ブロック位置をカーソル位置に
 	squareBlock.SetStagePos(nowCursolPos);
 	for (int i = 0; i < _countof(triangleBlock); i++) {
@@ -252,11 +247,7 @@ void Editor::UpdateObject()
 
 	float x, z;
 	GameUtility::CalcStagePos2WorldPos(nowCursolPos, &x, &z);
-	objNormalFloor.SetPosition({x, -ONE_CELL_LENGTH / 2, z});
-	for (int i = 0; i < _countof(objTurnFloor); i++) {
-		objTurnFloor[i].SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
-	}
-	objBreakFloor.SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
+	objDispFloor.SetPosition({x, -ONE_CELL_LENGTH / 2, z});
 
 	//breakupCountによってブロックの色を変える
 	squareBlock.SetBreakupCount(breakupCount);
@@ -270,11 +261,29 @@ void Editor::UpdateObject()
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].Update();
 	}
-	objNormalFloor.Update();
-	for (int i = 0; i < _countof(objTurnFloor); i++) {
-		objTurnFloor[i].Update();
+	objDispFloor.Update();
+}
+
+void Editor::UpdateDispObject()
+{
+	objDispFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
+	switch (floorType) {
+	case FLOORTYPE_NORMAL:			objDispFloor.SetObjModel(&modelNormalFloor); break;
+	case FLOORTYPE_TURN_LEFT:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_LEFT]); break;
+	case FLOORTYPE_TURN_RIGHT:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_RIGHT]); break;
+	case FLOORTYPE_TURN_UP:			objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_UP]); break;
+	case FLOORTYPE_TURN_DOWN:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_DOWN]); break;
+	case FLOORTYPE_BREAK:			objDispFloor.SetObjModel(&modelBreakFloor); break;
+	case FLOORTYPE_SWITCH_WHITE:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]); break;
+	case FLOORTYPE_SWITCH_RED:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+									objDispFloor.SetColor(0.5f, 0.0f, 0.0f, 1); break;
+	case FLOORTYPE_SWITCH_BLUE:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+									objDispFloor.SetColor(0.0f, 0.0f, 0.5f, 1); break;
+	case FLOORTYPE_SWITCH_YELLOW:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+									objDispFloor.SetColor(0.5f, 0.5f, 0.0f, 1); break;
+	case FLOORTYPE_SWITCH_GREEN:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+									objDispFloor.SetColor(0.0f, 0.5f, 0.0f, 1); break;
 	}
-	objBreakFloor.Update();
 }
 
 void Editor::UpdateStartLane()
@@ -372,24 +381,7 @@ void Editor::DrawFloor()
 		return;
 	}
 
-	if (floorType == FLOORTYPE_NORMAL) {
-		objNormalFloor.Draw();
-	}
-	else if (floorType == FLOORTYPE_TURN_LEFT) {
-		objTurnFloor[TURNTYPE_LEFT].Draw();
-	}
-	else if (floorType == FLOORTYPE_TURN_RIGHT) {
-		objTurnFloor[TURNTYPE_RIGHT].Draw();
-	}
-	else if (floorType == FLOORTYPE_TURN_UP) {
-		objTurnFloor[TURNTYPE_UP].Draw();
-	}
-	else if (floorType == FLOORTYPE_TURN_DOWN) {
-		objTurnFloor[TURNTYPE_DOWN].Draw();
-	}
-	else if (floorType == FLOORTYPE_BREAK) {
-		objBreakFloor.Draw();
-	}
+	objDispFloor.Draw();
 }
 
 void Editor::Save()
@@ -444,6 +436,7 @@ void Editor::Save()
 		StageFloor object = {};
 		std::string floorType = stage.floors[i]->GetObjectType();
 
+#pragma region SetType
 		if (floorType == "NormalFloor") {
 			object.type = 0;
 		}
@@ -462,6 +455,22 @@ void Editor::Save()
 		else if (floorType == "BreakFloor") {
 			object.type = 5;
 		}
+		else if (floorType == "SwitchFloor_0") {
+			object.type = 6;
+		}
+		else if (floorType == "SwitchFloor_1") {
+			object.type = 7;
+		}
+		else if (floorType == "SwitchFloor_2") {
+			object.type = 8;
+		}
+		else if (floorType == "SwitchFloor_3") {
+			object.type = 9;
+		}
+		else if (floorType == "SwitchFloor_4") {
+			object.type = 10;
+		}
+#pragma endregion
 
 		StageVec2 pos = GameUtility::CalcWorldPos2StagePos(
 			stage.floors[i]->GetPosition().x, stage.floors[i]->GetPosition().z);
@@ -529,6 +538,11 @@ void Editor::UpdateImgui()
 			ImGui::RadioButton("Turn_Up", &floorType, FLOORTYPE_TURN_UP);
 			ImGui::RadioButton("Turn_Down", &floorType, FLOORTYPE_TURN_DOWN);
 			ImGui::RadioButton("Break", &floorType, FLOORTYPE_BREAK);
+			ImGui::RadioButton("Switch_White", &floorType, FLOORTYPE_SWITCH_WHITE);
+			ImGui::RadioButton("Switch_Red", &floorType, FLOORTYPE_SWITCH_RED);
+			ImGui::RadioButton("Switch_Blue", &floorType, FLOORTYPE_SWITCH_BLUE);
+			ImGui::RadioButton("Switch_Yellow", &floorType, FLOORTYPE_SWITCH_YELLOW);
+			ImGui::RadioButton("Switch_Green", &floorType, FLOORTYPE_SWITCH_GREEN);
 		}
 
 	}

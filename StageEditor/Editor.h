@@ -14,8 +14,6 @@
 #include "MyBullet.h"
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
-#include "NormalFloor.h"
-#include "TurnFloor.h"
 #include "EditorStage.h"
 #include "StartLane.h"
 
@@ -65,12 +63,11 @@ private:
 	SquareBlock squareBlock;
 	TriangleBlock triangleBlock[4];
 	StartLane startLane[2];
-	Object3D objNormalFloor;
-	Object3D objTurnFloor[4];
-	Object3D objBreakFloor;
+	Object3D objDispFloor;
 	ObjModel modelNormalFloor;
 	ObjModel modelTurnFloor[4];
 	ObjModel modelBreakFloor;
+	ObjModel modelSwitchFloor[2];
 
 	//SaveLoad—p–¼‘OŠi”[
 	std::string ioname;
@@ -94,6 +91,7 @@ public:
 	void UpdateAdd();
 	void UpdateDelete();
 	void UpdateObject();
+	void UpdateDispObject();
 	void UpdateStartLane();
 
 	void DrawEdit();

@@ -50,7 +50,6 @@ void TurnFloor::Draw(int index)
 		if (index < -1 || index >= 4) { return; }
 		instancingObjectDraw[index].Update();
 		instancingObjectDraw[index].Draw();
-		instancingObjectDraw[index].EndDraw();
 	}
 }
 

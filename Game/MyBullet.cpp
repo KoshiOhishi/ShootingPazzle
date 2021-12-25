@@ -108,7 +108,7 @@ void MyBullet::UpdateFirstEffect()
 
 	firstEffectTimer.Update();
 
-	double y = Easing::GetEaseValue(EASE_OUTBOUNCE, bounceInitPosY, RADIUS, firstEffectTimer, firstEffectTimer.GetEndTime() - 1000, firstEffectTimer.GetEndTime());
+	double y = Easing::GetEaseValue(EASE_OUTEXPO, bounceInitPosY, RADIUS, firstEffectTimer, firstEffectTimer.GetEndTime() - 1000, firstEffectTimer.GetEndTime());
 
 	position.y = y;
 }
@@ -398,6 +398,42 @@ void MyBullet::CheckFloorCollision()
 					}
 					velocity = { 0,0,-1 };
 					velocity = velocity.Normalize();
+				}
+
+				//スイッチブロック(白)
+				else if (stage->GetFloors()[i]->GetObjectType() == "SwitchFloor_0") {
+					if (GameUtility::GetStageColor() != STAGE_COLOR_WHITE) {
+						//ここにエフェクト関数
+					}
+					GameUtility::SetStageColor(STAGE_COLOR_WHITE);
+				}
+				//スイッチブロック(赤)
+				else if (stage->GetFloors()[i]->GetObjectType() == "SwitchFloor_1") {
+					if (GameUtility::GetStageColor() != STAGE_COLOR_RED) {
+						//ここにエフェクト関数
+					}
+					GameUtility::SetStageColor(STAGE_COLOR_RED);
+				}
+				//スイッチブロック(青)
+				else if (stage->GetFloors()[i]->GetObjectType() == "SwitchFloor_2") {
+					if (GameUtility::GetStageColor() != STAGE_COLOR_BLUE) {
+						//ここにエフェクト関数
+					}
+					GameUtility::SetStageColor(STAGE_COLOR_BLUE);
+				}
+				//スイッチブロック(黄)
+				else if (stage->GetFloors()[i]->GetObjectType() == "SwitchFloor_3") {
+					if (GameUtility::GetStageColor() != STAGE_COLOR_YELLOW) {
+						//ここにエフェクト関数
+					}
+					GameUtility::SetStageColor(STAGE_COLOR_YELLOW);
+				}
+				//スイッチブロック(緑)
+				else if (stage->GetFloors()[i]->GetObjectType() == "SwitchFloor_4") {
+					if (GameUtility::GetStageColor() != STAGE_COLOR_GREEN) {
+						//ここにエフェクト関数
+					}
+					GameUtility::SetStageColor(STAGE_COLOR_GREEN);
 				}
 				break;
 			}

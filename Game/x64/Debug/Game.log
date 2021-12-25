@@ -30,11 +30,17 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   30 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  GamePlay.cpp
+  main.cpp
+  MyBullet.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-  main.cpp
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(6): message : 'PI' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(113,15): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(208,40): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
+  NormalFloor.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   コードを生成中...
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
@@ -50,6 +56,16 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): mes
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\game_bg.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\sky.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\sky.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\snap.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\.mayaSwatches\game_bg.png_hcm.swatch
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\.mayaSwatches\uv.png_hcm.swatch
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\SwitchFloor_OFF.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\SwitchFloor_OFF.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_ON\SwitchFloor_ON.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_ON\SwitchFloor_ON.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_ON\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\white1x1.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBox\TriangleBox.mtl
@@ -70,7 +86,7 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): mes
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\TurnFloor_Up.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\_uv.png
-  33 個のファイルをコピーしました
+  43 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

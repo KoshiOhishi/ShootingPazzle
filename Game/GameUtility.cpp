@@ -6,11 +6,13 @@
 #include "NormalFloor.h"
 #include "TurnFloor.h"
 #include "BreakFloor.h"
+#include "SwitchFloor.h"
 #include "HoleFloor.h"
 
 //現在のフェーズ
 int GameUtility::nowPhase;
 StageVec2* GameUtility::pStageSize = nullptr;
+int GameUtility::stageColor = STAGE_COLOR_WHITE;
 
 void GameUtility::StaticInitialize()
 {
@@ -20,10 +22,12 @@ void GameUtility::StaticInitialize()
 	NormalFloor::CreateModel();
 	TurnFloor::CreateModel();
 	BreakFloor::CreateModel();
+	SwitchFloor::CreateModel();
 
 	NormalFloor::StaticInitialize();
 	TurnFloor::StaticInitialize();
 	BreakFloor::StaticInitialize();
+	SwitchFloor::StaticInitialize();
 }
 
 const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ)
