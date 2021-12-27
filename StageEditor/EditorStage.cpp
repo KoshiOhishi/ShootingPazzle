@@ -74,7 +74,7 @@ void EditorStage::LoadStage(std::string filename)
 		file.read((char*)&object, sizeof(object));
 
 		StageVec2 pos = { object.stagePosX, object.stagePosY };
-		AddBlock(pos, object.type, object.breakupCount);
+		AddBlock(pos, object.type, object.breakupCount, object.blockColor);
 	}
 
 	//床情報格納
@@ -125,7 +125,7 @@ void EditorStage::EndDraw()
 	SwitchFloor::EndDraw();
 }
 
-void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount)
+void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor)
 {
 	//既にブロックが配置されていたらリターン
 	if (CheckExistBlock(stagePos) != -1) {
@@ -137,12 +137,14 @@ void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned sh
 		SquareBlock* newBlock = new SquareBlock;
 		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
 		newBlock->SetBreakupCount(breakupCount);
+		newBlock->SetBlockColor(blockColor);
 		blocks.emplace_back(newBlock);
 	}
 	else {
 		TriangleBlock* newBlock = new TriangleBlock;
 		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
 		newBlock->SetBreakupCount(breakupCount);
+		newBlock->SetBlockColor(blockColor);
 		if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTTOP) {
 			newBlock->SetTriangleType(TRIANGLETYPE_NO_LEFTTOP);
 		}

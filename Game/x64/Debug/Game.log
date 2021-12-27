@@ -30,18 +30,12 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   30 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  main.cpp
-  MyBullet.cpp
+  BaseBlock.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
 E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(6): message : 'PI' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(113,15): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(208,40): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
-  NormalFloor.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  コードを生成中...
+E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(59,29): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(72,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png
@@ -60,6 +54,9 @@ E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(208,40): warning C424
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\.mayaSwatches\game_bg.png_hcm.swatch
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\sky\.mayaSwatches\uv.png_hcm.swatch
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock\SquareBlock.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock\SquareBlock.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\SwitchFloor_OFF.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\SwitchFloor_OFF.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\uv.png
@@ -68,8 +65,9 @@ E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(208,40): warning C424
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_ON\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\white1x1.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBox\TriangleBox.mtl
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBox\TriangleBox.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock\TriangleBlock.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock\TriangleBlock.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Down\TurnFloor_Down.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Down\TurnFloor_Down.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Down\uv.png
@@ -86,7 +84,7 @@ E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(208,40): warning C424
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\TurnFloor_Up.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\_uv.png
-  43 個のファイルをコピーしました
+  47 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

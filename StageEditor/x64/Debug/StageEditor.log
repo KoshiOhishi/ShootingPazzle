@@ -29,8 +29,12 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   30 個のファイルをコピーしました
-  SwitchFloor.cpp
+  BaseBlock.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(6): message : 'PI' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(59,29): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(72,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Floor.png
@@ -42,6 +46,16 @@
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\NormalFloor\NormalFloor.mtl
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\NormalFloor\NormalFloor.obj
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\NormalFloor\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\sky\game_bg.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\sky\sky.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\sky\sky.obj
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\sky\snap.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\sky\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\sky\.mayaSwatches\game_bg.png_hcm.swatch
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\sky\.mayaSwatches\uv.png_hcm.swatch
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\SquareBlock\SquareBlock.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\SquareBlock\SquareBlock.obj
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\SquareBlock\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\SwitchFloor_OFF\SwitchFloor_OFF.mtl
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\SwitchFloor_OFF\SwitchFloor_OFF.obj
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\SwitchFloor_OFF\uv.png
@@ -50,8 +64,9 @@
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\SwitchFloor_ON\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\System\white1x1.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TriangleBox\TriangleBox.mtl
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TriangleBox\TriangleBox.obj
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TriangleBlock\TriangleBlock.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TriangleBlock\TriangleBlock.obj
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TriangleBlock\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TurnFloor_Down\TurnFloor_Down.mtl
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TurnFloor_Down\TurnFloor_Down.obj
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TurnFloor_Down\uv.png
@@ -68,4 +83,4 @@
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TurnFloor_Up\TurnFloor_Up.obj
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TurnFloor_Up\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\TurnFloor_Up\_uv.png
-  36 個のファイルをコピーしました
+  47 個のファイルをコピーしました

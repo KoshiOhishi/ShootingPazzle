@@ -23,7 +23,6 @@ void SwitchFloor::Initialize(const StageVec2& pos)
 {
 	//オブジェクト生成
 	object.Initialize();
-	object.SetColor({ 0.5f,0.5f,0.5f,1 });
 
 	SetStagePos(pos);
 
@@ -72,10 +71,10 @@ void SwitchFloor::SetSwitchColor(int switchColor)
 	this->switchColor = switchColor;
 	//オブジェクトのカラーセット
 	switch (switchColor) {
-	case SWITCH_COLOR_WHITE:	object.SetColor({ 0.5f,0.5f,0.5f,1 }); break;
-	case SWITCH_COLOR_RED:		object.SetColor({ 0.5f,0.0f,0.0f,1 }); break;
-	case SWITCH_COLOR_BLUE:		object.SetColor({ 0.0f,0.0f,0.5f,1 }); break;
-	case SWITCH_COLOR_YELLOW:	object.SetColor({ 0.5f,0.5f,0.0f,1 }); break;
-	case SWITCH_COLOR_GREEN:	object.SetColor({ 0.0f,0.5f,0.0f,1 }); break;
+	case SWITCH_COLOR_WHITE:	object.SetColor({ 1,1,1,1 }); break;
+	case SWITCH_COLOR_RED:		object.SetColor({ 1,0,0,1 }); break;
+	case SWITCH_COLOR_BLUE:		object.SetColor({ 0,0,1,1 }); break;
+	case SWITCH_COLOR_YELLOW:	object.SetColor({ 1,1,0,1 }); break;
+	case SWITCH_COLOR_GREEN:	object.SetColor({ 0,1,0,1 }); break;
 	}
 }

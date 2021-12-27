@@ -19,6 +19,28 @@ void BaseBlock::SetBreakupCount(unsigned short breakupCount)
 	isBreakable = breakupCount > 0;
 }
 
+void BaseBlock::SetBlockColor(int blockColor)
+{
+	this->blockColor = blockColor;
+
+	//色設定
+	if (blockColor == BLOCK_COLOR_BLACK) {
+		object.SetColor(0.5f, 0.5f, 0.5f, 1);
+	}
+	else if (blockColor == BLOCK_COLOR_RED) {
+		object.SetColor(1, 0, 0, 1);
+	}
+	else if (blockColor == BLOCK_COLOR_BLUE) {
+		object.SetColor(0, 0, 1, 1);
+	}
+	else if (blockColor == BLOCK_COLOR_YELLOW) {
+		object.SetColor(1, 1, 0, 1);
+	}
+	else if (blockColor == BLOCK_COLOR_GREEN) {
+		object.SetColor(0, 1, 0, 1);
+	}
+}
+
 void BaseBlock::UpdateFirstEffect(const Timer& timer)
 {
 	//初回だけエフェクトの種類決め

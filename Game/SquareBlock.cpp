@@ -6,7 +6,7 @@ ObjModel SquareBlock::modelBox;
 void SquareBlock::CreateModel()
 {
 	//モデル生成
-	modelBox.CreateBox(ONE_CELL_LENGTH, ONE_CELL_LENGTH, ONE_CELL_LENGTH);
+	modelBox.CreateFromOBJ("SquareBlock");
 }
 
 SquareBlock::~SquareBlock()
@@ -33,20 +33,6 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 
 void SquareBlock::Update()
 {
-	//とりあえず壊れるブロックは色変えとく
-	if (breakupCount == 2) {
-		//緑
-		object.SetColor(0.5f, 1, 0.5f, 1);
-	}
-	else if (breakupCount == 1) {
-		//赤
-		object.SetColor(1, 0.5f, 0.5f, 1);
-	}
-	else if (breakupCount == 0) {
-		//白
-		object.SetColor(1, 1, 1, 1);
-	}
-
 	object.Update();
 	UpdateCollision();
 }

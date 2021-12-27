@@ -21,7 +21,6 @@ void NormalFloor::Initialize(const StageVec2& pos)
 {
 	//オブジェクト生成
 	object.Initialize();
-	object.SetColor({ 0.5f,0.5f,0.5f,1 });
 
 	SetStagePos(pos);
 

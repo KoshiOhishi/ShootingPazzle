@@ -54,6 +54,7 @@ private:
 	int floorType = FLOORTYPE_NORMAL;
 	//壊れるまでの衝突回数　0で壊れないブロック
 	int breakupCount = 0;
+	int blockColor = BLOCK_COLOR_BLACK;
 	//現在のカーソル位置
 	StageVec2 nowCursolPos;
 	//オプションでのモード

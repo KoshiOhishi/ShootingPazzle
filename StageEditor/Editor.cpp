@@ -206,7 +206,7 @@ void Editor::UpdateAdd()
 
 	if (objectType == OBJECTTYPE_BLOCK) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-			stage.AddBlock(nowCursolPos, blockType, breakupCount);
+			stage.AddBlock(nowCursolPos, blockType, breakupCount, blockColor);
 		}	}
 	else if (objectType == OBJECTTYPE_FLOOR) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
@@ -241,8 +241,10 @@ void Editor::UpdateObject()
 
 	//ブロック位置をカーソル位置に
 	squareBlock.SetStagePos(nowCursolPos);
+	squareBlock.SetBlockColor(blockColor);
 	for (int i = 0; i < _countof(triangleBlock); i++) {
 		triangleBlock[i].SetStagePos(nowCursolPos);
+		triangleBlock[i].SetBlockColor(blockColor);
 	}
 
 	float x, z;
@@ -266,23 +268,26 @@ void Editor::UpdateObject()
 
 void Editor::UpdateDispObject()
 {
-	objDispFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
+	objDispFloor.SetColor(1, 1, 1, 1);
+	objDispFloor.SetRotation({ 0, 0, 0 });
 	switch (floorType) {
 	case FLOORTYPE_NORMAL:			objDispFloor.SetObjModel(&modelNormalFloor); break;
 	case FLOORTYPE_TURN_LEFT:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_LEFT]); break;
 	case FLOORTYPE_TURN_RIGHT:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_RIGHT]); break;
-	case FLOORTYPE_TURN_UP:			objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_UP]); break;
-	case FLOORTYPE_TURN_DOWN:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_DOWN]); break;
+	case FLOORTYPE_TURN_UP:			objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_UP]);
+									objDispFloor.SetRotation({ 0, 180, 0 }); break;
+	case FLOORTYPE_TURN_DOWN:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_DOWN]);
+									objDispFloor.SetRotation({ 0, 180, 0 }); break;
 	case FLOORTYPE_BREAK:			objDispFloor.SetObjModel(&modelBreakFloor); break;
 	case FLOORTYPE_SWITCH_WHITE:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]); break;
 	case FLOORTYPE_SWITCH_RED:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
-									objDispFloor.SetColor(0.5f, 0.0f, 0.0f, 1); break;
+									objDispFloor.SetColor(1, 0, 0, 1); break;
 	case FLOORTYPE_SWITCH_BLUE:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
-									objDispFloor.SetColor(0.0f, 0.0f, 0.5f, 1); break;
+									objDispFloor.SetColor(0, 0, 1, 1); break;
 	case FLOORTYPE_SWITCH_YELLOW:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
-									objDispFloor.SetColor(0.5f, 0.5f, 0.0f, 1); break;
+									objDispFloor.SetColor(1, 1, 0, 1); break;
 	case FLOORTYPE_SWITCH_GREEN:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
-									objDispFloor.SetColor(0.0f, 0.5f, 0.0f, 1); break;
+									objDispFloor.SetColor(0, 1, 0, 1); break;
 	}
 }
 
@@ -428,6 +433,7 @@ void Editor::Save()
 		object.stagePosX = pos.x;
 		object.stagePosY = pos.y;
 		object.breakupCount = stage.blocks[i]->GetBreakupCount();
+		object.blockColor = stage.blocks[i]->GetBlockColor();
 
 		file.write((char*)&object, sizeof(object));
 	}
@@ -505,11 +511,11 @@ void Editor::UpdateImgui()
 	ImguiHelper::SetWindowPos(1280 - 250, 0);
 	//Mode
 	ImGui::Text("Mode");
-	ImGui::RadioButton("Add", &mode, MODE_ADD);
+	ImGui::RadioButton("Add",		&mode, MODE_ADD);
 	ImGui::SameLine();
-	ImGui::RadioButton("Delete", &mode, MODE_DELETE);
+	ImGui::RadioButton("Delete",	&mode, MODE_DELETE);
 	ImGui::SameLine();
-	ImGui::RadioButton("Option", &mode, MODE_OPTION);
+	ImGui::RadioButton("Option",	&mode, MODE_OPTION);
 
 	if (mode == MODE_ADD) {
 		//ObjectType
@@ -520,29 +526,36 @@ void Editor::UpdateImgui()
 
 		if (objectType == OBJECTTYPE_BLOCK) {
 			ImGui::Text("BlockType");
-			ImGui::RadioButton("Square", &blockType, BLOCKTYPE_SQUARE);
-			ImGui::RadioButton("Triangle_No_LeftTop", &blockType, BLOCKTYPE_TRIANGLE_NO_LEFTTOP);
-			ImGui::RadioButton("Triangle_No_RightTop", &blockType, BLOCKTYPE_TRIANGLE_NO_RIGHTTOP);
-			ImGui::RadioButton("Triangle_No_LeftBottom", &blockType, BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM);
-			ImGui::RadioButton("Triangle_No_RightBottom", &blockType, BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM);
+			ImGui::RadioButton("Square",					&blockType, BLOCKTYPE_SQUARE);
+			ImGui::RadioButton("Triangle_No_LeftTop",		&blockType, BLOCKTYPE_TRIANGLE_NO_LEFTTOP);
+			ImGui::RadioButton("Triangle_No_RightTop",		&blockType, BLOCKTYPE_TRIANGLE_NO_RIGHTTOP);
+			ImGui::RadioButton("Triangle_No_LeftBottom",	&blockType, BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM);
+			ImGui::RadioButton("Triangle_No_RightBottom",	&blockType, BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM);
 
 			static int sliderBreakupCount = 0;
 			ImGui::SliderInt("BreakupCount", &sliderBreakupCount, 0, 2);
 			breakupCount = sliderBreakupCount;
+
+			ImGui::Text("BlockColor");
+			ImGui::RadioButton("Black",		&blockColor, BLOCK_COLOR_BLACK);
+			ImGui::RadioButton("Red",		&blockColor, BLOCK_COLOR_RED);
+			ImGui::RadioButton("Blue",		&blockColor, BLOCK_COLOR_BLUE);
+			ImGui::RadioButton("Yellow",	&blockColor, BLOCK_COLOR_YELLOW);
+			ImGui::RadioButton("Green",		&blockColor, BLOCK_COLOR_GREEN);
 		}
 		else if (objectType == OBJECTTYPE_FLOOR) {
 			ImGui::Text("FloorType");
-			ImGui::RadioButton("Normal", &floorType, FLOORTYPE_NORMAL);
-			ImGui::RadioButton("Turn_Left", &floorType, FLOORTYPE_TURN_LEFT);
-			ImGui::RadioButton("Turn_Right", &floorType, FLOORTYPE_TURN_RIGHT);
-			ImGui::RadioButton("Turn_Up", &floorType, FLOORTYPE_TURN_UP);
-			ImGui::RadioButton("Turn_Down", &floorType, FLOORTYPE_TURN_DOWN);
-			ImGui::RadioButton("Break", &floorType, FLOORTYPE_BREAK);
-			ImGui::RadioButton("Switch_White", &floorType, FLOORTYPE_SWITCH_WHITE);
-			ImGui::RadioButton("Switch_Red", &floorType, FLOORTYPE_SWITCH_RED);
-			ImGui::RadioButton("Switch_Blue", &floorType, FLOORTYPE_SWITCH_BLUE);
+			ImGui::RadioButton("Normal",		&floorType, FLOORTYPE_NORMAL);
+			ImGui::RadioButton("Turn_Left",		&floorType, FLOORTYPE_TURN_LEFT);
+			ImGui::RadioButton("Turn_Right",	&floorType, FLOORTYPE_TURN_RIGHT);
+			ImGui::RadioButton("Turn_Up",		&floorType, FLOORTYPE_TURN_UP);
+			ImGui::RadioButton("Turn_Down",		&floorType, FLOORTYPE_TURN_DOWN);
+			ImGui::RadioButton("Break",			&floorType, FLOORTYPE_BREAK);
+			ImGui::RadioButton("Switch_White",	&floorType, FLOORTYPE_SWITCH_WHITE);
+			ImGui::RadioButton("Switch_Red",	&floorType, FLOORTYPE_SWITCH_RED);
+			ImGui::RadioButton("Switch_Blue",	&floorType, FLOORTYPE_SWITCH_BLUE);
 			ImGui::RadioButton("Switch_Yellow", &floorType, FLOORTYPE_SWITCH_YELLOW);
-			ImGui::RadioButton("Switch_Green", &floorType, FLOORTYPE_SWITCH_GREEN);
+			ImGui::RadioButton("Switch_Green",	&floorType, FLOORTYPE_SWITCH_GREEN);
 		}
 
 	}

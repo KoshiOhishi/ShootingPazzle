@@ -10,6 +10,15 @@
 
 class Stage;
 
+enum BlockColor
+{
+	BLOCK_COLOR_BLACK,
+	BLOCK_COLOR_RED,
+	BLOCK_COLOR_BLUE,
+	BLOCK_COLOR_YELLOW,
+	BLOCK_COLOR_GREEN
+};
+
 class BaseBlock
 {
 protected:
@@ -23,6 +32,7 @@ protected:
 	bool isBreakable = false;
 	//あと何回当たれば壊れるか　初期値0で破壊不可能ブロックになる
 	unsigned short breakupCount = 0;
+	int blockColor = BLOCK_COLOR_BLACK;
 
 	//出現エフェクトの種類
 	int firstEffectType = -1;
@@ -106,6 +116,12 @@ public:
 	/// <param name="isBreakable"></param>
 	void SetBreakupCount(unsigned short breakupCount);
 
+	/// <summary>
+	/// ブロック色セット
+	/// </summary>
+	/// <param name="color">BLOCK_COLOR_...</param>
+	void SetBlockColor(int blockColor);
+
 #pragma endregion
 #pragma region Getter
 
@@ -130,6 +146,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	unsigned short GetBreakupCount() {return breakupCount;}
+
+	/// <summary>
+	/// ブロックの色取得
+	/// </summary>
+	/// <returns></returns>
+	int GetBlockColor() { return blockColor; }
 
 	/// <summary>
 	/// ブロックが壊れているかどうか
