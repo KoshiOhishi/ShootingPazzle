@@ -290,6 +290,12 @@ void MyBullet::CheckBlockCollision()
 			continue;
 		}
 
+		//ステージの色とブロックの色が同じかつブロックが黒以外なら球はブロックを通過できる
+		bool isSameColor = GameUtility::GetStageColor() == stage->GetBlocks()[i]->GetBlockColor();
+		if (stage->GetBlocks()[i]->GetBlockColor() != BLOCK_COLOR_BLACK && isSameColor) {
+			continue;
+		}
+
 		//ブロックが持つ各カプセル判定において
 		for (int j = 0; j < stage->GetBlocks()[i]->GetCapsule().size(); j++) {
 			float distance = 0;
@@ -402,10 +408,10 @@ void MyBullet::CheckFloorCollision()
 
 				//スイッチブロック(白)
 				else if (stage->GetFloors()[i]->GetObjectType() == "SwitchFloor_0") {
-					if (GameUtility::GetStageColor() != STAGE_COLOR_WHITE) {
+					if (GameUtility::GetStageColor() != STAGE_COLOR_NONE) {
 						//ここにエフェクト関数
 					}
-					GameUtility::SetStageColor(STAGE_COLOR_WHITE);
+					GameUtility::SetStageColor(STAGE_COLOR_NONE);
 				}
 				//スイッチブロック(赤)
 				else if (stage->GetFloors()[i]->GetObjectType() == "SwitchFloor_1") {

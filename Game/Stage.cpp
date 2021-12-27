@@ -240,6 +240,11 @@ void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short br
 		}
 		blocks.emplace_back(newBlock);
 	}
+
+	//壊せるブロックなら目標破壊ブロック数を増やす
+	if (breakupCount > 0) {
+		targetBlockCount++;
+	}
 }
 
 void Stage::DeleteBlock(const StageVec2& stagePos)

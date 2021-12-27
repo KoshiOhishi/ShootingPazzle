@@ -12,7 +12,7 @@
 //現在のフェーズ
 int GameUtility::nowPhase;
 StageVec2* GameUtility::pStageSize = nullptr;
-int GameUtility::stageColor = STAGE_COLOR_WHITE;
+int GameUtility::stageColor = STAGE_COLOR_NONE;
 
 void GameUtility::StaticInitialize()
 {

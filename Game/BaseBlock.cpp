@@ -73,3 +73,20 @@ void BaseBlock::UpdateClearEffect(const Timer& timer)
 		object.SetPosition({ nPos.x, nPos.y - sub, nPos.z });
 	}
 }
+
+void BaseBlock::UpdateColor()
+{
+	//黒は通過可能にならない
+	if (blockColor == BLOCK_COLOR_BLACK) {
+		return;
+	}
+
+	Vector4 tmp = object.GetColor();
+	//ステージの色とブロックの色が一致していたら透過
+	if (GameUtility::GetStageColor() == blockColor) {
+		object.SetColor({ tmp.x, tmp.y, tmp.z, 0.75f });
+	}
+	else {
+		object.SetColor({ tmp.x, tmp.y, tmp.z, 1 });
+	}
+}

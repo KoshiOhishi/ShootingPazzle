@@ -36,6 +36,7 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 
 void SquareBlock::Update()
 {
+	UpdateColor();
 	object.Update(instancingObjectDraw);
 	UpdateCollision();
 }

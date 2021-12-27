@@ -91,6 +91,12 @@ public:
 	/// </summary>
 	virtual void Breakup() = 0;
 
+
+	/// <summary>
+	/// FXV
+	/// </summary>
+	void UpdateColor();
+
 #pragma region Setter
 	static void SetPStage(Stage* pStage) { BaseBlock::pStage = pStage; }
 

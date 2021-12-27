@@ -67,6 +67,7 @@ void TriangleBlock::SetTriangleType(int shapeType)
 
 void TriangleBlock::Update()
 {
+	UpdateColor();
 	object.Update(instancingObjectDraw);
 	UpdateCollision();
 }
