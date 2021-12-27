@@ -1,6 +1,7 @@
 #include "SquareBlock.h"
 #include "GameUtility.h"
 
+InstancingObjectDraw SquareBlock::instancingObjectDraw;
 ObjModel SquareBlock::modelBox;
 
 void SquareBlock::CreateModel()
@@ -9,15 +10,17 @@ void SquareBlock::CreateModel()
 	modelBox.CreateFromOBJ("SquareBlock");
 }
 
-SquareBlock::~SquareBlock()
+void SquareBlock::StaticInitialize()
 {
+	CreateModel();
+	instancingObjectDraw.Initialize();
+	instancingObjectDraw.SetObjModel(&modelBox);
 }
 
 void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 {
 	//オブジェクト生成
 	object.Initialize();
-	object.SetObjModel(&modelBox);
 
 	//直方体の周りにつけるカプセル判定 (三角形なので3つ)
 	capsule.clear();
@@ -33,13 +36,19 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 
 void SquareBlock::Update()
 {
-	object.Update();
+	object.Update(instancingObjectDraw);
 	UpdateCollision();
 }
 
 void SquareBlock::Draw()
 {
-	object.Draw();
+	instancingObjectDraw.Update();
+	instancingObjectDraw.Draw();
+}
+
+void SquareBlock::EndDraw()
+{
+	instancingObjectDraw.EndDraw();
 }
 
 void SquareBlock::UpdateCollision()

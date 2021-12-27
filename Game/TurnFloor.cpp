@@ -15,6 +15,7 @@ void TurnFloor::CreateModel()
 
 void TurnFloor::StaticInitialize()
 {
+	CreateModel();
 	for (int i = 0; i < 4; i++) {
 		instancingObjectDraw[i].Initialize();
 		instancingObjectDraw[i].SetObjModel(&modelBox[i]);

@@ -46,15 +46,16 @@ void Editor::Initialize()
 	GameUtility::SetNowPhase(PHASE_SETPOS);
 
 	//オブジェクト初期化
-	squareBlock.Initialize({ 0,0 }, ONE_CELL_LENGTH / 2);
-	for (int i = 0; i < _countof(triangleBlock); i++) {
-		triangleBlock[i].Initialize({ 0,0 }, ONE_CELL_LENGTH / 2);
-		triangleBlock[i].SetTriangleType(i);
-	}
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].Initialize(&stage.stageSize);
 	}
 #pragma region 表示用オブジェクト初期化
+	modelSquareBlock.CreateFromOBJ("SquareBlock");
+	modelTriangleBlock.CreateFromOBJ("SquareBlock");
+
+	objDispBlock.Initialize();
+	objDispBlock.SetObjModel(&modelSquareBlock);
+
 	modelNormalFloor.CreateFromOBJ("NormalFloor");
 	modelTurnFloor[TURNTYPE_LEFT].CreateFromOBJ("TurnFloor_Left");
 	modelTurnFloor[TURNTYPE_RIGHT].CreateFromOBJ("TurnFloor_Right");
@@ -65,7 +66,6 @@ void Editor::Initialize()
 
 	objDispFloor.Initialize();
 	objDispFloor.SetObjModel(&modelNormalFloor);
-	objDispFloor.SetColor(0.5f, 0.5f, 0.5f, 1);
 #pragma endregion
 }
 
@@ -240,34 +240,50 @@ void Editor::UpdateObject()
 	UpdateDispObject();
 
 	//ブロック位置をカーソル位置に
-	squareBlock.SetStagePos(nowCursolPos);
-	squareBlock.SetBlockColor(blockColor);
-	for (int i = 0; i < _countof(triangleBlock); i++) {
-		triangleBlock[i].SetStagePos(nowCursolPos);
-		triangleBlock[i].SetBlockColor(blockColor);
-	}
-
 	float x, z;
 	GameUtility::CalcStagePos2WorldPos(nowCursolPos, &x, &z);
-	objDispFloor.SetPosition({x, -ONE_CELL_LENGTH / 2, z});
+	objDispBlock.SetPosition({ x, ONE_CELL_LENGTH / 2, z });
+	objDispFloor.SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
 
 	//breakupCountによってブロックの色を変える
-	squareBlock.SetBreakupCount(breakupCount);
-	for (int i = 0; i < _countof(triangleBlock); i++) {
-		triangleBlock[i].SetBreakupCount(breakupCount);
-	}
+	//squareBlock.SetBreakupCount(breakupCount);
+	//for (int i = 0; i < _countof(triangleBlock); i++) {
+	//	triangleBlock[i].SetBreakupCount(breakupCount);
+	//}
 
 	//更新
 	UpdateStartLane();
-	squareBlock.Update();
-	for (int i = 0; i < _countof(triangleBlock); i++) {
-		triangleBlock[i].Update();
-	}
+	objDispBlock.Update();
 	objDispFloor.Update();
 }
 
 void Editor::UpdateDispObject()
 {
+	//ブロック
+	objDispBlock.SetColor(0.5f, 0.5f, 0.5f, 1);
+	objDispBlock.SetRotation({ 0, 0, 0 });
+
+	switch (blockType) {
+	case BLOCKTYPE_SQUARE:					objDispBlock.SetObjModel(&modelSquareBlock); break;
+	case BLOCKTYPE_TRIANGLE_NO_LEFTTOP:		objDispBlock.SetObjModel(&modelTriangleBlock);
+											objDispBlock.SetRotation({ 0, 180, 0 }); break;
+	case BLOCKTYPE_TRIANGLE_NO_RIGHTTOP:	objDispBlock.SetObjModel(&modelTriangleBlock);
+											objDispBlock.SetRotation({ 0, 270, 0 }); break;
+	case BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM:	objDispBlock.SetObjModel(&modelTriangleBlock);
+											objDispBlock.SetRotation({ 0, 90, 0 }); break;
+	case BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM: objDispBlock.SetObjModel(&modelTriangleBlock); break;
+	}
+
+	switch (blockColor) {
+	case BLOCK_COLOR_BLACK: break;
+	case BLOCK_COLOR_RED:		objDispBlock.SetColor(1, 0, 0, 1); break;
+	case BLOCK_COLOR_BLUE:		objDispBlock.SetColor(0, 0, 1, 1); break;
+	case BLOCK_COLOR_YELLOW:	objDispBlock.SetColor(1, 1, 0, 1); break;
+	case BLOCK_COLOR_GREEN:		objDispBlock.SetColor(0, 1, 0, 1); break;
+	}
+
+
+	//床
 	objDispFloor.SetColor(1, 1, 1, 1);
 	objDispFloor.SetRotation({ 0, 0, 0 });
 	switch (floorType) {
@@ -361,21 +377,7 @@ void Editor::DrawBlock()
 		return;
 	}
 
-	if (blockType == BLOCKTYPE_SQUARE) {
-		squareBlock.Draw();
-	}
-	else if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTTOP) {
-		triangleBlock[TRIANGLETYPE_NO_LEFTTOP].Draw();
-	}
-	else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTTOP) {
-		triangleBlock[TRIANGLETYPE_NO_RIGHTTOP].Draw();
-	}
-	else if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM) {
-		triangleBlock[TRIANGLETYPE_NO_LEFTBOTTOM].Draw();
-	}
-	else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM) {
-		triangleBlock[TRIANGLETYPE_NO_RIGHTBOTTOM].Draw();
-	}	
+	objDispBlock.Draw();
 }
 
 void Editor::DrawFloor()

@@ -12,6 +12,7 @@ void BreakFloor::CreateModel()
 
 void BreakFloor::StaticInitialize()
 {
+	CreateModel();
 	instancingObjectDraw.Initialize();
 	instancingObjectDraw.SetObjModel(&modelBox);
 }

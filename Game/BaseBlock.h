@@ -1,5 +1,5 @@
 #pragma once
-#include "Object3D.h"
+#include "InstancingObject.h"
 #include "ObjModel.h"
 #include "Vector2.h"
 #include "Vector3.h"
@@ -22,16 +22,17 @@ enum BlockColor
 class BaseBlock
 {
 protected:
+	//インスタンシング描画オブジェクト
+	InstancingObject object;
+	//ステージポインタ
 	static Stage* pStage;
-
 	//球との衝突判定用カプセル
 	std::vector<Capsule> capsule;
-	//3Dオブジェクト
-	Object3D object;
 	//衝突後に壊れるブロックか
 	bool isBreakable = false;
 	//あと何回当たれば壊れるか　初期値0で破壊不可能ブロックになる
 	unsigned short breakupCount = 0;
+	//ブロックの色
 	int blockColor = BLOCK_COLOR_BLACK;
 
 	//出現エフェクトの種類
@@ -57,11 +58,6 @@ public:
 	/// 更新
 	/// </summary>
 	virtual void Update() = 0;
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	virtual void Draw() = 0;
 
 	/// <summary>
 	/// 出現エフェクト時の更新

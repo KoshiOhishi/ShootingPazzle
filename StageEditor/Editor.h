@@ -61,14 +61,17 @@ private:
 	int optionMode = OPTION_SET_STARTLANE;
 
 	//表示用オブジェクト
-	SquareBlock squareBlock;
-	TriangleBlock triangleBlock[4];
-	StartLane startLane[2];
+	Object3D objDispBlock;
+	ObjModel modelSquareBlock;
+	ObjModel modelTriangleBlock;
+
 	Object3D objDispFloor;
 	ObjModel modelNormalFloor;
 	ObjModel modelTurnFloor[4];
 	ObjModel modelBreakFloor;
 	ObjModel modelSwitchFloor[2];
+
+	StartLane startLane[2];
 
 	//SaveLoad用名前格納
 	std::string ioname;

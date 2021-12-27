@@ -135,14 +135,16 @@ void Stage::Update()
 
 void Stage::Draw()
 {
+	//è∞
 	NormalFloor::Draw();
 	TurnFloor::Draw();
 	BreakFloor::Draw();
 	SwitchFloor::Draw();
 
-	for (int i = 0; i < blocks.size(); i++) {
-		blocks[i]->Draw();
-	}
+	//ÉuÉçÉbÉN
+	SquareBlock::Draw();
+	TriangleBlock::Draw();
+
 }
 
 void Stage::EndDraw()
@@ -151,6 +153,9 @@ void Stage::EndDraw()
 	TurnFloor::EndDraw();
 	BreakFloor::EndDraw();
 	SwitchFloor::EndDraw();
+
+	SquareBlock::EndDraw();
+	TriangleBlock::EndDraw();
 }
 
 void Stage::UpdateFirstEffect()

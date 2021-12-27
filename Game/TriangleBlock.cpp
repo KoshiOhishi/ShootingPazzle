@@ -1,6 +1,7 @@
 #include "TriangleBlock.h"
 #include "GameUtility.h"
 
+InstancingObjectDraw TriangleBlock::instancingObjectDraw;
 ObjModel TriangleBlock::modelTriangle;
 
 void TriangleBlock::CreateModel()
@@ -9,15 +10,17 @@ void TriangleBlock::CreateModel()
 	modelTriangle.CreateFromOBJ("TriangleBlock");
 }
 
-TriangleBlock::~TriangleBlock()
+void TriangleBlock::StaticInitialize()
 {
+	CreateModel();
+	instancingObjectDraw.Initialize();
+	instancingObjectDraw.SetObjModel(&modelTriangle);
 }
 
 void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
 {
 	//オブジェクト生成
 	object.Initialize();
-	object.SetObjModel(&modelTriangle);
 
 	/*上から見た元の形
 	＿＿＿
@@ -46,13 +49,13 @@ void TriangleBlock::SetTriangleType(int shapeType)
 	//タイプによって回転
 	switch (this->triangleType) {
 	case TRIANGLETYPE_NO_LEFTTOP:
-		object.SetRotation(0, 180, 0);
+		object.SetRotation({ 0, 180, 0 });
 		break;
 	case TRIANGLETYPE_NO_RIGHTTOP:
-		object.SetRotation(0, 270, 0);
+		object.SetRotation({ 0, 270, 0 });
 		break;
 	case TRIANGLETYPE_NO_LEFTBOTTOM:
-		object.SetRotation(0, 90, 0);
+		object.SetRotation({ 0, 90, 0 });
 		break;
 	case TRIANGLETYPE_NO_RIGHTBOTTOM:
 		//そのまま
@@ -64,13 +67,19 @@ void TriangleBlock::SetTriangleType(int shapeType)
 
 void TriangleBlock::Update()
 {
-	object.Update();
+	object.Update(instancingObjectDraw);
 	UpdateCollision();
 }
 
 void TriangleBlock::Draw()
 {
-	object.Draw();
+	instancingObjectDraw.Update();
+	instancingObjectDraw.Draw();
+}
+
+void TriangleBlock::EndDraw()
+{
+	instancingObjectDraw.EndDraw();
 }
 
 void TriangleBlock::UpdateCollision()

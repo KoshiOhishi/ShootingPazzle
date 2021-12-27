@@ -13,6 +13,7 @@ void SwitchFloor::CreateModel()
 
 void SwitchFloor::StaticInitialize()
 {
+	CreateModel();
 	for (int i = 0; i < _countof(modelBox); i++) {
 		instancingObjectDraw[i].Initialize();
 		instancingObjectDraw[i].SetObjModel(&modelBox[i]);

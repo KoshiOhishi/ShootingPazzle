@@ -17,13 +17,8 @@ int GameUtility::stageColor = STAGE_COLOR_WHITE;
 void GameUtility::StaticInitialize()
 {
 	MyBullet::CreateModel();
-	TriangleBlock::CreateModel();
-	SquareBlock::CreateModel();
-	NormalFloor::CreateModel();
-	TurnFloor::CreateModel();
-	BreakFloor::CreateModel();
-	SwitchFloor::CreateModel();
-
+	SquareBlock::StaticInitialize();
+	TriangleBlock::StaticInitialize();
 	NormalFloor::StaticInitialize();
 	TurnFloor::StaticInitialize();
 	BreakFloor::StaticInitialize();

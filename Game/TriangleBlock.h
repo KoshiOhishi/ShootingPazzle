@@ -12,6 +12,7 @@ class TriangleBlock :
     public BaseBlock
 {
 private:
+	static InstancingObjectDraw instancingObjectDraw;
 	//三角形の向き
 	int triangleType;
 	//正四面体モデル
@@ -21,8 +22,7 @@ public:
 	static void CreateModel();
 
 public:
-
-	~TriangleBlock() override;
+	static void StaticInitialize();
 
 	/// <summary>
 	/// 初期化
@@ -43,7 +43,12 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw() override;
+	static void Draw();
+
+	/// <summary>
+	/// 描画終了関数
+	/// </summary>
+	static void EndDraw();
 
 	/// <summary>
 	/// 当たり判定更新

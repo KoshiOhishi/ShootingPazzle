@@ -13,6 +13,7 @@ void NormalFloor::CreateModel()
 
 void NormalFloor::StaticInitialize()
 {
+	CreateModel();
 	instancingObjectDraw.Initialize();
 	instancingObjectDraw.SetObjModel(&modelBox);
 }

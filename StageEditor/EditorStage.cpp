@@ -107,14 +107,16 @@ void EditorStage::Update()
 
 void EditorStage::Draw()
 {
+	//è∞
 	NormalFloor::Draw();
 	TurnFloor::Draw();
 	BreakFloor::Draw();
 	SwitchFloor::Draw();
 
-	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i]) blocks[i]->Draw();
-	}
+	//ÉuÉçÉbÉN
+	SquareBlock::Draw();
+	TriangleBlock::Draw();
+
 }
 
 void EditorStage::EndDraw()
@@ -123,6 +125,9 @@ void EditorStage::EndDraw()
 	TurnFloor::EndDraw();
 	BreakFloor::EndDraw();
 	SwitchFloor::EndDraw();
+
+	SquareBlock::EndDraw();
+	TriangleBlock::EndDraw();
 }
 
 void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor)

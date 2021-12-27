@@ -9,7 +9,7 @@ void BaseBlock::SetStagePos(const StageVec2& pos)
 	float x, z;
 	GameUtility::CalcStagePos2WorldPos(pos, &x, &z);
 
-	object.SetPosition(x, ONE_CELL_LENGTH / 2, z);
+	object.SetPosition({ x, ONE_CELL_LENGTH / 2, z });
 }
 
 void BaseBlock::SetBreakupCount(unsigned short breakupCount)
@@ -25,19 +25,19 @@ void BaseBlock::SetBlockColor(int blockColor)
 
 	//êFê›íË
 	if (blockColor == BLOCK_COLOR_BLACK) {
-		object.SetColor(0.5f, 0.5f, 0.5f, 1);
+		object.SetColor({ 0.5f, 0.5f, 0.5f, 1 });
 	}
 	else if (blockColor == BLOCK_COLOR_RED) {
-		object.SetColor(1, 0, 0, 1);
+		object.SetColor({ 1, 0, 0, 1 });
 	}
 	else if (blockColor == BLOCK_COLOR_BLUE) {
-		object.SetColor(0, 0, 1, 1);
+		object.SetColor({ 0, 0, 1, 1 });
 	}
 	else if (blockColor == BLOCK_COLOR_YELLOW) {
-		object.SetColor(1, 1, 0, 1);
+		object.SetColor({ 1, 1, 0, 1 });
 	}
 	else if (blockColor == BLOCK_COLOR_GREEN) {
-		object.SetColor(0, 1, 0, 1);
+		object.SetColor({ 0, 1, 0, 1 });
 	}
 }
 
@@ -56,7 +56,7 @@ void BaseBlock::UpdateFirstEffect(const Timer& timer)
 	double y = Easing::GetEaseValue(firstEffectType, 300, ONE_CELL_LENGTH / 2, timer, 500, firstEffectEndTime);
 
 	Vector3 nPos = object.GetPosition();
-	object.SetPosition(nPos.x, y, nPos.z);
+	object.SetPosition({ nPos.x, (float)y, nPos.z });
 }
 
 void BaseBlock::UpdateClearEffect(const Timer& timer)
