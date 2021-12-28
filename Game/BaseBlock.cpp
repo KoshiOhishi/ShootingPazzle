@@ -24,8 +24,13 @@ void BaseBlock::SetBlockColor(int blockColor)
 	this->blockColor = blockColor;
 
 	//êFê›íË
-	if (blockColor == BLOCK_COLOR_BLACK) {
-		object.SetColor({ 0.5f, 0.5f, 0.5f, 1 });
+	if (blockColor == BLOCK_COLOR_NONE) {
+		if (breakupCount > 0) {
+			object.SetColor({ 1, 1, 1, 1 });
+		}
+		else {
+			object.SetColor({ 0.5f, 0.5f, 0.5f, 1 });
+		}
 	}
 	else if (blockColor == BLOCK_COLOR_RED) {
 		object.SetColor({ 1, 0, 0, 1 });
@@ -77,7 +82,7 @@ void BaseBlock::UpdateClearEffect(const Timer& timer)
 void BaseBlock::UpdateColor()
 {
 	//çïÇÕí âﬂâ¬î\Ç…Ç»ÇÁÇ»Ç¢
-	if (blockColor == BLOCK_COLOR_BLACK) {
+	if (blockColor == BLOCK_COLOR_NONE) {
 		return;
 	}
 

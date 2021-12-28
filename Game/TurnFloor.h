@@ -47,8 +47,6 @@ public:
 	/// </summary>
 	void UpdateCollision() override;
 
-	virtual std::string GetObjectType() override { return "TurnFloor_" + std::to_string(turnType); }
-
 	/// <summary>
 	/// •ûŒü“]Š·‚ÌŒü‚«Žw’è
 	/// </summary>

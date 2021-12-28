@@ -54,7 +54,7 @@ private:
 	int floorType = FLOORTYPE_NORMAL;
 	//壊れるまでの衝突回数　0で壊れないブロック
 	int breakupCount = 0;
-	int blockColor = BLOCK_COLOR_BLACK;
+	int blockColor = BLOCK_COLOR_NONE;
 	//現在のカーソル位置
 	StageVec2 nowCursolPos;
 	//オプションでのモード
@@ -62,8 +62,8 @@ private:
 
 	//表示用オブジェクト
 	Object3D objDispBlock;
-	ObjModel modelSquareBlock;
-	ObjModel modelTriangleBlock;
+	ObjModel modelSquareBlock[4];
+	ObjModel modelTriangleBlock[4];
 
 	Object3D objDispFloor;
 	ObjModel modelNormalFloor;

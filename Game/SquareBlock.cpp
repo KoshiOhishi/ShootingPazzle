@@ -1,20 +1,25 @@
 #include "SquareBlock.h"
 #include "GameUtility.h"
 
-InstancingObjectDraw SquareBlock::instancingObjectDraw;
-ObjModel SquareBlock::modelBox;
+InstancingObjectDraw SquareBlock::instancingObjectDraw[4];
+ObjModel SquareBlock::modelBox[4];
 
 void SquareBlock::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelBox.CreateFromOBJ("SquareBlock");
+	modelBox[0].CreateFromOBJ("SquareBlock");
+	modelBox[1].CreateFromOBJ("SquareBlock_Breakable_1");
+	modelBox[2].CreateFromOBJ("SquareBlock_Breakable_2");
+	modelBox[3].CreateFromOBJ("SquareBlock_Breakable_3");
 }
 
 void SquareBlock::StaticInitialize()
 {
 	CreateModel();
-	instancingObjectDraw.Initialize();
-	instancingObjectDraw.SetObjModel(&modelBox);
+	for (int i = 0; i < _countof(modelBox); i++) {
+		instancingObjectDraw[i].Initialize();
+		instancingObjectDraw[i].SetObjModel(&modelBox[i]);
+	}
 }
 
 void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
@@ -32,24 +37,30 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 	SetStagePos(pos);
 
 	UpdateCollision();
+
+	objectName = "SquareBlock";
 }
 
 void SquareBlock::Update()
 {
 	UpdateColor();
-	object.Update(instancingObjectDraw);
+	object.Update(instancingObjectDraw[breakupCount]);
 	UpdateCollision();
 }
 
 void SquareBlock::Draw()
 {
-	instancingObjectDraw.Update();
-	instancingObjectDraw.Draw();
+	for (int i = 0; i < _countof(modelBox); i++) {
+		instancingObjectDraw[i].Update();
+		instancingObjectDraw[i].Draw();
+	}
 }
 
 void SquareBlock::EndDraw()
 {
-	instancingObjectDraw.EndDraw();
+	for (int i = 0; i < _countof(modelBox); i++) {
+		instancingObjectDraw[i].EndDraw();
+	}
 }
 
 void SquareBlock::UpdateCollision()

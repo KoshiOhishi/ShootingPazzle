@@ -12,11 +12,11 @@ class TriangleBlock :
     public BaseBlock
 {
 private:
-	static InstancingObjectDraw instancingObjectDraw;
+	static InstancingObjectDraw instancingObjectDraw[4];
 	//三角形の向き
 	int triangleType;
 	//正四面体モデル
-	static ObjModel modelTriangle;
+	static ObjModel modelTriangle[4];
 
 public:
 	static void CreateModel();
@@ -64,6 +64,4 @@ public:
 	/// ブロックを壊す
 	/// </summary>
 	void Breakup() override;
-
-	std::string GetObjectType() override { return "TriangleBlock_" + std::to_string(triangleType); }
 };

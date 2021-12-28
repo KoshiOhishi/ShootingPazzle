@@ -10,6 +10,8 @@ class BaseFloor
 protected:
 	InstancingObject object;
 
+	std::string objectName = "";
+
 	//出現エフェクトの種類
 	int firstEffectType = -1;
 	//出現エフェクトの終了時間
@@ -60,7 +62,7 @@ public:
 	/// ブロックの種類を取得する
 	/// </summary>
 	/// <returns>ブロックの種類</returns>
-	virtual std::string GetObjectType() = 0;
+	const std::string& GetObjectName() { return objectName; }
 
 	const Vector3& GetPosition() { return object.GetPosition(); }
 };

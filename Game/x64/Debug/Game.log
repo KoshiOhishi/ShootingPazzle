@@ -34,8 +34,6 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-  main.cpp
-  コードを生成中...
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png
@@ -57,6 +55,15 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): mes
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock\SquareBlock.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock\SquareBlock.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_1\SquareBlock_Breakable_1.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_1\SquareBlock_Breakable_1.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_1\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_2\SquareBlock_Breakable_2.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_2\SquareBlock_Breakable_2.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_2\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_3\SquareBlock_Breakable_3.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_3\SquareBlock_Breakable_3.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SquareBlock_Breakable_3\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\SwitchFloor_OFF.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\SwitchFloor_OFF.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\SwitchFloor_OFF\uv.png
@@ -68,6 +75,15 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): mes
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock\TriangleBlock.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock\TriangleBlock.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_1\TriangleBlock_Breakable_1.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_1\TriangleBlock_Breakable_1.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_1\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_2\TriangleBlock_Breakable_2.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_2\TriangleBlock_Breakable_2.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_2\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_3\TriangleBlock_Breakable_3.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_3\TriangleBlock_Breakable_3.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TriangleBlock_Breakable_3\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Down\TurnFloor_Down.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Down\TurnFloor_Down.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Down\uv.png
@@ -84,7 +100,7 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): mes
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\TurnFloor_Up.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\TurnFloor_Up\_uv.png
-  47 個のファイルをコピーしました
+  65 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

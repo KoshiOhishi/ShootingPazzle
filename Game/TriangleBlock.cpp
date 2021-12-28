@@ -1,20 +1,25 @@
 #include "TriangleBlock.h"
 #include "GameUtility.h"
 
-InstancingObjectDraw TriangleBlock::instancingObjectDraw;
-ObjModel TriangleBlock::modelTriangle;
+InstancingObjectDraw TriangleBlock::instancingObjectDraw[4];
+ObjModel TriangleBlock::modelTriangle[4];
 
 void TriangleBlock::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelTriangle.CreateFromOBJ("TriangleBlock");
+	modelTriangle[0].CreateFromOBJ("TriangleBlock");
+	modelTriangle[1].CreateFromOBJ("TriangleBlock_Breakable_1");
+	modelTriangle[2].CreateFromOBJ("TriangleBlock_Breakable_2");
+	modelTriangle[3].CreateFromOBJ("TriangleBlock_Breakable_3");
 }
 
 void TriangleBlock::StaticInitialize()
 {
 	CreateModel();
-	instancingObjectDraw.Initialize();
-	instancingObjectDraw.SetObjModel(&modelTriangle);
+	for (int i = 0; i < _countof(modelTriangle); i++) {
+		instancingObjectDraw[i].Initialize();
+		instancingObjectDraw[i].SetObjModel(&modelTriangle[i]);
+	}
 }
 
 void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
@@ -50,15 +55,19 @@ void TriangleBlock::SetTriangleType(int shapeType)
 	switch (this->triangleType) {
 	case TRIANGLETYPE_NO_LEFTTOP:
 		object.SetRotation({ 0, 180, 0 });
+		objectName = "TriangleBlock_No_LeftTop";
 		break;
 	case TRIANGLETYPE_NO_RIGHTTOP:
 		object.SetRotation({ 0, 270, 0 });
+		objectName = "TriangleBlock_No_RightTop";
 		break;
 	case TRIANGLETYPE_NO_LEFTBOTTOM:
 		object.SetRotation({ 0, 90, 0 });
+		objectName = "TriangleBlock_No_LeftBottom";
 		break;
 	case TRIANGLETYPE_NO_RIGHTBOTTOM:
 		//ÇªÇÃÇ‹Ç‹
+		objectName = "TriangleBlock_No_RightBottom";
 		break;
 	}
 
@@ -68,19 +77,23 @@ void TriangleBlock::SetTriangleType(int shapeType)
 void TriangleBlock::Update()
 {
 	UpdateColor();
-	object.Update(instancingObjectDraw);
+	object.Update(instancingObjectDraw[breakupCount]);
 	UpdateCollision();
 }
 
 void TriangleBlock::Draw()
 {
-	instancingObjectDraw.Update();
-	instancingObjectDraw.Draw();
+	for (int i = 0; i < _countof(modelTriangle); i++) {
+		instancingObjectDraw[i].Update();
+		instancingObjectDraw[i].Draw();
+	}
 }
 
 void TriangleBlock::EndDraw()
 {
-	instancingObjectDraw.EndDraw();
+	for (int i = 0; i < _countof(modelTriangle); i++) {
+		instancingObjectDraw[i].EndDraw();
+	}
 }
 
 void TriangleBlock::UpdateCollision()

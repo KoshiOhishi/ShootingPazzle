@@ -51,9 +51,4 @@ public:
 	/// </summary>
 	/// <param name="onFloor"></param>
 	void SetOnFloor(bool onFloor) { this->onFloor = onFloor; }
-
-	virtual std::string GetObjectType() override {
-		if (isBreak == false) return "BreakFloor";
-		else return "HoleFloor";
-	}
 };

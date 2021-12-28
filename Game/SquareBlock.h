@@ -5,9 +5,9 @@ class SquareBlock :
 	public BaseBlock
 {
 private:
-	static InstancingObjectDraw instancingObjectDraw;
+	static InstancingObjectDraw instancingObjectDraw[4];
 	//正四面体モデル
-	static ObjModel modelBox;
+	static ObjModel modelBox[4];
 
 public:
 	static void CreateModel();
@@ -49,7 +49,5 @@ public:
 	/// ブロックを壊す
 	/// </summary>
 	void Breakup() override;
-
-	std::string GetObjectType() override { return "SquareBlock"; }
 };
 

@@ -50,11 +50,17 @@ void Editor::Initialize()
 		startLane[i].Initialize(&stage.stageSize);
 	}
 #pragma region 表示用オブジェクト初期化
-	modelSquareBlock.CreateFromOBJ("SquareBlock");
-	modelTriangleBlock.CreateFromOBJ("SquareBlock");
+	modelSquareBlock[0].CreateFromOBJ("SquareBlock");
+	modelSquareBlock[1].CreateFromOBJ("SquareBlock_Breakable_1");
+	modelSquareBlock[2].CreateFromOBJ("SquareBlock_Breakable_2");
+	modelSquareBlock[3].CreateFromOBJ("SquareBlock_Breakable_3");
+	modelTriangleBlock[0].CreateFromOBJ("TriangleBlock");
+	modelTriangleBlock[1].CreateFromOBJ("TriangleBlock_Breakable_1");
+	modelTriangleBlock[2].CreateFromOBJ("TriangleBlock_Breakable_2");
+	modelTriangleBlock[3].CreateFromOBJ("TriangleBlock_Breakable_3");
 
 	objDispBlock.Initialize();
-	objDispBlock.SetObjModel(&modelSquareBlock);
+	objDispBlock.SetObjModel(&modelSquareBlock[0]);
 
 	modelNormalFloor.CreateFromOBJ("NormalFloor");
 	modelTurnFloor[TURNTYPE_LEFT].CreateFromOBJ("TurnFloor_Left");
@@ -264,18 +270,25 @@ void Editor::UpdateDispObject()
 	objDispBlock.SetRotation({ 0, 0, 0 });
 
 	switch (blockType) {
-	case BLOCKTYPE_SQUARE:					objDispBlock.SetObjModel(&modelSquareBlock); break;
-	case BLOCKTYPE_TRIANGLE_NO_LEFTTOP:		objDispBlock.SetObjModel(&modelTriangleBlock);
+	case BLOCKTYPE_SQUARE:					objDispBlock.SetObjModel(&modelSquareBlock[breakupCount]); break;
+	case BLOCKTYPE_TRIANGLE_NO_LEFTTOP:		objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]);
 											objDispBlock.SetRotation({ 0, 180, 0 }); break;
-	case BLOCKTYPE_TRIANGLE_NO_RIGHTTOP:	objDispBlock.SetObjModel(&modelTriangleBlock);
+	case BLOCKTYPE_TRIANGLE_NO_RIGHTTOP:	objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]);
 											objDispBlock.SetRotation({ 0, 270, 0 }); break;
-	case BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM:	objDispBlock.SetObjModel(&modelTriangleBlock);
+	case BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM:	objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]);
 											objDispBlock.SetRotation({ 0, 90, 0 }); break;
-	case BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM: objDispBlock.SetObjModel(&modelTriangleBlock); break;
+	case BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM: objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]); break;
 	}
 
 	switch (blockColor) {
-	case BLOCK_COLOR_BLACK: break;
+	case BLOCK_COLOR_NONE:
+		if (breakupCount > 0) {
+			objDispBlock.SetColor(1, 1, 1, 1);
+		}
+		else {
+			objDispBlock.SetColor(0.5f, 0.5f, 0.5f, 1);
+		}
+		break;
 	case BLOCK_COLOR_RED:		objDispBlock.SetColor(1, 0, 0, 1); break;
 	case BLOCK_COLOR_BLUE:		objDispBlock.SetColor(0, 0, 1, 1); break;
 	case BLOCK_COLOR_YELLOW:	objDispBlock.SetColor(1, 1, 0, 1); break;
@@ -412,21 +425,21 @@ void Editor::Save()
 	//データ部
 	for (int i = 0; i < stage.blocks.size(); i++) {
 		StageBlock object = {};
-		std::string blockType = stage.blocks[i]->GetObjectType();
+		std::string blockType = stage.blocks[i]->GetObjectName();
 
 		if (blockType == "SquareBlock") {
 			object.type = 0;
 		}
-		else if (blockType == "TriangleBlock_0") {
+		else if (blockType == "TriangleBlock_No_LeftTop") {
 			object.type = 1;
 		}
-		else if (blockType == "TriangleBlock_1") {
+		else if (blockType == "TriangleBlock_No_RightTop") {
 			object.type = 2;
 		}
-		else if (blockType == "TriangleBlock_2") {
+		else if (blockType == "TriangleBlock_No_LeftBottom") {
 			object.type = 3;
 		}
-		else if (blockType == "TriangleBlock_3") {
+		else if (blockType == "TriangleBlock_No_RightBottom") {
 			object.type = 4;
 		}
 
@@ -442,40 +455,40 @@ void Editor::Save()
 
 	for (int i = 0; i < stage.floors.size(); i++) {
 		StageFloor object = {};
-		std::string floorType = stage.floors[i]->GetObjectType();
+		std::string floorType = stage.floors[i]->GetObjectName();
 
 #pragma region SetType
 		if (floorType == "NormalFloor") {
 			object.type = 0;
 		}
-		else if (floorType == "TurnFloor_0") {
+		else if (floorType == "TurnFloor_Left") {
 			object.type = 1;
 		}
-		else if (floorType == "TurnFloor_1") {
+		else if (floorType == "TurnFloor_Right") {
 			object.type = 2;
 		}
-		else if (floorType == "TurnFloor_2") {
+		else if (floorType == "TurnFloor_Up") {
 			object.type = 3;
 		}
-		else if (floorType == "TurnFloor_3") {
+		else if (floorType == "TurnFloor_Down") {
 			object.type = 4;
 		}
 		else if (floorType == "BreakFloor") {
 			object.type = 5;
 		}
-		else if (floorType == "SwitchFloor_0") {
+		else if (floorType == "SwitchFloor_White") {
 			object.type = 6;
 		}
-		else if (floorType == "SwitchFloor_1") {
+		else if (floorType == "SwitchFloor_Red") {
 			object.type = 7;
 		}
-		else if (floorType == "SwitchFloor_2") {
+		else if (floorType == "SwitchFloor_Blue") {
 			object.type = 8;
 		}
-		else if (floorType == "SwitchFloor_3") {
+		else if (floorType == "SwitchFloor_Yellow") {
 			object.type = 9;
 		}
-		else if (floorType == "SwitchFloor_4") {
+		else if (floorType == "SwitchFloor_Green") {
 			object.type = 10;
 		}
 #pragma endregion
@@ -535,11 +548,11 @@ void Editor::UpdateImgui()
 			ImGui::RadioButton("Triangle_No_RightBottom",	&blockType, BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM);
 
 			static int sliderBreakupCount = 0;
-			ImGui::SliderInt("BreakupCount", &sliderBreakupCount, 0, 2);
+			ImGui::SliderInt("BreakupCount", &sliderBreakupCount, 0, 3);
 			breakupCount = sliderBreakupCount;
 
 			ImGui::Text("BlockColor");
-			ImGui::RadioButton("Black",		&blockColor, BLOCK_COLOR_BLACK);
+			ImGui::RadioButton("None",		&blockColor, BLOCK_COLOR_NONE);
 			ImGui::RadioButton("Red",		&blockColor, BLOCK_COLOR_RED);
 			ImGui::RadioButton("Blue",		&blockColor, BLOCK_COLOR_BLUE);
 			ImGui::RadioButton("Yellow",	&blockColor, BLOCK_COLOR_YELLOW);

@@ -11,6 +11,8 @@ void HoleFloor::Initialize(const StageVec2& pos)
 	SetStagePos(pos);
 
 	UpdateCollision();
+
+	objectName = "HoleFloor";
 }
 
 void HoleFloor::Update()

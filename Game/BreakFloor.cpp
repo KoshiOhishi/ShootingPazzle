@@ -27,6 +27,8 @@ void BreakFloor::Initialize(const StageVec2& pos)
 	UpdateCollision();
 
 	isBreak = false;
+
+	objectName = "BreakFloor";
 }
 
 void BreakFloor::Update()
@@ -64,4 +66,6 @@ void BreakFloor::UpdateCollision()
 void BreakFloor::Break()
 {
 	isBreak = true;
+	//ŒŠ‚Æ‚Ý‚È‚·
+	objectName = "HoleFloor";
 }

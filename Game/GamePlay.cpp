@@ -47,6 +47,9 @@ void GamePlay::Initialize()
 
 	//フェーズ初期化
 	GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
+
+	//ステージカラー初期化
+	GameUtility::SetStageColor(STAGE_COLOR_NONE);
 }
 
 void GamePlay::Update()
@@ -208,8 +211,11 @@ void GamePlay::Reset()
 		//念のためカメラを定位置に
 		camera.SetCameraParamAfterShoot();
 
-		//フェーズ初期化　完成時コメントはずす
+		//フェーズ初期化
 		GameUtility::SetNowPhase(PHASE_SETPOS);
+
+		//ステージカラー初期化
+		GameUtility::SetStageColor(STAGE_COLOR_NONE);
 	}
 
 	//デバッグ用　完成版は消す
@@ -226,8 +232,11 @@ void GamePlay::Reset()
 		//カメラ初期化　完成時はずす
 		camera.Initialize();
 
-		//ステージサイズからカメラ位置セット　完成時はずす
+		//ステージサイズからカメラ位置セット
 		camera.SetPosFromStageSize(stage.GetStageSize());
+
+		//ステージカラー初期化
+		GameUtility::SetStageColor(STAGE_COLOR_NONE);
 	}
 }
 

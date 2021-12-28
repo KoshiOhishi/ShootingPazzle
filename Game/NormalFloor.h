@@ -35,7 +35,5 @@ public:
 	/// “–‚½‚è”»’èXV
 	/// </summary>
 	void UpdateCollision() override;
-
-	virtual std::string GetObjectType() override { return "NormalFloor"; }
 };
 

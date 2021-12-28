@@ -12,7 +12,7 @@ class Stage;
 
 enum BlockColor
 {
-	BLOCK_COLOR_BLACK,
+	BLOCK_COLOR_NONE,
 	BLOCK_COLOR_RED,
 	BLOCK_COLOR_BLUE,
 	BLOCK_COLOR_YELLOW,
@@ -33,7 +33,8 @@ protected:
 	//あと何回当たれば壊れるか　初期値0で破壊不可能ブロックになる
 	unsigned short breakupCount = 0;
 	//ブロックの色
-	int blockColor = BLOCK_COLOR_BLACK;
+	int blockColor = BLOCK_COLOR_NONE;
+	std::string objectName = "";
 
 	//出現エフェクトの種類
 	int firstEffectType = -1;
@@ -74,12 +75,6 @@ public:
 	/// 当たり判定更新
 	/// </summary>
 	virtual void UpdateCollision() = 0;
-
-	/// <summary>
-	/// ブロックの種類を取得する
-	/// </summary>
-	/// <returns>ブロックの種類</returns>
-	virtual std::string GetObjectType() = 0;
 
 	/// <summary>
 	/// 壊れるまでのカウントを1減らす 0になったらBreakup()を呼ぶ
@@ -126,6 +121,11 @@ public:
 
 #pragma endregion
 #pragma region Getter
+	/// <summary>
+	/// ブロックの種類を取得する
+	/// </summary>
+	/// <returns>ブロックの種類</returns>
+	const std::string& GetObjectName() { return objectName; }
 
 	const Vector3& GetPosition() { return object.GetPosition(); }
 
@@ -159,7 +159,7 @@ public:
 	/// ブロックが壊れているかどうか
 	/// </summary>
 	/// <returns></returns>
-	bool isBreakup() { return isBreakable && breakupCount <= 0; }
+	bool IsBreakup() { return isBreakable && breakupCount <= 0; }
 
 #pragma endregion
 };

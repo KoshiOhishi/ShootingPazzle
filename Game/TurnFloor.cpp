@@ -68,8 +68,13 @@ void TurnFloor::UpdateCollision()
 void TurnFloor::SetTurnType(int turnType)
 {
 	this->turnType = turnType;
-	//上と下の場合、オブジェクトを180度回転させる
-	if (turnType == TURNTYPE_UP || turnType == TURNTYPE_DOWN) {
-		object.SetRotation({0, 180, 0});
+
+	switch (turnType) {
+	case TURNTYPE_LEFT:		objectName = "TurnFloor_Left";		break;
+	case TURNTYPE_RIGHT:	objectName = "TurnFloor_Right";		break;
+	case TURNTYPE_UP:		objectName = "TurnFloor_Up";
+							object.SetRotation({ 0,180,0 });	break;
+	case TURNTYPE_DOWN:		objectName = "TurnFloor_Down";
+							object.SetRotation({ 0,180,0 });	break;
 	}
 }

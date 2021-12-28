@@ -72,10 +72,15 @@ void SwitchFloor::SetSwitchColor(int switchColor)
 	this->switchColor = switchColor;
 	//オブジェクトのカラーセット
 	switch (switchColor) {
-	case SWITCH_COLOR_WHITE:	object.SetColor({ 1,1,1,1 }); break;
-	case SWITCH_COLOR_RED:		object.SetColor({ 1,0,0,1 }); break;
-	case SWITCH_COLOR_BLUE:		object.SetColor({ 0,0,1,1 }); break;
-	case SWITCH_COLOR_YELLOW:	object.SetColor({ 1,1,0,1 }); break;
-	case SWITCH_COLOR_GREEN:	object.SetColor({ 0,1,0,1 }); break;
+	case SWITCH_COLOR_WHITE:	object.SetColor({ 1,1,1,1 }); 
+								objectName = "SwitchFloor_White"; break;
+	case SWITCH_COLOR_RED:		object.SetColor({ 1,0,0,1 });
+								objectName = "SwitchFloor_Red"; break;
+	case SWITCH_COLOR_BLUE:		object.SetColor({ 0,0,1,1 });
+								objectName = "SwitchFloor_Blue"; break;
+	case SWITCH_COLOR_YELLOW:	object.SetColor({ 1,1,0,1 });
+								objectName = "SwitchFloor_Yellow"; break;
+	case SWITCH_COLOR_GREEN:	object.SetColor({ 0,1,0,1 });
+								objectName = "SwitchFloor_Green"; break;
 	}
 }

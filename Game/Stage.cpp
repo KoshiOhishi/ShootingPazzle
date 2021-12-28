@@ -123,7 +123,7 @@ void Stage::Update()
 
 	for (int i = 0; i < blocks.size(); i++) {
 		//ƒuƒƒbƒN‚ª‰ó‚ê‚Ä‚¢‚½‚çíœ
-		if (blocks[i]->isBreakup()) {
+		if (blocks[i]->IsBreakup()) {
 			delete blocks[i];
 			blocks.erase(blocks.begin() + i);
 			i--;

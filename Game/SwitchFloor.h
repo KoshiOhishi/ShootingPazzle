@@ -60,8 +60,6 @@ public:
 	/// </summary>
 	void UpdateSwitchState();
 
-	virtual std::string GetObjectType() override { return "SwitchFloor_" + std::to_string(switchColor); }
-
 	/// <summary>
 	/// スイッチの状態取得
 	/// </summary>

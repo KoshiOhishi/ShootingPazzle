@@ -26,6 +26,8 @@ void NormalFloor::Initialize(const StageVec2& pos)
 	SetStagePos(pos);
 
 	UpdateCollision();
+
+	objectName = "NormalFloor";
 }
 
 void NormalFloor::Update()
