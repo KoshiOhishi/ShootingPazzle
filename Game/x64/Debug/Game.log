@@ -34,6 +34,8 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+  main.cpp
+  コードを生成中...
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png

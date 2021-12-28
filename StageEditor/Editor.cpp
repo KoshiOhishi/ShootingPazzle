@@ -69,6 +69,7 @@ void Editor::Initialize()
 	modelTurnFloor[TURNTYPE_DOWN].CreateFromOBJ("TurnFloor_Down");
 	modelSwitchFloor[SWITCH_STATE_OFF].CreateFromOBJ("SwitchFloor_OFF");
 	modelSwitchFloor[SWITCH_STATE_ON].CreateFromOBJ("SwitchFloor_ON");
+	modelBreakFloor.CreateFromOBJ("BreakFloor");
 
 	objDispFloor.Initialize();
 	objDispFloor.SetObjModel(&modelNormalFloor);
