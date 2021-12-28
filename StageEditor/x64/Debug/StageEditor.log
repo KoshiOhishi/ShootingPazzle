@@ -35,8 +35,8 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
 E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(67,36): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(421,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(422,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(428,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(429,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Floor.png

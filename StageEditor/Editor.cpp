@@ -364,6 +364,13 @@ void Editor::DrawEdit()
 	}
 
 	stage.EndDraw();
+
+	//今のカーソル座標表示
+	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
+		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+		return;
+	}
+	DebugText::Print("CursolPos:(" + std::to_string(nowCursolPos.x) + ", " + std::to_string(nowCursolPos.y) + ")", 0, 20);
 }
 
 void Editor::DrawStartLane()
