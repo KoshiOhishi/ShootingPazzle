@@ -18,7 +18,7 @@ void GamePlay::Initialize()
 	//ƒ‰ƒCƒg‰Šú‰»
 	light.Initialize();
 	light.SetLightDir({ 0,-1,0 });
-	light.SetLightColor({ 0.8f, 0.8f, 0.8f });
+	light.SetLightColor({ 1,1,1 });
 	Object3D::SetLight(&light);
 
 	//ƒJƒƒ‰‰Šú‰»

@@ -24,25 +24,47 @@ void BaseBlock::SetBlockColor(int blockColor)
 	this->blockColor = blockColor;
 
 	//色設定
-	if (blockColor == BLOCK_COLOR_NONE) {
+	switch (blockColor) {
+	case BLOCK_COLOR_NONE:
 		if (breakupCount > 0) {
 			object.SetColor({ 1, 1, 1, 1 });
 		}
 		else {
 			object.SetColor({ 0.5f, 0.5f, 0.5f, 1 });
 		}
-	}
-	else if (blockColor == BLOCK_COLOR_RED) {
-		object.SetColor({ 1, 0, 0, 1 });
-	}
-	else if (blockColor == BLOCK_COLOR_BLUE) {
-		object.SetColor({ 0, 0, 1, 1 });
-	}
-	else if (blockColor == BLOCK_COLOR_YELLOW) {
-		object.SetColor({ 1, 1, 0, 1 });
-	}
-	else if (blockColor == BLOCK_COLOR_GREEN) {
-		object.SetColor({ 0, 1, 0, 1 });
+		break;
+	case BLOCK_COLOR_RED:
+		if (breakupCount > 0) {
+			object.SetColor({ 1, 0.66f, 0.66f, 1 });
+		}
+		else {
+			object.SetColor({ 1, 0.25f, 0, 1 });
+		}
+		break;
+	case BLOCK_COLOR_BLUE:
+		if (breakupCount > 0) {
+			object.SetColor({ 0.66f, 0.66f, 1, 1 });
+		}
+		else {
+			object.SetColor({ 0, 0.25f, 1, 1 });
+		}
+		break;
+	case BLOCK_COLOR_YELLOW:
+		if (breakupCount > 0) {
+			object.SetColor({ 1, 1, 0.66f, 1 });
+		}
+		else {
+			object.SetColor({ 1, 0.75f, 0, 1 });
+		}
+		break;
+	case BLOCK_COLOR_GREEN:
+		if (breakupCount > 0) {
+			object.SetColor({ 0.66f, 1, 0.66f, 1 });
+		}
+		else {
+			object.SetColor({ 0, 1, 0.25f, 1 });
+		}
+		break;
 	}
 }
 
@@ -89,7 +111,7 @@ void BaseBlock::UpdateColor()
 	Vector4 tmp = object.GetColor();
 	//ステージの色とブロックの色が一致していたら透過
 	if (GameUtility::GetStageColor() == blockColor) {
-		object.SetColor({ tmp.x, tmp.y, tmp.z, 0.75f });
+		object.SetColor({ tmp.x, tmp.y, tmp.z, 0.65f });
 	}
 	else {
 		object.SetColor({ tmp.x, tmp.y, tmp.z, 1 });

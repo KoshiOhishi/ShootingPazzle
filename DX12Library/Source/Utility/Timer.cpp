@@ -9,21 +9,23 @@ Timer::Timer()
 {
 }
 
-Timer::Timer(int start, int end, float speed)
+Timer::Timer(int start, int end, bool isLoop, float speed)
 {
 	startTime = start;
 	nowTime = startTime;
 	endTime = end;
 	updateSpeed = speed;
+	this->isLoop = isLoop;
 	isStart = false;
 }
 
-void Timer::SetTimer(int start, int end, float speed)
+void Timer::SetTimer(int start, int end, bool isLoop, float speed)
 {
 	startTime = start;
 	nowTime = startTime;
 	endTime = end;
 	updateSpeed = speed;
+	this->isLoop = isLoop;
 	isStart = false;
 }
 
@@ -37,8 +39,13 @@ void Timer::Update()
 
 	if (nowTime >= endTime)
 	{
-		nowTime = endTime;
-		isStart = false;
+		if (isLoop) {
+			nowTime -= (endTime - startTime);
+		}
+		else {
+			nowTime = endTime;
+			isStart = false;
+		}
 	}
 }
 

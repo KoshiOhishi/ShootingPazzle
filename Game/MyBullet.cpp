@@ -407,7 +407,7 @@ void MyBullet::CheckFloorCollision()
 				}
 
 				//スイッチブロック(白)
-				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_White") {
+				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_None") {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_NONE) {
 						//ここにエフェクト関数
 					}

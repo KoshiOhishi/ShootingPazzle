@@ -29,7 +29,7 @@ private:
 	//ステージ
 	Stage stage;
 	//ステージパス
-	std::string stagePass = "../StageEditor/StageData/test_disp.spb";
+	std::string stagePass = "../StageEditor/StageData/test.spb";
 
 	//背景
 	Object3D objBG;

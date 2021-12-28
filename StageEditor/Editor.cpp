@@ -21,7 +21,7 @@ void Editor::Initialize()
 	//ÉâÉCÉgèâä˙âª
 	light.Initialize();
 	light.SetLightDir({ 1,-1,0 });
-	light.SetLightColor({ 0.8f, 0.8f, 0.8f });
+	light.SetLightColor({ 1,1,1 });
 	Object3D::SetLight(&light);
 
 	//ÉJÉÅÉâèâä˙âª
@@ -284,18 +284,45 @@ void Editor::UpdateDispObject()
 	switch (blockColor) {
 	case BLOCK_COLOR_NONE:
 		if (breakupCount > 0) {
-			objDispBlock.SetColor(1, 1, 1, 1);
+			objDispBlock.SetColor({ 1, 1, 1, 1 });
 		}
 		else {
-			objDispBlock.SetColor(0.5f, 0.5f, 0.5f, 1);
+			objDispBlock.SetColor({ 0.5f, 0.5f, 0.5f, 1 });
 		}
 		break;
-	case BLOCK_COLOR_RED:		objDispBlock.SetColor(1, 0, 0, 1); break;
-	case BLOCK_COLOR_BLUE:		objDispBlock.SetColor(0, 0, 1, 1); break;
-	case BLOCK_COLOR_YELLOW:	objDispBlock.SetColor(1, 1, 0, 1); break;
-	case BLOCK_COLOR_GREEN:		objDispBlock.SetColor(0, 1, 0, 1); break;
+	case BLOCK_COLOR_RED:
+		if (breakupCount > 0) {
+			objDispBlock.SetColor({ 1, 0.66f, 0.66f, 1 });
+		}
+		else {
+			objDispBlock.SetColor({ 1, 0.25f, 0, 1 });
+		}
+		break;
+	case BLOCK_COLOR_BLUE:
+		if (breakupCount > 0) {
+			objDispBlock.SetColor({ 0.66f, 0.66f, 1, 1 });
+		}
+		else {
+			objDispBlock.SetColor({ 0, 0.25f, 1, 1 });
+		}
+		break;
+	case BLOCK_COLOR_YELLOW:
+		if (breakupCount > 0) {
+			objDispBlock.SetColor({ 1, 1, 0.66f, 1 });
+		}
+		else {
+			objDispBlock.SetColor({ 1, 0.75f, 0, 1 });
+		}
+		break;
+	case BLOCK_COLOR_GREEN:
+		if (breakupCount > 0) {
+			objDispBlock.SetColor({ 0.66f, 1, 0.66f, 1 });
+		}
+		else {
+			objDispBlock.SetColor({ 0, 1, 0.25f, 1 });
+		}
+		break;
 	}
-
 
 	//è∞
 	objDispFloor.SetColor(1, 1, 1, 1);
@@ -309,9 +336,9 @@ void Editor::UpdateDispObject()
 	case FLOORTYPE_TURN_DOWN:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_DOWN]);
 									objDispFloor.SetRotation({ 0, 180, 0 }); break;
 	case FLOORTYPE_BREAK:			objDispFloor.SetObjModel(&modelBreakFloor); break;
-	case FLOORTYPE_SWITCH_WHITE:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]); break;
+	case FLOORTYPE_SWITCH_NONE:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]); break;
 	case FLOORTYPE_SWITCH_RED:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
-									objDispFloor.SetColor(1, 0, 0, 1); break;
+									objDispFloor.SetColor(1, 0.66f, 0.66f, 1); break;
 	case FLOORTYPE_SWITCH_BLUE:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
 									objDispFloor.SetColor(0, 0, 1, 1); break;
 	case FLOORTYPE_SWITCH_YELLOW:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
@@ -484,7 +511,7 @@ void Editor::Save()
 		else if (floorType == "BreakFloor") {
 			object.type = 5;
 		}
-		else if (floorType == "SwitchFloor_White") {
+		else if (floorType == "SwitchFloor_None") {
 			object.type = 6;
 		}
 		else if (floorType == "SwitchFloor_Red") {
@@ -574,7 +601,7 @@ void Editor::UpdateImgui()
 			ImGui::RadioButton("Turn_Up",		&floorType, FLOORTYPE_TURN_UP);
 			ImGui::RadioButton("Turn_Down",		&floorType, FLOORTYPE_TURN_DOWN);
 			ImGui::RadioButton("Break",			&floorType, FLOORTYPE_BREAK);
-			ImGui::RadioButton("Switch_White",	&floorType, FLOORTYPE_SWITCH_WHITE);
+			ImGui::RadioButton("Switch_None",	&floorType, FLOORTYPE_SWITCH_NONE);
 			ImGui::RadioButton("Switch_Red",	&floorType, FLOORTYPE_SWITCH_RED);
 			ImGui::RadioButton("Switch_Blue",	&floorType, FLOORTYPE_SWITCH_BLUE);
 			ImGui::RadioButton("Switch_Yellow", &floorType, FLOORTYPE_SWITCH_YELLOW);

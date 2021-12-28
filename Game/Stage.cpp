@@ -322,10 +322,10 @@ void Stage::AddFloor(const StageVec2& stagePos, int floorType)
 		newFloor->Initialize(stagePos);
 		floors.emplace_back(newFloor);
 	}
-	else if (floorType == FLOORTYPE_SWITCH_WHITE) {
+	else if (floorType == FLOORTYPE_SWITCH_NONE) {
 		SwitchFloor* newFloor = new SwitchFloor;
 		newFloor->Initialize(stagePos);
-		newFloor->SetSwitchColor(SWITCH_COLOR_WHITE);
+		newFloor->SetSwitchColor(SWITCH_COLOR_NONE);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_SWITCH_RED) {

@@ -31,10 +31,9 @@ PSOutput main(VSOutput input)
 	//拡散反射光
 	float3 diffuse = dotlightnormal * m_diffuse;
 	//鏡面反射光
-	//float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+	float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
 	//全て加算する
-	//shadecolor.rgb = (ambient + diffuse + specular) * lightcolor;
-	shadecolor.rgb = (ambient + diffuse) * lightcolor;
+	shadecolor.rgb = (ambient + diffuse + specular) * lightcolor;
 	shadecolor.a = m_alpha;
 
 	//シェーディングによる色で描画

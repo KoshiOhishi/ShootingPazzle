@@ -13,13 +13,14 @@ private:
 	int prevTime;
 	float updateSpeed = 1.0f;
 	bool isStart = false;
+	bool isLoop = false;
 
 private:
 	static int GetClockNowTime();
 
 public:
 	Timer();
-	Timer(int start, int end, float speed = 1.0f);
+	Timer(int start, int end, bool isLoop = false, float speed = 1.0f);
 
 	/// <summary>
 	/// タイマーをセット
@@ -27,7 +28,7 @@ public:
 	/// <param name="start">開始値</param>
 	/// <param name="end">終了値</param>
 	/// <param name="speed">更新倍率</param>
-	void SetTimer(int start, int end, float speed = 1.0f);
+	void SetTimer(int start, int end, bool isLoop = false, float speed = 1.0f);
 
 	/// <summary>
 	/// タイマー更新
