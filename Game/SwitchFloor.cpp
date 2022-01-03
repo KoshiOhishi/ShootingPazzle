@@ -77,16 +77,16 @@ void SwitchFloor::UpdateSwitchColor()
 
 	if (switchState == SWITCH_STATE_OFF) {
 		float digrees = colorTimer.GetNowTime() * 180 / colorTimer.GetEndTime();
-		float val = sin(digrees * PI / 180) * 0.5f;
+		float val = sin(digrees * PI / 180) * 0.75f;
 
 		Vector4 add = { val,val,val,0 };
 
 		switch (switchColor) {
-		case SWITCH_COLOR_NONE:		object.SetColor(Vector4{ 0.75f,	0.75f,	0.75f,	1 } + add); break;
-		case SWITCH_COLOR_RED:		object.SetColor(Vector4{ 1,		0,		0,		1 } + add); break;
-		case SWITCH_COLOR_BLUE:		object.SetColor(Vector4{ 0,		0,		1,		1 } + add); break;
-		case SWITCH_COLOR_YELLOW:	object.SetColor(Vector4{ 1,		1,		0,		1 } + add); break;
-		case SWITCH_COLOR_GREEN:	object.SetColor(Vector4{ 0,		1,		0,		1 } + add); break;
+		case SWITCH_COLOR_NONE:		object.SetColor(Vector4{ 1,	1, 1, 1 } + add); break;
+		case SWITCH_COLOR_RED:		object.SetColor(Vector4{ 1,	0, 0, 1 } + add); break;
+		case SWITCH_COLOR_BLUE:		object.SetColor(Vector4{ 0,	0, 1, 1 } + add); break;
+		case SWITCH_COLOR_YELLOW:	object.SetColor(Vector4{ 1,	1, 0, 1 } + add); break;
+		case SWITCH_COLOR_GREEN:	object.SetColor(Vector4{ 0,	1, 0, 1 } + add); break;
 		}
 	}
 	else {

@@ -60,7 +60,7 @@ void PostEffect::PreDrawScene()
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 	//レンダーターゲットをセット
-	cmdList->OMSetRenderTargets(RENDERCOUNT, rtvHs, false, &dsvH);
+	cmdList->OMSetRenderTargets(RENDERCOUNT, rtvHs, true, &dsvH);
 
 
 	CD3DX12_VIEWPORT viewports[RENDERCOUNT];
@@ -135,8 +135,9 @@ void PostEffect::Draw()
 	constBuffTime->Unmap(0, nullptr);
 
 
+
 	//デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get()};
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//頂点バッファをセット
@@ -156,13 +157,13 @@ void PostEffect::Draw()
 		)
 	);
 
-	////シェーダリソースビューをセット(1)
-	//cmdList->SetGraphicsRootDescriptorTable(2,
-	//	CD3DX12_GPU_DESCRIPTOR_HANDLE(
-	//		descHeapSRV->GetGPUDescriptorHandleForHeapStart(), 1,
-	//		DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-	//	)
-	//);
+	//シェーダリソースビューをセット(1)
+	cmdList->SetGraphicsRootDescriptorTable(2,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetGPUDescriptorHandleForHeapStart(), 1,
+			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		)
+	);
 
 	//描画コマンド
 	cmdList->DrawInstanced(4, 1, 0, 0);
@@ -348,8 +349,8 @@ void PostEffect::CreateDSV()
 	HRESULT result;
 
 	//深度バッファリソース設定
-	CD3DX12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_D32_FLOAT,
+	D3D12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+		DXGI_FORMAT_R32_TYPELESS,
 		DX12Util::GetWindowWidth(),
 		DX12Util::GetWindowHeight(),
 		1, 0,
@@ -509,11 +510,12 @@ void PostEffect::CreateGraphicsPipelineState()
 	//図形の形状を三角形に設定
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	//その他の設定
-	gpipeline.NumRenderTargets = 1; // 描画対象は 1 つ
-	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0~255 指定の RGBA
-	gpipeline.SampleDesc.Count = 1; // 1 ピクセルにつき 1 回サンプリング
 
+	//その他の設定
+	gpipeline.NumRenderTargets = 1; // 描画対象は 2 つ
+	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0~255 指定の RGBA
+
+	gpipeline.SampleDesc.Count = 1; // 1 ピクセルにつき 1 回サンプリング
 
 	//デスクリプタテーブルの設定
 	//デスクリプタレンジ
@@ -535,7 +537,7 @@ void PostEffect::CreateGraphicsPipelineState()
 
 	//サンプラーの設定
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_LINEAR);
-	samplerDesc.MaxAnisotropy = 1;
+	//samplerDesc.MaxAnisotropy = 1;
 
 	//ルートシグネチャの生成
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;

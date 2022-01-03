@@ -37,7 +37,7 @@ public: //サブクラス
 		//頂点レイアウト
 		std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout;
 		// デスクリプタレンジ
-		CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
+		std::vector<CD3DX12_DESCRIPTOR_RANGE> descRanges;
 		//ルートパラメータ
 		std::vector<CD3DX12_ROOT_PARAMETER> rootparams;
 	};

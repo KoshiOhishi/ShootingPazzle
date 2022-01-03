@@ -22,7 +22,7 @@ XMMATRIX Sprite::matProjection{};		//射影行列
 ComPtr <ID3D12DescriptorHeap> Sprite::descHeap = nullptr;
 const int Sprite::spriteSRVCount = 512;
 ComPtr <ID3D12Resource> Sprite::texbuff[Sprite::spriteSRVCount];	//テクスチャバッファ
-std::unordered_map<const wchar_t*, UINT> Sprite::loadedTextureList;
+std::unordered_map<std::wstring, UINT> Sprite::loadedTextureList;
 UINT Sprite::loadedTextureCount = 0;
 
 
@@ -154,6 +154,8 @@ void Sprite::FirstInit()
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0~255 指定の RGBA
 	gpipeline.SampleDesc.Count = 1; // 1 ピクセルにつき 1 回サンプリング
 
+	//透明部分の深度値書き込み禁止
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	//デスクリプタテーブルの設定
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
@@ -262,7 +264,7 @@ void Sprite::Initialize()
 	);
 }
 
-UINT Sprite::LoadTexture(const wchar_t* filename)
+UINT Sprite::LoadTexture(const std::wstring& filename)
 {
 	HRESULT result = S_FALSE;
 
@@ -276,7 +278,7 @@ UINT Sprite::LoadTexture(const wchar_t* filename)
 	ScratchImage scratchimg{};
 
 	result = LoadFromWICFile(
-		filename,		//「Resources」フォルダの「gazoudayo.png」
+		filename.c_str(),		//「Resources」フォルダの「gazoudayo.png」
 		WIC_FLAGS_NONE,
 		&metadata,
 		scratchimg
@@ -325,7 +327,7 @@ UINT Sprite::LoadTexture(const wchar_t* filename)
 		texbuff[loadedTextureCount].Get(),	//ビューと関連付けるバッファ
 		&srvDesc,	//テクスチャ設定情報
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		descHeap->GetCPUDescriptorHandleForHeapStart(),
+			descHeap->GetCPUDescriptorHandleForHeapStart(),
 			loadedTextureCount,
 			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 		)
@@ -336,7 +338,7 @@ UINT Sprite::LoadTexture(const wchar_t* filename)
 
 	loadedTextureCount++;
 
-	return loadedTextureList[filename];
+	return loadedTextureCount - 1;
 }
 
 void Sprite::BeginDraw()
@@ -404,7 +406,7 @@ void Sprite::SetIsDisplay(const bool isDisplay)
 }
 
 
-void Sprite::SetTexture(const wchar_t* filename, const bool loadNewerIfNotFound)
+void Sprite::SetTexture(const std::wstring& filename, const bool loadNewerIfNotFound)
 {
 	if (loadedTextureList.find(filename) != loadedTextureList.end())
 	{

@@ -150,6 +150,7 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 
 	// ブレンドステートの設定
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
+	gpipeline.BlendState.RenderTarget[1] = blenddesc;
 
 
 	//透明部分の深度値書き込み禁止
@@ -165,8 +166,9 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;    // 描画対象は2つ
+	gpipeline.NumRenderTargets = 2;    // 描画対象は2つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
+	gpipeline.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 

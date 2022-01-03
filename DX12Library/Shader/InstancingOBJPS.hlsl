@@ -7,6 +7,7 @@ SamplerState smp : register(s0);      // 0番スロットに設定されたサ�
 struct PSOutput
 {
 	float4 target0 : SV_TARGET0;
+	float4 target1 : SV_TARGET1;
 };
 
 PSOutput main(VSOutput input)
@@ -38,6 +39,7 @@ PSOutput main(VSOutput input)
 
 	//シェーディングによる色で描画
 	output.target0 = shadecolor * texcolor * input.color;
+	output.target1 = float4(1 - (shadecolor * texcolor * input.color).rgb, 1);
 
 	return output;
 }

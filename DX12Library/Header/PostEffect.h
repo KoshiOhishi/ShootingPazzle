@@ -11,7 +11,7 @@ public: //サブクラス
 	};
 
 private:
-	static const int RENDERCOUNT = 1;
+	static const int RENDERCOUNT = 2;
 	static const float clearColor[4];
 
 public:

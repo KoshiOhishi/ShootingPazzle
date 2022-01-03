@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <unordered_map>
+#include <string>
 #include "Vector4.h"
 #include "Vector3.h"
 #include "Vector2.h"
@@ -57,7 +58,7 @@ protected:
 	//テクスチャバッファ
 	static ComPtr <ID3D12Resource> texbuff[];
 	//ロードされたテクスチャのファイル名と番号を紐づけるリスト
-	static std::unordered_map<const wchar_t*, UINT> loadedTextureList;
+	static std::unordered_map<std::wstring, UINT> loadedTextureList;
 	//ロードされたテクスチャ数
 	static UINT loadedTextureCount;
 
@@ -75,7 +76,7 @@ public:
 	/// <param name="texnumber">テクスチャ番号</param>
 	/// <param name="filename">ファイルパス</param>
 	/// <returns>読みこんだ画像のテクスチャ番号</returns>
-	static UINT LoadTexture(const wchar_t* filename);
+	static UINT LoadTexture(const std::wstring& filename);
 
 	/// <summary>
 	/// スプライトパイプラインをセット スプライト描画前に必ず書く
@@ -217,7 +218,7 @@ public:
 	/// </summary>
 	/// <param name="filename">ファイル名</param>
 	/// <param name="loadNewerIfNotFound">画像が見つからなかったときに新しく読み込むかどうか</param>
-	void SetTexture(const wchar_t* filename, const bool loadNewerIfNotFound = true);
+	void SetTexture(const std::wstring& filename, const bool loadNewerIfNotFound = true);
 
 	/// <summary>
 	/// 最初に設定されるべき値のセット

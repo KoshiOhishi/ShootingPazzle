@@ -262,7 +262,7 @@ void Stage::DeleteBlock(const StageVec2& stagePos)
 
 void Stage::StartEffectTimer(int start, int end, float speed)
 {
-	effectTimer.SetTimer(start, end, speed);
+	effectTimer.SetTimer(start, end, false, speed);
 	effectTimer.Start();
 }
 

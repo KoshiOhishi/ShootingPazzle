@@ -214,7 +214,7 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 
 	//深度バッファの作成
 	//リソース設定
-	CD3DX12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+	D3D12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D32_FLOAT,
 		DX12Util::GetWindowWidth(),
 		DX12Util::GetWindowHeight(),
@@ -253,9 +253,6 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 		&dsvDesc,
 		dsvHeap->GetCPUDescriptorHandleForHeapStart()
 	);
-
-
-
 }
 
 void DX12Util::BeginDraw()

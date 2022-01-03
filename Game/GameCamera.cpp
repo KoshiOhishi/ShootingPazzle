@@ -155,6 +155,6 @@ float GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
 
 void GameCamera::StartEffectTimer(int start, int end, float speed)
 {
-	effectTimer.SetTimer(start, end, speed);
+	effectTimer.SetTimer(start, end, false, speed);
 	effectTimer.Start();
 }

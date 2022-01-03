@@ -29,7 +29,14 @@ float4 GetBlur(Texture2D<float4> tex, float2 uv, float windowSizeX, float window
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	float4 colortex0 = tex0.Sample(smp, input.uv);
+	float4 colortex[2];
+	colortex[0] = tex0.Sample(smp, input.uv);
+	colortex[1] = tex1.Sample(smp, input.uv);
+	return colortex[0];
+	
+	//float dsp = pow(tex1.Sample(smp, input.uv), 20);
+	//return float4(dsp, dsp, dsp, 1);
+	
 	//float4 colortex1;
 
 	////êFîΩì]
@@ -42,5 +49,5 @@ float4 main(VSOutput input) : SV_TARGET
 	//	color = colortex1;
 	//}
 
-	return colortex0;
+
 }

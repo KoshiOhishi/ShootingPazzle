@@ -180,5 +180,17 @@ public:
 		XMFLOAT4 c = { color.x * 255, color.y * 255, color.z * 255, color.w * 255 };
 		return c;
 	}
+
+	/// <summary>
+	/// 文字テクスチャの横幅取得
+	/// </summary>
+	/// <returns></returns>
+	const float GetWidth() { return width; }
+
+	/// <summary>
+	/// 文字テクスチャの縦幅取得
+	/// </summary>
+	/// <returns></returns>
+	const float GetHeight() { return height; }
 #pragma endregion
 };

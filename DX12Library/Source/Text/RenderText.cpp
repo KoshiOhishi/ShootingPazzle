@@ -469,6 +469,9 @@ void RenderText::CreateFontTexture(const FontData& fontData, const wstring& str)
 		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
 	);
 
+	width = texWidth;
+	height = texHeight;
+
 	changeFD = false;
 }
 

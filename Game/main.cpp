@@ -146,7 +146,8 @@ void Initialize(){
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		};
 		//デスクリプタレンジ
-		pipelineData.descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+		pipelineData.descRanges.resize(1);
+		pipelineData.descRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 		//ルートパラメータ
 		pipelineData.rootparams.resize(7);
@@ -162,8 +163,8 @@ void Initialize(){
 		pipelineData.rootparams[4].InitAsConstantBufferView(4, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（マテリアル用）
 		pipelineData.rootparams[5].InitAsConstantBufferView(5, 0, D3D12_SHADER_VISIBILITY_ALL);
-		// SRV（テクスチャ）
-		pipelineData.rootparams[6].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ用）
+		pipelineData.rootparams[6].InitAsDescriptorTable(1, &pipelineData.descRanges[0], D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
 		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
 
@@ -204,7 +205,8 @@ void Initialize(){
 		};
 
 		//デスクリプタレンジ
-		pipelineData.descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+		pipelineData.descRanges.resize(1);
+		pipelineData.descRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 		//ルートパラメータ
 		pipelineData.rootparams.resize(5);
@@ -216,8 +218,8 @@ void Initialize(){
 		pipelineData.rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（ライト用）
 		pipelineData.rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
-		// SRV（テクスチャ）
-		pipelineData.rootparams[4].InitAsDescriptorTable(1, &pipelineData.descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ用）
+		pipelineData.rootparams[4].InitAsDescriptorTable(1, &pipelineData.descRanges[0], D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
 		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
 

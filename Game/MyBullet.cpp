@@ -460,13 +460,14 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 
 	Vector3 floorPos = { 0,0,0 };
 	Vector2 floorSize = { stage->GetStageSize().x * ONE_CELL_LENGTH, stage->GetStageSize().y * ONE_CELL_LENGTH };
-	isOutside = pos.x < floorPos.x - floorSize.x / 2 ||
+	isOutside = 
+		pos.x < floorPos.x - floorSize.x / 2 ||
 		pos.x > floorPos.x + floorSize.x / 2 ||
 		pos.z < floorPos.y - floorSize.y / 2 ||
 		pos.z > floorPos.y + floorSize.y / 2;
 
-	//射出前は穴との判定を取らない
-	if (GameUtility::GetNowPhase() != PHASE_AFTERSHOOT) {
+	//射出前、またはステージの外にいたら穴との判定を取らない
+	if (GameUtility::GetNowPhase() != PHASE_AFTERSHOOT || isOutside) {
 		return isOutside;
 	}
 
