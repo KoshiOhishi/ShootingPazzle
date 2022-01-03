@@ -39,7 +39,6 @@ PSOutput main(VSOutput input)
 
 	//シェーディングによる色で描画
 	output.target0 = shadecolor * texcolor * input.color;
-	output.target1 = float4(1 - (shadecolor * texcolor * input.color).rgb, 1);
 
 	return output;
 }

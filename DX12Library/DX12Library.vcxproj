@@ -238,6 +238,7 @@
     <ClCompile Include="Source\3D\TouchableObject.cpp" />
     <ClCompile Include="Source\DX12\DX12Util.cpp" />
     <ClCompile Include="Source\Effect\PostEffect.cpp" />
+    <ClCompile Include="Source\Effect\Shadow.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Math\Matrix4.cpp" />
     <ClCompile Include="Source\Math\Quaternion.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Header\InstancingObject.h" />
     <ClInclude Include="Header\MeshCollider.h" />
     <ClInclude Include="Header\RaycastHit.h" />
+    <ClInclude Include="Header\Shadow.h" />
     <ClInclude Include="Header\SphereCollider.h" />
     <ClInclude Include="Header\TouchableObject.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -487,6 +489,26 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shader\ShadowTestPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\ShadowTestVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Shader\SpritePixelShader.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">PSmain</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -544,6 +566,7 @@
     <None Include="Shader\NoShadeShaderHeader.hlsli" />
     <None Include="Shader\OBJ.hlsli" />
     <None Include="Shader\PostEffectTest.hlsli" />
+    <None Include="Shader\ShadowTest.hlsli" />
     <None Include="Shader\SpriteShaderHeader.hlsli" />
     <None Include="Shader\TextShaderHeader.hlsli" />
   </ItemGroup>

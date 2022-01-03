@@ -204,6 +204,9 @@
     <ClCompile Include="Source\3D\InstancingObject.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Effect\Shadow.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -341,6 +344,9 @@
     <ClInclude Include="Header\InstancingObject.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Shadow.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\BasicPixelShader.hlsl">
@@ -406,6 +412,12 @@
     <FxCompile Include="Shader\InstancingOBJVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Shader\ShadowTestPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ShadowTestVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\BasicShaderHeader.hlsli">
@@ -433,6 +445,9 @@
       <Filter>リソース ファイル</Filter>
     </None>
     <None Include="Shader\InstancingOBJ.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="Shader\ShadowTest.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

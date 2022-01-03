@@ -2,6 +2,8 @@
 
 Texture2D<float4> tex0 : register(t0);	//0番スロットに設定されたテクスチャ
 Texture2D<float4> tex1 : register(t1);	//1番スロットに設定されたテクスチャ
+Texture2D<float> tex2 : register(t2); //1番スロットに設定されたテクスチャ
+
 SamplerState smp : register(s0);		//0番スロットに設定されたサンプラー
 
 float GetRand(float2 texCoord, int Seed)
@@ -29,7 +31,16 @@ float4 GetBlur(Texture2D<float4> tex, float2 uv, float windowSizeX, float window
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	float4 colortex0 = tex0.Sample(smp, input.uv);
+	float4 colortex[2];
+	colortex[0] = tex0.Sample(smp, input.uv);
+	
+	float t = tex2.Sample(smp, input.uv);
+	colortex[1] = float4(t, t, t, 1);
+	return colortex[1];
+	
+	//float dsp = pow(tex1.Sample(smp, input.uv), 20);
+	//return float4(dsp, dsp, dsp, 1);
+	
 	//float4 colortex1;
 
 	////色反転
@@ -42,5 +53,5 @@ float4 main(VSOutput input) : SV_TARGET
 	//	color = colortex1;
 	//}
 
-	return colortex0;
+
 }

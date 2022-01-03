@@ -139,6 +139,7 @@ float3 BRDF(float3 L, float3 V)
 struct PSOutput
 {
 	float4 target0 : SV_TARGET0;
+	float4 target1 : SV_TARGET1;
 };
 
 //エントリーポイント
@@ -182,7 +183,6 @@ PSOutput main(VSOutput input)
 
 
 	output.target0 = float4(finalRGB, 1);
-	//output.target1 = shadecolor * texcolor * color;
 
 	return output;
 }

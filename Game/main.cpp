@@ -10,6 +10,7 @@
 #include "GamePlay.h"
 #include "FbxLoader.h"
 #include "PostEffect.h"
+#include "Shadow.h"
 #include "Timer.h"
 #include "ImguiHelper.h"
 #include "Object3D.h"
@@ -24,6 +25,8 @@ using namespace Microsoft::WRL;
 HRESULT result;
 //ポストエフェクト
 PostEffect* postEffect = nullptr;
+//シャドウ
+Shadow* shadow = nullptr;
 //タイマー
 Timer* timer;
 //デバッグレイヤーをオンに
@@ -246,6 +249,9 @@ void Initialize(){
 	postEffect = new PostEffect();
 	postEffect->Initialize();
 
+	shadow = new Shadow();
+	shadow->Initialize();
+
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();
 
@@ -271,6 +277,10 @@ void Update() {
 	SceneManager::Draw();
 	postEffect->PostDrawScene();
 
+	shadow->PreDrawScene();
+	shadow->Draw();
+	shadow->PostDrawScene();
+
 	//描画開始前処理
 	DX12Util::BeginDraw();
 
@@ -293,6 +303,7 @@ void Finalize() {
 	SceneManager::DeleteScene();
 	FbxLoader::GetInstance()->Finalize();
 	delete postEffect;
+	delete shadow;
 	ImguiHelper::Finalize();
 	DX12Util::End();
 

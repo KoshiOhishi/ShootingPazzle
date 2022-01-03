@@ -215,7 +215,7 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 	//深度バッファの作成
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_D32_FLOAT,
+		DXGI_FORMAT_R32_TYPELESS,
 		DX12Util::GetWindowWidth(),
 		DX12Util::GetWindowHeight(),
 		1, 0,
@@ -267,10 +267,9 @@ void DX12Util::BeginDraw()
 
 	// 2-1.レンダーターゲットビュー用ディスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeaps->GetCPUDescriptorHandleForHeapStart(), bbIndex, dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
+	//2-2.深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
 
-	//2-2.深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
 
 	// 3.画面クリアコマンドここから

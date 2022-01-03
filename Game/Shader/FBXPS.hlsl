@@ -183,7 +183,6 @@ PSOutput main(VSOutput input)
 
 
 	output.target0 = float4(finalRGB, 1);
-	output.target1 = float4(finalRGB, 1);
 
 	return output;
 }

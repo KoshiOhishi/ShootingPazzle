@@ -22,13 +22,16 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTest.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTestPS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTestVS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ShadowTest.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ShadowTestPS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\SpritePixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\SpriteShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\SpriteVertexShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
-  30 個のファイルをコピーしました
+  33 個のファイルをコピーしました
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Clear.png
@@ -125,12 +128,15 @@
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\PostEffectTest.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\PostEffectTestPS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\PostEffectTestVS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\ShadowTest.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\ShadowTestPS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\ShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\SpritePixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\SpriteShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\SpriteVertexShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\TextPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\TextVertexShader.hlsl
-  34 個のファイルをコピーしました
+  37 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   1 個のファイルをコピーしました

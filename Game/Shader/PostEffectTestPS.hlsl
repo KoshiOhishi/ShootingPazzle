@@ -2,6 +2,7 @@
 
 Texture2D<float4> tex0 : register(t0);	//0番スロットに設定されたテクスチャ
 Texture2D<float4> tex1 : register(t1);	//1番スロットに設定されたテクスチャ
+
 SamplerState smp : register(s0);		//0番スロットに設定されたサンプラー
 
 float GetRand(float2 texCoord, int Seed)
@@ -32,7 +33,7 @@ float4 main(VSOutput input) : SV_TARGET
 	float4 colortex[2];
 	colortex[0] = tex0.Sample(smp, input.uv);
 	colortex[1] = tex1.Sample(smp, input.uv);
-	return colortex[time % 2];
+	return colortex[0];
 	
 	//float dsp = pow(tex1.Sample(smp, input.uv), 20);
 	//return float4(dsp, dsp, dsp, 1);

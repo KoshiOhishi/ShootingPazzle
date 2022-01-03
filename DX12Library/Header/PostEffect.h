@@ -46,8 +46,6 @@ public:
 	void CreateSRV();
 	//RTV作成
 	void CreateRTV();
-	//DSV作成
-	void CreateDSV();
 	//パイプライン生成
 	void CreateGraphicsPipelineState();
 
@@ -59,8 +57,6 @@ private: //メンバ変数
 	ComPtr<ID3D12Resource> texBuff[RENDERCOUNT];
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
-	//深度バッファ
-	ComPtr<ID3D12Resource> depthBuff;
 	//RTV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapRTV;
 	//DSV用デスクリプタヒープ

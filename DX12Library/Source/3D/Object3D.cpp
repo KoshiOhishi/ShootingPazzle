@@ -163,8 +163,12 @@ void Object3D::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+	
 	// デプスステンシルステート
-	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+	//標準的な設定(深度テストを行う、書き込み許可、深度が小さければ合格)
+	gpipeline.DepthStencilState.DepthEnable = true;
+	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};

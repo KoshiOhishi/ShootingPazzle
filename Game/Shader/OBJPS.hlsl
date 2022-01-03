@@ -39,7 +39,6 @@ PSOutput main(GSOutput input)
 
 	//シェーディングによる色で描画
 	output.target0 = shadecolor * texcolor * data.color;
-	output.target1 = shadecolor * texcolor * data.color;
 	
 	return output;
 }

@@ -100,7 +100,8 @@
       <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e</Command>
+      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
+xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,7 +126,8 @@
       <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e</Command>
+      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
+xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,7 +148,8 @@
       <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e</Command>
+      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
+xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -171,7 +174,8 @@
       <Command>xcopy "$(SolutionDir)DX12Library\Shader" "$(ProjectDir)Shader" /i /y /h /e</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e</Command>
+      <Command>xcopy "$(ProjectDir)Resources" "$(TargetDir)Resources" /i /y /h /e
+xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

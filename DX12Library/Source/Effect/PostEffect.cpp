@@ -29,8 +29,6 @@ void PostEffect::Initialize()
 	CreateSRV();
 	//RTV作成
 	CreateRTV();
-	//DSV作成
-	CreateDSV();
 	//パイプライン生成
 	CreateGraphicsPipelineState();
 }
@@ -58,7 +56,7 @@ void PostEffect::PreDrawScene()
 	}
 
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = DX12Util::GetDepthHeap()->GetCPUDescriptorHandleForHeapStart();
 	//レンダーターゲットをセット
 	cmdList->OMSetRenderTargets(RENDERCOUNT, rtvHs, true, &dsvH);
 
@@ -209,8 +207,6 @@ void PostEffect::CreateVBV()
 	vbView.SizeInBytes = sizeof(VertexPosUv) * vertNum;
 	vbView.StrideInBytes = sizeof(VertexPosUv);
 
-	//03_05 13までやったはず　おかしいけど
-
 }
 
 void PostEffect::CreateConstBuffer()
@@ -252,16 +248,17 @@ void PostEffect::CreateTexture()
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
 
+	auto clearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor);
+
 	//テクスチャバッファの生成
 	for (int i = 0; i < RENDERCOUNT; i++) {
-
 		result = DX12Util::GetDevice()->CreateCommittedResource(
 			&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
 				D3D12_MEMORY_POOL_L0),
 			D3D12_HEAP_FLAG_NONE,
 			&texresDesc,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
+			&clearValue,
 			IID_PPV_ARGS(texBuff[i].ReleaseAndGetAddressOf())
 		);
 
@@ -342,49 +339,6 @@ void PostEffect::CreateRTV()
 			)
 		);
 	}
-}
-
-void PostEffect::CreateDSV()
-{
-	HRESULT result;
-
-	//深度バッファリソース設定
-	D3D12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_R32_TYPELESS,
-		DX12Util::GetWindowWidth(),
-		DX12Util::GetWindowHeight(),
-		1, 0,
-		1, 0,
-		D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
-	);
-
-	//深度バッファの生成
-	result = DX12Util::GetDevice()->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-		D3D12_HEAP_FLAG_NONE,
-		&depthResDesc,
-		D3D12_RESOURCE_STATE_DEPTH_WRITE,
-		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
-		IID_PPV_ARGS(depthBuff.ReleaseAndGetAddressOf())
-	);
-	assert(SUCCEEDED(result));
-
-	//DSV用デスクリプタヒープ設定
-	D3D12_DESCRIPTOR_HEAP_DESC DescHeapDesc{};
-	DescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-	DescHeapDesc.NumDescriptors = 1;
-	//DSV用デスクリプタヒープを作成
-	result = DX12Util::GetDevice()->CreateDescriptorHeap(&DescHeapDesc, IID_PPV_ARGS(descHeapDSV.ReleaseAndGetAddressOf()));//生成
-	assert(SUCCEEDED(result));
-
-	//デスクリプタヒープにDSV作成
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT; //深度値フォーマット
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	DX12Util::GetDevice()->CreateDepthStencilView(depthBuff.Get(),
-		&dsvDesc,
-		descHeapDSV->GetCPUDescriptorHandleForHeapStart()
-	);
 }
 
 void PostEffect::CreateGraphicsPipelineState()
@@ -485,6 +439,9 @@ void PostEffect::CreateGraphicsPipelineState()
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;		//常に上書きルール
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
+	//透明部分の深度値書き込み禁止
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
+
 	//ブレンドステートの設定
 	// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
@@ -512,7 +469,7 @@ void PostEffect::CreateGraphicsPipelineState()
 
 
 	//その他の設定
-	gpipeline.NumRenderTargets = 1; // 描画対象は 2 つ
+	gpipeline.NumRenderTargets = 1; // 描画対象は 1 つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0~255 指定の RGBA
 
 	gpipeline.SampleDesc.Count = 1; // 1 ピクセルにつき 1 回サンプリング

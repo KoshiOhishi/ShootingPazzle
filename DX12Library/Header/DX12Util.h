@@ -79,6 +79,8 @@ public:
 	static const int GetWindowWidth();
 	static const int GetWindowHeight();
 
+	static ID3D12Resource* GetDepthBuffer() { return depthBuffer.Get(); }
+	static ID3D12DescriptorHeap* GetDepthHeap() { return dsvHeap.Get(); }
 	/// <summary>
 	/// ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚é‚©‚ğ•Ô‚·
 	/// </summary>
