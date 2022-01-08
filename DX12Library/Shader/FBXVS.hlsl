@@ -63,6 +63,7 @@ VSOutput main(VSInput input)
 	output.svpos = mul(mul(viewproj, data.world), skinned.pos);
 	//ワールド法線を次のステージに渡す
 	output.normal = wnormal.xyz;
+	output.tpos = mul(mul(lightcamera, data.world), skinned.pos);
 	//入力値をそのままステージに渡す
 	output.uv = input.uv;
 

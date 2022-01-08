@@ -1,6 +1,8 @@
 cbuffer cbuff0 : register(b0)
 {
-};
+	matrix lightcamera;
+	matrix world;
+}
 
 //頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体
 struct VSOutput

@@ -84,6 +84,9 @@
     <ClCompile Include="SwitchFloor.cpp">
       <Filter>ソース ファイル\オブジェクト\Floor</Filter>
     </ClCompile>
+    <ClCompile Include="StageSelect.cpp">
+      <Filter>ソース ファイル\シーン</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlay.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="SwitchFloor.h">
       <Filter>ヘッダー ファイル\オブジェクト\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelect.h">
+      <Filter>ヘッダー ファイル\シーン</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

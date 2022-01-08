@@ -60,9 +60,6 @@ public:
 	};
 
 private:
-	static int loadCount;
-
-private:
 	// 頂点バッファ
 	ComPtr < ID3D12Resource> vertBuff = nullptr;
 
@@ -110,7 +107,7 @@ public:
 //メンバ関数
 public:
 
-	void Draw(int instancingCount = 1);
+	void Draw(int instancingCount = 1, bool isShadow = false);
 
 	/// <summary>
 	/// OBJファイルからモデルを作成する（フォルダ名と中身の名前は同一のものにしてください。）

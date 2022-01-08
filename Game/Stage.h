@@ -26,9 +26,18 @@ private:
 	//出現エフェクトタイマー
 	Timer effectTimer;
 
+	InstancingObjectDraw iodSquareBlock[4];
+	InstancingObjectDraw iodTriangleBlock[4];
+	InstancingObjectDraw iodNormalFloor;
+	InstancingObjectDraw iodSwitchFloor[2];
+	InstancingObjectDraw iodTurnFloor[4];
+	InstancingObjectDraw iodBreakFloor;
+
 public:
 	Stage() {}
 	~Stage();
+
+	void Initialize();
 
 	/// <summary>
 	/// ステージを読み込んで初期化
@@ -45,11 +54,6 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
-
-	/// <summary>
-	/// 描画終了関数
-	/// </summary>
-	void EndDraw();
 
 	/// <summary>
 	/// 出現エフェクトの更新
@@ -156,4 +160,10 @@ public:
 	/// </summary>
 	/// <returns>残り目標破壊ブロック数</returns>
 	const int GetTargetBlockCount() { return targetBlockCount; }
+
+	/// <summary>
+	/// ブロック・床全てに適用されるマスター座標
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetMasterPosition(const Vector3& pos);
 };

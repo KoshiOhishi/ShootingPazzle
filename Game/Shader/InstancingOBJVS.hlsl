@@ -13,9 +13,9 @@ VSOutput main(VSInput input)
 	
 	output.svpos = mul(mul(viewproj, data[index].world), input.pos);
 	output.wpos = wpos;
+	output.tpos = mul(mul(lightcamera, data[index].world), input.pos);
 	output.normal = wnormal;
 	output.uv = input.uv;
 	output.color = data[index].color;
-
 	return output;
 }

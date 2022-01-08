@@ -30,7 +30,7 @@ DX12Util::ComPtr<ID3D12CommandQueue> DX12Util::cmdQueue;
 DX12Util::ComPtr<ID3D12DescriptorHeap> DX12Util::rtvHeaps;
 D3D12_DESCRIPTOR_HEAP_DESC DX12Util::heapDesc;
 std::vector<DX12Util::ComPtr<ID3D12Resource>> DX12Util::backBuffers;
-DX12Util::ComPtr<ID3D12Resource> DX12Util::depthBuffer;
+DX12Util::ComPtr<ID3D12Resource> DX12Util::depthBuffer[2];
 DX12Util::ComPtr <ID3D12DescriptorHeap> DX12Util::dsvHeap;
 DX12Util::ComPtr<ID3D12Fence> DX12Util::fence;
 UINT64 DX12Util::fenceVal;
@@ -230,14 +230,23 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 		&depthResDesc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,//深度値書き込みに使用
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
-		IID_PPV_ARGS(&depthBuffer)
+		IID_PPV_ARGS(&depthBuffer[0])
+	);
+	//リソース生成
+	result = DX12Util::GetDevice()->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+		D3D12_HEAP_FLAG_NONE,
+		&depthResDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,//深度値書き込みに使用
+		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
+		IID_PPV_ARGS(&depthBuffer[1])
 	);
 
 
 	//コマンド発行のために深度ビューを生成する
 	//深度ビュー用デスクリプタヒープ生成
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapdesc{};
-	dsvHeapdesc.NumDescriptors = 1;	//深度ビューは1つ
+	dsvHeapdesc.NumDescriptors = 2;	//深度ビューは1つ
 	dsvHeapdesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
 	result = DX12Util::GetDevice()->CreateDescriptorHeap(
 		&dsvHeapdesc,
@@ -249,13 +258,21 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	DX12Util::GetDevice()->CreateDepthStencilView(
-		depthBuffer.Get(),
+		depthBuffer[0].Get(),
 		&dsvDesc,
 		dsvHeap->GetCPUDescriptorHandleForHeapStart()
 	);
+
+	//深度ビュー作成
+	DX12Util::GetDevice()->CreateDepthStencilView(
+		depthBuffer[1].Get(),
+		&dsvDesc,
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			dsvHeap->GetCPUDescriptorHandleForHeapStart(), 1, DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV))
+	);
 }
 
-void DX12Util::BeginDraw()
+void DX12Util::PreDrawBB()
 {
 	// バックバッファの番号を取得(2 つなので 0 番か 1 番)
 	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
@@ -267,9 +284,11 @@ void DX12Util::BeginDraw()
 
 	// 2-1.レンダーターゲットビュー用ディスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeaps->GetCPUDescriptorHandleForHeapStart(), bbIndex, dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+	
 	//2-2.深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
 
+	//レンダーターゲットセット
 	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
 
 	// 3.画面クリアコマンドここから
@@ -277,7 +296,7 @@ void DX12Util::BeginDraw()
 	// 全画面クリア R G B A		
 	float clearColor[4] = { 0.1,0.25,0.5 };
 	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
-	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	//cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 
 	// 3.画面クリアコマンドここまで
@@ -295,7 +314,7 @@ void DX12Util::BeginDraw()
 	cmdList->RSSetScissorRects(1, &scissorrect);
 }
 
-void DX12Util::EndDraw()
+void DX12Util::PostDrawBB()
 {
 	// バックバッファの番号を取得(2 つなので 0 番か 1 番)
 	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
@@ -345,7 +364,8 @@ void DX12Util::End()
 		backBuffers[i].Reset();
 	}
 
-	depthBuffer.Reset();
+	depthBuffer[0].Reset();
+	depthBuffer[1].Reset();
 
 	swapchain.Reset();
 	fence.Reset();
@@ -398,10 +418,10 @@ bool DX12Util::IsFileExist(const wchar_t * path)
 	return PathFileExists(path);
 }
 
-void DX12Util::ClearDepthBuffer()
+void DX12Util::ClearDepthBuffer(bool isShadow)
 {
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
-	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart(), isShadow, dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV));
 	// 深度バッファのクリア
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 

@@ -19,23 +19,24 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(bool isDispDepthTex = false);
 
 	/// <summary>
 	/// シーン描画前処理
 	/// </summary>
-	void PreDrawScene();
+	static void PreDrawScene();
 
 	/// <summary>
 	/// シーン描画後処理
 	/// </summary>
-	void PostDrawScene();
+	static void PostDrawScene();
 
 	/// <summary>
 	/// 描画コマンドの発行
 	/// </summary>
 	void Draw();
 
+private:
 	//VBV作成
 	void CreateVBV();
 	//定数バッファ生成
@@ -47,18 +48,20 @@ public:
 	//RTV作成
 	void CreateRTV();
 	//パイプライン生成
-	void CreateGraphicsPipelineState();
+	void CreateGraphicsPipelineState(bool isDispDepthTex = false);
+
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetRtvH(int targetNum);
 
 private: //メンバ変数
+	//テクスチャバッファ
+	static ComPtr<ID3D12Resource> texBuff[RENDERCOUNT];
+	//RTV用デスクリプタヒープ
+	static ComPtr<ID3D12DescriptorHeap> descHeapRTV;
 
 	//定数バッファ（時間）
 	ComPtr<ID3D12Resource> constBuffTime;
-	//テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff[RENDERCOUNT];
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
-	//RTV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descHeapRTV;
 	//DSV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 	//グラフィックスパイプライン
@@ -67,10 +70,10 @@ private: //メンバ変数
 	ComPtr<ID3D12RootSignature> rootSignature;
 
 	//時間
-	float time = 0;
+	float time;
 
 public:
 
-	void SetTime(float time) { this->time = time; }
+	void SetTime(float time) { PostEffect::time = time; }
 };
 

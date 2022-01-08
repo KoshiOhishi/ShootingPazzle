@@ -5,14 +5,12 @@ class SquareBlock :
 	public BaseBlock
 {
 private:
-	static InstancingObjectDraw instancingObjectDraw[4];
 	//正四面体モデル
 	static ObjModel modelBox[4];
 
 public:
 	static void CreateModel();
-
-public:
+	static ObjModel* GetModel(int index) { return &modelBox[index]; }
 	static void StaticInitialize();
 
 	/// <summary>
@@ -24,16 +22,6 @@ public:
 	/// 更新
 	/// </summary>
 	void Update() override;
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	static void Draw();
-
-	/// <summary>
-	/// 描画終了関数
-	/// </summary>
-	static void EndDraw();
 
 	/// <summary>
 	/// 当たり判定更新

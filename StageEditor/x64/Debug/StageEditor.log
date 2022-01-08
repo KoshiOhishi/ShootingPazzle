@@ -4,13 +4,19 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\BasicVertexShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\FBX.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\FBXPS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\FBXShadowTest.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\FBXShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\FBXVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingFBX.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingFBXPS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingFBXShadowTest.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingFBXShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingFBXVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingOBJ.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingOBJGS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingOBJPS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingOBJShadowTest.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingOBJShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\InstancingOBJVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\NoShadePixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\NoShadeShaderHeader.hlsli
@@ -18,20 +24,24 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJ.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJGS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJPS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJShadowTest.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTest.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTestPS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTestVS.hlsl
-  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ShadowTest.hlsli
-  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ShadowTestPS.hlsl
-  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\SpritePixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\SpriteShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\SpriteVertexShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
-  33 個のファイルをコピーしました
+  38 個のファイルをコピーしました
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
+  EditorStage.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\EditorStage.cpp(76,23): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\EditorStage.cpp(76,25): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Floor.png

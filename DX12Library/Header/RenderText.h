@@ -4,6 +4,7 @@
 #include <d3d12.h>
 #include <DirectXMath.h>
 #include <wrl.h>
+#include <vector>
 #pragma comment(lib, "d3d12.lib")
 
 //Todo:毎フレームテキストが変わるとすごい重たくなるので要改善
@@ -94,6 +95,9 @@ private:
 
 	static int createdCount;
 
+	static std::vector<RenderText*> drawListBG;
+	static std::vector<RenderText*> drawListFG;
+
 private:
 	//テクスチャバッファ
 	ComPtr <ID3D12Resource> texbuff;
@@ -123,6 +127,9 @@ private:
 	void Initialize(const wstring& str);
 	void CreateFontTexture(const FontData& fontData, const wstring& str);
 	bool IsReCreate(const wstring& str);
+	void Update(float x, float y, const wstring& str);
+	void DrawString();
+	static void PreDraw();
 
 public:
 	/// <summary>
@@ -137,14 +144,24 @@ public:
 	void SetFontData(const FontData& fontData);
 
 	/// <summary>
-	/// 文字列描画
+	/// 文字列描画（背景）
 	/// </summary>
 	/// <param name="x">X座標 (2D)</param>
 	/// <param name="y">Y座標 (2D)</param>
 	/// <param name="str">文字列</param>
 	/// <param name="fontData">設定済フォントデータ構造体</param>
-	void DrawString(float x, float y, const wstring& str);
+	void DrawStringBG(float x, float y, const wstring& str);
+	/// <summary>
+	/// 文字列描画（前景）
+	/// </summary>
+	/// <param name="x">X座標 (2D)</param>
+	/// <param name="y">Y座標 (2D)</param>
+	/// <param name="str">文字列</param>
+	/// <param name="fontData">設定済フォントデータ構造体</param>
+	void DrawStringFG(float x, float y, const wstring& str);
 
+	static void DrawAllBG();
+	static void DrawAllFG();
 #pragma region Setter
 	/// <summary>
 	/// 文字色セット (各成分0.0～1.0)

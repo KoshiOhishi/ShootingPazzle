@@ -24,6 +24,8 @@ class BaseBlock
 protected:
 	//インスタンシング描画オブジェクト
 	InstancingObject object;
+	//インスタンシング描画親オブジェクトポインタ
+	InstancingObjectDraw* pIOD;
 	//ステージポインタ
 	static Stage* pStage;
 	//球との衝突判定用カプセル
@@ -96,13 +98,13 @@ public:
 	static void SetPStage(Stage* pStage) { BaseBlock::pStage = pStage; }
 
 	/// <summary>
-	/// 座標セット (Y座標固定)
+	/// 座標セット (ステージ座標基準)
 	/// </summary>
 	/// <param name="pos">ステージ上の座標</param>
 	void SetStagePos(const StageVec2& pos);
 
 	/// <summary>
-	/// 座標セット（主にエフェクト用）
+	/// 座標セット
 	/// </summary>
 	/// <param name="pos"></param>
 	void SetPosition(const Vector3& pos) { object.SetPosition(pos); }
@@ -118,6 +120,12 @@ public:
 	/// </summary>
 	/// <param name="color">BLOCK_COLOR_...</param>
 	void SetBlockColor(int blockColor);
+
+	/// <summary>
+	/// インスタンシング描画親オブジェクトのポインタセット
+	/// </summary>
+	/// <param name="pIOD"></param>
+	void SetPInstancingObjectDraw(InstancingObjectDraw* pIOD) { this->pIOD = pIOD; }
 
 #pragma endregion
 #pragma region Getter

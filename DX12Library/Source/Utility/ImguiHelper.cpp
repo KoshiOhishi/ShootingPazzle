@@ -3,6 +3,7 @@
 
 ImguiHelper::ComPtr<ID3D12DescriptorHeap> ImguiHelper::heapForImgui;
 ImguiHelper::string ImguiHelper::windowName;
+int ImguiHelper::drawPhase = DRAW_PHASE_NONE;
 
 void ImguiHelper::Initialize()
 {
@@ -49,18 +50,30 @@ void ImguiHelper::BeginCommand(const string& windowName)
 	AllNewFrame();
 	ImGui::Begin(windowName.c_str());
 	ImguiHelper::windowName = windowName;
+	drawPhase = DRAW_PHASE_BEGIN;
 }
 
 void ImguiHelper::Draw()
 {
-	ImGui::Render();
-	DX12Util::GetCmdList()->SetDescriptorHeaps(1, heapForImgui.GetAddressOf());
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), DX12Util::GetCmdList());
+	if (drawPhase == DRAW_PHASE_DRAWABLE) {
+		ImGui::Render();
+		DX12Util::GetCmdList()->SetDescriptorHeaps(1, heapForImgui.GetAddressOf());
+		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), DX12Util::GetCmdList());
+	}
+
+	drawPhase = DRAW_PHASE_NONE;
 }
 
 void ImguiHelper::EndCommand()
 {
 	ImGui::End();
+	//Begin‚ð’Ê‚Á‚Ä‚¢‚½‚ç•`‰æ‚µ‚Ä—Ç‚¢
+	if (drawPhase == DRAW_PHASE_BEGIN) {
+		drawPhase = DRAW_PHASE_DRAWABLE;
+	}
+	else {
+		drawPhase = DRAW_PHASE_NONE;
+	}
 }
 
 void ImguiHelper::AllNewFrame()

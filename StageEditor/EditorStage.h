@@ -16,9 +16,18 @@ public:
 	Plane floorCollision;
 	unsigned short startLaneZ = stageSize.y - 2;
 
+	InstancingObjectDraw iodSquareBlock[4];
+	InstancingObjectDraw iodTriangleBlock[4];
+	InstancingObjectDraw iodNormalFloor;
+	InstancingObjectDraw iodSwitchFloor[2];
+	InstancingObjectDraw iodTurnFloor[4];
+	InstancingObjectDraw iodBreakFloor;
+
 public:
 	EditorStage(){}
 	~EditorStage();
+
+	void Initialize();
 
 	/// <summary>
 	/// ステージを読み込んで初期化 ファイルが見つからない場合は20x20のブロックなしを生成
@@ -35,11 +44,6 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
-
-	/// <summary>
-	/// 描画終了関数
-	/// </summary>
-	void EndDraw();
 
 	/// <summary>
 	/// ブロックを追加 (引数の位置に既にブロックが配置されていたら追加しない)

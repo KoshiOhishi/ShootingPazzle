@@ -26,6 +26,38 @@ public: //サブクラス
 	static const float CAMERA_FAR;
 	static const float CAMERA_VIEWING_ANGLE;
 
+protected: //メンバ変数
+
+// 射影変換行列
+	XMMATRIX matProjection = DirectX::XMMatrixIdentity();
+
+	// ビュー変換行列
+	XMMATRIX matView = DirectX::XMMatrixIdentity();
+
+	// 回転行列
+	XMMATRIX matRotation = DirectX::XMMatrixIdentity();
+
+	//ビルボード行列
+	XMMATRIX matBillboard = DirectX::XMMatrixIdentity();
+
+	//Y軸回りビルボード行列
+	XMMATRIX matBillboardY = DirectX::XMMatrixIdentity();
+
+	// 視点座標
+	Vector3 eye = { 0,0,-100 };
+
+	// 注視点座標
+	Vector3 target = { 0, 0, 0 };
+
+	// 上方向ベクトル
+	Vector3 up = { 0, 1, 0 };
+
+	// カメラ回転角
+	Vector3 rotation = { 0,0,0 };
+
+	//ダーティフラグ
+	bool dirty = false;
+
 public: //メンバ関数
 
 	//初期化
@@ -33,30 +65,6 @@ public: //メンバ関数
 
 	//更新
 	virtual void Update();
-
-	/// <summary>
-	/// 視点座標を指定分加算する
-	/// </summary>
-	/// <param name="eyeX">X座標</param>
-	/// <param name="eyeY">Y座標</param>
-	/// <param name="eyeZ">Z座標</param>
-	void AddEye(const float eyeX, const float eyeY, const float eyeZ);
-
-	/// <summary>
-	/// 注視点座標を指定分加算する
-	/// </summary>
-	/// <param name="targetX">X座標</param>
-	/// <param name="targetY">Y座標</param>
-	/// <param name="targetZ">Z座標</param>
-	void AddTarget(const float targetX, const float targetY, const float targetZ);
-
-	/// <summary>
-	/// 上方向ベクトルを指定分加算する
-	/// </summary>
-	/// <param name="upX">x成分</param>
-	/// <param name="upY">y成分</param>
-	/// <param name="upZ">z成分</param>
-	void AddUp(const float upX, const float upY, const float upZ);
 
 	/// <summary>
 	/// カメラを移動させる処理
@@ -90,38 +98,6 @@ public: //メンバ関数
 	/// </summary>
 	void UpdateViewMatrix();
 
-protected: //メンバ変数
-
-	// 射影変換行列
-	XMMATRIX matProjection = DirectX::XMMatrixIdentity();
-
-	// ビュー変換行列
-	XMMATRIX matView = DirectX::XMMatrixIdentity();
-
-	// 回転行列
-	XMMATRIX matRotation = DirectX::XMMatrixIdentity();
-
-	//ビルボード行列
-	XMMATRIX matBillboard = DirectX::XMMatrixIdentity();
-
-	//Y軸回りビルボード行列
-	XMMATRIX matBillboardY = DirectX::XMMatrixIdentity();
-
-	// 視点座標
-	Vector3 eye = { 0,0,-100 };
-
-	// 注視点座標
-	Vector3 target = { 0, 0, 0 };
-
-	// 上方向ベクトル
-	Vector3 up = { 0, 1, 0 };
-
-	// カメラ回転角
-	Vector3 rotation = { 0,0,0 };
-
-	//ダーティフラグ
-	bool dirty = false;
-
 	//Getter
 public:
 	//ビュープロジェクション行列取得
@@ -143,13 +119,13 @@ public:
 	/// 注視点座標取得
 	/// </summary>
 	/// <returns>注視点座標</returns>
-	const Vector3& GetTarget()const { return target; }
+	const Vector3& GetTarget()const { return eye + GetCameraDir() * GetDistance(); }
 
 	/// <summary>
 	/// 上方向ベクトル取得
 	/// </summary>
 	/// <returns>上方向ベクトル</returns>
-	const Vector3& GetUpVec()const { return up; }
+	const Vector3 GetUpVec()const;
 
 	/// <summary>
 	/// 視点座標から注視点座標の距離を取得
@@ -181,9 +157,15 @@ public:
 	/// <returns>射影変換行列</returns>
 	const XMMATRIX& GetProjectionMatrix()const { return matProjection; }
 
+	/// <summary>
+	/// カメラの向いている方向を取得
+	/// </summary>
+	/// <returns></returns>
+	const Vector3 GetCameraDir()const;
+
 
 //Setter
-protected:
+public:
 	//視点座標をセット
 	void SetEye(const Vector3& eye);
 	void SetEye(const float x, const float y, const float z);
@@ -220,15 +202,6 @@ protected:
 		const float upX, const float upY, const float upZ);
 
 	/// <summary>
-	/// カメラの回転をセット
-	/// </summary>
-	/// <param name="axis">回転軸</param>
-	/// <param name="digrees">回転角</param>
-	void SetCameraRotation(const Vector3& axis, const float digrees);
-
-
-public:
-	/// <summary>
 	/// 視点座標、注視点座標までの距離をまとめてセット
 	/// </summary>
 	/// <param name="pos">視点座標</param>
@@ -244,15 +217,14 @@ public:
 	/// <param name="distance">視点座標から注視点座標の距離</param>
 	void SetPositionAndDistance(const float posX, const float posY, const float posZ, const float distance);
 
-
 	/// <summary>
-	/// 視点座標をセット (注視点も連動してセットされる)
+	/// 視点座標をセット
 	/// </summary>
 	/// <param name="pos">視点座標</param>
 	void SetPosition(const Vector3& pos);
 
 	/// <summary>
-	/// 視点座標をセット (注視点も連動してセットされる)
+	/// 視点座標をセット
 	/// </summary>
 	/// <param name="x">視点X座標</param>
 	/// <param name="y">視点Y座標</param>
@@ -278,5 +250,30 @@ public:
 	/// <param name="yaw">Y軸回転角(度)</param>
 	/// <param name="roll">Z軸回転角(度)</param>
 	void SetRotation(const float pitch, const float yaw, const float roll);
+
+private:
+	/// <summary>
+	/// 視点座標を指定分加算する
+	/// </summary>
+	/// <param name="eyeX">X座標</param>
+	/// <param name="eyeY">Y座標</param>
+	/// <param name="eyeZ">Z座標</param>
+	void AddEye(const float eyeX, const float eyeY, const float eyeZ);
+
+	/// <summary>
+	/// 注視点座標を指定分加算する
+	/// </summary>
+	/// <param name="targetX">X座標</param>
+	/// <param name="targetY">Y座標</param>
+	/// <param name="targetZ">Z座標</param>
+	void AddTarget(const float targetX, const float targetY, const float targetZ);
+
+	/// <summary>
+	/// 上方向ベクトルを指定分加算する
+	/// </summary>
+	/// <param name="upX">x成分</param>
+	/// <param name="upY">y成分</param>
+	/// <param name="upZ">z成分</param>
+	void AddUp(const float upX, const float upY, const float upZ);
 };
 

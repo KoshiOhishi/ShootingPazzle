@@ -10,7 +10,6 @@
 #include "Editor.h"
 #include "FbxLoader.h"
 #include "PostEffect.h"
-#include "Shadow.h"
 #include "Timer.h"
 #include "ImguiHelper.h"
 #include "Object3D.h"
@@ -25,7 +24,6 @@ using namespace Microsoft::WRL;
 HRESULT result;
 //ポストエフェクト
 PostEffect* postEffect = nullptr;
-Shadow* shadow = nullptr;
 //タイマー
 Timer* timer;
 //デバッグレイヤーをオンに
@@ -148,11 +146,12 @@ void Initialize() {
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		};
 		//デスクリプタレンジ
-		pipelineData.descRanges.resize(1);
+		pipelineData.descRanges.resize(2);
 		pipelineData.descRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+		pipelineData.descRanges[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
 
 		//ルートパラメータ
-		pipelineData.rootparams.resize(7);
+		pipelineData.rootparams.resize(8);
 		// CBV（共有情報用）
 		pipelineData.rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（座標変換行列用）
@@ -167,6 +166,8 @@ void Initialize() {
 		pipelineData.rootparams[5].InitAsConstantBufferView(5, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// SRV（テクスチャ用）
 		pipelineData.rootparams[6].InitAsDescriptorTable(1, &pipelineData.descRanges[0], D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ）
+		pipelineData.rootparams[7].InitAsDescriptorTable(1, &pipelineData.descRanges[1], D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
 		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
 
@@ -181,7 +182,7 @@ void Initialize() {
 		//グラフィックパイプライン生成
 		DX12Util::PipelineData pipelineData;
 		pipelineData.vertexShaderFileName = L"Shader/OBJVS.hlsl";
-		pipelineData.geometryShaderFileName = L"Shader/OBJGS.hlsl";
+		//pipelineData.geometryShaderFileName = L"Shader/OBJGS.hlsl";
 		pipelineData.pixelShaderFileName = L"Shader/OBJPS.hlsl";
 		pipelineData.inputLayout.resize(3);
 		pipelineData.inputLayout[0] =
@@ -207,11 +208,12 @@ void Initialize() {
 		};
 
 		//デスクリプタレンジ
-		pipelineData.descRanges.resize(1);
+		pipelineData.descRanges.resize(2);
 		pipelineData.descRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+		pipelineData.descRanges[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
 
 		//ルートパラメータ
-		pipelineData.rootparams.resize(5);
+		pipelineData.rootparams.resize(6);
 		// CBV（共有情報用）
 		pipelineData.rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（座標変換行列用）
@@ -220,8 +222,10 @@ void Initialize() {
 		pipelineData.rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 		// CBV（ライト用）
 		pipelineData.rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
-		// SRV（テクスチャ用）
+		// SRV（テクスチャ）
 		pipelineData.rootparams[4].InitAsDescriptorTable(1, &pipelineData.descRanges[0], D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ）
+		pipelineData.rootparams[5].InitAsDescriptorTable(1, &pipelineData.descRanges[1], D3D12_SHADER_VISIBILITY_ALL);
 		//パイプライン生成
 		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
 
@@ -231,6 +235,12 @@ void Initialize() {
 		pipelineData.geometryShaderFileName = nullptr;// L"Shader/InstancingOBJGS.hlsl";
 		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_INSTANCING_OBJ, pipelineData);
 	}
+
+	Object3D::CreateShadowObjGraphicsPipeline();
+	Object3D::CreateShadowFbxGraphicsPipeline();
+	InstancingObjectDraw::CreateShadowObjGraphicsPipeline();
+	InstancingObjectDraw::CreateShadowFbxGraphicsPipeline();
+
 #pragma endregion
 	//オブジェクト管理クラス初期化
 	Object3DManager::Initialize();
@@ -247,9 +257,6 @@ void Initialize() {
 	//ポストエフェクトの初期化
 	postEffect = new PostEffect();
 	postEffect->Initialize();
-
-	shadow = new Shadow();
-	shadow->Initialize();
 
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();
@@ -271,25 +278,17 @@ void Update() {
 	//オブジェクト一括更新
 	Object3DManager::UpdateAllObject();
 
-	//レンダーテクスチャへの描画
-	postEffect->PreDrawScene();
+	//ペラポリゴンへの描画
 	SceneManager::Draw();
-	shadow->Draw();
 
-	postEffect->PostDrawScene();
-
-
-	//描画開始前処理
-	DX12Util::BeginDraw();
-
-	//ポストエフェクトの描画
+	//バックバッファへの描画
+	DX12Util::PreDrawBB();
+	//シーンを描画したペラポリゴンを描画
 	postEffect->Draw();
-
 	//デバッグテキストの描画
-	DebugText::DrawAll();
 
-	//描画終了処理
-	DX12Util::EndDraw();
+	DebugText::DrawAll();
+	DX12Util::PostDrawBB();
 
 	//FPSを調整
 	FPSManager::Update();
@@ -301,8 +300,6 @@ void Finalize() {
 	SceneManager::DeleteScene();
 	FbxLoader::GetInstance()->Finalize();
 	delete postEffect;
-	delete shadow;
 	ImguiHelper::Finalize();
 	DX12Util::End();
-
 }

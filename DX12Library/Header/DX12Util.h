@@ -59,15 +59,15 @@ private:
 	static ComPtr<ID3D12DescriptorHeap> rtvHeaps;
 	static D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
 	static std::vector<ComPtr<ID3D12Resource>> backBuffers;
-	static ComPtr<ID3D12Resource> depthBuffer;
+	static ComPtr<ID3D12Resource> depthBuffer[2];
 	static ComPtr <ID3D12DescriptorHeap> dsvHeap;
 	static ComPtr<ID3D12Fence> fence;
 	static UINT64 fenceVal;
 
 public:
 	static void Initialize(const wchar_t* windowName = L"DirectXGame", int windowWidth = 1280, int windowHeight = 720);
-	static void BeginDraw();
-	static void EndDraw();
+	static void PreDrawBB();
+	static void PostDrawBB();
 	static void End();
 
 	static HWND GetHwnd();
@@ -79,7 +79,7 @@ public:
 	static const int GetWindowWidth();
 	static const int GetWindowHeight();
 
-	static ID3D12Resource* GetDepthBuffer() { return depthBuffer.Get(); }
+	static ID3D12Resource* GetDepthBuffer(int index) { return depthBuffer[index].Get(); }
 	static ID3D12DescriptorHeap* GetDepthHeap() { return dsvHeap.Get(); }
 	/// <summary>
 	/// ファイルが存在するかを返す
@@ -88,7 +88,7 @@ public:
 	/// <returns>ファイルが存在するか否か</returns>
 	static bool IsFileExist(const wchar_t* path);
 
-	static void ClearDepthBuffer();
+	static void ClearDepthBuffer(bool isShadow);
 
 };
 

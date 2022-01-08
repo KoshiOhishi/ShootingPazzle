@@ -28,17 +28,11 @@ enum ObjectType
 	OBJECTTYPE_INSTANCING_FBX,
 };
 
-struct ConstBufferDataShare
-{
-	DirectX::XMMATRIX viewproj;	//ビュープロジェクション行列
-	Vector3 cameraPos;	//カメラ座標(ワールド座標)
-};
-
-//インスタンシング描画用構造体(座標変換行列用)
-struct InstanceData
-{
-	Vector4 color;		//色
-	DirectX::XMMATRIX world;		//ワールド行列
+//ビルボードタイプ
+enum BillboardType {
+	NONE,
+	Billboard,
+	BillboardY,
 };
 
 class Object3D
@@ -59,11 +53,26 @@ public: //定数
 
 public: //サブクラス
 
+	//インスタンシング描画用構造体(座標変換行列用)
+	struct InstanceData
+	{
+		Vector4 color;		//色
+		DirectX::XMMATRIX world;		//ワールド行列
+	};
+
+	struct ConstBufferDataShare
+	{
+		DirectX::XMMATRIX viewproj;	//ビュープロジェクション行列
+		DirectX::XMMATRIX lightCamera;
+		UINT isDrawShadowToMyself;
+		Vector3 cameraPos;	//カメラ座標(ワールド座標)
+	};
+
+	//定数バッファ用データ構造体(座標変換)
 	struct ConstBufferDataTransform
 	{
 		InstanceData data;
 	};
-
 
 	//定数バッファ用データ構造体(スキニング)
 	struct ConstBufferDataSkin
@@ -71,11 +80,11 @@ public: //サブクラス
 		XMMATRIX bones[MAX_BONES];
 	};
 
-	//ビルボードタイプ
-	enum BillboardType {
-		NONE,
-		Billboard,
-		BillboardY,
+	//定数バッファ用データ構造体(シャドウマップ)
+	struct ConstBufferDataShadow
+	{
+		XMMATRIX lightCamera;
+		XMMATRIX world;
 	};
 
 public: //静的メンバ関数
@@ -92,6 +101,16 @@ public: //静的メンバ関数
 	/// <param name="pipelineData">パイプライン設定変数</param>
 	static void CreateGraphicsPipeline(int objectType, PipelineData& pipelineData);
 
+	/// <summary>
+	/// OBJシャドウ用パイプライン生成
+	/// </summary>
+	static void CreateShadowObjGraphicsPipeline();
+
+	/// <summary>
+	/// FBXシャドウ用パイプライン生成
+	/// </summary>
+	static void CreateShadowFbxGraphicsPipeline();
+
 	//getter
 	static ID3D12DescriptorHeap* GetDescHeap() { return Object3D::descHeapSRV.Get(); }
 
@@ -101,6 +120,8 @@ public: //静的メンバ関数
 	static void SetLight(Light* light) { Object3D::light = light; }
 
 protected: //静的メンバ変数
+	static std::vector<Object3D*> drawList;
+
 	//デバイス
 	static ID3D12Device* device;
 	//カメラ
@@ -109,18 +130,62 @@ protected: //静的メンバ変数
 	static Light* light;
 	//SRV用デスクリプタヒープ
 	static ComPtr<ID3D12DescriptorHeap> descHeapSRV;
-
+	//深度テクスチャSRV用ヒープ
+	static ComPtr<ID3D12DescriptorHeap> descHeapDepthSRV;
 	//FBXルートシグネチャ
 	static ComPtr<ID3D12RootSignature> fbxRootsignature;
 	//FBXパイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> fbxPipelinestate;
-
+	//OBJシャドウルートシグネチャ
+	static ComPtr<ID3D12RootSignature> shadowFbxRootsignature;
+	//OBJシャドウパイプラインステートオブジェクト
+	static ComPtr<ID3D12PipelineState> shadowFbxPipelinestate;
 	//OBJルートシグネチャ
 	static ComPtr<ID3D12RootSignature> objRootsignature;
 	//OBJパイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> objPipelinestate;
+	//OBJシャドウルートシグネチャ
+	static ComPtr<ID3D12RootSignature> shadowObjRootsignature;
+	//OBJシャドウパイプラインステートオブジェクト
+	static ComPtr<ID3D12PipelineState> shadowObjPipelinestate;
 
 	static int prevDrawObjectType;
+
+	static int loadCount;
+
+	static XMMATRIX matOrthographicLH;
+
+public:
+
+	static void DrawAll();
+	static void WriteDepthTex();
+
+	static int GetLoadCount() { return Object3D::loadCount; }
+	static void IncrementLoadCount() { Object3D::loadCount++; }
+	static void SetMatrixOrthographicLH(float viewWigth, float viewHeight, float nearZ, float farZ) {
+		matOrthographicLH = DirectX::XMMatrixOrthographicLH(viewWigth, viewHeight, nearZ, farZ);
+	}
+
+private:
+	/// <summary>
+	/// 描画
+	/// </summary>
+	virtual void DrawPrivate();
+
+	/// <summary>
+	/// シャドウ描画
+	/// </summary>
+	virtual void DrawShadow();
+
+	/// <summary>
+	/// オブジェクト描画前処理
+	/// </summary>
+	static void BeginDraw();
+
+	/// <summary>
+	/// シャドウ描画前処理
+	/// </summary>
+	static void BeginDrawShadow();
 
 public: //メンバ関数
 
@@ -145,12 +210,7 @@ public: //メンバ関数
 	virtual void Update();
 
 	/// <summary>
-	/// オブジェクト描画前処理
-	/// </summary>
-	static void BeginDraw();
-
-	/// <summary>
-	/// 描画
+	/// 描画リストに登録 (登録された順に最後にまとめて描画する)
 	/// </summary>
 	virtual void Draw();
 
@@ -368,6 +428,17 @@ public:
 	/// <param name="objModel">OBJモデル</param>
 	virtual void SetObjModel(ObjModel* objModel);
 
+	/// <summary>
+	/// 自分の影を他のオブジェクトに描画するかセット
+	/// </summary>
+	/// <param name="flag"></param>
+	virtual void SetDrawShadowToOther(bool flag) { isDrawShadowToOther = flag; }
+
+	/// <summary>
+	/// 他のオブジェクト影を自分に描画するかセット
+	/// </summary>
+	/// <param name="flag"></param>
+	virtual void SetDrawShadowToMyself(bool flag) { isDrawShadowToMyself = flag; }
 #pragma endregion
 
 protected: //メンバ変数
@@ -379,6 +450,9 @@ protected: //メンバ変数
 
 	//定数バッファ(スキン)
 	ComPtr<ID3D12Resource> constBuffSkin;
+
+	//定数バッファ(シャドウ)
+	ComPtr<ID3D12Resource> constBuffShadow;
 
 	//ローカルスケール
 	Vector3 scale = { 1, 1, 1 };
@@ -413,6 +487,8 @@ protected: //メンバ変数
 	//オブジェクトタイプ
 	int objectType = -1;
 
+	bool isDrawShadowToOther = true;
+	bool isDrawShadowToMyself = true;
 
 	//クラス名（デバッグ用）
 	const char* name = nullptr;

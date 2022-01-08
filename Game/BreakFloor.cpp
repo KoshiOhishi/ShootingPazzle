@@ -1,7 +1,6 @@
 #include "BreakFloor.h"
 #include "GameUtility.h"
 
-InstancingObjectDraw BreakFloor::instancingObjectDraw;
 ObjModel BreakFloor::modelBox;
 
 void BreakFloor::CreateModel()
@@ -13,8 +12,6 @@ void BreakFloor::CreateModel()
 void BreakFloor::StaticInitialize()
 {
 	CreateModel();
-	instancingObjectDraw.Initialize();
-	instancingObjectDraw.SetObjModel(&modelBox);
 }
 
 void BreakFloor::Initialize(const StageVec2& pos)
@@ -42,21 +39,9 @@ void BreakFloor::Update()
 	}
 
 	if (isBreak == false) {
-		object.Update(instancingObjectDraw);
+		object.Update(*pIOD);
 	}
 	UpdateCollision();
-}
-
-void BreakFloor::Draw()
-{
-	instancingObjectDraw.Update();
-	instancingObjectDraw.Draw();
-	instancingObjectDraw.EndDraw();
-}
-
-void BreakFloor::EndDraw()
-{
-	instancingObjectDraw.EndDraw();
 }
 
 void BreakFloor::UpdateCollision()

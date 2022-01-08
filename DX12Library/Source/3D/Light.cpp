@@ -46,28 +46,34 @@ void Light::TransferConstBuffer()
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		constMap->lightv = -lightdir;
-		constMap->lightcolor = lightcolor;
+		constMap->lightDir = -lightDir;
+		constMap->lightColor = lightColor;
 		constBuff->Unmap(0, nullptr);
 	}
 }
 
-void Light::SetLightDir(const XMVECTOR & lightdir)
+void Light::CalcLightPos(float distance)
+{
+	//ライト座標
+	lightPos = lighttarget - lightDir * distance;
+}
+
+void Light::SetLightDir(const Vector3& lightDir)
 {
 	//正規化してセット
-	this->lightdir = XMVector3Normalize(lightdir);
+	this->lightDir = lightDir.Normalize();
 	dirty = true;
 }
 
 void Light::SetLightDir(const float dirX, const float dirY, const float dirZ)
 {
-	XMVECTOR vec = XMVectorSet(dirX, dirY, dirZ, 0);
+	Vector3 vec(dirX, dirY, dirZ);
 	SetLightDir(vec);
 }
 
-void Light::SetLightColor(const Vector3 & lightcolor)
+void Light::SetLightColor(const Vector3& lightColor)
 {
-	this->lightcolor = lightcolor;
+	this->lightColor = lightColor;
 	dirty = true;
 }
 

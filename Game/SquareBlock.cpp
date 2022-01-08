@@ -1,7 +1,6 @@
 #include "SquareBlock.h"
 #include "GameUtility.h"
 
-InstancingObjectDraw SquareBlock::instancingObjectDraw[4];
 ObjModel SquareBlock::modelBox[4];
 
 void SquareBlock::CreateModel()
@@ -16,10 +15,6 @@ void SquareBlock::CreateModel()
 void SquareBlock::StaticInitialize()
 {
 	CreateModel();
-	for (int i = 0; i < _countof(modelBox); i++) {
-		instancingObjectDraw[i].Initialize();
-		instancingObjectDraw[i].SetObjModel(&modelBox[i]);
-	}
 }
 
 void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
@@ -44,23 +39,8 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 void SquareBlock::Update()
 {
 	UpdateColor();
-	object.Update(instancingObjectDraw[breakupCount]);
+	object.Update(pIOD[breakupCount]);
 	UpdateCollision();
-}
-
-void SquareBlock::Draw()
-{
-	for (int i = 0; i < _countof(modelBox); i++) {
-		instancingObjectDraw[i].Update();
-		instancingObjectDraw[i].Draw();
-	}
-}
-
-void SquareBlock::EndDraw()
-{
-	for (int i = 0; i < _countof(modelBox); i++) {
-		instancingObjectDraw[i].EndDraw();
-	}
 }
 
 void SquareBlock::UpdateCollision()

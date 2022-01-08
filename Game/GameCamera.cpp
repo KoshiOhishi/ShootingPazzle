@@ -19,10 +19,10 @@ void GameCamera::Initialize()
 
 void GameCamera::Update()
 {
-	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
 		UpdateFirstEffect();
 	}
-	else if (GameUtility::GetNowPhase() == PHASE_CLEAR) {
+	else if (GameUtility::GetNowPhase() == PHASE_GAME_CLEAR) {
 		UpdateClearEffect();
 	}
 
@@ -92,13 +92,13 @@ void GameCamera::UpdateClearEffect()
 	setRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.y, afterFirstEffectRot.y + rot.y, effectTimer, start, end);
 	setRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.z, afterFirstEffectRot.z + rot.z, effectTimer, start, end);
 
-	SetPositionAndDistance(setPos, 15.0f);
+	SetPositionAndDistance(setPos, 30.0f);
 	SetRotation(setRot);
 }
 
 void GameCamera::SetCameraParamAfterShoot()
 {
-	SetPositionAndDistance(afterFirstEffectPos, 15.0f);
+	SetPositionAndDistance(afterFirstEffectPos, 30.0f);
 	SetRotation(afterFirstEffectRot);
 }
 

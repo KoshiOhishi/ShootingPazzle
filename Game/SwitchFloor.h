@@ -20,7 +20,6 @@ class SwitchFloor :
     public BaseFloor
 {
 private:
-	static InstancingObjectDraw instancingObjectDraw[2];
 	static ObjModel modelBox[2];
 	int switchColor = SWITCH_COLOR_NONE;
 	int switchState = SWITCH_STATE_OFF;
@@ -29,7 +28,7 @@ private:
 
 public:
 	static void CreateModel();
-
+	static ObjModel* GetModel(int index) { return &modelBox[index]; }
 	static void StaticInitialize();
 
 	/// <summary>
@@ -41,16 +40,6 @@ public:
 	/// 更新
 	/// </summary>
 	void Update() override;
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	static void Draw();
-
-	/// <summary>
-	/// 描画終了関数
-	/// </summary>
-	static void EndDraw();
 
 	/// <summary>
 	/// 当たり判定更新

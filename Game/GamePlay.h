@@ -29,18 +29,16 @@ private:
 	//ステージ
 	Stage stage;
 	//ステージパス
-	std::string stagePass = "../StageEditor/StageData/test.spb";
+	std::string stagePass = "../StageEditor/StageData/stage_4.spb";
 
 	//背景
 	Object3D objBG;
 	ObjModel modelBG;
 
 public:
-	GamePlay(){}
-	~GamePlay(){}
-	void Initialize() override;
-	void Update() override;
-	void Draw() override;
+	virtual void Initialize() override;
+	virtual void Update() override;
+	virtual void Draw() override;
 
 	/// <summary>
 	/// 盤面をリセットし、フェーズをSET_POSにもどす

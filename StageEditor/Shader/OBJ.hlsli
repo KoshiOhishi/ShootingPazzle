@@ -8,6 +8,8 @@ struct InstanceData
 cbuffer cbuff0 : register(b0)
 {
 	matrix viewproj; //ビュープロジェクション行列
+	matrix lightcamera;
+	uint isDrawShadowToMyself; //他のオブジェクトの影を自分に描画するか（0...しない 1...する）
 	float3 cameraPos; //カメラ座標（ワールド座標）
 }
 
@@ -41,6 +43,8 @@ struct VSInput
 struct VSOutput
 {
 	float4 svpos : SV_POSITION; // システム用頂点座標
+	float4 worldpos : POSITION; //ワールド座標
+	float4 tpos : TPOS;			//ライトビュー座標
 	float3 normal : NORMAL; // 法線ベクトル
 //float4 color : COLOR;	//色
 	float2 uv : TEXCOORD; // uv値

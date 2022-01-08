@@ -1,5 +1,6 @@
 #include "FbxModel.h"
 #include "DX12Util.h"
+#include "Object3D.h"
 
 FbxModel::~FbxModel()
 {
@@ -96,13 +97,6 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 		(UINT)img->slicePitch	//1枚サイズ
 	);
 
-	//SRV用デスクリプタヒープ生成
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダーから見えるように
-	descHeapDesc.NumDescriptors = 1;//テクスチャ枚数
-	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(descHeapSRV.ReleaseAndGetAddressOf()));//生成
-
 	//シェーダリソースビュー(SRV)生成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
 	D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
@@ -114,8 +108,11 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 
 	device->CreateShaderResourceView(texBuff.Get(), //ビューと関連付けるバッファ
 			&srvDesc, //テクスチャ設定情報
-			descHeapSRV->GetCPUDescriptorHandleForHeapStart() //ヒープの先頭アドレス
-		);
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			Object3D::GetDescHeap()->GetCPUDescriptorHandleForHeapStart(),
+			Object3D::GetLoadCount(),
+			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		));
 
 	//定数バッファの作成
 	result = DX12Util::GetDevice()->CreateCommittedResource(
@@ -141,6 +138,9 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 	assert(SUCCEEDED(result));
 
 	TransferMaterial();
+
+	texNumber = Object3D::GetLoadCount();
+	Object3D::IncrementLoadCount();
 }
 
 void FbxModel::TransferMaterial()
@@ -174,27 +174,30 @@ void FbxModel::TransferMaterial()
 	assert(SUCCEEDED(result));
 }
 
-void FbxModel::Draw(int instancingCount)
+void FbxModel::Draw(int instancingCount, bool isShadow)
 {
 	ID3D12GraphicsCommandList* cmdList = DX12Util::GetCmdList();
 
-	//定数バッファビューをセット
-	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
-
-	//定数バッファビューをセット
-	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(5, constBuffMaterial->GetGPUVirtualAddress());
-
 	//頂点バッファをセット(VBV)
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
+
 	//インデックスバッファをセット(IBV)
 	cmdList->IASetIndexBuffer(&ibView);
 
-	//デスクリプタヒープのセット
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	if (isShadow == false) {
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
 
-	//シェーダーリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(6, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+		//定数バッファビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(5, constBuffMaterial->GetGPUVirtualAddress());
+
+		//シェーダーリソースビューをセット
+		cmdList->SetGraphicsRootDescriptorTable(6, CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			Object3D::GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
+			texNumber,
+			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		));
+	}
 
 	//描画コマンド
 	//2番目の引数を変える(インスタンシング)

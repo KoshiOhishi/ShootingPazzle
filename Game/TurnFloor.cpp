@@ -1,7 +1,6 @@
 #include "TurnFloor.h"
 #include "GameUtility.h"
 
-InstancingObjectDraw TurnFloor::instancingObjectDraw[4];
 ObjModel TurnFloor::modelBox[4];
 
 void TurnFloor::CreateModel()
@@ -16,10 +15,6 @@ void TurnFloor::CreateModel()
 void TurnFloor::StaticInitialize()
 {
 	CreateModel();
-	for (int i = 0; i < 4; i++) {
-		instancingObjectDraw[i].Initialize();
-		instancingObjectDraw[i].SetObjModel(&modelBox[i]);
-	}
 }
 
 void TurnFloor::Initialize(const StageVec2& pos)
@@ -34,30 +29,8 @@ void TurnFloor::Initialize(const StageVec2& pos)
 
 void TurnFloor::Update()
 {
-	object.Update(instancingObjectDraw[turnType]);
+	object.Update(pIOD[turnType]);
 	UpdateCollision();
-}
-
-void TurnFloor::Draw(int index)
-{
-	if (index == -1) {
-		for (int i = 0; i < 4; i++) {
-			instancingObjectDraw[i].Update();
-			instancingObjectDraw[i].Draw();
-		}
-	}
-	else {
-		if (index < -1 || index >= 4) { return; }
-		instancingObjectDraw[index].Update();
-		instancingObjectDraw[index].Draw();
-	}
-}
-
-void TurnFloor::EndDraw()
-{
-	for (int i = 0; i < 4; i++) {
-		instancingObjectDraw[i].EndDraw();
-	}
 }
 
 void TurnFloor::UpdateCollision()

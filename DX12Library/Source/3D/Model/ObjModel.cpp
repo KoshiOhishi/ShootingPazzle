@@ -7,11 +7,9 @@
 #include <d3dx12.h>
 #include "Object3D.h"
 
-int ObjModel::loadCount = 0;
-
 using namespace DirectX;
 
-void ObjModel::Draw(int instancingCount)
+void ObjModel::Draw(int instancingCount, bool isShadow)
 {
 	//インデックスバッファのセットコマンド
 	DX12Util::GetCmdList()->IASetIndexBuffer(&ibView);
@@ -22,17 +20,19 @@ void ObjModel::Draw(int instancingCount)
 	//頂点バッファの設定コマンド
 	DX12Util::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
 
-	//定数バッファのセット
-	DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
+	if (isShadow == false) {
 
-	// シェーダリソースビューをセット
-	DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(4, 
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			Object3D::GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		)
-	);
+		//定数バッファのセット
+		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
+		// シェーダリソースビューをセット
+		DX12Util::GetCmdList()->SetGraphicsRootDescriptorTable(4,
+			CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				Object3D::GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
+				texNumber,
+				DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+			)
+		);
+	}
 
 	//描画コマンド
 	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), instancingCount, 0, 0, 0);
@@ -439,7 +439,7 @@ void ObjModel::CreateBuffers()
 		&srvDesc, //テクスチャ設定情報
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			Object3D::GetDescHeap()->GetCPUDescriptorHandleForHeapStart(),
-			loadCount,
+			Object3D::GetLoadCount(),
 			DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 		)
 	);
@@ -462,8 +462,8 @@ void ObjModel::CreateBuffers()
 	constMap1->alpha = material.alpha;
 	constBuffB1->Unmap(0, nullptr);
 
-	texNumber = loadCount;
-	loadCount++;
+	texNumber = Object3D::GetLoadCount();
+	Object3D::IncrementLoadCount();
 }
 
 void ObjModel::AddSmoothData(unsigned short indexPosition, unsigned short indexVertex)
@@ -504,7 +504,7 @@ void ObjModel::CreateBox(float width, float height, float depth, bool smoothing,
 	material.diffuse = diffuse;
 	material.specular = specular;
 
-	material.name = "default_box" + loadCount;
+	material.name = "default_box" + Object3D::GetLoadCount();
 
 	material.textureFilename = "System/white1x1.png";
 	//デフォルトテクスチャを貼る
@@ -677,7 +677,7 @@ void ObjModel::CreateSphere(int vertexX, int vertexY, float radius, bool smoothi
 	material.diffuse = diffuse;
 	material.specular = specular;
 
-	material.name = "default_sphere" + loadCount;
+	material.name = "default_sphere" + Object3D::GetLoadCount();
 
 	material.textureFilename = "System/white1x1.png";
 
@@ -887,7 +887,7 @@ void ObjModel::CreatePoll(int vertex, float radius, float height, bool smoothing
 	material.diffuse = diffuse;
 	material.specular = specular;
 
-	material.name = "default_poll" + loadCount;
+	material.name = "default_poll" + Object3D::GetLoadCount();
 
 	material.textureFilename = "System/white1x1.png";
 
@@ -1140,7 +1140,7 @@ void ObjModel::CreateTriangle(const Vector3& p1, const Vector3& p2, const Vector
 	material.diffuse = diffuse;
 	material.specular = specular;
 
-	material.name = "default_triangle" + loadCount;
+	material.name = "default_triangle" + Object3D::GetLoadCount();
 
 	material.textureFilename = "System/white1x1.png";
 
@@ -1199,7 +1199,7 @@ void ObjModel::CreateSquare(float width, float height, const Vector3& ambient, c
 	material.diffuse = diffuse;
 	material.specular = specular;
 
-	material.name = "default_square" + loadCount;
+	material.name = "default_square" + Object3D::GetLoadCount();
 
 	material.textureFilename = "System/white1x1.png";
 	//デフォルトテクスチャを貼る
@@ -1265,7 +1265,7 @@ void ObjModel::CreateSquareTex(float standardLength, const std::string& texName,
 	material.diffuse = diffuse;
 	material.specular = specular;
 
-	material.name = "square_tex" + loadCount;
+	material.name = "square_tex" + Object3D::GetLoadCount();
 
 	material.textureFilename = texName;
 

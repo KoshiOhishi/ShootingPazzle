@@ -18,32 +18,39 @@
 
 void Editor::Initialize()
 {
-	//ライト初期化
-	light.Initialize();
-	light.SetLightDir({ 1,-1,0 });
-	light.SetLightColor({ 1,1,1 });
-	Object3D::SetLight(&light);
+	Object3D::SetMatrixOrthographicLH(1280 * 0.2f, 720 * 0.2f, 0.1f, 150.0f);
 
 	//カメラ初期化
 	camera.Initialize();
-	camera.SetPositionAndDistance({ 0,100.0f,0.0f }, 30.0f);
+	//camera.SetPositionAndDistance({ 0,100.0f,0.0f }, 30.0f);
+	camera.SetEyeTargetUpVec({ 0,100,0 }, { 0,0,0 }, { 0,0,1 });
 	camera.SetRotation(90, 0, 0);
 
 	//カメラをセット
 	Object3D::SetCamera(&camera);
 	Mouse::SetCamera(&camera);
 
+	//ライト初期化
+	light.Initialize();
+	light.SetLightDir({ 1,-1,1 });
+	light.SetLightColor({ 1,1,1 });
+	light.SetLightTarget({ 0,0,0 });
+	light.CalcLightPos(60.0f);
+	Object3D::SetLight(&light);
+
+	//フェーズ初期化
+	GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
+
 	//タイマーセット
 	timer.SetTimer(0, 1000000);
 	timer.Start();
 
 	//ステージ取得
+	stage.Initialize();
 	stage.LoadStage("");
 	sliderWidth = stage.stageSize.x;
 	sliderDepth = stage.stageSize.y;
 
-	//フェーズ初期化
-	GameUtility::SetNowPhase(PHASE_SETPOS);
 
 	//オブジェクト初期化
 	for (int i = 0; i < _countof(startLane); i++) {
@@ -135,23 +142,20 @@ void Editor::Update()
 				camera.SetRotation(f);
 			}
 		}
+
+		//Vector3 f = { camera.GetRotation().x, camera.GetRotation().y - 1.5f, camera.GetRotation().z };
+		//camera.SetRotation(f);
 	}
 #endif
 #pragma endregion
-#pragma region サウンド
 
-#pragma endregion
-#pragma region オブジェクト
-	UpdateEdit();
-#pragma endregion
-#pragma region アップデート
-	light.Update();
 	camera.Update();
+	light.Update();
 	timer.Update();
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
+	UpdateEdit();
 
-#pragma endregion
 
 #ifdef _DEBUG
 	//リセット
@@ -166,24 +170,31 @@ void Editor::Update()
 
 void Editor::Draw()
 {
-	//背景スプライト描画ここから
-	Sprite::BeginDraw();
-	//spr->Draw();
+	//ステージ描画
+	stage.Draw();
 
-	//背景描画ここまで
-	DX12Util::ClearDepthBuffer();
+	//スタートレーン描画
+	DrawStartLane();
 
-	//オブジェクト描画ここから
-	Object3D::BeginDraw();
-	DrawEdit();
+	if (mode == MODE_ADD) {
+		//カーソル位置にブロック描画
+		if (objectType == OBJECTTYPE_BLOCK) {
+			DrawBlock();
+		}
+		else if (objectType == OBJECTTYPE_FLOOR) {
+			DrawFloor();
+		}
+	}
+	else if (mode == MODE_DELETE) {
 
-	//オブジェクト描画ここまで
+	}
 
-	//前景スプライト描画ここから
-	ImguiHelper::Draw();
-
-	//前景スプライト描画ここまで
-
+	//今のカーソル座標表示
+	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
+		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+		return;
+	}
+	DebugText::Print("CursolPos:(" + std::to_string(nowCursolPos.x) + ", " + std::to_string(nowCursolPos.y) + ")", 0, 20);
 }
 
 void Editor::UpdateEdit()
@@ -251,12 +262,6 @@ void Editor::UpdateObject()
 	GameUtility::CalcStagePos2WorldPos(nowCursolPos, &x, &z);
 	objDispBlock.SetPosition({ x, ONE_CELL_LENGTH / 2, z });
 	objDispFloor.SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
-
-	//breakupCountによってブロックの色を変える
-	//squareBlock.SetBreakupCount(breakupCount);
-	//for (int i = 0; i < _countof(triangleBlock); i++) {
-	//	triangleBlock[i].SetBreakupCount(breakupCount);
-	//}
 
 	//更新
 	UpdateStartLane();
@@ -367,37 +372,6 @@ void Editor::UpdateStartLane()
 		}
 	}
 	startLane[1].Update();
-}
-
-void Editor::DrawEdit()
-{
-	//ステージ描画
-	stage.Draw();
-
-	//スタートレーン描画
-	DrawStartLane();
-
-	if (mode == MODE_ADD) {
-		//カーソル位置にブロック描画
-		if (objectType == OBJECTTYPE_BLOCK) {
-			DrawBlock();
-		}
-		else if (objectType == OBJECTTYPE_FLOOR) {
-			DrawFloor();
-		}
-	}
-	else if (mode == MODE_DELETE) {
-
-	}
-
-	stage.EndDraw();
-
-	//今のカーソル座標表示
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
-		return;
-	}
-	DebugText::Print("CursolPos:(" + std::to_string(nowCursolPos.x) + ", " + std::to_string(nowCursolPos.y) + ")", 0, 20);
 }
 
 void Editor::DrawStartLane()

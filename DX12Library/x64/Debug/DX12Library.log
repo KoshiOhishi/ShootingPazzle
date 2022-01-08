@@ -1,7 +1,11 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  Shadow.cpp
+  DX12Util.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Shadow.cpp(98,95): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Shadow.cpp(98,66): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Shadow.cpp(218,21): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(297,39): warning C4305: '初期化中': 'double' から 'float' へ切り詰めます。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(305,73): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\DX12\DX12Util.cpp(305,59): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  SceneManager.cpp
+  ImguiHelper.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  コードを生成中...
   DX12Library.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\DX12Library.lib

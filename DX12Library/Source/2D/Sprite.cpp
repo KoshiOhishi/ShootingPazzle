@@ -12,12 +12,10 @@ using namespace std;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-
+std::vector<Sprite*> Sprite::drawListBG;
+std::vector<Sprite*> Sprite::drawListFG;
 ComPtr<ID3D12RootSignature> Sprite::spriteRootSignature = nullptr;	//ルートシグネチャ
 ComPtr<ID3D12PipelineState> Sprite::spritePipelineState = nullptr;	//パイプラインステート
-ComPtr<ID3DBlob> Sprite::vsBlob = nullptr; // 頂点シェーダオブジェクト
-ComPtr<ID3DBlob> Sprite::psBlob = nullptr; // ピクセルシェーダオブジェクト
-ComPtr<ID3DBlob> Sprite::errorBlob = nullptr; // エラーオブジェクト
 XMMATRIX Sprite::matProjection{};		//射影行列
 ComPtr <ID3D12DescriptorHeap> Sprite::descHeap = nullptr;
 const int Sprite::spriteSRVCount = 512;
@@ -31,9 +29,9 @@ void Sprite::FirstInit()
 	HRESULT result = S_FALSE;
 
 	//各シェーダファイルの読み込みとコンパイル
-	vsBlob = nullptr; // 頂点シェーダオブジェクト
-	psBlob = nullptr; // ピクセルシェーダオブジェクト
-	errorBlob = nullptr; // エラーオブジェクト
+	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
+	ComPtr<ID3DBlob> psBlob;    // ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
 		L"Shader/SpriteVertexShader.hlsl", // シェーダファイル名
@@ -561,7 +559,37 @@ void Sprite::UpdateVertBuff()
 
 }
 
+void Sprite::DrawBG()
+{
+	drawListBG.emplace_back(this);
+}
+
+void Sprite::DrawFG()
+{
+	drawListFG.emplace_back(this);
+}
+
+void Sprite::DrawAllBG()
+{
+	BeginDraw();
+	for (auto& v : drawListBG) {
+		v->Draw();
+	}
+	drawListBG.clear();
+}
+
+void Sprite::DrawAllFG()
+{
+	BeginDraw();
+	for (auto& v : drawListFG) {
+		v->Draw();
+	}
+	drawListFG.clear();
+}
+
 void Sprite::SetInitParams(float posX, float posY, float width, float height)
 {
+	SetPosition({posX, posY});
+	SetScale({ width, height });
 }
 

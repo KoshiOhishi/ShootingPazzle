@@ -22,10 +22,16 @@
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXShadowTestVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingFBXPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingFBXShadowTestVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingFBXVS.cso</FullPath>
@@ -35,6 +41,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingOBJPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingOBJShadowTestVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingOBJVS.cso</FullPath>
@@ -52,6 +61,9 @@
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJShadowTestVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -59,12 +71,6 @@
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\PostEffectTestVS.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\ShadowTestPS.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\ShadowTestVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\SpritePixelShader.cso</FullPath>

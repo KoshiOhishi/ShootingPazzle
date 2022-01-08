@@ -23,6 +23,31 @@ Stage::~Stage()
 	floors.clear();
 }
 
+void Stage::Initialize()
+{
+	//モデルセット
+	for (int i = 0; i < _countof(iodSquareBlock); i++) {
+		iodSquareBlock[i].Initialize();
+		iodSquareBlock[i].SetObjModel(SquareBlock::GetModel(i));
+	}
+	for (int i = 0; i < _countof(iodTriangleBlock); i++) {
+		iodTriangleBlock[i].Initialize();
+		iodTriangleBlock[i].SetObjModel(TriangleBlock::GetModel(i));
+	}
+	iodNormalFloor.Initialize();
+	iodNormalFloor.SetObjModel(NormalFloor::GetModel());
+	for (int i = 0; i < _countof(iodSwitchFloor); i++) {
+		iodSwitchFloor[i].Initialize();
+		iodSwitchFloor[i].SetObjModel(SwitchFloor::GetModel(i));
+	}
+	for (int i = 0; i < _countof(iodTurnFloor); i++) {
+		iodTurnFloor[i].Initialize();
+		iodTurnFloor[i].SetObjModel(TurnFloor::GetModel(i));
+	}
+	iodBreakFloor.Initialize();
+	iodBreakFloor.SetObjModel(BreakFloor::GetModel());
+}
+
 void Stage::LoadStage(std::string filename)
 {
 	//BaseBlockにポインタセット
@@ -30,7 +55,7 @@ void Stage::LoadStage(std::string filename)
 	targetBlockCount = 0;
 
 	//エフェクトは最初の読み込みのみ
-	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
 		effectTimer.SetTimer(0, 3500);
 		effectTimer.Start();
 	}
@@ -109,10 +134,10 @@ void Stage::LoadStage(std::string filename)
 void Stage::Update()
 {
 	//出現エフェクト
-	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
 		UpdateFirstEffect();
 	}
-	else if (GameUtility::GetNowPhase() == PHASE_CLEAR) {
+	else if (GameUtility::GetNowPhase() == PHASE_GAME_CLEAR) {
 		UpdateClearEffect();
 	}
 
@@ -131,31 +156,41 @@ void Stage::Update()
 		}
 		if (blocks[i]) blocks[i]->Update();
 	}
+
+	//描画用オブジェクト更新
+	for (int i = 0; i < _countof(iodSquareBlock); i++) {
+		iodSquareBlock[i].Update();
+	}
+	for (int i = 0; i < _countof(iodTriangleBlock); i++) {
+		iodTriangleBlock[i].Update();
+	}
+	iodNormalFloor.Update();
+	for (int i = 0; i < _countof(iodSwitchFloor); i++) {
+		iodSwitchFloor[i].Update();
+	}
+	for (int i = 0; i < _countof(iodTurnFloor); i++) {
+		iodTurnFloor[i].Update();
+	}
+	iodBreakFloor.Update();
 }
 
 void Stage::Draw()
 {
-	//床
-	NormalFloor::Draw();
-	TurnFloor::Draw();
-	BreakFloor::Draw();
-	SwitchFloor::Draw();
+	for (int i = 0; i < _countof(iodSquareBlock); i++) {
+		iodSquareBlock[i].Draw();
+	}
+	for (int i = 0; i < _countof(iodTriangleBlock); i++) {
+		iodTriangleBlock[i].Draw();
+	}
+	iodNormalFloor.Draw();
 
-	//ブロック
-	SquareBlock::Draw();
-	TriangleBlock::Draw();
-
-}
-
-void Stage::EndDraw()
-{
-	NormalFloor::EndDraw();
-	TurnFloor::EndDraw();
-	BreakFloor::EndDraw();
-	SwitchFloor::EndDraw();
-
-	SquareBlock::EndDraw();
-	TriangleBlock::EndDraw();
+	for (int i = 0; i < _countof(iodSwitchFloor); i++) {
+		iodSwitchFloor[i].Draw();
+	}
+	for (int i = 0; i < _countof(iodTurnFloor); i++) {
+		iodTurnFloor[i].Draw();
+	}
+	iodBreakFloor.Draw();
 }
 
 void Stage::UpdateFirstEffect()
@@ -173,7 +208,7 @@ void Stage::UpdateFirstEffect()
 	}
 
 	if (effectTimer.GetIsEnd()) {
-		GameUtility::SetNowPhase(PHASE_SETPOS);
+		GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
 	}
 }
 
@@ -219,6 +254,7 @@ void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short br
 		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
 		newBlock->SetBreakupCount(breakupCount);
 		newBlock->SetBlockColor(blockColor);
+		newBlock->SetPInstancingObjectDraw(iodSquareBlock);
 		blocks.emplace_back(newBlock);
 	}
 	else {
@@ -238,6 +274,7 @@ void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short br
 		else if (blockType == BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM) {
 			newBlock->SetTriangleType(TRIANGLETYPE_NO_RIGHTBOTTOM);
 		}
+		newBlock->SetPInstancingObjectDraw(iodTriangleBlock);
 		blocks.emplace_back(newBlock);
 	}
 
@@ -266,6 +303,22 @@ void Stage::StartEffectTimer(int start, int end, float speed)
 	effectTimer.Start();
 }
 
+void Stage::SetMasterPosition(const Vector3& pos)
+{
+	//ブロック
+	for (int i = 0; i < blocks.size(); i++) {
+		Vector3 v = blocks[i]->GetPosition();
+		v += pos;
+		blocks[i]->SetPosition(v);
+	}
+	//床
+	for (int i = 0; i < floors.size(); i++) {
+		Vector3 v = floors[i]->GetPosition();
+		v += pos;
+		floors[i]->SetPosition(v);
+	}
+}
+
 int Stage::CheckExistBlock(const StageVec2& stagePos)
 {
 	float x, z;
@@ -291,65 +344,76 @@ void Stage::AddFloor(const StageVec2& stagePos, int floorType)
 	if (floorType == FLOORTYPE_NORMAL) {
 		NormalFloor* newFloor = new NormalFloor;
 		newFloor->Initialize(stagePos);
+		newFloor->SetPInstancingObjectDraw(&iodNormalFloor);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_TURN_LEFT) {
 		TurnFloor* newFloor = new TurnFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetTurnType(TURNTYPE_LEFT);
+		newFloor->SetPInstancingObjectDraw(&iodTurnFloor[FLOORTYPE_TURN_LEFT]);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_TURN_RIGHT) {
 		TurnFloor* newFloor = new TurnFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetTurnType(TURNTYPE_RIGHT);
+		newFloor->SetPInstancingObjectDraw(&iodTurnFloor[FLOORTYPE_TURN_RIGHT]);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_TURN_UP) {
 		TurnFloor* newFloor = new TurnFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetTurnType(TURNTYPE_UP);
+		newFloor->SetPInstancingObjectDraw(&iodTurnFloor[FLOORTYPE_TURN_UP]);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_TURN_DOWN) {
 		TurnFloor* newFloor = new TurnFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetTurnType(TURNTYPE_DOWN);
+		newFloor->SetPInstancingObjectDraw(&iodTurnFloor[FLOORTYPE_TURN_DOWN]);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_BREAK) {
 		BreakFloor* newFloor = new BreakFloor;
 		newFloor->Initialize(stagePos);
+		newFloor->SetPInstancingObjectDraw(&iodBreakFloor);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_SWITCH_NONE) {
 		SwitchFloor* newFloor = new SwitchFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetSwitchColor(SWITCH_COLOR_NONE);
+		newFloor->SetPInstancingObjectDraw(iodSwitchFloor);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_SWITCH_RED) {
 		SwitchFloor* newFloor = new SwitchFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetSwitchColor(SWITCH_COLOR_RED);
+		newFloor->SetPInstancingObjectDraw(iodSwitchFloor);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_SWITCH_BLUE) {
 		SwitchFloor* newFloor = new SwitchFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetSwitchColor(SWITCH_COLOR_BLUE);
+		newFloor->SetPInstancingObjectDraw(iodSwitchFloor);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_SWITCH_YELLOW) {
 		SwitchFloor* newFloor = new SwitchFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetSwitchColor(SWITCH_COLOR_YELLOW);
+		newFloor->SetPInstancingObjectDraw(iodSwitchFloor);
 		floors.emplace_back(newFloor);
 	}
 	else if (floorType == FLOORTYPE_SWITCH_GREEN) {
 		SwitchFloor* newFloor = new SwitchFloor;
 		newFloor->Initialize(stagePos);
 		newFloor->SetSwitchColor(SWITCH_COLOR_GREEN);
+		newFloor->SetPInstancingObjectDraw(iodSwitchFloor);
 		floors.emplace_back(newFloor);
 	}
 }

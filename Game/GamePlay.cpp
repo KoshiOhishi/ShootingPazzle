@@ -15,20 +15,28 @@
 
 void GamePlay::Initialize()
 {
-	//ライト初期化
-	light.Initialize();
-	light.SetLightDir({ 0,-1,0 });
-	light.SetLightColor({ 1,1,1 });
-	Object3D::SetLight(&light);
+	Object3D::SetMatrixOrthographicLH(1280 * 0.15f, 720 * 0.15f, 0.1f, 150.0f);
 
 	//カメラ初期化
 	camera.Initialize();
-
 	//カメラをセット
 	Object3D::SetCamera(&camera);
 	Mouse::SetCamera(&camera);
 
+	//ライト初期化
+	light.Initialize();
+	light.SetLightDir({ 1,-1,1 });
+	light.SetLightColor({ 1,1,1 });
+	light.SetLightTarget({ 0,0,0 });
+	light.CalcLightPos(100.0f);
+	//ライトをセット
+	Object3D::SetLight(&light);
+
+	//フェーズセット
+	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
+
 	//ステージ取得
+	stage.Initialize();
 	stage.LoadStage(stagePass);
 
 	//ステージサイズからカメラ位置セット
@@ -44,9 +52,7 @@ void GamePlay::Initialize()
 	objBG.Initialize();
 	objBG.SetObjModel(&modelBG);
 	objBG.SetScale(5, 5, 5);
-
-	//フェーズ初期化
-	GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
+	objBG.SetDrawShadowToMyself(false);
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
@@ -109,6 +115,7 @@ void GamePlay::Update()
 			camera.SetRotation(f);
 		}
 	}
+
 #pragma endregion
 #pragma region サウンド
 
@@ -116,7 +123,6 @@ void GamePlay::Update()
 #pragma region オブジェクト
 
 	objBG.AddRotation(0, 0.1f, 0);
-
 
 	//リセット
 	Reset();
@@ -129,8 +135,8 @@ void GamePlay::Update()
 
 	//ImGui
 	ImguiHelper::BeginCommand("Settings");
-	ImguiHelper::SetWindowSize(200, 100);
-	ImguiHelper::SetWindowPos(1280 - 200, 0);
+	ImguiHelper::SetWindowSize(300, 300);
+	ImguiHelper::SetWindowPos(1280 - 300, 0);
 
 	//bool blnChk = false;
 	//ImGui::Checkbox("CheckboxTest", &blnChk);
@@ -151,11 +157,10 @@ void GamePlay::Update()
 	//ImGuiColorEditFlags_::ImGuiColorEditFlags_AlphaBar);
 	
 	ImguiHelper::EndCommand();
-
 #pragma endregion
 #pragma region アップデート
-	light.Update();
 	camera.Update();
+	light.Update();
 	objBG.Update();
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
@@ -170,33 +175,14 @@ void GamePlay::Update()
 
 void GamePlay::Draw()
 {
-	//背景スプライト描画ここから
-	Sprite::BeginDraw();
-	//spr->Draw();
-
-	//背景描画ここまで
-	DX12Util::ClearDepthBuffer();
-
-	//オブジェクト描画ここから
-	Object3D::BeginDraw();
 	//背景描画
 	objBG.Draw();
 
 	//ステージ描画
 	stage.Draw();
-	stage.EndDraw();
 
 	//弾描画
 	myBullet.Draw();
-	
-	//オブジェクト描画ここまで
-	DebugText::Print(stage.GetTargetBlockCount(), 0, 100);
-
-	//前景スプライト描画ここから
-	ImguiHelper::Draw();
-
-	//前景スプライト描画ここまで
-
 }
 
 void GamePlay::Reset()
@@ -212,7 +198,7 @@ void GamePlay::Reset()
 		camera.SetCameraParamAfterShoot();
 
 		//フェーズ初期化
-		GameUtility::SetNowPhase(PHASE_SETPOS);
+		GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
 
 		//ステージカラー初期化
 		GameUtility::SetStageColor(STAGE_COLOR_NONE);
@@ -221,7 +207,7 @@ void GamePlay::Reset()
 	//デバッグ用　完成版は消す
 	if (Keyboard::IsKeyTrigger(DIK_Q)) {
 
-		GameUtility::SetNowPhase(PHASE_FIRSTEFFECT);
+		GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
 		//ステージ取得
 		stage.LoadStage(stagePass);
@@ -243,9 +229,9 @@ void GamePlay::Reset()
 void GamePlay::CheckIsClear()
 {
 	//残り目標破壊ブロックが0だったらクリア
-	if (GameUtility::GetNowPhase() == PHASE_AFTERSHOOT && 
+	if (GameUtility::GetNowPhase() == PHASE_GAME_AFTERSHOOT && 
 		stage.GetTargetBlockCount() <= 0) {
-		GameUtility::SetNowPhase(PHASE_CLEAR);
+		GameUtility::SetNowPhase(PHASE_GAME_CLEAR);
 		//各種クリアエフェクトタイマースタート
 		stage.StartEffectTimer(0, 10000);
 		camera.StartEffectTimer(0, 5000);

@@ -19,10 +19,16 @@
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\FBXPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\FBXShadowTestVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\FBXVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingFBXPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingFBXShadowTestVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingFBXVS.cso</FullPath>
@@ -32,6 +38,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJShadowTestVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\InstancingOBJVS.cso</FullPath>
@@ -47,6 +56,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\OBJPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\OBJShadowTestVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>E:\K019G1301\個人制作\ShootingPazzle\x64\Release\OBJVS.cso</FullPath>

@@ -8,7 +8,10 @@
 class BaseFloor
 {
 protected:
+	//インスタンシング描画オブジェクト
 	InstancingObject object;
+	//インスタンシング描画親オブジェクトポインタ
+	InstancingObjectDraw* pIOD;
 
 	std::string objectName = "";
 
@@ -53,10 +56,22 @@ public:
 	virtual void UpdateCollision() = 0;
 
 	/// <summary>
-	/// 座標セット (Y座標固定)
+	/// 座標セット (ステージ座標基準)
 	/// </summary>
 	/// <param name="pos">ステージ上の座標</param>
 	void SetStagePos(const StageVec2& pos);
+
+	/// <summary>
+	/// 座標セット
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetPosition(const Vector3& pos) { object.SetPosition(pos); }
+
+	/// <summary>
+	/// インスタンシング描画親オブジェクトのポインタセット
+	/// </summary>
+	/// <param name="pIOD"></param>
+	void SetPInstancingObjectDraw(InstancingObjectDraw* pIOD) { this->pIOD = pIOD; }
 
 	/// <summary>
 	/// ブロックの種類を取得する

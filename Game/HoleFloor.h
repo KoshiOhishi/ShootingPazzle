@@ -21,16 +21,6 @@ public:
 	void Update() override;
 
 	/// <summary>
-	/// •`‰æ
-	/// </summary>
-	static void Draw();
-
-	/// <summary>
-	/// •`‰æI—¹ŠÖ”
-	/// </summary>
-	static void EndDraw();
-
-	/// <summary>
 	/// “–‚½‚è”»’èXV
 	/// </summary>
 	void UpdateCollision() override;

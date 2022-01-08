@@ -98,8 +98,6 @@ public:
 	void UpdateDispObject();
 	void UpdateStartLane();
 
-	void DrawEdit();
-
 	void DrawStartLane();
 	void DrawBlock();
 	void DrawFloor();

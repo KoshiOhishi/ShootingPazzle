@@ -36,7 +36,8 @@ void Camera::Initialize()
 void Camera::Update()
 {
 	//値の変更があった時だけ行列更新
-	if (dirty) {
+	if (dirty)
+	{
 		UpdateViewMatrix();
 		dirty = false;
 	}
@@ -143,56 +144,14 @@ void Camera::UpdateViewMatrix()
 	//(仮の)上方向
 	XMVECTOR upVector = XMLoadFloat3(&up);
 
-	/*
-	//カメラZ軸(視点方向)
-	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPosition, eyePosition);
-
-	//0ベクトルだと向きが定まらないので除外
-	assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
-	assert(!XMVector3IsInfinite(cameraAxisZ));
-	assert(!XMVector3Equal(upVector, XMVectorZero()));
-	assert(!XMVector3IsInfinite(upVector));
-
-	//ベクトルを正規化
-	cameraAxisZ = XMVector3Normalize(cameraAxisZ);
-
-
-	//カメラのX軸(右方向)
-	XMVECTOR cameraAxisX;
-	//X軸は上方向⇒Z軸の外積で求まる
-	cameraAxisX = XMVector3Cross(upVector, cameraAxisZ);
-	//ベクトルを正規化
-	cameraAxisX = XMVector3Normalize(cameraAxisX);
-
-
-	//カメラのY軸(上方向)
-	XMVECTOR cameraAxisY;
-	//Y軸はZ軸⇒X軸の外積で求まる
-	cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
-	//ベクトルを正規化
-	cameraAxisY = XMVector3Normalize(cameraAxisY);
-	*/
-
-	//カメラ回転行列
-	XMMATRIX matCameraRot = XMMatrixIdentity();
-
-	////カメラ座標系⇒ワールド座標系の変換行列
-	//matCameraRot.r[0] = cameraAxisX;
-	//matCameraRot.r[1] = cameraAxisY;
-	//matCameraRot.r[2] = cameraAxisZ;
-	//matCameraRot.r[3] = XMVectorSet(0, 0, 0, 1);
-
 	matRotation = XMMatrixIdentity();
 
 	RotateCamera({ 0,0,1 }, rotation.z);
 	RotateCamera({ 1,0,0 }, rotation.x);
 	RotateCamera({ 0,1,0 }, rotation.y);
 
-	matCameraRot *= matRotation;
-
-
 	//転置により逆行列(逆回転)を計算
-	matView = XMMatrixTranspose(matCameraRot);
+	matView = XMMatrixTranspose(matRotation);
 
 
 	//平行移動の逆を求める
@@ -242,11 +201,31 @@ const XMMATRIX& Camera::GetViewProjection()const
 	return tmp;
 }
 
+const Vector3 Camera::GetUpVec() const
+{
+	Vector3 tmp = { 0,1,0 };
+
+	Quaternion q1(matRotation);
+	Quaternion q2(tmp, q1);
+
+	return Vector3{ q2.x,q2.y,q2.z };
+}
+
 const float Camera::GetDistance()const
 {
 	XMVECTOR sub = XMLoadFloat3(&target) - XMLoadFloat3(&eye);
 	XMVECTOR t = XMVector3Length(sub);
-	return 1.0f;
+	return t.m128_f32[0];
+}
+
+const Vector3 Camera::GetCameraDir()const
+{
+	Vector3 tmp = { 0,0,1 };
+	
+	Quaternion q1(matRotation);
+	Quaternion q2(tmp, q1);
+
+	return Vector3{ q2.x,q2.y,q2.z };
 }
 
 void Camera::SetEye(const Vector3& eye)
@@ -336,22 +315,6 @@ void Camera::SetDistance(const float distance)
 	//視点座標からdistanceだけ前に注視点座標を配置
 	Vector3 newTarget = { eye.x, eye.y, eye.z + distance };
 	SetTarget(newTarget);
-	dirty = true;
-}
-
-void Camera::SetCameraRotation(const Vector3& axis, const float digrees)
-{
-	//ラジアンに変換
-	float rad = digrees * 3.14159265359f / 180;
-
-	//回転用クォータニオン生成
-	Quaternion q(Vector3(axis.x, axis.y, axis.z), rad);
-
-	//回転行列を生成
-	XMMATRIX matRot = Quaternion::Rotate(q);
-
-	matRotation = matRot;
-
 	dirty = true;
 }
 

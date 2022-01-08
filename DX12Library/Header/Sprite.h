@@ -38,6 +38,8 @@ private:
 
 //静的メンバ変数
 protected:
+	static std::vector<Sprite*> drawListBG;
+	static std::vector<Sprite*> drawListFG;
 
 	// 頂点数
 	static const int vertNum = 4;
@@ -47,12 +49,6 @@ protected:
 	static ComPtr<ID3D12PipelineState> spritePipelineState;
 	//射影行列
 	static XMMATRIX matProjection;
-	//頂点シェーダオブジェクト
-	static ComPtr<ID3DBlob> vsBlob;
-	//ピクセルシェーダオブジェクト
-	static ComPtr<ID3DBlob> psBlob;
-	//エラーオブジェクト
-	static ComPtr <ID3DBlob> errorBlob;
 	//デスクリプタヒープ
 	static ComPtr <ID3D12DescriptorHeap> descHeap;
 	//テクスチャバッファ
@@ -78,11 +74,6 @@ public:
 	/// <returns>読みこんだ画像のテクスチャ番号</returns>
 	static UINT LoadTexture(const std::wstring& filename);
 
-	/// <summary>
-	/// スプライトパイプラインをセット スプライト描画前に必ず書く
-	/// </summary>
-	static void BeginDraw();
-
 //メンバ関数
 public:
 
@@ -92,15 +83,41 @@ public:
 	void Initialize();
 
 	/// <summary>
-	/// 描画処理
+	/// 背景に描画
 	/// </summary>
-	void Draw();
+	void DrawBG();
+
+	/// <summary>
+	/// 前景に描画
+	/// </summary>
+	void DrawFG();
+
+	/// <summary>
+	/// コンテナに貯めた背景スプライトを一括描画
+	/// </summary>
+	static void DrawAllBG();
+
+	/// <summary>
+	/// コンテナに貯めた前景スプライトを一括描画
+	/// </summary>
+	static void DrawAllFG();
+
+private:
 
 	/// <summary>
 	/// 頂点バッファを更新
 	/// </summary>
 	void UpdateVertBuff();
 
+	/// <summary>
+	/// スプライトパイプラインをセット スプライト描画前に必ず書く
+	/// </summary>
+	static void BeginDraw();
+
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw();
 
 //メンバ変数
 protected:
@@ -190,7 +207,7 @@ public:
 	void SetRotation(const float rotation);
 
 	/// <summary>
-	/// スケールをセットする
+	/// スケールをセットする(2次元数値 1920x1080など)
 	/// </summary>
 	/// <param name="scale">スケール</param>
 	void SetScale(const Vector2& scale);

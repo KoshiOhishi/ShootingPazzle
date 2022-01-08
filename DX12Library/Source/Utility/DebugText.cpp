@@ -67,12 +67,11 @@ void DebugText::Print(float text, float x, float y, float scale)
 
 void DebugText::DrawAll()
 {
-	Sprite::BeginDraw();
 	//すべての文字のスプライトについて
 	for (int i = 0; i < spriteIndex; i++)
 	{
 		//スプライト描画
-		sprites[i].Draw();
+		sprites[i].DrawFG();
 	}
 
 	spriteIndex = 0;

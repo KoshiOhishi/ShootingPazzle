@@ -124,7 +124,7 @@ public: //メンバ関数
 	void CreateBuffers(ID3D12Device* device);
 
 	//描画
-	void Draw(int instancingCount = 1);
+	void Draw(int instancingCount = 1, bool isShadow = false);
 
 	//マテリアルパラメータ転送
 	void TransferMaterial();
@@ -155,6 +155,7 @@ public: //Getter
 	void SetRoughness(float _roughness) { material.roughness = _roughness; }
 
 private: //メンバ変数
+	static int loadCount;
 
 	//モデル名
 	std::string name;
@@ -199,11 +200,11 @@ private: //メンバ変数
 	D3D12_VERTEX_BUFFER_VIEW vbView = {};
 	//インデｋックスバッファビュー
 	D3D12_INDEX_BUFFER_VIEW ibView = {};
-	//SRV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1;
 	//定数バッファ（マテリアル）
 	ComPtr<ID3D12Resource> constBuffMaterial;
+	//テクスチャ番号
+	UINT texNumber;
 };
 

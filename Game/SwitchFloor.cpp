@@ -1,7 +1,6 @@
 #include "SwitchFloor.h"
 #include "GameUtility.h"
 
-InstancingObjectDraw SwitchFloor::instancingObjectDraw[2];
 ObjModel SwitchFloor::modelBox[2];
 
 void SwitchFloor::CreateModel()
@@ -14,10 +13,6 @@ void SwitchFloor::CreateModel()
 void SwitchFloor::StaticInitialize()
 {
 	CreateModel();
-	for (int i = 0; i < _countof(modelBox); i++) {
-		instancingObjectDraw[i].Initialize();
-		instancingObjectDraw[i].SetObjModel(&modelBox[i]);
-	}
 }
 
 void SwitchFloor::Initialize(const StageVec2& pos)
@@ -37,23 +32,8 @@ void SwitchFloor::Update()
 {
 	UpdateSwitchState();
 	UpdateSwitchColor();
-	object.Update(instancingObjectDraw[switchState]);
+	object.Update(pIOD[switchState]);
 	UpdateCollision();
-}
-
-void SwitchFloor::Draw()
-{
-	for (int i = 0; i < _countof(modelBox); i++) {
-		instancingObjectDraw[i].Update();
-		instancingObjectDraw[i].Draw();
-	}
-}
-
-void SwitchFloor::EndDraw()
-{
-	for (int i = 0; i < _countof(modelBox); i++) {
-		instancingObjectDraw[i].EndDraw();
-	}
 }
 
 void SwitchFloor::UpdateCollision()

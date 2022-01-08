@@ -40,11 +40,12 @@ void MyBullet::Initialize()
 	//矢印オブジェクト
 	objArrow.Initialize();
 	objArrow.SetObjModel(&modelArrow);
+	objArrow.SetDrawShadowToOther(false);
 
 	nextMoveInfo = {};
 
 	//エフェクトタイマー
-	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT) {
+	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
 		firstEffectTimer.SetTimer(0, 3500);
 		firstEffectTimer.Start();
 	}
@@ -57,9 +58,9 @@ void MyBullet::Initialize()
 
 void MyBullet::Update()
 {
-	if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT || 
-		GameUtility::GetNowPhase() == PHASE_SETPOS ||
-		GameUtility::GetNowPhase() == PHASE_SETANGLE) {
+	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT || 
+		GameUtility::GetNowPhase() == PHASE_GAME_SETPOS ||
+		GameUtility::GetNowPhase() == PHASE_GAME_SETANGLE) {
 		//出現エフェクト
 		UpdateFirstEffect();
 		//発射前更新
@@ -67,14 +68,14 @@ void MyBullet::Update()
 		//矢印更新
 		objArrow.Update();
 	}
-	else if (GameUtility::GetNowPhase() == PHASE_AFTERSHOOT) {
+	else if (GameUtility::GetNowPhase() == PHASE_GAME_AFTERSHOOT) {
 		//衝突が起こるかチェック
 		CheckCollision();
 		Move();
 		ApplyGravity();
 		ApplyFriction();
 	}
-	else if (GameUtility::GetNowPhase() == PHASE_CLEAR) {
+	else if (GameUtility::GetNowPhase() == PHASE_GAME_CLEAR) {
 		//衝突が起こるかチェック
 		CheckCollision();
 		UpdateClearEffect();
@@ -95,7 +96,7 @@ void MyBullet::Draw()
 	}
 
 	//矢印描画
-	if (GameUtility::GetNowPhase() == PHASE_SETANGLE) {
+	if (GameUtility::GetNowPhase() == PHASE_GAME_SETANGLE) {
 		objArrow.Draw();
 	}
 }
@@ -129,17 +130,17 @@ void MyBullet::UpdateClearEffect()
 void MyBullet::UpdateBeforeShoot()
 {
 	//射出前、位置を決めさせる
-	if (GameUtility::GetNowPhase() != PHASE_SETANGLE) {
+	if (GameUtility::GetNowPhase() != PHASE_GAME_SETANGLE) {
 
 		DecideShootPos();
 
 		//クリックで決定、角度セットフェーズに移る
-		if (GameUtility::GetNowPhase() == PHASE_SETPOS &&
+		if (GameUtility::GetNowPhase() == PHASE_GAME_SETPOS &&
 			Mouse::IsMouseButtonRelease(MouseButton::LEFT)) {
 			//矢印描画が崩れないように角度決定
 			DecideShootAngle();
 			//フェーズを移す
-			GameUtility::SetNowPhase(PHASE_SETANGLE);
+			GameUtility::SetNowPhase(PHASE_GAME_SETANGLE);
 		}
 	}
 	//射出前、角度を決めさせる
@@ -154,7 +155,7 @@ void MyBullet::UpdateBeforeShoot()
 			Shoot();
 
 			//フェーズを移す
-			GameUtility::SetNowPhase(PHASE_AFTERSHOOT);
+			GameUtility::SetNowPhase(PHASE_GAME_AFTERSHOOT);
 		}
 	}
 }
@@ -467,7 +468,7 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 		pos.z > floorPos.y + floorSize.y / 2;
 
 	//射出前、またはステージの外にいたら穴との判定を取らない
-	if (GameUtility::GetNowPhase() != PHASE_AFTERSHOOT || isOutside) {
+	if (GameUtility::GetNowPhase() != PHASE_GAME_AFTERSHOOT || isOutside) {
 		return isOutside;
 	}
 

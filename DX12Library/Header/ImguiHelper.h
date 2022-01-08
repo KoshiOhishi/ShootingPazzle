@@ -10,6 +10,12 @@
 
 #pragma comment(lib, "d3d12.lib")
 
+enum DrawPhase {
+	DRAW_PHASE_NONE,
+	DRAW_PHASE_BEGIN,
+	DRAW_PHASE_DRAWABLE,
+};
+
 class ImguiHelper
 {
 	using string = std::string;
@@ -19,6 +25,7 @@ class ImguiHelper
 private:
 	static ComPtr<ID3D12DescriptorHeap> heapForImgui;
 	static string windowName;
+	static int drawPhase;
 
 public:
 

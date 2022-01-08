@@ -2,7 +2,7 @@
 
 Texture2D<float4> tex0 : register(t0);	//0番スロットに設定されたテクスチャ
 Texture2D<float4> tex1 : register(t1);	//1番スロットに設定されたテクスチャ
-Texture2D<float> tex2 : register(t2); //1番スロットに設定されたテクスチャ
+Texture2D<float> depthTex : register(t2); //1番スロットに設定されたテクスチャ
 
 SamplerState smp : register(s0);		//0番スロットに設定されたサンプラー
 
@@ -31,12 +31,42 @@ float4 GetBlur(Texture2D<float4> tex, float2 uv, float windowSizeX, float window
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	float4 colortex[2];
+	float4 colortex[1];
 	colortex[0] = tex0.Sample(smp, input.uv);
+	//colortex[1] = tex1.Sample(smp, input.uv);
+	return colortex[0];
 	
-	float t = tex2.Sample(smp, input.uv);
-	colortex[1] = float4(t, t, t, 1);
-	return colortex[1];
+	//float dsp = pow(tex1.Sample(smp, input.uv), 20);
+	//return float4(dsp, dsp, dsp, 1);
+	
+	//float4 colortex1;
+
+	////色反転
+	//colortex0 = float4(1 - colortex0.rgb, 1);
+	////平均ぼかし
+	//colortex1 = GetBlur(tex1, input.uv, 1280, 720, 10);
+
+	//float4 color = colortex0;
+	//if (fmod(input.uv.y, 0.1f) < 0.05f) {
+	//	color = colortex1;
+	//}
+
+
+}
+
+float4 main_depth(VSOutput input) : SV_TARGET
+{
+	float4 colortex[3];
+	colortex[0] = tex0.Sample(smp, input.uv);
+	colortex[1] = tex1.Sample(smp, input.uv);
+	
+	//深度値テクスチャを1/4スケールで出力
+	float2 uv = float2(input.uv.x * 4, input.uv.y * 4);
+	float dep = depthTex.Sample(smp, uv);
+	colortex[2] = float4(dep, 0, 0, 1);
+
+	float4 output = (uv.x < 1.0f && uv.y < 1.0f) ? colortex[2] : colortex[0];
+	return output;
 	
 	//float dsp = pow(tex1.Sample(smp, input.uv), 20);
 	//return float4(dsp, dsp, dsp, 1);

@@ -1,7 +1,8 @@
 #include "RenderText.h"
 #include "DX12Util.h"
 
-
+std::vector<RenderText*> RenderText::drawListBG;
+std::vector<RenderText*> RenderText::drawListFG;
 //ルートシグネチャ
 Microsoft::WRL::ComPtr<ID3D12RootSignature> RenderText::rootSignature;
 //パイプラインステート
@@ -197,10 +198,54 @@ void RenderText::StaticInitialize()
 	);
 }
 
+void RenderText::PreDraw()
+{
+	//パイプラインステートの設定
+	DX12Util::GetCmdList()->SetPipelineState(pipelineState.Get());
+	//ルートシグネチャの設定
+	DX12Util::GetCmdList()->SetGraphicsRootSignature(rootSignature.Get());
+	//プリミティブ形状を設定
+	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	//デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
+	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+}
+
 void RenderText::SetFontData(const FontData& fontData)
 {
 	fd = fontData;
 	changeFD = true;
+}
+
+void RenderText::DrawStringBG(float x, float y, const wstring& str)
+{
+	Update(x, y, str);
+	drawListBG.emplace_back(this);
+}
+
+void RenderText::DrawStringFG(float x, float y, const wstring& str)
+{
+	Update(x, y, str);
+	drawListFG.emplace_back(this);
+}
+
+void RenderText::DrawAllBG()
+{
+	PreDraw();
+	for (auto& v : drawListBG) {
+		v->DrawString();
+	}
+	drawListBG.clear();
+}
+
+void RenderText::DrawAllFG()
+{
+	PreDraw();
+	for (auto& v : drawListFG) {
+		v->DrawString();
+	}
+	drawListFG.clear();
 }
 
 void RenderText::Initialize(const wstring& str)
@@ -488,7 +533,7 @@ bool RenderText::IsReCreate(const wstring& str)
 	return flag || changeFD;
 }
 
-void RenderText::DrawString(float x, float y, const wstring& str)
+void RenderText::Update(float x, float y, const wstring& str)
 {
 	//生成されていなかったらここで生成
 	if (number == -1) {
@@ -514,18 +559,10 @@ void RenderText::DrawString(float x, float y, const wstring& str)
 	constMap->color = color;
 	constMap->mat = matWorld * matProjection;		//行列の合成
 	constBuff->Unmap(0, nullptr);
+}
 
-	//パイプラインステートの設定
-	DX12Util::GetCmdList()->SetPipelineState(pipelineState.Get());
-	//ルートシグネチャの設定
-	DX12Util::GetCmdList()->SetGraphicsRootSignature(rootSignature.Get());
-	//プリミティブ形状を設定
-	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-	//デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
-	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
+void RenderText::DrawString()
+{
 	//頂点バッファをセット
 	DX12Util::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
 

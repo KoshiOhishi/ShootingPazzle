@@ -2,12 +2,20 @@
 
 VSOutput main(VSInput input)
 {
-	//ジオメトリシェーダに渡す値
+	//ピクセルシェーダに渡す値
 	VSOutput output;
-		
-	output.svpos = input.pos;
-	output.normal = input.normal;
+			
+	//ワールド行列によるスケーリング・回転を適用
+	float4 wnormal = normalize(mul(data.world, float4(input.normal, 0)));
+	float4 wpos = mul(data.world, input.pos);
+	
+	//output.svpos = mul(mul(lightcamera, data.world), input.pos);
+	output.svpos = mul(mul(viewproj, data.world), input.pos);
+	output.worldpos = wpos;
+	output.tpos = mul(mul(lightcamera, data.world), input.pos);
+	output.normal = wnormal;
 	output.uv = input.uv;
 
 	return output;
+
 }

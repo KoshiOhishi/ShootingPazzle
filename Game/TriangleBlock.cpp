@@ -1,7 +1,6 @@
 #include "TriangleBlock.h"
 #include "GameUtility.h"
 
-InstancingObjectDraw TriangleBlock::instancingObjectDraw[4];
 ObjModel TriangleBlock::modelTriangle[4];
 
 void TriangleBlock::CreateModel()
@@ -16,10 +15,6 @@ void TriangleBlock::CreateModel()
 void TriangleBlock::StaticInitialize()
 {
 	CreateModel();
-	for (int i = 0; i < _countof(modelTriangle); i++) {
-		instancingObjectDraw[i].Initialize();
-		instancingObjectDraw[i].SetObjModel(&modelTriangle[i]);
-	}
 }
 
 void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
@@ -77,23 +72,8 @@ void TriangleBlock::SetTriangleType(int shapeType)
 void TriangleBlock::Update()
 {
 	UpdateColor();
-	object.Update(instancingObjectDraw[breakupCount]);
+	object.Update(pIOD[triangleType]);
 	UpdateCollision();
-}
-
-void TriangleBlock::Draw()
-{
-	for (int i = 0; i < _countof(modelTriangle); i++) {
-		instancingObjectDraw[i].Update();
-		instancingObjectDraw[i].Draw();
-	}
-}
-
-void TriangleBlock::EndDraw()
-{
-	for (int i = 0; i < _countof(modelTriangle); i++) {
-		instancingObjectDraw[i].EndDraw();
-	}
 }
 
 void TriangleBlock::UpdateCollision()
