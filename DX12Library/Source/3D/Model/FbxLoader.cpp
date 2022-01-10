@@ -52,15 +52,8 @@ void FbxLoader::Finalize()
 
 void FbxLoader::LoadModelFromFile(FbxModel* pModel, const string& modelName)
 {
-    //モデルと同じ名前のフォルダから読み込む
-    const string directoryPath = baseDirectory + modelName + "/";
-    //拡張子.fbxを付加
-    const string fileName = modelName + ".fbx";
-    //連結してフルパスを得る
-    const string fullpath = directoryPath + fileName;
-
     //ファイル名を指定してFBXファイルを読み込む
-    if (!fbxImporter->Initialize(fullpath.c_str(), -1, fbxManager->GetIOSettings())) {
+    if (!fbxImporter->Initialize(modelName.c_str(), -1, fbxManager->GetIOSettings())) {
         assert(0);
     }
 
@@ -74,6 +67,25 @@ void FbxLoader::LoadModelFromFile(FbxModel* pModel, const string& modelName)
     if (pModel == nullptr) {
         pModel = new FbxModel();
     }
+
+    //名前取得
+    //「/」で検索
+    int findSlash = modelName.rfind("/");
+    if (findSlash != string::npos) {
+        pModel->name = modelName.substr(findSlash + 1);
+    }
+    else {
+        //「\」で検索
+        findSlash = modelName.rfind("\\");
+        if (findSlash != string::npos) {
+            pModel->name = modelName.substr(findSlash + 1);
+        }
+        else {
+            //ファイルが.exeと同じ階層にある
+            pModel->name = modelName.substr(findSlash + 1);
+        }
+    }
+
     pModel->name = modelName;
 
     //FBXノードの数を取得

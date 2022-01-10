@@ -62,15 +62,7 @@ private:
 
 	//表示用オブジェクト
 	Object3D objDispBlock;
-	ObjModel modelSquareBlock[4];
-	ObjModel modelTriangleBlock[4];
-
 	Object3D objDispFloor;
-	ObjModel modelNormalFloor;
-	ObjModel modelTurnFloor[4];
-	ObjModel modelBreakFloor;
-	ObjModel modelSwitchFloor[2];
-
 	StartLane startLane[2];
 
 	//SaveLoad用名前格納

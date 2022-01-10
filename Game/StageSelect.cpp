@@ -1,6 +1,9 @@
 #include "StageSelect.h"
 #include "Input.h"
 #include "GameUtility.h"
+#include "Easing.h"
+#include "DebugText.h"
+#include "SceneManager.h"
 
 const std::string StageSelect::STAGE_DIRECTORY = "StageData/";
 
@@ -24,7 +27,7 @@ StageSelect::~StageSelect()
 
 void StageSelect::Initialize()
 {
-	Object3D::SetMatrixOrthographicLH(1280 * 0.15f, 720 * 0.15f, 0.1f, 150.0f);
+	Object3D::SetMatrixOrthographicLH(1280 * 0.2f, 720 * 0.2f, 0.1f, 150.0f);
 
 	//カメラ初期化
 	camera.Initialize();
@@ -49,29 +52,177 @@ void StageSelect::Initialize()
 	//選択インデックス初期化
 	nowSelectStageIndex = 0;
 
+	//ステージ初期化
 	for (int i = 0; i < stages.size(); i++) {
-		stages[i]->Initialize();
+		stages[i]->Initialize(false);
+		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
 	}
+
+	//UIボタン初期化
+	float adjust = 10;
+	buttonUp.Initialize(	L"Resources/UI/UI_Arrow_Up.png",{});
+	buttonDown.Initialize(L"Resources/UI/UI_Arrow_Down.png", {});
+	buttonStart.Initialize(L"Resources/UI/UI_Start.png", {});
+	buttonUp.SetPosition(	{ 0 + adjust, DX12Util::GetWindowHeight() - buttonDown.GetSize().y - buttonUp.GetSize().y - adjust * 2 });
+	buttonDown.SetPosition(	{ 0 + adjust, DX12Util::GetWindowHeight() - buttonDown.GetSize().y - adjust });
+	buttonStart.SetPosition({ DX12Util::GetWindowWidth() - buttonStart.GetSize().x - adjust, DX12Util::GetWindowHeight() - buttonStart.GetSize().y - adjust});
+
+	//スプライト初期化
+	sprStageBG.Initialize();
+	sprStageBG.SetTexture(L"Resources/Stage_BG.png");
+	sprBackground.Initialize();
+	sprBackground.SetTexture(L"Resources/Background.png");
+	sprWriteAll.Initialize();
+	sprWriteAll.SetTexture(L"Resources/Write1280x720.png");
+	//タイマーセット
+	startGameTimer.SetTimer(0, 2000);
 }
 
 void StageSelect::Update()
 {
-	camera.Update();
 	light.Update();
+	UpdateCamera();
 
+	//ステージ決定前処理
+	if (startGameTimer.GetIsStart() == false) {
+		UpdateNowSelect();
+	}
+	//ステージ決定後処理
+	else {
+		UpdateAfterDecided();
+	}
+
+	UpdateStage();
+}
+
+void StageSelect::Draw()
+{
+	DrawStage();
+	DrawUI();
+	DrawWrite();
+}
+
+void StageSelect::UpdateCamera()
+{
+	//タイマー更新
+	changeSelectPosTimer.Update();
+
+	if (startGameTimer.GetIsStart() == false) {
+		if (changeSelectPosTimer.GetIsStart()) {
+			if (isMoveUp) {
+				Vector3 setPos = camera.GetPosition();
+				setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, (nowSelectStageIndex - 1) * 500 - 50, nowSelectStageIndex * 500 - 50, changeSelectPosTimer);
+				camera.SetPositionAndDistance(setPos, 15.0f);
+				light.SetLightTarget({ 0,0,setPos.z + 50 });
+				light.CalcLightPos(100.0f);
+			}
+			else {
+				Vector3 setPos = camera.GetPosition();
+				setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, (nowSelectStageIndex + 1) * 500 - 50, nowSelectStageIndex * 500 - 50, changeSelectPosTimer);
+				camera.SetPositionAndDistance(setPos, 15.0f);
+				light.SetLightTarget({ 0,0,setPos.z + 50 });
+				light.CalcLightPos(100.0f);
+			}
+		}
+		else {
+			Vector3 setPos = { 0,150,(float)nowSelectStageIndex * 500 - 50 };
+			camera.SetPositionAndDistance(setPos, 15.0f);
+			light.SetLightTarget({ 0,0,setPos.z + 50 });
+			light.CalcLightPos(100.0f);
+		}
+	}
+	else {
+		Vector3 setPos = { 0,150,(float)nowSelectStageIndex * 500 - 50 };
+		float addY = Easing::GetEaseValue(EASE_INBACK, 0, -150, startGameTimer);
+		float addZ = Easing::GetEaseValue(EASE_INBACK, 0, 50, startGameTimer);
+
+		setPos += {0, addY, addZ};
+
+		camera.SetPositionAndDistance(setPos, 15.0f);
+	}
+	camera.Update();
+}
+
+void StageSelect::UpdateNowSelect()
+{
+	//カーソルを上に
+	if (buttonUp.IsReleaseButton()) {
+		nowSelectStageIndex++;
+		if (nowSelectStageIndex >= STAGE_COUNT) { 
+			nowSelectStageIndex = STAGE_COUNT - 1;
+		}
+		else {
+			//タイマースタート
+			changeSelectPosTimer.SetTimer(0, 1000);
+			changeSelectPosTimer.Start();
+			//上向き移動
+			isMoveUp = true;
+		}
+	}
+
+	//カーソルを下に
+	if (buttonDown.IsReleaseButton()) {
+		nowSelectStageIndex--;
+		if (nowSelectStageIndex < 0) {
+			nowSelectStageIndex = 0; 
+		}
+		else {
+			//タイマースタート
+			changeSelectPosTimer.SetTimer(0, 1000);
+			changeSelectPosTimer.Start();
+			//下向き移動
+			isMoveUp = false;
+		}
+	}
+
+	//選択されたステージでゲームスタート
+	if (buttonStart.IsReleaseButton()) {
+		startGameTimer.Start();
+	}
+}
+
+void StageSelect::UpdateStage()
+{
+	//ステージ更新
 	for (int i = 0; i < stages.size(); i++) {
 		stages[i]->Update();
 	}
 }
 
-void StageSelect::Draw()
+void StageSelect::UpdateAfterDecided()
 {
-	DrawStageData();
+	startGameTimer.Update();
+
+	//エフェクト終了後にゲームプレイシーンへ
+	if (startGameTimer.GetIsEnd())
+	{
+		//ステージセット
+		GameUtility::SetNowStagePath(STAGE_DIRECTORY + "stage_" + std::to_string(nowSelectStageIndex + 1) + ".spb");
+		//シーンを移す
+		SceneManager::ChangeScene("GamePlay");
+	}
 }
 
-void StageSelect::DrawStageData()
+void StageSelect::DrawStage()
 {
-	//for (int i = 0; i < stages.size(); i++) {
-	stages[0]->Draw();
-	//}
+	sprBackground.DrawBG();
+	sprStageBG.DrawBG();
+
+	for (int i = 0; i < stages.size(); i++) {
+		stages[i]->Draw();
+	}
+}
+
+void StageSelect::DrawUI()
+{
+	buttonUp.Draw();
+	buttonDown.Draw();
+	buttonStart.Draw();
+}
+
+void StageSelect::DrawWrite()
+{
+	float a = Easing::GetEaseValue(EASE_INQUART, 0, 1, startGameTimer);
+	sprWriteAll.SetColor({1, 1, 1, a});
+	sprWriteAll.DrawFG();
 }

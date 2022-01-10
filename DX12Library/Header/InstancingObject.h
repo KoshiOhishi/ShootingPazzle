@@ -8,6 +8,11 @@ static const int MAX_ONCEDRAWCOUNT = 512;
 class InstancingObjectDraw :
 	public Object3D
 {
+	enum DrawPhase {
+		DRAW_PHASE_UPDATEABLE,
+		DRAW_PHASE_DRAWABLE,
+	};
+
 protected:
 	//FBXルートシグネチャ
 	static ComPtr<ID3D12RootSignature> instancingFbxRootsignature;
@@ -38,6 +43,8 @@ protected:
 	std::vector<InstanceData> datas;
 
 	int drawCount = 0;
+
+	int drawPhase = DRAW_PHASE_UPDATEABLE;
 
 public:
 

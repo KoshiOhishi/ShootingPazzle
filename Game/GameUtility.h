@@ -7,6 +7,8 @@
 //1マスの長さ
 #define ONE_CELL_LENGTH (float)5.0f
 
+const std::string modelDir = "Resources/Model/";
+
 /// <summary>
 /// ステージ座標 左上が原点
 /// </summary>
@@ -96,6 +98,8 @@ private:
 	static StageVec2* pStageSize;
 	//ステージの現在の色
 	static int stageColor;
+	//現在のステージパス
+	static std::string nowStagePath;
 
 public:
 	/// <summary>
@@ -106,9 +110,11 @@ public:
 	static void SetNowPhase(int phase) { nowPhase = phase; }
 	static void SetPStageSize(StageVec2* pStageSize) { GameUtility::pStageSize = pStageSize; }
 	static void SetStageColor(int stageColor) { GameUtility::stageColor = stageColor; }
+	static void SetNowStagePath(const std::string& path) { GameUtility::nowStagePath = path; }
 
 	static const int GetNowPhase() { return nowPhase; }
 	static const int GetStageColor() { return stageColor; }
+	static const std::string& GetNowStagePath() { return nowStagePath; }
 
 	/// <summary>
 	/// ワールド座標のxz平面からステージ上の座標に変換

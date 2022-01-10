@@ -294,24 +294,17 @@ void DX12Util::PreDrawBB()
 	// 3.画面クリアコマンドここから
 
 	// 全画面クリア R G B A		
-	float clearColor[4] = { 0.1,0.25,0.5 };
+	float clearColor[4] = { 0.1,0.25,0.5};
 	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
-	//cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 
 	// 3.画面クリアコマンドここまで
 
 	//4.ビューポートの設定コマンド
 	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, window_width, window_height));
-	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, window_width, window_height));
-
 	//5.シザー矩形の設定コマンド
-	D3D12_RECT scissorrect{};
-	scissorrect.left = 0; // 切り抜き座標左
-	scissorrect.right = scissorrect.left + window_width; // 切り抜き座標右
-	scissorrect.top = 0; // 切り抜き座標上
-	scissorrect.bottom = scissorrect.top + window_height; // 切り抜き座標下
-	cmdList->RSSetScissorRects(1, &scissorrect);
+	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, window_width, window_height));
 }
 
 void DX12Util::PostDrawBB()

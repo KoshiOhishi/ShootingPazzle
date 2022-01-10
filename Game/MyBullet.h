@@ -70,7 +70,7 @@ public:
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	void Initialize();
+	void Initialize(bool isFirst = true);
 
 	/// <summary>
 	/// XV

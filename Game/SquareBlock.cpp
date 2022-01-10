@@ -6,15 +6,10 @@ ObjModel SquareBlock::modelBox[4];
 void SquareBlock::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelBox[0].CreateFromOBJ("SquareBlock");
-	modelBox[1].CreateFromOBJ("SquareBlock_Breakable_1");
-	modelBox[2].CreateFromOBJ("SquareBlock_Breakable_2");
-	modelBox[3].CreateFromOBJ("SquareBlock_Breakable_3");
-}
-
-void SquareBlock::StaticInitialize()
-{
-	CreateModel();
+	modelBox[0].CreateFromOBJ(modelDir + "SquareBlock/SquareBlock.obj");
+	modelBox[1].CreateFromOBJ(modelDir + "SquareBlock_Breakable_1/SquareBlock_Breakable_1.obj");
+	modelBox[2].CreateFromOBJ(modelDir + "SquareBlock_Breakable_2/SquareBlock_Breakable_2.obj");
+	modelBox[3].CreateFromOBJ(modelDir + "SquareBlock_Breakable_3/SquareBlock_Breakable_3.obj");
 }
 
 void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)

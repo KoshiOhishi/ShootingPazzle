@@ -28,8 +28,6 @@ private:
 	MyBullet myBullet;
 	//ステージ
 	Stage stage;
-	//ステージパス
-	std::string stagePass = "../StageEditor/StageData/stage_4.spb";
 
 	//背景
 	Object3D objBG;

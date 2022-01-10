@@ -712,11 +712,19 @@ void InstancingObjectDraw::Update()
 		collider->Update();
 	}
 
+	drawPhase = DRAW_PHASE_DRAWABLE;
 }
 
 void InstancingObjectDraw::DrawPrivate()
 {
 	if (drawCount == 0) {
+		return;
+	}
+
+	//Update()を通らずに描画しようとしたらはじく
+	if (drawPhase == DRAW_PHASE_UPDATEABLE) {
+		//カウントを0に戻す
+		drawCount = 0;
 		return;
 	}
 
@@ -807,11 +815,18 @@ void InstancingObjectDraw::DrawPrivate()
 	}
 
 	drawCount = 0;
+	drawPhase = DRAW_PHASE_UPDATEABLE;
 }
 
 void InstancingObjectDraw::DrawShadow()
 {
-	if (drawCount == 0 || isDrawShadowToOther == false) {
+	if (drawCount == 0 || 
+		isDrawShadowToOther == false) {
+		return;
+	}
+
+	//Update()を通らずに描画しようとしたらはじく
+	if (drawPhase == DRAW_PHASE_UPDATEABLE) {
 		return;
 	}
 
@@ -941,7 +956,14 @@ void InstancingObjectDraw::SetObjModel(ObjModel* objModel)
 
 void InstancingObjectDraw::AddInstancingData(const InstanceData& constBuffData)
 {
-	//エラー起こるかも？
+	//DrawPrivate()を通過しないでデータ追加しようとしたとき、
+	//そのフレームでの最初の呼び出しになるので
+	//コンテナが溢れないようにdrawCountを0に戻してあげる
+	if (drawPhase == DRAW_PHASE_DRAWABLE) {
+		drawCount = 0;
+		drawPhase = DRAW_PHASE_UPDATEABLE;
+	}
+
 	datas[drawCount] = constBuffData;
 	drawCount++;
 }

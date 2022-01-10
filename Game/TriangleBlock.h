@@ -20,7 +20,6 @@ private:
 public:
 	static void CreateModel();
 	static ObjModel* GetModel(int index) { return &modelTriangle[index]; }
-	static void StaticInitialize();
 
 	/// <summary>
 	/// ‰Šú‰»

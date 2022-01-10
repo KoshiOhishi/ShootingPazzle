@@ -37,7 +37,7 @@ public:
 	Stage() {}
 	~Stage();
 
-	void Initialize();
+	void Initialize(bool isEnableEffect = true);
 
 	/// <summary>
 	/// ステージを読み込んで初期化

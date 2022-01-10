@@ -87,6 +87,9 @@
     <ClCompile Include="StageSelect.cpp">
       <Filter>ソース ファイル\シーン</Filter>
     </ClCompile>
+    <ClCompile Include="UISquareButton.cpp">
+      <Filter>ソース ファイル\オブジェクト</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlay.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="StageSelect.h">
       <Filter>ヘッダー ファイル\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="UISquareButton.h">
+      <Filter>ヘッダー ファイル\オブジェクト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,12 +6,7 @@ ObjModel BreakFloor::modelBox;
 void BreakFloor::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelBox.CreateFromOBJ("BreakFloor");
-}
-
-void BreakFloor::StaticInitialize()
-{
-	CreateModel();
+	modelBox.CreateFromOBJ(modelDir + "BreakFloor/BreakFloor.obj");
 }
 
 void BreakFloor::Initialize(const StageVec2& pos)

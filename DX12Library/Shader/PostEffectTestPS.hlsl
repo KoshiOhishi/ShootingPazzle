@@ -32,7 +32,7 @@ float4 GetBlur(Texture2D<float4> tex, float2 uv, float windowSizeX, float window
 float4 main(VSOutput input) : SV_TARGET
 {
 	float4 colortex[1];
-	colortex[0] = tex0.Sample(smp, input.uv);
+	colortex[0] = float4(tex0.Sample(smp, input.uv).xyz, 1);
 	//colortex[1] = tex1.Sample(smp, input.uv);
 	return colortex[0];
 	
@@ -57,8 +57,8 @@ float4 main(VSOutput input) : SV_TARGET
 float4 main_depth(VSOutput input) : SV_TARGET
 {
 	float4 colortex[3];
-	colortex[0] = tex0.Sample(smp, input.uv);
-	colortex[1] = tex1.Sample(smp, input.uv);
+	colortex[0] = float4(tex0.Sample(smp, input.uv).xyz, 1);
+	colortex[1] = float4(tex1.Sample(smp, input.uv).xyz, 1);
 	
 	//深度値テクスチャを1/4スケールで出力
 	float2 uv = float2(input.uv.x * 4, input.uv.y * 4);

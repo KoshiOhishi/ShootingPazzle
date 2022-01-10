@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//シーンセット
 	SceneManager::AddScene(new Editor(), "Editor");
-	SceneManager::SetScene("Editor");
+	SceneManager::ChangeScene("Editor");
 
 	//タイマー
 	timer = new Timer(0, INT_MAX);

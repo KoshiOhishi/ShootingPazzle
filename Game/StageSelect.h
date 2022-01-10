@@ -5,6 +5,9 @@
 #include "Light.h"
 #include "Camera.h"
 #include "Stage.h"
+#include "UISquareButton.h"
+#include "Sprite.h"
+
 class StageSelect :
     public Scene
 {
@@ -26,6 +29,34 @@ private:
     //現在選択されているステージインデックス
     int nowSelectStageIndex = 0;
 
+    //移動が上向きかどうか
+    bool isMoveUp = false;
+
+    //選択されているステージが変わった時に開始するタイマー
+    Timer changeSelectPosTimer;
+
+    //ゲーム開始エフェクトタイマー
+    Timer startGameTimer;
+
+    //UI 上ボタン
+    UISquareButton buttonUp;
+
+    //UI 下ボタン
+    UISquareButton buttonDown;
+
+    //UI STARTボタン
+    UISquareButton buttonStart;
+
+    //背景(白い丸)
+    Sprite sprStageBG;
+
+    //背景(黒)
+    Sprite sprBackground;
+
+    //前景(白)
+    Sprite sprWriteAll;
+
+
 public:
     StageSelect();
     ~StageSelect();
@@ -33,6 +64,13 @@ public:
     virtual void Update() override;
     virtual void Draw() override;
 
-    void DrawStageData();
+    void UpdateCamera();
+    void UpdateNowSelect();
+    void UpdateStage();
+    void UpdateAfterDecided();
+
+    void DrawStage();
+    void DrawUI();
+    void DrawWrite();
 };
 

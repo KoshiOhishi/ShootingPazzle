@@ -20,7 +20,7 @@ void MyBullet::CreateModel()
 	modelArrow.CreateSquareTex(8, "Arrow.png", { 1,1,1 });
 }
 
-void MyBullet::Initialize()
+void MyBullet::Initialize(bool isFirst)
 {
 	//パラメータ初期化
 	float z;
@@ -45,7 +45,7 @@ void MyBullet::Initialize()
 	nextMoveInfo = {};
 
 	//エフェクトタイマー
-	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
+	if (isFirst) {
 		firstEffectTimer.SetTimer(0, 3500);
 		firstEffectTimer.Start();
 	}
@@ -104,6 +104,9 @@ void MyBullet::Draw()
 void MyBullet::UpdateFirstEffect()
 {
 	if (firstEffectTimer.GetIsEnd() == true) {
+		if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
+			GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
+		}
 		return;
 	}
 
@@ -266,6 +269,8 @@ void MyBullet::CheckCollision()
 
 	//球が落ちきったら衝突判定を無視
 	if (position.y < -RADIUS * 3 * 0.5f) { return; }
+	//クリアエフェクト時は無視
+	if (velocity.y >= 1) { return; }
 
 	CheckBlockCollision();
 	CheckFloorCollision();
@@ -372,7 +377,7 @@ void MyBullet::CheckFloorCollision()
 		}
 		else {
 			//中心に近い位置に乗ったら有効
-			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH / 4;
+			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH / 3;
 			if (onFloor) {
 				//方向転換ブロック(左)
 				if (stage->GetFloors()[i]->GetObjectName() == "TurnFloor_Left") {

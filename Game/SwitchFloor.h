@@ -29,7 +29,6 @@ private:
 public:
 	static void CreateModel();
 	static ObjModel* GetModel(int index) { return &modelBox[index]; }
-	static void StaticInitialize();
 
 	/// <summary>
 	/// ‰Šú‰»

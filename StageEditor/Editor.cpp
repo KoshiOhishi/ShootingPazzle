@@ -9,7 +9,9 @@
 #include "FbxLoader.h"
 #include "ImguiHelper.h"
 #include "GameUtility.h"
+#include "NormalFloor.h"
 #include "TurnFloor.h"
+#include "BreakFloor.h"
 #include "SwitchFloor.h"
 
 #include "../DX12Library/imgui/imgui.h"
@@ -35,7 +37,7 @@ void Editor::Initialize()
 	light.SetLightDir({ 1,-1,1 });
 	light.SetLightColor({ 1,1,1 });
 	light.SetLightTarget({ 0,0,0 });
-	light.CalcLightPos(60.0f);
+	light.CalcLightPos(80.0f);
 	Object3D::SetLight(&light);
 
 	//フェーズ初期化
@@ -57,29 +59,10 @@ void Editor::Initialize()
 		startLane[i].Initialize(&stage.stageSize);
 	}
 #pragma region 表示用オブジェクト初期化
-	modelSquareBlock[0].CreateFromOBJ("SquareBlock");
-	modelSquareBlock[1].CreateFromOBJ("SquareBlock_Breakable_1");
-	modelSquareBlock[2].CreateFromOBJ("SquareBlock_Breakable_2");
-	modelSquareBlock[3].CreateFromOBJ("SquareBlock_Breakable_3");
-	modelTriangleBlock[0].CreateFromOBJ("TriangleBlock");
-	modelTriangleBlock[1].CreateFromOBJ("TriangleBlock_Breakable_1");
-	modelTriangleBlock[2].CreateFromOBJ("TriangleBlock_Breakable_2");
-	modelTriangleBlock[3].CreateFromOBJ("TriangleBlock_Breakable_3");
-
 	objDispBlock.Initialize();
-	objDispBlock.SetObjModel(&modelSquareBlock[0]);
-
-	modelNormalFloor.CreateFromOBJ("NormalFloor");
-	modelTurnFloor[TURNTYPE_LEFT].CreateFromOBJ("TurnFloor_Left");
-	modelTurnFloor[TURNTYPE_RIGHT].CreateFromOBJ("TurnFloor_Right");
-	modelTurnFloor[TURNTYPE_UP].CreateFromOBJ("TurnFloor_Up");
-	modelTurnFloor[TURNTYPE_DOWN].CreateFromOBJ("TurnFloor_Down");
-	modelSwitchFloor[SWITCH_STATE_OFF].CreateFromOBJ("SwitchFloor_OFF");
-	modelSwitchFloor[SWITCH_STATE_ON].CreateFromOBJ("SwitchFloor_ON");
-	modelBreakFloor.CreateFromOBJ("BreakFloor");
-
+	objDispBlock.SetObjModel(SquareBlock::GetModel(0));
 	objDispFloor.Initialize();
-	objDispFloor.SetObjModel(&modelNormalFloor);
+	objDispFloor.SetObjModel(NormalFloor::GetModel());
 #pragma endregion
 }
 
@@ -276,14 +259,14 @@ void Editor::UpdateDispObject()
 	objDispBlock.SetRotation({ 0, 0, 0 });
 
 	switch (blockType) {
-	case BLOCKTYPE_SQUARE:					objDispBlock.SetObjModel(&modelSquareBlock[breakupCount]); break;
-	case BLOCKTYPE_TRIANGLE_NO_LEFTTOP:		objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]);
+	case BLOCKTYPE_SQUARE:					objDispBlock.SetObjModel(SquareBlock::GetModel(breakupCount)); break;
+	case BLOCKTYPE_TRIANGLE_NO_LEFTTOP:		objDispBlock.SetObjModel(TriangleBlock::GetModel(breakupCount));
 											objDispBlock.SetRotation({ 0, 180, 0 }); break;
-	case BLOCKTYPE_TRIANGLE_NO_RIGHTTOP:	objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]);
+	case BLOCKTYPE_TRIANGLE_NO_RIGHTTOP:	objDispBlock.SetObjModel(TriangleBlock::GetModel(breakupCount));
 											objDispBlock.SetRotation({ 0, 270, 0 }); break;
-	case BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM:	objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]);
+	case BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM:	objDispBlock.SetObjModel(TriangleBlock::GetModel(breakupCount));
 											objDispBlock.SetRotation({ 0, 90, 0 }); break;
-	case BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM: objDispBlock.SetObjModel(&modelTriangleBlock[breakupCount]); break;
+	case BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM: objDispBlock.SetObjModel(TriangleBlock::GetModel(breakupCount)); break;
 	}
 
 	switch (blockColor) {
@@ -333,22 +316,22 @@ void Editor::UpdateDispObject()
 	objDispFloor.SetColor(1, 1, 1, 1);
 	objDispFloor.SetRotation({ 0, 0, 0 });
 	switch (floorType) {
-	case FLOORTYPE_NORMAL:			objDispFloor.SetObjModel(&modelNormalFloor); break;
-	case FLOORTYPE_TURN_LEFT:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_LEFT]); break;
-	case FLOORTYPE_TURN_RIGHT:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_RIGHT]); break;
-	case FLOORTYPE_TURN_UP:			objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_UP]);
+	case FLOORTYPE_NORMAL:			objDispFloor.SetObjModel(NormalFloor::GetModel()); break;
+	case FLOORTYPE_TURN_LEFT:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_LEFT)); break;
+	case FLOORTYPE_TURN_RIGHT:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_RIGHT)); break;
+	case FLOORTYPE_TURN_UP:			objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_UP));
 									objDispFloor.SetRotation({ 0, 180, 0 }); break;
-	case FLOORTYPE_TURN_DOWN:		objDispFloor.SetObjModel(&modelTurnFloor[TURNTYPE_DOWN]);
+	case FLOORTYPE_TURN_DOWN:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_DOWN));
 									objDispFloor.SetRotation({ 0, 180, 0 }); break;
-	case FLOORTYPE_BREAK:			objDispFloor.SetObjModel(&modelBreakFloor); break;
-	case FLOORTYPE_SWITCH_NONE:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]); break;
-	case FLOORTYPE_SWITCH_RED:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+	case FLOORTYPE_BREAK:			objDispFloor.SetObjModel(BreakFloor::GetModel()); break;
+	case FLOORTYPE_SWITCH_NONE:		objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_ON)); break;
+	case FLOORTYPE_SWITCH_RED:		objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
 									objDispFloor.SetColor(1, 0.66f, 0.66f, 1); break;
-	case FLOORTYPE_SWITCH_BLUE:		objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+	case FLOORTYPE_SWITCH_BLUE:		objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
 									objDispFloor.SetColor(0, 0, 1, 1); break;
-	case FLOORTYPE_SWITCH_YELLOW:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+	case FLOORTYPE_SWITCH_YELLOW:	objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
 									objDispFloor.SetColor(1, 1, 0, 1); break;
-	case FLOORTYPE_SWITCH_GREEN:	objDispFloor.SetObjModel(&modelSwitchFloor[SWITCH_STATE_OFF]);
+	case FLOORTYPE_SWITCH_GREEN:	objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
 									objDispFloor.SetColor(0, 1, 0, 1); break;
 	}
 }

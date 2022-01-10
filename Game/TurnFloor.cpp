@@ -6,15 +6,10 @@ ObjModel TurnFloor::modelBox[4];
 void TurnFloor::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelBox[TURNTYPE_LEFT].CreateFromOBJ("TurnFloor_Left");
-	modelBox[TURNTYPE_RIGHT].CreateFromOBJ("TurnFloor_Right");
-	modelBox[TURNTYPE_UP].CreateFromOBJ("TurnFloor_Up");
-	modelBox[TURNTYPE_DOWN].CreateFromOBJ("TurnFloor_Down");
-}
-
-void TurnFloor::StaticInitialize()
-{
-	CreateModel();
+	modelBox[TURNTYPE_LEFT].CreateFromOBJ(modelDir + "TurnFloor_Left/TurnFloor_Left.obj");
+	modelBox[TURNTYPE_RIGHT].CreateFromOBJ(modelDir + "TurnFloor_Right/TurnFloor_Right.obj");
+	modelBox[TURNTYPE_UP].CreateFromOBJ(modelDir + "TurnFloor_Up/TurnFloor_Up.obj");
+	modelBox[TURNTYPE_DOWN].CreateFromOBJ(modelDir + "TurnFloor_Down/TurnFloor_Down.obj");
 }
 
 void TurnFloor::Initialize(const StageVec2& pos)

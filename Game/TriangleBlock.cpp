@@ -6,15 +6,10 @@ ObjModel TriangleBlock::modelTriangle[4];
 void TriangleBlock::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelTriangle[0].CreateFromOBJ("TriangleBlock");
-	modelTriangle[1].CreateFromOBJ("TriangleBlock_Breakable_1");
-	modelTriangle[2].CreateFromOBJ("TriangleBlock_Breakable_2");
-	modelTriangle[3].CreateFromOBJ("TriangleBlock_Breakable_3");
-}
-
-void TriangleBlock::StaticInitialize()
-{
-	CreateModel();
+	modelTriangle[0].CreateFromOBJ(modelDir + "TriangleBlock/TriangleBlock.obj");
+	modelTriangle[1].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_1/TriangleBlock_Breakable_1.obj");
+	modelTriangle[2].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_2/TriangleBlock_Breakable_2.obj");
+	modelTriangle[3].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_3/TriangleBlock_Breakable_3.obj");
 }
 
 void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
@@ -72,7 +67,7 @@ void TriangleBlock::SetTriangleType(int shapeType)
 void TriangleBlock::Update()
 {
 	UpdateColor();
-	object.Update(pIOD[triangleType]);
+	object.Update(pIOD[breakupCount]);
 	UpdateCollision();
 }
 

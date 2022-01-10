@@ -45,7 +45,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//シーンセット
 	SceneManager::AddScene(new StageSelect(), "StageSelect");
 	SceneManager::AddScene(new GamePlay(), "GamePlay");
-	SceneManager::SetScene("GamePlay");
+	SceneManager::ChangeScene("StageSelect");
 
 	//タイマー
 	timer = new Timer(0, INT_MAX);
@@ -258,7 +258,7 @@ void Initialize(){
 
 	//ポストエフェクトの初期化
 	postEffect = new PostEffect();
-	postEffect->Initialize(true);
+	postEffect->Initialize();
 
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();

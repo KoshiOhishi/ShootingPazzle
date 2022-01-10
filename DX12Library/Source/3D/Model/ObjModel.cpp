@@ -46,10 +46,28 @@ void ObjModel::CreateFromOBJ(const std::string& modelname, bool smoothing)
 
 	//ファイルストリーム
 	std::fstream file;
+
+	//ディレクトリパス取得
+	string directoryPath;
+	//「/」で検索
+	int findSlash = modelname.rfind("/");
+	if (findSlash != string::npos) {
+		directoryPath = modelname.substr(0, findSlash + 1);
+	}
+	else {
+		//「\」で検索
+		findSlash = modelname.rfind("\\");
+		if (findSlash != string::npos) {
+			directoryPath = modelname.substr(0, findSlash + 1);
+		}
+		else {
+			//ファイルが.exeと同じ階層にある
+			directoryPath = "";
+		}
+	}
+
 	//.objファイルを開く
-	const string filename = modelname + ".obj";	//"triangle_mat.obj"
-	const string directoryPath = "Resources/" + modelname + "/";	//"Resources/triangle_mat/"
-	file.open(directoryPath + filename);	//"Resources/triangle_mat/triangle_mat.obj"
+	file.open(modelname);
 	//ファイルオープン失敗をチェック
 	if (file.fail()) {
 		assert(0);

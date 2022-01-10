@@ -7,35 +7,29 @@
 #include "DebugText.h"
 
 //静的メンバ変数の実体
-SceneManager::string SceneManager::nowScene;
-SceneManager::vector<Scene*> SceneManager::scenes;
-int SceneManager::sceneNum;
+std::string SceneManager::nowScene;
+std::string SceneManager::nextScene = "";
+std::unordered_map<std::string, Scene*> SceneManager::scenes;
 
 void SceneManager::AddScene(Scene* scene, const string& sceneName)
 {
 	scene->SetSceneName(sceneName);
-	scenes.push_back(scene);
+	scenes.emplace(sceneName, scene);
 }
 
-void SceneManager::SetScene(const string& sceneName)
+void SceneManager::ChangeScene(const string& sceneName)
 {
-	nowScene = sceneName;
-	for (int i = 0; i < scenes.size(); i++)
-	{
-		//現在シーンのみ適用
-		if (scenes[i]->GetSceneName() != nowScene) continue;
-
-		sceneNum = i;
-		Initialize();
-		return;
+	//シーンが見つかったら次のフレームからのシーンセット
+	if (scenes.find(sceneName) != scenes.end()){
+		nextScene = sceneName;
 	}
 }
 
 void SceneManager::DeleteScene()
 {
-	for (int i = 0; i < scenes.size(); i++)
+	for (auto itr = scenes.begin(); itr != scenes.end(); itr++)
 	{
-		delete scenes[i];
+		delete itr->second;
 	}
 
 	scenes.clear();
@@ -43,18 +37,24 @@ void SceneManager::DeleteScene()
 
 void SceneManager::Initialize()
 {
-	scenes[sceneNum]->Initialize();
+	scenes[nowScene]->Initialize();
 }
 
 void SceneManager::Update()
 {
-	scenes[sceneNum]->Update();
+	//フレームの頭でシーン切り替え
+	if (nowScene != nextScene) {
+		nowScene = nextScene;
+		Initialize();
+	}
+
+	scenes[nowScene]->Update();
 }
 
 void SceneManager::Draw()
 {
 	//リストに追加
-	scenes[sceneNum]->Draw();
+	scenes[nowScene]->Draw();
 
 	//デバッグテキストのスプライト前景描画登録
 	DebugText::DrawAll();

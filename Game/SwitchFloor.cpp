@@ -6,13 +6,8 @@ ObjModel SwitchFloor::modelBox[2];
 void SwitchFloor::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelBox[SWITCH_STATE_OFF].CreateFromOBJ("SwitchFloor_OFF");
-	modelBox[SWITCH_STATE_ON].CreateFromOBJ("SwitchFloor_ON");
-}
-
-void SwitchFloor::StaticInitialize()
-{
-	CreateModel();
+	modelBox[SWITCH_STATE_OFF].CreateFromOBJ(modelDir + "SwitchFloor_OFF/SwitchFloor_OFF.obj");
+	modelBox[SWITCH_STATE_ON].CreateFromOBJ(modelDir + "SwitchFloor_ON/SwitchFloor_ON.obj");
 }
 
 void SwitchFloor::Initialize(const StageVec2& pos)

@@ -1,6 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
-mtllib sky.mtl
+mtllib Sky.mtl
 v 14.877812 -98.768837 -4.834094
 v 12.655824 -98.768837 -9.194993
 v 9.194993 -98.768837 -12.655823

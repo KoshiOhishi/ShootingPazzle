@@ -13,7 +13,6 @@ private:
 public:
 	static void CreateModel();
 	static ObjModel* GetModel() { return &modelBox; }
-	static void StaticInitialize();
 
 	/// <summary>
 	/// ‰Šú‰»

@@ -10,14 +10,14 @@
 
 #pragma comment(lib, "d3d12.lib")
 
-enum DrawPhase {
-	DRAW_PHASE_NONE,
-	DRAW_PHASE_BEGIN,
-	DRAW_PHASE_DRAWABLE,
-};
-
 class ImguiHelper
 {
+	enum DrawPhase {
+		DRAW_PHASE_NONE,
+		DRAW_PHASE_BEGIN,
+		DRAW_PHASE_DRAWABLE,
+	};
+
 	using string = std::string;
 	template <typename T>
 	using ComPtr = Microsoft::WRL::ComPtr<T>;

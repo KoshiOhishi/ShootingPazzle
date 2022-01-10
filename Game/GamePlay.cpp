@@ -16,6 +16,9 @@
 void GamePlay::Initialize()
 {
 	Object3D::SetMatrixOrthographicLH(1280 * 0.15f, 720 * 0.15f, 0.1f, 150.0f);
+	
+	//フェーズセット
+	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
 	//カメラ初期化
 	camera.Initialize();
@@ -32,12 +35,9 @@ void GamePlay::Initialize()
 	//ライトをセット
 	Object3D::SetLight(&light);
 
-	//フェーズセット
-	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
-
 	//ステージ取得
 	stage.Initialize();
-	stage.LoadStage(stagePass);
+	stage.LoadStage(GameUtility::GetNowStagePath());
 
 	//ステージサイズからカメラ位置セット
 	float bounceY = camera.SetPosFromStageSize(stage.GetStageSize());
@@ -48,7 +48,7 @@ void GamePlay::Initialize()
 	myBullet.SetBounceInitPosY(bounceY);
 
 	//背景初期化
-	modelBG.CreateFromOBJ("sky");
+	modelBG.CreateFromOBJ(modelDir + "Sky/Sky.obj");
 	objBG.Initialize();
 	objBG.SetObjModel(&modelBG);
 	objBG.SetScale(5, 5, 5);
@@ -178,27 +178,33 @@ void GamePlay::Draw()
 	//背景描画
 	objBG.Draw();
 
+	//弾描画
+	myBullet.Draw();
+
 	//ステージ描画
 	stage.Draw();
 
-	//弾描画
-	myBullet.Draw();
 }
 
 void GamePlay::Reset()
 {
+	//開幕エフェクト中はリセットさせない
+	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
+		return;
+	}
+
 	if (Keyboard::IsKeyTrigger(DIK_R)) {
+		//フェーズ初期化
+		GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
+
 		//ステージ取得
-		stage.LoadStage(stagePass);
+		stage.LoadStage(GameUtility::GetNowStagePath());
 
 		//弾初期化
-		myBullet.Initialize();
+		myBullet.Initialize(false);
 
 		//念のためカメラを定位置に
 		camera.SetCameraParamAfterShoot();
-
-		//フェーズ初期化
-		GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
 
 		//ステージカラー初期化
 		GameUtility::SetStageColor(STAGE_COLOR_NONE);
@@ -210,7 +216,8 @@ void GamePlay::Reset()
 		GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
 		//ステージ取得
-		stage.LoadStage(stagePass);
+		stage.Initialize();
+		stage.LoadStage(GameUtility::GetNowStagePath());
 
 		//弾初期化
 		myBullet.Initialize();

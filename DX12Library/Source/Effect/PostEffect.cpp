@@ -465,22 +465,23 @@ void PostEffect::CreateGraphicsPipelineState(bool isDispDepthTex)
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;		//常に上書きルール
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	//ブレンドステートの設定
 	// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
-
 	blenddesc.BlendEnable = true; // ブレンドを有効にする
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
 
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースのアルファ値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0f-ソースのアルファ値
+
+	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
+	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
+	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
+
+	////透明部分の深度値書き込み禁止
+	//gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	// ブレンドステートに設定する
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;

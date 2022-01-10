@@ -128,13 +128,17 @@ void Sprite::FirstInit()
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
 
 	blenddesc.BlendEnable = true; // ブレンドを有効にする
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
 
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースのアルファ値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0f-ソースのアルファ値
+
+	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
+	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
+	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
+
+	////透明部分の深度値書き込み禁止
+	//gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	// ブレンドステートに設定する
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
@@ -152,8 +156,6 @@ void Sprite::FirstInit()
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0~255 指定の RGBA
 	gpipeline.SampleDesc.Count = 1; // 1 ピクセルにつき 1 回サンプリング
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	//デスクリプタテーブルの設定
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
@@ -167,7 +169,8 @@ void Sprite::FirstInit()
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	//サンプラーの設定
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MINIMUM_MIN_MAG_MIP_POINT);
+	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(
+		0, D3D12_FILTER_MINIMUM_MIN_MAG_MIP_LINEAR);
 
 	//ルートシグネチャの生成
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;

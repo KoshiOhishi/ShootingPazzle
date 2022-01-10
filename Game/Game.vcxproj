@@ -72,18 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -208,6 +212,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClCompile Include="SwitchFloor.cpp" />
     <ClCompile Include="TriangleBlock.cpp" />
     <ClCompile Include="TurnFloor.cpp" />
+    <ClCompile Include="UISquareButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseBlock.h" />
@@ -225,6 +230,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClInclude Include="SwitchFloor.h" />
     <ClInclude Include="TriangleBlock.h" />
     <ClInclude Include="TurnFloor.h" />
+    <ClInclude Include="UISquareButton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,7 +8,6 @@ class HoleFloor :
 private:
 
 public:
-	static void StaticInitialize();
 
 	/// <summary>
 	/// ‰Šú‰»
