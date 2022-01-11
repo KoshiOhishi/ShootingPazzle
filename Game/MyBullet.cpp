@@ -208,6 +208,7 @@ float MyBullet::DecideShootAngle()
 	Vector3 vec = mouse - center;
 	vec = vec.Normalize();
 	Vector3 arrowPos = center + vec * 10;
+	arrowPos.y = RADIUS * 2 + 0.05f;
 	objArrow.SetPosition(arrowPos);
 	objArrow.SetRotation(90, -angle * 180 / PI, 0);
 
@@ -265,7 +266,7 @@ void MyBullet::ApplyGravity()
 void MyBullet::CheckCollision()
 {
 	//レイ更新
-	UpdateRay();
+	UpdateRay(position, velocity);
 
 	//球が落ちきったら衝突判定を無視
 	if (position.y < -RADIUS * 3 * 0.5f) { return; }
@@ -280,69 +281,100 @@ void MyBullet::CheckBlockCollision()
 {
 	//レイとカプセルの距離の最短算出用
 	float alreadyHitDistance = FLT_MAX;
+	//動いた距離
+	float moveLength = 0;
+	//次フレームで球が移動する残りの長さ
+	float limitLength = (velocity * speed).Length();
 
-	//レイとブロックが衝突するか
-	for (int i = 0; i < stage->GetBlocks().size(); i++) {
+	Vector3 calcPos = position;
+	Vector3 calcVel = velocity;
+
+	//レイとブロックが衝突するか判定
+	//衝突したらそのブロックとぶつかるまで移動→残りの移動の長さ分で再び判定
+	//残りの移動の長さが0になる(次の移動で衝突しなくなる)まで判定
+	while (1) {
 		bool isCollision = false;
 
-		//球とブロックとの距離算出
-		Vector3 blockPos = stage->GetBlocks()[i]->GetPosition();
-		blockPos.y = position.y;	//xz平面で算出したい
-		float lengthSq = (blockPos - position).LengthSq();
+		//ブロック全て
+		for (int i = 0; i < stage->GetBlocks().size(); i++) {
 
-		//対象ブロックから遠かったら判定しない
-		bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH * 2;
-		if (nearFloor == false) {
-			continue;
-		}
+			//球とブロックとの距離算出
+			Vector3 blockPos = stage->GetBlocks()[i]->GetPosition();
+			blockPos.y = position.y;	//xz平面で算出したい
+			float lengthSq = (blockPos - position).LengthSq();
 
-		//ステージの色とブロックの色が同じかつブロックが黒以外なら球はブロックを通過できる
-		bool isSameColor = GameUtility::GetStageColor() == stage->GetBlocks()[i]->GetBlockColor();
-		if (stage->GetBlocks()[i]->GetBlockColor() != BLOCK_COLOR_NONE && isSameColor) {
-			continue;
-		}
+			//対象ブロックから遠かったら判定しない
+			bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH * 2;
+			if (nearFloor == false) {
+				continue;
+			}
 
-		//ブロックが持つ各カプセル判定において
-		for (int j = 0; j < stage->GetBlocks()[i]->GetCapsule().size(); j++) {
-			float distance = 0;
-			Vector3 normal = {};
-			//次フレーム移動長さ
-			float nextMoveLength = (velocity * speed).Length();
+			//ステージの色とブロックの色が同じかつブロックが黒以外なら球はブロックを通過できる
+			bool isSameColor = GameUtility::GetStageColor() == stage->GetBlocks()[i]->GetBlockColor();
+			if (stage->GetBlocks()[i]->GetBlockColor() != BLOCK_COLOR_NONE && isSameColor) {
+				continue;
+			}
 
-			//自球からのレイとブロックのカプセルが当たっているか
-			bool isHitRay2Capsule = Collision::CheckRay2Capsule(ray, stage->GetBlocks()[i]->GetCapsule()[j], &distance, nullptr, nullptr, &normal);
-			//次の移動で衝突するか
-			bool isHitNextMove = distance < nextMoveLength;
-			//既に当たったカプセルとの距離が短いか
-			bool isHitCorrectCapsule = distance < alreadyHitDistance;
+			//ブロックが持つ各カプセル判定において
+			for (int j = 0; j < stage->GetBlocks()[i]->GetCapsule().size(); j++) {
+				float distance = 0;
+				Vector3 normal = {};
+				//次フレーム移動長さ
+				float nextMoveLength = limitLength;
 
-			if (isHitRay2Capsule && isHitNextMove && isHitCorrectCapsule) {
-				//既に当たったカプセルとの距離更新
-				alreadyHitDistance = distance;
+				//自球からのレイとブロックのカプセルが当たっているか
+				bool isHitRay2Capsule = Collision::CheckRay2Capsule(ray, stage->GetBlocks()[i]->GetCapsule()[j], &distance, nullptr, nullptr, &normal);
+				//次の移動で衝突するか
+				bool isHitNextMove = distance < nextMoveLength;
+				//既に当たったカプセルとの距離が短いか
+				bool isHitCorrectCapsule = distance < alreadyHitDistance;
 
-				//NextMoveInfoに情報を書き込む
-				nextMoveInfo.isCollisionNextFrame = true;
+				if (isHitRay2Capsule && isHitNextMove && isHitCorrectCapsule) {
+					//既に当たったカプセルとの距離更新
+					alreadyHitDistance = distance;
 
-				//次の移動のベクトル計算(反射ベクトル)
-				nextMoveInfo.nextVel = (velocity - 2.0f * velocity.Dot(normal) * normal);
+					//次フレームでブロックと当たる
+					nextMoveInfo.isCollisionNextFrame = true;
 
-				//次の移動後の位置計算
-				Vector3& newPos = nextMoveInfo.nextPos;
-				newPos = position;
-				float mul = (distance / nextMoveLength);
-				//壁に当たるまで移動
-				newPos += velocity * speed * mul;
-				//新しい移動量で残りの長さを移動
-				newPos += nextMoveInfo.nextVel * speed * (1.0f - mul);
+					//次の移動後のベクトル計算(反射ベクトル)
+					nextMoveInfo.nextVel = (calcVel - 2.0f * calcVel.Dot(normal) * normal);
 
-				isCollision = true;
+					//次の移動後の位置計算
+					float mul = (distance / nextMoveLength);
+					nextMoveInfo.nextPos = calcPos;
+					//壁に当たるまで移動
+					nextMoveInfo.nextPos += calcVel * speed * mul;
+
+					//残りの長さを記憶
+					moveLength = limitLength * mul;
+
+					isCollision = true;
+				}
+			}
+
+			//ブロックと当たっていれば、壊れるまでのカウントを減らす
+			if (isCollision) {
+				stage->GetBlocks()[i]->DecrementBreakupCount();
 			}
 		}
 
-		//当たっていればブロックの壊れるまでのカウントを減らす
-		if (isCollision) {
-			stage->GetBlocks()[i]->DecrementBreakupCount();
+		//衝突しなかったら最後の衝突した位置から残りの長さを移動させて終了
+		if (isCollision == false) {
+			nextMoveInfo.nextPos += calcVel * limitLength;
+			break;
 		}
+
+		//次回の判定用に情報更新
+		//次フレームで球が移動する残りの長さ
+		limitLength -= moveLength;
+		//計算に使う位置と移動量
+		calcPos = nextMoveInfo.nextPos;
+		calcVel = nextMoveInfo.nextVel;
+		//今回の判定で移動した量
+		moveLength = 0;
+		alreadyHitDistance = FLT_MAX;
+		//レイを最後の衝突した位置と移動量に更新
+		UpdateRay(calcPos, calcVel);
 	}
 }
 
@@ -453,10 +485,10 @@ void MyBullet::CheckFloorCollision()
 	}
 }
 
-void MyBullet::UpdateRay()
+void MyBullet::UpdateRay(const Vector3& pos, const Vector3& dir)
 {
-	ray.start = position;
-	ray.dir = velocity;
+	ray.start = pos;
+	ray.dir = dir;
 }
 
 bool MyBullet::IsOutStage(const Vector3& pos)

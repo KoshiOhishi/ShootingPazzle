@@ -64,9 +64,11 @@ public:
 	/// <param name="type">イージングの種類</param>
 	/// <param name="start">t=0の時の値</param>
 	/// <param name="end">t=1の時の値</param>
-	/// <param name="t">0～1の間の数値</param>
+	/// <param name="timer">タイマー ※開始-終了を0より大きくすること</param>
+	/// <param name="startTime">t=0の時の時間 それより前は0固定</param>
+	/// <param name="endTime">t=1の時の時間　それ以降は1固定</param>
 	/// <returns>イージングをかけた値</returns>
-	static double GetEaseValue(int type, double start, double end, double t);
+	static double GetEaseValue(int type, double start, double end, const Timer& timer, double startTime = -1, double endTime = -1);
 
 	/// <summary>
 	/// イージングをかけた値を取得
@@ -74,11 +76,9 @@ public:
 	/// <param name="type">イージングの種類</param>
 	/// <param name="start">t=0の時の値</param>
 	/// <param name="end">t=1の時の値</param>
-	/// <param name="timer">タイマー ※開始-終了を0より大きくすること</param>
-	/// <param name="startTime">t=0の時の時間 それより前は0固定</param>
-	/// <param name="endTime">t=1の時の時間　それ以降は1固定</param>
+	/// <param name="t">0～1の間の数値</param>
 	/// <returns>イージングをかけた値</returns>
-	static double GetEaseValue(int type, double start, double end, const Timer& timer, double startTime = -1, double endTime = -1);
+	static double GetEaseValue(int type, double start, double end, double t);
 
 	static const std::string& GetFuncName(int type);
 };

@@ -8,6 +8,7 @@
 #include "FbxLoader.h"
 #include "ImguiHelper.h"
 #include "GameUtility.h"
+#include "Easing.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -54,17 +55,57 @@ void GamePlay::Initialize()
 	objBG.SetScale(5, 5, 5);
 	objBG.SetDrawShadowToMyself(false);
 
+	sprWhite.Initialize();
+	sprWhite.SetTexture(L"Resources/Write1280x720.png");
+
+	//タイマー初期化
+	whiteEffectTimer.SetTimer(0, 500);
+	whiteEffectTimer.Start();
+
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
 }
 
 void GamePlay::Update()
 {
-	// DirectX 毎フレーム処理 ここから
+	UpdateDebugCamera();
+	camera.Update();
+	light.Update();
+	//3Dサウンドで使用するリスナーの位置更新
+	Sound::Set3DListenerPosAndVec(camera);
+	UpdateImgui();
+	//リセット
+	Reset();
+	//クリアしているか？
+	CheckIsClear();
+	//背景オブジェクト更新
+	UpdateBG();
+	//弾更新
+	myBullet.Update();
+	//ステージ更新
+	stage.Update();
+	//エフェクト更新
+	UpdateEffect();
+}
 
-	//入力処理ここから
+void GamePlay::Draw()
+{
+	//背景描画
+	objBG.Draw();
 
-#pragma region カメラ
+	//弾描画
+	myBullet.Draw();
+
+	//ステージ描画
+	stage.Draw();
+
+	//エフェクト描画
+	DrawEffect();
+}
+
+void GamePlay::UpdateDebugCamera()
+{
+#ifdef _DEBUG
 	//カメラ移動
 	if (Keyboard::IsKeyPush(DIK_W)) {
 		camera.MoveCamera(0, 0, 1, false, true, false);
@@ -115,29 +156,34 @@ void GamePlay::Update()
 			camera.SetRotation(f);
 		}
 	}
+#endif // _DEBUG
+}
 
-#pragma endregion
-#pragma region サウンド
+void GamePlay::UpdateEffect()
+{
+	//完全に透明でなければ更新
+	if (whiteEffectTimer.GetIsEnd() == false) {
+		whiteEffectTimer.Update();
+		float alpha = Easing::GetEaseValue(EASE_INOUTEXPO, 1, 0, whiteEffectTimer);
+		Vector4 color = sprWhite.GetColor();
+		color.w = alpha;
+		sprWhite.SetColor(color);
+	}
+}
 
-#pragma endregion
-#pragma region オブジェクト
-
+void GamePlay::UpdateBG()
+{
 	objBG.AddRotation(0, 0.1f, 0);
+	objBG.Update();
+}
 
-	//リセット
-	Reset();
-
-	//クリアしているか？
-	CheckIsClear();
-
-#pragma endregion
-#pragma region ImGui
-
+void GamePlay::UpdateImgui()
+{
+#ifdef _DEBUG
 	//ImGui
 	ImguiHelper::BeginCommand("Settings");
 	ImguiHelper::SetWindowSize(300, 300);
 	ImguiHelper::SetWindowPos(1280 - 300, 0);
-
 	//bool blnChk = false;
 	//ImGui::Checkbox("CheckboxTest", &blnChk);
 	//int radio = 0;
@@ -155,35 +201,16 @@ void GamePlay::Update()
 	//float col4[4] = {};
 	//ImGui::ColorPicker4(" ColorPicker4", col4, ImGuiColorEditFlags_::ImGuiColorEditFlags_PickerHueWheel | 
 	//ImGuiColorEditFlags_::ImGuiColorEditFlags_AlphaBar);
-	
 	ImguiHelper::EndCommand();
-#pragma endregion
-#pragma region アップデート
-	camera.Update();
-	light.Update();
-	objBG.Update();
-	//3Dサウンドで使用するリスナーの位置更新
-	Sound::Set3DListenerPosAndVec(camera);
-
-	//弾更新
-	myBullet.Update();
-	//ステージ更新
-	stage.Update();
-
-#pragma endregion
+#endif
 }
 
-void GamePlay::Draw()
+void GamePlay::DrawEffect()
 {
-	//背景描画
-	objBG.Draw();
-
-	//弾描画
-	myBullet.Draw();
-
-	//ステージ描画
-	stage.Draw();
-
+	//完全に透明でなければ描画
+	if (whiteEffectTimer.GetIsEnd() == false) {
+		sprWhite.DrawFG();
+	}
 }
 
 void GamePlay::Reset()

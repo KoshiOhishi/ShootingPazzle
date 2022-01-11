@@ -33,10 +33,21 @@ private:
 	Object3D objBG;
 	ObjModel modelBG;
 
+	//前景(白)
+	Sprite sprWhite;
+	Timer whiteEffectTimer;
+
 public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void Draw() override;
+
+	void UpdateDebugCamera();
+	void UpdateEffect();
+	void UpdateBG();
+	void UpdateImgui();
+
+	void DrawEffect();
 
 	/// <summary>
 	/// 盤面をリセットし、フェーズをSET_POSにもどす

@@ -247,7 +247,7 @@ void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short br
 	//種類ごとにブロック追加
 	if (blockType == BLOCKTYPE_SQUARE) {
 		SquareBlock* newBlock = new SquareBlock;
-		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
+		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2 - 0.01f);//ブロックとブロックに挟まった時に備えて少しだけ当たり判定を小さくする
 		newBlock->SetBreakupCount(breakupCount);
 		newBlock->SetBlockColor(blockColor);
 		newBlock->SetPInstancingObjectDraw(iodSquareBlock);
@@ -255,7 +255,7 @@ void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short br
 	}
 	else {
 		TriangleBlock* newBlock = new TriangleBlock;
-		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2);
+		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2 - 0.01f);//ブロックとブロックに挟まった時に備えて少しだけ当たり判定を小さくする
 		newBlock->SetBreakupCount(breakupCount);
 		newBlock->SetBlockColor(blockColor);
 		if (blockType == BLOCKTYPE_TRIANGLE_NO_LEFTTOP) {

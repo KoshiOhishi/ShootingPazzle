@@ -145,7 +145,7 @@ public:
 	/// <summary>
 	/// レイの位置方角更新
 	/// </summary>
-	void UpdateRay();
+	void UpdateRay(const Vector3& pos, const Vector3& dir);
 
 	/// <summary>
 	/// 引数の位置がステージの外にあるか
