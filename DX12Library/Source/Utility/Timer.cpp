@@ -25,19 +25,31 @@ void Timer::SetTimer(int start, int end, bool isLoop, float speed)
 	nowTime = startTime;
 	endTime = end;
 	updateSpeed = speed;
+	if (updateSpeed < 0) {
+		updateSpeed = 1.0f;
+	}
+
 	this->isLoop = isLoop;
 	isStart = false;
+	if (start > end) {
+		updateSpeed *= -1.0f;
+	}
+	else if (start == end) {
+		updateSpeed = 0;
+	}
 }
 
 void Timer::Update()
 {
-
-	if (isStart == true)
-		nowTime += (GetClockNowTime() - prevTime) * updateSpeed;
+	int addTime = (GetClockNowTime() - prevTime) * updateSpeed;
+	if (isStart == true) {
+		nowTime += addTime;
+	}
 
 	prevTime = GetClockNowTime();
 
-	if (nowTime >= endTime)
+	if ((updateSpeed >= 0 && nowTime >= endTime) ||
+		(updateSpeed < 0 && nowTime <= endTime))
 	{
 		if (isLoop) {
 			nowTime -= (endTime - startTime);

@@ -1,5 +1,6 @@
 #pragma once
 #include "Sprite.h"
+#include "Timer.h"
 #include <string>
 
 /// <summary>
@@ -15,6 +16,8 @@ private:
 	Vector2 pos;
 	Vector2 size;
 
+	Timer pushedEffectTimer;
+
 public:
 	/// <summary>
 	/// 初期化
@@ -24,6 +27,11 @@ public:
 	void Initialize(const std::wstring& texturePath, const Vector2& pos);
 
 	void Draw();
+
+	/// <summary>
+	/// 押されたときのエフェクト開始
+	/// </summary>
+	void StartPushedEffect();
 
 	/// <summary>
 	/// マウスカーソルがボタンに重なっているかを返す

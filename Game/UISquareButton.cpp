@@ -1,5 +1,7 @@
 #include "UISquareButton.h"
 #include "Input.h"
+#include "DebugText.h"
+#include "Easing.h"
 
 void UISquareButton::Initialize(const std::wstring& texturePath, const Vector2& pos)
 {
@@ -18,16 +20,33 @@ void UISquareButton::Initialize(const std::wstring& texturePath, const Vector2& 
     //位置とサイズを格納
     this->pos = pos;
     size = textureOff.GetScale();
+
+    //タイマーは基本終了値にする
+    pushedEffectTimer.SetTimer(0,1);
+    pushedEffectTimer.Start();
 }
 
 void UISquareButton::Draw()
 {
+    //テクスチャの色更新
+    pushedEffectTimer.Update();
+    float color = Easing::GetEaseValue(EASE_OUTCUBIC, 6, 1, pushedEffectTimer);
+    textureOn.SetColor({ color, color, color, 1 });
+    textureOff.SetColor({ color, color, color, 1 });
+
     if (IsOverlapMouseCursol()) {
         textureOn.DrawFG();
     }
     else {
         textureOff.DrawFG();
     }
+
+}
+
+void UISquareButton::StartPushedEffect()
+{
+    pushedEffectTimer.SetTimer(0, 750);
+    pushedEffectTimer.Start();
 }
 
 bool UISquareButton::IsOverlapMouseCursol()

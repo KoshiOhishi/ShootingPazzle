@@ -147,6 +147,7 @@ void StageSelect::UpdateNowSelect()
 {
 	//カーソルを上に
 	if (buttonUp.IsReleaseButton()) {
+		buttonUp.StartPushedEffect();
 		nowSelectStageIndex++;
 		if (nowSelectStageIndex >= STAGE_COUNT) { 
 			nowSelectStageIndex = STAGE_COUNT - 1;
@@ -162,6 +163,7 @@ void StageSelect::UpdateNowSelect()
 
 	//カーソルを下に
 	if (buttonDown.IsReleaseButton()) {
+		buttonDown.StartPushedEffect();
 		nowSelectStageIndex--;
 		if (nowSelectStageIndex < 0) {
 			nowSelectStageIndex = 0; 
@@ -177,6 +179,7 @@ void StageSelect::UpdateNowSelect()
 
 	//選択されたステージでゲームスタート
 	if (buttonStart.IsReleaseButton()) {
+		buttonStart.StartPushedEffect();
 		startGameTimer.Start();
 	}
 }
