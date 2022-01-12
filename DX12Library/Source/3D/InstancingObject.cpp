@@ -5,11 +5,11 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 ComPtr<ID3D12RootSignature> InstancingObjectDraw::instancingFbxRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> InstancingObjectDraw::instancingFbxPipelinestate = nullptr;
+ComPtr<ID3D12PipelineState> InstancingObjectDraw::instancingFbxPipelinestate[PIPELINE_COUNT] = {};
 ComPtr<ID3D12RootSignature> InstancingObjectDraw::shadowInstancingFbxRootsignature = nullptr;
 ComPtr<ID3D12PipelineState> InstancingObjectDraw::shadowInstancingFbxPipelinestate = nullptr;
 ComPtr<ID3D12RootSignature> InstancingObjectDraw::instancingObjRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> InstancingObjectDraw::instancingObjPipelinestate = nullptr;
+ComPtr<ID3D12PipelineState> InstancingObjectDraw::instancingObjPipelinestate[PIPELINE_COUNT] = {};
 ComPtr<ID3D12RootSignature> InstancingObjectDraw::shadowInstancingObjRootsignature = nullptr;
 ComPtr<ID3D12PipelineState> InstancingObjectDraw::shadowInstancingObjPipelinestate = nullptr;
 
@@ -144,22 +144,6 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 
-	// レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;    // RBGA全てのチャンネルを描画
-	blenddesc.BlendEnable = true;
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	// ブレンドステートの設定
-	gpipeline.BlendState.RenderTarget[0] = blenddesc;
-	gpipeline.BlendState.RenderTarget[1] = blenddesc;
-
 
 	//透明部分の深度値書き込み禁止
 	gpipeline.BlendState.AlphaToCoverageEnable = true;
@@ -220,20 +204,69 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 
 		gpipeline.pRootSignature = instancingObjRootsignature.Get();
 
-		// グラフィックスパイプラインの生成
-		result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(instancingObjPipelinestate.ReleaseAndGetAddressOf()));
-		if (FAILED(result)) { assert(0); }
-
 	}
 	else if (objectType == ObjectType::OBJECTTYPE_INSTANCING_FBX) {
 		result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(instancingFbxRootsignature.ReleaseAndGetAddressOf()));
 		if (FAILED(result)) { assert(0); }
 
 		gpipeline.pRootSignature = instancingFbxRootsignature.Get();
+	}
 
-		// グラフィックスパイプラインの生成
-		result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(instancingFbxPipelinestate.ReleaseAndGetAddressOf()));
-		if (FAILED(result)) { assert(0); }
+	for (int i = 0; i < PIPELINE_COUNT; i++) {
+		//ブレンドステートの設定
+		// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
+		D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
+		blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
+
+		blenddesc.BlendEnable = true; // ブレンドを有効にする
+
+		blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
+
+		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
+		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
+		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
+
+		switch (i) {
+		case OBJECT3D_BLENDMODE_NORMAL:
+			blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+			break;
+		case OBJECT3D_BLENDMODE_ADD:
+			blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blenddesc.DestBlend = D3D12_BLEND_ONE;
+			break;
+		case OBJECT3D_BLENDMODE_SUB:
+			blenddesc.SrcBlend = D3D12_BLEND_ZERO;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_COLOR;
+			break;
+		case OBJECT3D_BLENDMODE_MUL:
+			blenddesc.SrcBlend = D3D12_BLEND_ZERO;
+			blenddesc.DestBlend = D3D12_BLEND_SRC_COLOR;
+			break;
+		case OBJECT3D_BLENDMODE_SCREEN:
+			blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+			blenddesc.DestBlend = D3D12_BLEND_ONE;
+			break;
+		case OBJECT3D_BLENDMODE_REVERSE:
+			blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_COLOR;
+			break;
+		}
+
+		// ブレンドステートに設定する
+		gpipeline.BlendState.RenderTarget[0] = blenddesc;
+		gpipeline.BlendState.RenderTarget[1] = blenddesc;
+
+		if (objectType == OBJECTTYPE_INSTANCING_OBJ) {
+			// グラフィックスパイプラインの生成
+			result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(instancingObjPipelinestate[i].ReleaseAndGetAddressOf()));
+			if (FAILED(result)) { assert(0); }
+		}
+		else if (objectType == OBJECTTYPE_INSTANCING_FBX) {
+			// グラフィックスパイプラインの生成
+			result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(instancingFbxPipelinestate[i].ReleaseAndGetAddressOf()));
+			if (FAILED(result)) { assert(0); }
+		}
 	}
 
 }
@@ -753,8 +786,15 @@ void InstancingObjectDraw::DrawPrivate()
 					//ルートシグネチャの設定
 					DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingObjRootsignature.Get());
 					//パイプラインステートの設定
-					DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate.Get());
+					DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate[pipelineIndex].Get());
 				}
+				//前回の描画に使用されたパイプラインのインデックスと今回使うものが違うなら
+				//ここで切り替え
+				else if (pipelineIndex != prevPipelineIndex) {
+					//パイプラインステートの設定
+					DX12Util::GetCmdList()->SetPipelineState(instancingObjPipelinestate[pipelineIndex].Get());
+				}
+				prevPipelineIndex = pipelineIndex;
 
 				//定数バッファビューをセット
 				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
@@ -784,9 +824,17 @@ void InstancingObjectDraw::DrawPrivate()
 				if (objectType != prevDrawObjectType) {
 					//ルートシグネチャの設定
 					DX12Util::GetCmdList()->SetGraphicsRootSignature(instancingFbxRootsignature.Get());
-					//パイプラインステートの設定
-					DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate.Get());
 				}
+
+				//前回の描画に使用されたパイプラインのインデックスと今回使うものが違うなら
+				//ここで切り替え
+				static int prevPipelineIndex = -1;
+				if (pipelineIndex != prevPipelineIndex) {
+					//パイプラインステートの設定
+					DX12Util::GetCmdList()->SetPipelineState(instancingFbxPipelinestate[pipelineIndex].Get());
+				}
+				prevPipelineIndex = pipelineIndex;
+
 				//定数バッファビューをセット
 				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
 				//定数バッファビューをセット

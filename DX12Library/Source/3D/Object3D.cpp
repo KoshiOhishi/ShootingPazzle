@@ -21,14 +21,15 @@ Light* Object3D::light = nullptr;
 ComPtr <ID3D12DescriptorHeap> Object3D::descHeapSRV = nullptr;
 ComPtr <ID3D12DescriptorHeap> Object3D::descHeapDepthSRV = nullptr;
 ComPtr<ID3D12RootSignature> Object3D::fbxRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> Object3D::fbxPipelinestate = nullptr;
+ComPtr<ID3D12PipelineState> Object3D::fbxPipelinestate[PIPELINE_COUNT] = {};
 ComPtr<ID3D12RootSignature> Object3D::shadowFbxRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> Object3D::shadowFbxPipelinestate = nullptr;
+ComPtr<ID3D12PipelineState> Object3D::shadowFbxPipelinestate = {};
 ComPtr<ID3D12RootSignature> Object3D::objRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> Object3D::objPipelinestate = nullptr;
+ComPtr<ID3D12PipelineState> Object3D::objPipelinestate[PIPELINE_COUNT] = {};
 ComPtr<ID3D12RootSignature> Object3D::shadowObjRootsignature = nullptr;
-ComPtr<ID3D12PipelineState> Object3D::shadowObjPipelinestate = nullptr;
+ComPtr<ID3D12PipelineState> Object3D::shadowObjPipelinestate = {};
 int Object3D::prevDrawObjectType = -1;
+int Object3D::prevPipelineIndex = -1;
 std::vector<Object3D*> Object3DManager::pObject3DList;
 int Object3D::loadCount = 0;
 XMMATRIX Object3D::matOrthographicLH = XMMatrixOrthographicLH(1280 * 0.5f, 720 * 0.5f, 1, 100);
@@ -183,30 +184,14 @@ void Object3D::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData
 	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 	
+	//透明部分の深度値書き込み禁止
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
+
 	// デプスステンシルステート
 	//標準的な設定(深度テストを行う、書き込み許可、深度が小さければ合格)
 	gpipeline.DepthStencilState.DepthEnable = true;
 	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-
-	// レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;    // RBGA全てのチャンネルを描画
-	blenddesc.BlendEnable = true;
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	// ブレンドステートの設定
-	gpipeline.BlendState.RenderTarget[0] = blenddesc;
-	gpipeline.BlendState.RenderTarget[1] = blenddesc;
-
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	// 深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
@@ -240,6 +225,7 @@ void Object3D::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData
 	samplerDesc[0].MipLODBias = 0.0f;
 	samplerDesc[0].ShaderRegister = 0;
 	samplerDesc[0].RegisterSpace = 0;
+
 	//影用
 	samplerDesc[1] = samplerDesc[0];
 	samplerDesc[1].AddressU = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
@@ -263,21 +249,69 @@ void Object3D::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData
 		if (FAILED(result)) { assert(0); }
 
 		gpipeline.pRootSignature = objRootsignature.Get();
-
-		// グラフィックスパイプラインの生成
-		result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(objPipelinestate.ReleaseAndGetAddressOf()));
-		if (FAILED(result)) { assert(0); }
-
 	}
 	else if (objectType == ObjectType::OBJECTTYPE_FBX) {
 		result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(fbxRootsignature.ReleaseAndGetAddressOf()));
 		if (FAILED(result)) { assert(0); }
 
 		gpipeline.pRootSignature = fbxRootsignature.Get();
+	}
 
-		// グラフィックスパイプラインの生成
-		result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(fbxPipelinestate.ReleaseAndGetAddressOf()));
-		if (FAILED(result)) { assert(0); }
+	for (int i = 0; i < PIPELINE_COUNT; i++) {
+		//ブレンドステートの設定
+		// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
+		D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
+		blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
+
+		blenddesc.BlendEnable = true; // ブレンドを有効にする
+
+		blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
+
+		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
+		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
+		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
+
+		switch (i) {
+		case OBJECT3D_BLENDMODE_NORMAL:
+			blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+			break;
+		case OBJECT3D_BLENDMODE_ADD:
+			blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blenddesc.DestBlend = D3D12_BLEND_ONE;
+			break;
+		case OBJECT3D_BLENDMODE_SUB:
+			blenddesc.SrcBlend = D3D12_BLEND_ZERO;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_COLOR;
+			break;
+		case OBJECT3D_BLENDMODE_MUL:
+			blenddesc.SrcBlend = D3D12_BLEND_ZERO;
+			blenddesc.DestBlend = D3D12_BLEND_SRC_COLOR;
+			break;
+		case OBJECT3D_BLENDMODE_SCREEN:
+			blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+			blenddesc.DestBlend = D3D12_BLEND_ONE;
+			break;
+		case OBJECT3D_BLENDMODE_REVERSE:
+			blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_COLOR;
+			break;
+		}
+
+		// ブレンドステートに設定する
+		gpipeline.BlendState.RenderTarget[0] = blenddesc;
+		gpipeline.BlendState.RenderTarget[1] = blenddesc;
+
+		if (objectType == ObjectType::OBJECTTYPE_OBJ) {
+			// グラフィックスパイプラインの生成
+			result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(objPipelinestate[i].ReleaseAndGetAddressOf()));
+			if (FAILED(result)) { assert(0); }
+		}
+		else if (objectType == ObjectType::OBJECTTYPE_FBX) {
+			// グラフィックスパイプラインの生成
+			result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(fbxPipelinestate[i].ReleaseAndGetAddressOf()));
+			if (FAILED(result)) { assert(0); }
+		}
 	}
 
 }
@@ -352,25 +386,9 @@ void Object3D::CreateShadowObjGraphicsPipeline()
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-	//ブレンドステートの設定
-	// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
-	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
-
-	blenddesc.BlendEnable = true; // ブレンドを有効にする
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
-
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースのアルファ値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0f-ソースのアルファ値
 
 	//透明部分の深度値書き込み禁止
 	gpipeline.BlendState.AlphaToCoverageEnable = true;
-
-	// ブレンドステートに設定する
-	//gpipeline.BlendState.RenderTarget[0]
 
 
 	//頂点レイアウトの設定
@@ -422,9 +440,10 @@ void Object3D::CreateShadowObjGraphicsPipeline()
 	// パイプラインにルートシグネチャをセット
 	gpipeline.pRootSignature = shadowObjRootsignature.Get();
 
-	//パイプラインステートの生成
-	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(shadowObjPipelinestate.ReleaseAndGetAddressOf()));
-	assert(SUCCEEDED(result));
+	// グラフィックスパイプラインの生成
+	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(shadowObjPipelinestate.ReleaseAndGetAddressOf()));
+	if (FAILED(result)) { assert(0); }
+	
 }
 
 void Object3D::CreateShadowFbxGraphicsPipeline()
@@ -516,26 +535,9 @@ void Object3D::CreateShadowFbxGraphicsPipeline()
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-	//ブレンドステートの設定
-	// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
-	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
-
-	blenddesc.BlendEnable = true; // ブレンドを有効にする
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
-
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースのアルファ値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0f-ソースのアルファ値
 
 	//透明部分の深度値書き込み禁止
 	gpipeline.BlendState.AlphaToCoverageEnable = true;
-
-	// ブレンドステートに設定する
-	//gpipeline.BlendState.RenderTarget[0]
-
 
 	//頂点レイアウトの設定
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
@@ -589,9 +591,9 @@ void Object3D::CreateShadowFbxGraphicsPipeline()
 	// パイプラインにルートシグネチャをセット
 	gpipeline.pRootSignature = shadowFbxRootsignature.Get();
 
-	//パイプラインステートの生成
-	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(shadowFbxPipelinestate.ReleaseAndGetAddressOf()));
-	assert(SUCCEEDED(result));
+	// グラフィックスパイプラインの生成
+	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(shadowFbxPipelinestate.ReleaseAndGetAddressOf()));
+	if (FAILED(result)) { assert(0); }
 }
 
 Object3D::~Object3D()
@@ -775,17 +777,15 @@ void Object3D::Update()
 
 void Object3D::BeginDraw()
 {
+	//デスクリプタヒープをセット
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
 	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	////デスクリプタヒープのセット
-	//ID3D12DescriptorHeap* ppHeaps[] = { descHeapDSRV.Get() };
-	//DX12Util::GetCmdList()->SetDescriptorHeaps(1, descHeapDepthSRV.GetAddressOf());
 
 	//プリミティブ形状を設定
 	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	prevDrawObjectType = -1;
+	prevPipelineIndex = -1;
 }
 
 void Object3D::DrawPrivate()
@@ -801,10 +801,17 @@ void Object3D::DrawPrivate()
 		if (objectType != prevDrawObjectType) {
 			//ルートシグネチャの設定
 			DX12Util::GetCmdList()->SetGraphicsRootSignature(objRootsignature.Get());
-
 			//パイプラインステートの設定
-			DX12Util::GetCmdList()->SetPipelineState(objPipelinestate.Get());
+			DX12Util::GetCmdList()->SetPipelineState(objPipelinestate[pipelineIndex].Get());
 		}
+		//前回の描画に使用されたパイプラインのインデックスと今回使うものが違うなら
+		//ここで切り替え
+		else if (pipelineIndex != prevPipelineIndex) {
+			//パイプラインステートの設定
+			DX12Util::GetCmdList()->SetPipelineState(objPipelinestate[pipelineIndex].Get());
+		}
+		prevPipelineIndex = pipelineIndex;
+
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
 		//定数バッファビューをセット
@@ -832,9 +839,17 @@ void Object3D::DrawPrivate()
 		if (objectType != prevDrawObjectType) {
 			//ルートシグネチャの設定
 			DX12Util::GetCmdList()->SetGraphicsRootSignature(fbxRootsignature.Get());
-			//パイプラインステートの設定
-			DX12Util::GetCmdList()->SetPipelineState(fbxPipelinestate.Get());
 		}
+
+		//前回の描画に使用されたパイプラインのインデックスと今回使うものが違うなら
+		//ここで切り替え
+		static int prevPipelineIndex = -1;
+		if (pipelineIndex != prevPipelineIndex) {
+			//パイプラインステートの設定
+			DX12Util::GetCmdList()->SetPipelineState(fbxPipelinestate[pipelineIndex].Get());
+		}
+		prevPipelineIndex = pipelineIndex;
+
 		//定数バッファビューをセット
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShare->GetGPUVirtualAddress());
 		//定数バッファビューをセット
@@ -890,6 +905,7 @@ void Object3D::BeginDrawShadow()
 	DX12Util::ClearDepthBuffer(true);
 
 	prevDrawObjectType = -1;
+	prevPipelineIndex = -1;
 }
 
 void Object3D::DrawAll()

@@ -38,12 +38,7 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   38 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  UISquareButton.cpp
-E:\K019G1301\個人制作\ShootingPazzle\Game\UISquareButton.cpp(12,62): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\UISquareButton.cpp(18,88): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\UISquareButton.cpp(18,55): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\UISquareButton.cpp(33,17): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(168): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+  main.cpp
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Background.png
@@ -112,10 +107,12 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(168): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\_uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\white1x1.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Back.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Down.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Reset.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Up.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
-  70 個のファイルをコピーしました
+  72 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

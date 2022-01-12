@@ -35,6 +35,15 @@ enum BillboardType {
 	BillboardY,
 };
 
+enum Object3DBlendMode {
+	OBJECT3D_BLENDMODE_NORMAL,	//通常描画
+	OBJECT3D_BLENDMODE_ADD,		//加算合成
+	OBJECT3D_BLENDMODE_SUB,		//減算合成
+	OBJECT3D_BLENDMODE_MUL,		//乗算合成
+	OBJECT3D_BLENDMODE_SCREEN,	//スクリーン合成
+	OBJECT3D_BLENDMODE_REVERSE	//反転
+};
+
 class Object3D
 {
 protected: //エイリアス
@@ -50,6 +59,7 @@ protected: //エイリアス
 public: //定数
 	//ボーンの最大数
 	static const int MAX_BONES = 32;
+	static const int PIPELINE_COUNT = 6;
 
 public: //サブクラス
 
@@ -135,7 +145,7 @@ protected: //静的メンバ変数
 	//FBXルートシグネチャ
 	static ComPtr<ID3D12RootSignature> fbxRootsignature;
 	//FBXパイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> fbxPipelinestate;
+	static ComPtr<ID3D12PipelineState> fbxPipelinestate[PIPELINE_COUNT];
 	//OBJシャドウルートシグネチャ
 	static ComPtr<ID3D12RootSignature> shadowFbxRootsignature;
 	//OBJシャドウパイプラインステートオブジェクト
@@ -143,13 +153,14 @@ protected: //静的メンバ変数
 	//OBJルートシグネチャ
 	static ComPtr<ID3D12RootSignature> objRootsignature;
 	//OBJパイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> objPipelinestate;
+	static ComPtr<ID3D12PipelineState> objPipelinestate[PIPELINE_COUNT];
 	//OBJシャドウルートシグネチャ
 	static ComPtr<ID3D12RootSignature> shadowObjRootsignature;
 	//OBJシャドウパイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> shadowObjPipelinestate;
 
 	static int prevDrawObjectType;
+	static int prevPipelineIndex;
 
 	static int loadCount;
 
@@ -432,13 +443,25 @@ public:
 	/// 自分の影を他のオブジェクトに描画するかセット
 	/// </summary>
 	/// <param name="flag"></param>
-	virtual void SetDrawShadowToOther(bool flag) { isDrawShadowToOther = flag; }
+	void SetDrawShadowToOther(bool flag) { isDrawShadowToOther = flag; }
 
 	/// <summary>
 	/// 他のオブジェクト影を自分に描画するかセット
 	/// </summary>
 	/// <param name="flag"></param>
-	virtual void SetDrawShadowToMyself(bool flag) { isDrawShadowToMyself = flag; }
+	void SetDrawShadowToMyself(bool flag) { isDrawShadowToMyself = flag; }
+
+	/// <summary>
+	/// 描画のブレンド設定をセット
+	/// </summary>
+	/// <param name="drawMode">ブレンド設定(SPRITE_BLENDMODE_...)</param>
+	void SetBlendMode(int blendMode) {
+		//範囲外ならなにもしない
+		if (blendMode < 0 || blendMode >= PIPELINE_COUNT) {
+			return;
+		}
+		pipelineIndex = blendMode;
+	}
 #pragma endregion
 
 protected: //メンバ変数
@@ -487,8 +510,13 @@ protected: //メンバ変数
 	//オブジェクトタイプ
 	int objectType = -1;
 
+	//自分の影を他のオブジェクトに描画するか
 	bool isDrawShadowToOther = true;
+	//他のオブジェクトの影を自分に描画するか
 	bool isDrawShadowToMyself = true;
+	//使用するパイプラインのインデックス
+	int pipelineIndex = 0;
+
 
 	//クラス名（デバッグ用）
 	const char* name = nullptr;

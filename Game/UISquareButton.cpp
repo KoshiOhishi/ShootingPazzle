@@ -3,23 +3,36 @@
 #include "DebugText.h"
 #include "Easing.h"
 
-void UISquareButton::Initialize(const std::wstring& texturePath, const Vector2& pos)
+void UISquareButton::LoadTexture(const std::wstring& texturePath)
 {
-    //Off
+    //画像読み込み
     textureOff.Initialize();
     textureOff.SetTexture(texturePath);
-    textureOff.SetPosition(pos);
-    textureOff.SetDrawRectangle(0,0, textureOff.GetScale().x * 0.5, textureOff.GetScale().y);
-
-    //On
     textureOn.Initialize();
     textureOn.SetTexture(texturePath);
-    textureOn.SetPosition(pos);
-    textureOn.SetDrawRectangle(textureOn.GetScale().x * 0.5, 0, textureOn.GetScale().x * 0.5, textureOn.GetScale().y);
+    textureAdd.Initialize();
+    textureAdd.SetTexture(texturePath);
+    //サイズ格納
+    size = { textureOff.GetTexSize().x * 0.5f, textureOff.GetTexSize().y };
+}
 
-    //位置とサイズを格納
+void UISquareButton::Initialize(const Vector2& pos)
+{
+    //Off
+    textureOff.SetDrawRectangle(0, 0, size.x, size.y);
+    textureOff.SetPosition(pos);
+    //On
+    textureOn.SetDrawRectangle(size.x, 0, size.x, size.y);
+    textureOn.SetPosition(pos);
+
+    //Add
+    textureAdd.SetDrawRectangle(size.x, 0, size.x, size.y);
+    textureAdd.SetPosition(pos + size * 0.5f);
+    textureAdd.SetAnchorpoint({ 0.5f,0.5f });
+    textureAdd.SetBlendMode(SPRITE_BLENDMODE_ADD);
+
+    //位置を格納
     this->pos = pos;
-    size = textureOff.GetScale();
 
     //タイマーは基本終了値にする
     pushedEffectTimer.SetTimer(0,1);
@@ -28,11 +41,13 @@ void UISquareButton::Initialize(const std::wstring& texturePath, const Vector2& 
 
 void UISquareButton::Draw()
 {
-    //テクスチャの色更新
+    //加算合成エフェクト
     pushedEffectTimer.Update();
-    float color = Easing::GetEaseValue(EASE_OUTCUBIC, 6, 1, pushedEffectTimer);
-    textureOn.SetColor({ color, color, color, 1 });
-    textureOff.SetColor({ color, color, color, 1 });
+    float alpha = Easing::GetEaseValue(EASE_OUTQUINT, 1, 0, pushedEffectTimer);
+    float sizeX = Easing::GetEaseValue(EASE_OUTQUINT, size.x, size.x * 1.5, pushedEffectTimer);
+    float sizeY = Easing::GetEaseValue(EASE_OUTQUINT, size.y, size.y * 1.5, pushedEffectTimer);
+    textureAdd.SetColor({1, 1, 1, alpha});
+    textureAdd.SetSize({ sizeX,sizeY });
 
     if (IsOverlapMouseCursol()) {
         textureOn.DrawFG();
@@ -41,11 +56,15 @@ void UISquareButton::Draw()
         textureOff.DrawFG();
     }
 
+    if (pushedEffectTimer.GetIsEnd() == false) {
+        textureAdd.DrawFG();
+    }
+
 }
 
 void UISquareButton::StartPushedEffect()
 {
-    pushedEffectTimer.SetTimer(0, 750);
+    pushedEffectTimer.SetTimer(0, 1000);
     pushedEffectTimer.Start();
 }
 
@@ -78,4 +97,5 @@ void UISquareButton::SetPosition(const Vector2& pos)
 
     textureOff.SetPosition(pos);
     textureOn.SetPosition(pos);
+    textureAdd.SetPosition(pos + textureAdd.GetSize() * 0.5f);
 }

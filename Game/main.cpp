@@ -258,7 +258,7 @@ void Initialize(){
 
 	//ポストエフェクトの初期化
 	postEffect = new PostEffect();
-	postEffect->Initialize();
+	postEffect->Initialize(false);
 
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();

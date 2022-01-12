@@ -13,7 +13,14 @@ StageSelect::StageSelect()
 	for (int i = 0; i < STAGE_COUNT; i++) {
 		stages.emplace_back(new Stage());
 		stages[i]->LoadStage(STAGE_DIRECTORY + "stage_" + std::to_string(i + 1) + ".spb");
+		stages[i]->Initialize(false);
+		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
 	}
+
+	//UI画像読み込み
+	buttonUp.LoadTexture(L"Resources/UI/UI_Arrow_Up.png");
+	buttonDown.LoadTexture(L"Resources/UI/UI_Arrow_Down.png");
+	buttonStart.LoadTexture(L"Resources/UI/UI_Start.png");
 }
 
 StageSelect::~StageSelect()
@@ -27,7 +34,7 @@ StageSelect::~StageSelect()
 
 void StageSelect::Initialize()
 {
-	Object3D::SetMatrixOrthographicLH(1280 * 0.2f, 720 * 0.2f, 0.1f, 150.0f);
+	Object3D::SetMatrixOrthographicLH(1280 * 0.2f, 720 * 0.2f, 1.0f, 150.0f);
 
 	//カメラ初期化
 	camera.Initialize();
@@ -42,7 +49,7 @@ void StageSelect::Initialize()
 	light.SetLightDir({ 0.5f,-1,0.5f });
 	light.SetLightColor({ 1,1,1 });
 	light.SetLightTarget({ 0,0,0 });
-	light.CalcLightPos(100.0f);
+	light.CalcLightPos(80.0f);
 	//ライトをセット
 	Object3D::SetLight(&light);
 
@@ -53,19 +60,12 @@ void StageSelect::Initialize()
 	nowSelectStageIndex = 0;
 
 	//ステージ初期化
-	for (int i = 0; i < stages.size(); i++) {
-		stages[i]->Initialize(false);
-		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
-	}
 
 	//UIボタン初期化
 	float adjust = 10;
-	buttonUp.Initialize(	L"Resources/UI/UI_Arrow_Up.png",{});
-	buttonDown.Initialize(L"Resources/UI/UI_Arrow_Down.png", {});
-	buttonStart.Initialize(L"Resources/UI/UI_Start.png", {});
-	buttonUp.SetPosition(	{ 0 + adjust, DX12Util::GetWindowHeight() - buttonDown.GetSize().y - buttonUp.GetSize().y - adjust * 2 });
-	buttonDown.SetPosition(	{ 0 + adjust, DX12Util::GetWindowHeight() - buttonDown.GetSize().y - adjust });
-	buttonStart.SetPosition({ DX12Util::GetWindowWidth() - buttonStart.GetSize().x - adjust, DX12Util::GetWindowHeight() - buttonStart.GetSize().y - adjust});
+	buttonUp.Initialize({ 0 + adjust, DX12Util::GetWindowHeight() - buttonDown.GetTexSize().y - buttonUp.GetTexSize().y - adjust * 2 });
+	buttonDown.Initialize({ 0 + adjust, DX12Util::GetWindowHeight() - buttonDown.GetTexSize().y - adjust });
+	buttonStart.Initialize({ DX12Util::GetWindowWidth() - buttonStart.GetTexSize().x - adjust, DX12Util::GetWindowHeight() - buttonStart.GetTexSize().y - adjust });
 
 	//スプライト初期化
 	sprStageBG.Initialize();

@@ -14,8 +14,8 @@ using namespace Microsoft::WRL;
 
 std::vector<Sprite*> Sprite::drawListBG;
 std::vector<Sprite*> Sprite::drawListFG;
-ComPtr<ID3D12RootSignature> Sprite::spriteRootSignature = nullptr;	//ルートシグネチャ
-ComPtr<ID3D12PipelineState> Sprite::spritePipelineState = nullptr;	//パイプラインステート
+ComPtr<ID3D12RootSignature> Sprite::spriteRootSignature = {};	//ルートシグネチャ
+ComPtr<ID3D12PipelineState> Sprite::spritePipelineState[PIPELINE_COUNT] = {};	//パイプラインステート
 XMMATRIX Sprite::matProjection{};		//射影行列
 ComPtr <ID3D12DescriptorHeap> Sprite::descHeap = nullptr;
 const int Sprite::spriteSRVCount = 512;
@@ -122,28 +122,6 @@ void Sprite::FirstInit()
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;		//常に上書きルール
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
-	//ブレンドステートの設定
-	// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
-	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
-
-	blenddesc.BlendEnable = true; // ブレンドを有効にする
-
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースのアルファ値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0f-ソースのアルファ値
-
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
-
-	////透明部分の深度値書き込み禁止
-	//gpipeline.BlendState.AlphaToCoverageEnable = true;
-
-	// ブレンドステートに設定する
-	gpipeline.BlendState.RenderTarget[0] = blenddesc;
-
-
 	//頂点レイアウトの設定
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
 	gpipeline.InputLayout.NumElements = _countof(inputLayout);
@@ -191,9 +169,57 @@ void Sprite::FirstInit()
 	// パイプラインにルートシグネチャをセット
 	gpipeline.pRootSignature = spriteRootSignature.Get();
 
-	//パイプラインステートの生成
-	result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(spritePipelineState.ReleaseAndGetAddressOf()));
-	assert(SUCCEEDED(result));
+	for (int i = 0; i < PIPELINE_COUNT; i++) {
+		//ブレンドステートの設定
+		// レンダーターゲットのブレンド設定(8 個あるがいまは一つしか使わない)
+		D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
+		blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // 標準設定
+
+		blenddesc.BlendEnable = true; // ブレンドを有効にする
+
+		blenddesc.BlendOp = D3D12_BLEND_OP_ADD; // 加算
+
+		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD; // 加算
+		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
+		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
+
+		switch (i) {
+		case SPRITE_BLENDMODE_NORMAL:
+			blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+			break;
+		case SPRITE_BLENDMODE_ADD:
+			blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blenddesc.DestBlend = D3D12_BLEND_ONE;
+			break;
+		case SPRITE_BLENDMODE_SUB:
+			blenddesc.SrcBlend = D3D12_BLEND_ZERO;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_COLOR;
+			break;
+		case SPRITE_BLENDMODE_MUL:
+			blenddesc.SrcBlend = D3D12_BLEND_ZERO;
+			blenddesc.DestBlend = D3D12_BLEND_SRC_COLOR;
+			break;
+		case SPRITE_BLENDMODE_SCREEN:
+			blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+			blenddesc.DestBlend = D3D12_BLEND_ONE;
+			break;
+		case SPRITE_BLENDMODE_REVERSE:
+			blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_COLOR;
+			break;
+		}
+
+		////透明部分の深度値書き込み禁止
+		//gpipeline.BlendState.AlphaToCoverageEnable = true;
+
+		// ブレンドステートに設定する
+		gpipeline.BlendState.RenderTarget[0] = blenddesc;
+
+		//パイプラインステートの生成
+		result = DX12Util::GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(spritePipelineState[i].ReleaseAndGetAddressOf()));
+		assert(SUCCEEDED(result));
+	}
 
 	//スプライト用デスクリプタヒープの生成
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
@@ -352,7 +378,7 @@ void Sprite::BeginDraw()
 	DX12Util::GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//パイプラインステートの設定
-	DX12Util::GetCmdList()->SetPipelineState(spritePipelineState.Get());
+	DX12Util::GetCmdList()->SetPipelineState(spritePipelineState[0].Get());
 
 	//プリミティブ形状を設定
 	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -362,6 +388,15 @@ void Sprite::Draw()
 {
 	if (!isDisplay)
 		return;
+
+	//前回の描画に使用されたパイプラインのインデックスと今回使うものが違うなら
+	//ここで切り替え
+	static int prevPipelineIndex = 0;
+	if (pipelineIndex != prevPipelineIndex) {
+		//パイプラインステートの設定
+		DX12Util::GetCmdList()->SetPipelineState(spritePipelineState[pipelineIndex].Get());
+	}
+
 
 	//ワールド行列の更新
 	matWorld = XMMatrixIdentity();
@@ -393,6 +428,8 @@ void Sprite::Draw()
 
 	//描画コマンド
 	DX12Util::GetCmdList()->DrawInstanced(4, 1, 0, 0);
+
+	prevPipelineIndex = pipelineIndex;
 }
 
 void Sprite::SetAnchorpoint(const Vector2& anchorpoint)
@@ -439,6 +476,9 @@ void Sprite::SetTexture(const std::wstring& filename, const bool loadNewerIfNotF
 		tex_height = resDesc.Height;
 	}
 
+	size.x = width;
+	size.y = height;
+
 	UpdateVertBuff();
 }
 
@@ -460,9 +500,9 @@ void Sprite::SetRotation(const float rotation)
 	UpdateVertBuff();
 }
 
-void Sprite::SetScale(const Vector2& scale)
+void Sprite::SetSize(const Vector2& size)
 {
-	width = scale.x; height = scale.y;
+	this->size = size;
 	UpdateVertBuff();
 }
 
@@ -485,8 +525,8 @@ void Sprite::SetDrawRectangle(const float tex_x, const float tex_y, const float 
 	this->tex_width = tex_width;
 	this->tex_height = tex_height;
 
-	width = tex_width;
-	height = tex_height;
+	size.x = tex_width;
+	size.y = tex_height;
 
 	UpdateVertBuff();
 
@@ -510,10 +550,10 @@ void Sprite::UpdateVertBuff()
 	//画像の大きさから表示サイズを設定
 	//左下、左上、右下、右上
 	enum { LB, LT, RB, RT };
-	float left = (0.0f - anchorpoint.x) * width;
-	float right = (1.0f - anchorpoint.x) * width;
-	float top = (0.0f - anchorpoint.y) * height;
-	float bottom = (1.0f - anchorpoint.y) * height;
+	float left = (0.0f - anchorpoint.x) * size.x;
+	float right = (1.0f - anchorpoint.x) * size.x;
+	float top = (0.0f - anchorpoint.y) * size.y;
+	float bottom = (1.0f - anchorpoint.y) * size.y;
 
 	if (isFlipX)
 	{
@@ -593,6 +633,6 @@ void Sprite::DrawAllFG()
 void Sprite::SetInitParams(float posX, float posY, float width, float height)
 {
 	SetPosition({posX, posY});
-	SetScale({ width, height });
+	SetSize({ width, height });
 }
 

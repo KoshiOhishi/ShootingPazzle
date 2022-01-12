@@ -8,16 +8,27 @@
 #include "FbxLoader.h"
 #include "ImguiHelper.h"
 #include "GameUtility.h"
+#include "SceneManager.h"
 #include "Easing.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
 #include "../imgui/imgui_impl_dx12.h"
 
+GamePlay::GamePlay()
+{
+	buttonReset.LoadTexture(L"Resources/UI/UI_Arrow_Reset.png");
+	buttonBack.LoadTexture(L"Resources/UI/UI_Arrow_Back.png");
+}
+
+GamePlay::~GamePlay()
+{
+}
+
 void GamePlay::Initialize()
 {
-	Object3D::SetMatrixOrthographicLH(1280 * 0.15f, 720 * 0.15f, 0.1f, 150.0f);
-	
+	Object3D::SetMatrixOrthographicLH(1280 * 0.2f, 720 * 0.2f, 1.0f, 150.0f);
+
 	//フェーズセット
 	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
@@ -29,10 +40,10 @@ void GamePlay::Initialize()
 
 	//ライト初期化
 	light.Initialize();
-	light.SetLightDir({ 1,-1,1 });
+	light.SetLightDir({ 0.5f,-1,0.5f });
 	light.SetLightColor({ 1,1,1 });
 	light.SetLightTarget({ 0,0,0 });
-	light.CalcLightPos(100.0f);
+	light.CalcLightPos(80.0f);
 	//ライトをセット
 	Object3D::SetLight(&light);
 
@@ -59,8 +70,13 @@ void GamePlay::Initialize()
 	sprWhite.SetTexture(L"Resources/Write1280x720.png");
 
 	//タイマー初期化
-	whiteEffectTimer.SetTimer(0, 500);
-	whiteEffectTimer.Start();
+	startEffectTimer.SetTimer(0, 4250);
+	startEffectTimer.Start();
+
+	//UIボタン初期化
+	float adjust = 10;
+	buttonReset.Initialize({ -buttonReset.GetTexSize().x, DX12Util::GetWindowHeight() - buttonBack.GetTexSize().y - buttonReset.GetTexSize().y - adjust * 2 });
+	buttonBack.Initialize({ -buttonBack.GetTexSize().x, DX12Util::GetWindowHeight() - buttonBack.GetTexSize().y - adjust });
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
@@ -74,8 +90,8 @@ void GamePlay::Update()
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
 	UpdateImgui();
-	//リセット
-	Reset();
+	//UI更新
+	UpdateUI();
 	//クリアしているか？
 	CheckIsClear();
 	//背景オブジェクト更新
@@ -101,6 +117,9 @@ void GamePlay::Draw()
 
 	//エフェクト描画
 	DrawEffect();
+
+	//UI描画
+	DrawUI();
 }
 
 void GamePlay::UpdateDebugCamera()
@@ -162,9 +181,9 @@ void GamePlay::UpdateDebugCamera()
 void GamePlay::UpdateEffect()
 {
 	//完全に透明でなければ更新
-	if (whiteEffectTimer.GetIsEnd() == false) {
-		whiteEffectTimer.Update();
-		float alpha = Easing::GetEaseValue(EASE_INOUTEXPO, 1, 0, whiteEffectTimer);
+	if (startEffectTimer.GetIsEnd() == false) {
+		startEffectTimer.Update();
+		float alpha = Easing::GetEaseValue(EASE_INOUTEXPO, 1, 0, startEffectTimer, 0, 500);
 		Vector4 color = sprWhite.GetColor();
 		color.w = alpha;
 		sprWhite.SetColor(color);
@@ -205,12 +224,37 @@ void GamePlay::UpdateImgui()
 #endif
 }
 
+void GamePlay::UpdateUI()
+{
+	//開幕の位置移動
+	float x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonReset.GetTexSize().x, 10, startEffectTimer, 3500, 4000);
+	buttonReset.SetPosition({ x, buttonReset.GetPosition().y });
+	x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonBack.GetTexSize().x, 10, startEffectTimer, 3750, 4250);
+	buttonBack.SetPosition({ x, buttonBack.GetPosition().y });
+
+	//ボタン入力
+	if (buttonReset.IsReleaseButton()) {
+		Reset();
+	}
+	if (buttonBack.IsReleaseButton()) {
+		//Todo:確認ポップアップ作る
+		SceneManager::ChangeScene("StageSelect");
+	}
+
+}
+
 void GamePlay::DrawEffect()
 {
 	//完全に透明でなければ描画
-	if (whiteEffectTimer.GetIsEnd() == false) {
+	if (startEffectTimer.GetIsEnd() == false) {
 		sprWhite.DrawFG();
 	}
+}
+
+void GamePlay::DrawUI()
+{
+	buttonReset.Draw();
+	buttonBack.Draw();
 }
 
 void GamePlay::Reset()
@@ -220,44 +264,44 @@ void GamePlay::Reset()
 		return;
 	}
 
-	if (Keyboard::IsKeyTrigger(DIK_R)) {
-		//フェーズ初期化
-		GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
+	//if (Keyboard::IsKeyTrigger(DIK_R)) {
+	//フェーズ初期化
+	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
-		//ステージ取得
-		stage.LoadStage(GameUtility::GetNowStagePath());
+	//ステージ取得
+	stage.LoadStage(GameUtility::GetNowStagePath());
 
-		//弾初期化
-		myBullet.Initialize(false);
+	//弾初期化
+	myBullet.Initialize(false);
 
-		//念のためカメラを定位置に
-		camera.SetCameraParamAfterShoot();
+	//念のためカメラを定位置に
+	camera.SetCameraParamAfterShoot();
 
-		//ステージカラー初期化
-		GameUtility::SetStageColor(STAGE_COLOR_NONE);
-	}
+	//ステージカラー初期化
+	GameUtility::SetStageColor(STAGE_COLOR_NONE);
+	//}
 
 	//デバッグ用　完成版は消す
-	if (Keyboard::IsKeyTrigger(DIK_Q)) {
+	//if (Keyboard::IsKeyTrigger(DIK_Q)) {
 
-		GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
+	//	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
-		//ステージ取得
-		stage.Initialize();
-		stage.LoadStage(GameUtility::GetNowStagePath());
+	//	//ステージ取得
+	//	stage.Initialize();
+	//	stage.LoadStage(GameUtility::GetNowStagePath());
 
-		//弾初期化
-		myBullet.Initialize();
+	//	//弾初期化
+	//	myBullet.Initialize();
 
-		//カメラ初期化　完成時はずす
-		camera.Initialize();
+	//	//カメラ初期化　完成時はずす
+	//	camera.Initialize();
 
-		//ステージサイズからカメラ位置セット
-		camera.SetPosFromStageSize(stage.GetStageSize());
+	//	//ステージサイズからカメラ位置セット
+	//	camera.SetPosFromStageSize(stage.GetStageSize());
 
-		//ステージカラー初期化
-		GameUtility::SetStageColor(STAGE_COLOR_NONE);
-	}
+	//	//ステージカラー初期化
+	//	GameUtility::SetStageColor(STAGE_COLOR_NONE);
+	//}
 }
 
 void GamePlay::CheckIsClear()

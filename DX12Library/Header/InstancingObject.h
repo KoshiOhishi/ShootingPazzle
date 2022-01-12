@@ -17,7 +17,7 @@ protected:
 	//FBXルートシグネチャ
 	static ComPtr<ID3D12RootSignature> instancingFbxRootsignature;
 	//FBXパイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> instancingFbxPipelinestate;
+	static ComPtr<ID3D12PipelineState> instancingFbxPipelinestate[PIPELINE_COUNT];
 	//FBXルートシグネチャ
 	static ComPtr<ID3D12RootSignature> shadowInstancingFbxRootsignature;
 	//FBXパイプラインステートオブジェクト
@@ -26,7 +26,7 @@ protected:
 	//OBJルートシグネチャ
 	static ComPtr<ID3D12RootSignature> instancingObjRootsignature;
 	//OBJパイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> instancingObjPipelinestate;
+	static ComPtr<ID3D12PipelineState> instancingObjPipelinestate[PIPELINE_COUNT];
 	//OBJルートシグネチャ
 	static ComPtr<ID3D12RootSignature> shadowInstancingObjRootsignature;
 	//OBJパイプラインステートオブジェクト

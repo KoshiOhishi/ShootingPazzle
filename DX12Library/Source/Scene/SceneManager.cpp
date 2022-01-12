@@ -5,6 +5,7 @@
 #include "PostEffect.h"
 #include "RenderText.h"
 #include "DebugText.h"
+#include "InstancingObject.h"
 
 //Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
 std::string SceneManager::nowScene;

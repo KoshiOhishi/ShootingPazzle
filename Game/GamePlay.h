@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include "RenderText.h"
 #include "CollisionManager.h"
+#include "UISquareButton.h"
 
 #include "MyBullet.h"
 #include "SquareBlock.h"
@@ -35,9 +36,21 @@ private:
 
 	//前景(白)
 	Sprite sprWhite;
-	Timer whiteEffectTimer;
+
+	//UI(リセット)
+	UISquareButton buttonReset;
+
+	//UI(ステージセレクトに戻る)
+	UISquareButton buttonBack;
+
+	//開幕エフェクトタイマー
+	Timer startEffectTimer;
+
 
 public:
+	GamePlay();
+	~GamePlay();
+
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void Draw() override;
@@ -46,8 +59,10 @@ public:
 	void UpdateEffect();
 	void UpdateBG();
 	void UpdateImgui();
+	void UpdateUI();
 
 	void DrawEffect();
+	void DrawUI();
 
 	/// <summary>
 	/// 盤面をリセットし、フェーズをSET_POSにもどす

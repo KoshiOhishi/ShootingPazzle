@@ -16,7 +16,7 @@ const float MyBullet::RADIUS = ONE_CELL_LENGTH / 2;
 void MyBullet::CreateModel()
 {
 	//ÉÇÉfÉãê∂ê¨
-	modelSphere.CreateSphere(20, 20, RADIUS, true);
+	modelSphere.CreateSphere(20, 20, RADIUS, true, {0.75f,0.6f,0.0f}, { 0.25f,0.25f,0.25f }, { 0.5f,0.5f,0.5f });
 	modelArrow.CreateSquareTex(8, "Arrow.png", { 1,1,1 });
 }
 
