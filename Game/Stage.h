@@ -166,4 +166,9 @@ public:
 	/// </summary>
 	/// <param name="pos"></param>
 	void SetMasterPosition(const Vector3& pos);
+
+	/// <summary>
+	/// エフェクトタイマーの現在時間を強制的に終了値にする
+	/// </summary>
+	void ForceEffectTimerToEnd() { effectTimer.SetNowTime(effectTimer.GetEndTime()); }
 };

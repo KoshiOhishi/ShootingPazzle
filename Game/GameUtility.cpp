@@ -14,6 +14,7 @@ int GameUtility::nowPhase;
 StageVec2* GameUtility::pStageSize = nullptr;
 int GameUtility::stageColor = STAGE_COLOR_NONE;
 std::string GameUtility::nowStagePath = "";
+bool GameUtility::isPause = false;
 
 void GameUtility::StaticInitialize()
 {

@@ -12,9 +12,10 @@ StageSelect::StageSelect()
 	//ステージロード
 	for (int i = 0; i < STAGE_COUNT; i++) {
 		stages.emplace_back(new Stage());
-		stages[i]->LoadStage(STAGE_DIRECTORY + "stage_" + std::to_string(i + 1) + ".spb");
+		stages[i]->LoadStage(STAGE_DIRECTORY + "stage_" + std::to_string(i) + ".spb");
 		stages[i]->Initialize(false);
 		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
+
 	}
 
 	//UI画像読み込み
@@ -57,7 +58,7 @@ void StageSelect::Initialize()
 	GameUtility::SetNowPhase(PHASE_STAGESELECT_SELECT);
 
 	//選択インデックス初期化
-	nowSelectStageIndex = 0;
+	nowSelectStageIndex = 1;
 
 	//ステージ初期化
 
@@ -200,7 +201,7 @@ void StageSelect::UpdateAfterDecided()
 	if (startGameTimer.GetIsEnd())
 	{
 		//ステージセット
-		GameUtility::SetNowStagePath(STAGE_DIRECTORY + "stage_" + std::to_string(nowSelectStageIndex + 1) + ".spb");
+		GameUtility::SetNowStagePath(STAGE_DIRECTORY + "stage_" + std::to_string(nowSelectStageIndex) + ".spb");
 		//シーンを移す
 		SceneManager::ChangeScene("GamePlay");
 	}

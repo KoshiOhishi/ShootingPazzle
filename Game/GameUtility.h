@@ -100,6 +100,8 @@ private:
 	static int stageColor;
 	//現在のステージパス
 	static std::string nowStagePath;
+	//ゲームが一時停止状態か
+	static bool isPause;
 
 public:
 	/// <summary>
@@ -111,11 +113,13 @@ public:
 	static void SetPStageSize(StageVec2* pStageSize) { GameUtility::pStageSize = pStageSize; }
 	static void SetStageColor(int stageColor) { GameUtility::stageColor = stageColor; }
 	static void SetNowStagePath(const std::string& path) { GameUtility::nowStagePath = path; }
+	static void SetIsPause(bool isPause) { GameUtility::isPause = isPause; }
 
 	static const int GetNowPhase() { return nowPhase; }
 	static const int GetStageColor() { return stageColor; }
 	static const std::string& GetNowStagePath() { return nowStagePath; }
-
+	static bool GetIsPause() { return isPause; }
+	
 	/// <summary>
 	/// ワールド座標のxz平面からステージ上の座標に変換
 	/// </summary>

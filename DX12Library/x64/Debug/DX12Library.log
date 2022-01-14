@@ -1,26 +1,4 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  Sprite.cpp
+  Collision.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(285,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(285,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(290,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(290,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(467,18): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(470,19): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(473,22): warning C4244: '=': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\2D\Sprite.cpp(476,23): warning C4244: '=': 'UINT' から 'float' への変換です。データが失われる可能性があります。
-  PostEffect.cpp
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(25,10): warning C4101: 'result': ローカル変数は 1 度も使われていません。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(70,100): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(70,71): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\PostEffect.cpp(285,22): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-  SceneManager.cpp
-  DebugText.cpp
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\DebugText.cpp(49,76): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Utility\DebugText.cpp(49,52): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
-  FPSManager.cpp
-  コードを生成中...
   DX12Library.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\DX12Library.lib

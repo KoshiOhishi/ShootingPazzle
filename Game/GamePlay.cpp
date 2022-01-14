@@ -17,8 +17,17 @@
 
 GamePlay::GamePlay()
 {
+	modelBG.CreateFromOBJ(modelDir + "Sky/Sky.obj");
 	buttonReset.LoadTexture(L"Resources/UI/UI_Arrow_Reset.png");
 	buttonBack.LoadTexture(L"Resources/UI/UI_Arrow_Back.png");
+	buttonYes.LoadTexture(L"Resources/UI/UI_Yes.png");
+	buttonNo.LoadTexture(L"Resources/UI/UI_No.png");
+	sprWhite.Initialize();
+	sprWhite.SetTexture(L"Resources/Write1280x720.png");
+	sprBlack.Initialize();
+	sprBlack.SetTexture(L"Resources/Black1280x720.png");
+	sprPopUp.Initialize();
+	sprPopUp.SetTexture(L"Resources/Game_PopUp.png");
 }
 
 GamePlay::~GamePlay()
@@ -59,24 +68,38 @@ void GamePlay::Initialize()
 	myBullet.Initialize();
 	myBullet.SetBounceInitPosY(bounceY);
 
-	//背景初期化
-	modelBG.CreateFromOBJ(modelDir + "Sky/Sky.obj");
+	//背景オブジェクト初期化
 	objBG.Initialize();
 	objBG.SetObjModel(&modelBG);
 	objBG.SetScale(5, 5, 5);
 	objBG.SetDrawShadowToMyself(false);
 
-	sprWhite.Initialize();
-	sprWhite.SetTexture(L"Resources/Write1280x720.png");
+	//ポップアップ初期化
+	sprPopUp.SetPosition({ DX12Util::GetWindowWidth() * 0.5f - sprPopUp.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.5f - sprPopUp.GetTexSize().y * 0.5f });
+	//初期状態は透明
+	sprPopUp.SetColor({ 1,1,1,0 });
+	isDispPopup = false;
 
+	sprBlack.SetColor({ 1,1,1,0});
+	
 	//タイマー初期化
 	startEffectTimer.SetTimer(0, 4250);
 	startEffectTimer.Start();
+	dispPopUpTimer.SetTimer(0, 500);
+	sceneChangeTimer.SetTimer(0, 1000);
+
 
 	//UIボタン初期化
 	float adjust = 10;
 	buttonReset.Initialize({ -buttonReset.GetTexSize().x, DX12Util::GetWindowHeight() - buttonBack.GetTexSize().y - buttonReset.GetTexSize().y - adjust * 2 });
 	buttonBack.Initialize({ -buttonBack.GetTexSize().x, DX12Util::GetWindowHeight() - buttonBack.GetTexSize().y - adjust });
+	buttonYes.Initialize({ DX12Util::GetWindowWidth() * 0.375f - buttonYes.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.75f - buttonYes.GetTexSize().y * 0.5f});
+	//初期状態は透明
+	buttonYes.SetColor({ 1,1,1,0 });
+	buttonNo.Initialize({ DX12Util::GetWindowWidth() * 0.625f - buttonNo.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.75f - buttonNo.GetTexSize().y * 0.5f });
+	//初期状態は透明
+	buttonNo.SetColor({ 1,1,1,0 });
+
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
@@ -89,9 +112,12 @@ void GamePlay::Update()
 	light.Update();
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
-	UpdateImgui();
+	//UpdateImgui();
 	//UI更新
 	UpdateUI();
+	//ポップアップ更新
+	UpdatePopUp();
+
 	//クリアしているか？
 	CheckIsClear();
 	//背景オブジェクト更新
@@ -102,6 +128,7 @@ void GamePlay::Update()
 	stage.Update();
 	//エフェクト更新
 	UpdateEffect();
+	
 }
 
 void GamePlay::Draw()
@@ -120,6 +147,9 @@ void GamePlay::Draw()
 
 	//UI描画
 	DrawUI();
+
+	//ポップアップ描画
+	DrawStageBackPopUp();
 }
 
 void GamePlay::UpdateDebugCamera()
@@ -231,16 +261,76 @@ void GamePlay::UpdateUI()
 	buttonReset.SetPosition({ x, buttonReset.GetPosition().y });
 	x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonBack.GetTexSize().x, 10, startEffectTimer, 3750, 4250);
 	buttonBack.SetPosition({ x, buttonBack.GetPosition().y });
-
+	
 	//ボタン入力
-	if (buttonReset.IsReleaseButton()) {
-		Reset();
-	}
-	if (buttonBack.IsReleaseButton()) {
-		//Todo:確認ポップアップ作る
-		SceneManager::ChangeScene("StageSelect");
-	}
+	if (GameUtility::GetIsPause() == false) {
+		buttonReset.SetIsDispOverlapMouseTex(true);
+		buttonBack.SetIsDispOverlapMouseTex(true);
 
+		if (buttonReset.IsReleaseButton()) {
+			buttonReset.StartPushedEffect();
+			Reset();
+		}
+		if (buttonBack.IsReleaseButton()) {
+			buttonBack.StartPushedEffect();
+			//ポップアップタイマースタート
+			dispPopUpTimer.Reset();
+			dispPopUpTimer.Start();
+			isDispPopup = true;
+			//ポーズ状態にする
+			GameUtility::SetIsPause(true);
+		}
+	}
+	else {
+		//ポーズ中はカーソルとボタンが重なってもテクスチャを変化させない
+		if (dispPopUpTimer.GetIsEnd()) {
+			buttonReset.SetIsDispOverlapMouseTex(false);
+			buttonBack.SetIsDispOverlapMouseTex(false);
+		}
+
+	}
+}
+
+void GamePlay::UpdatePopUp()
+{
+	dispPopUpTimer.Update();
+
+	if (GameUtility::GetIsPause()) {
+		//ポップアップの透明度変化
+		if (dispPopUpTimer.GetIsStart()) {
+			float alpha = 0;
+			//ポップアップ表示オンなら0から1へ
+			if (isDispPopup) {
+				alpha = Easing::GetEaseValue(EASE_OUTQUINT, 0, 1, dispPopUpTimer);
+			}
+			//そうでないなら1→0へ
+			else {
+				alpha = Easing::GetEaseValue(EASE_OUTQUINT, 1, 0, dispPopUpTimer);
+			}
+			sprPopUp.SetColor({ 1,1,1, alpha });
+			sprBlack.SetColor({ 1,1,1, alpha * 0.5f });
+			buttonYes.SetColor({ 1,1,1, alpha });
+			buttonNo.SetColor({ 1,1,1, alpha });
+		}
+
+		//ボタン受付
+		if (buttonYes.IsReleaseButton()) {
+			buttonYes.StartPushedEffect();
+			sceneChangeTimer.Start();
+			//SceneManager::ChangeScene("StageSelect");
+		}
+		if (buttonNo.IsReleaseButton()) {
+			buttonNo.StartPushedEffect();
+			dispPopUpTimer.Reset();
+			dispPopUpTimer.Start();
+			isDispPopup = false;
+		}
+		
+		//ポップアップタイマー終了でポーズ解除
+		if (isDispPopup == false && dispPopUpTimer.GetIsEnd()) {
+			GameUtility::SetIsPause(false);
+		}
+	}
 }
 
 void GamePlay::DrawEffect()
@@ -257,6 +347,17 @@ void GamePlay::DrawUI()
 	buttonBack.Draw();
 }
 
+void GamePlay::DrawStageBackPopUp()
+{
+	//エフェクト中もしくはポーズ中に描画
+	if (GameUtility::GetIsPause() || dispPopUpTimer.GetIsEnd() == false) {
+		sprBlack.DrawFG();
+		sprPopUp.DrawFG();
+		buttonYes.Draw();
+		buttonNo.Draw();
+	}
+}
+
 void GamePlay::Reset()
 {
 	//開幕エフェクト中はリセットさせない
@@ -269,6 +370,7 @@ void GamePlay::Reset()
 	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
 	//ステージ取得
+	stage.ForceEffectTimerToEnd();
 	stage.LoadStage(GameUtility::GetNowStagePath());
 
 	//弾初期化

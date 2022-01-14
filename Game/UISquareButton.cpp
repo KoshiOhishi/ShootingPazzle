@@ -46,10 +46,11 @@ void UISquareButton::Draw()
     float alpha = Easing::GetEaseValue(EASE_OUTQUINT, 1, 0, pushedEffectTimer);
     float sizeX = Easing::GetEaseValue(EASE_OUTQUINT, size.x, size.x * 1.5, pushedEffectTimer);
     float sizeY = Easing::GetEaseValue(EASE_OUTQUINT, size.y, size.y * 1.5, pushedEffectTimer);
-    textureAdd.SetColor({1, 1, 1, alpha});
+    Vector4 nowColor = textureAdd.GetColor();
+    textureAdd.SetColor({ nowColor.x, nowColor.y, nowColor.z, alpha});
     textureAdd.SetSize({ sizeX,sizeY });
 
-    if (IsOverlapMouseCursol()) {
+    if (IsOverlapMouseCursol() && isDispOverlapMouseTex) {
         textureOn.DrawFG();
     }
     else {
@@ -97,5 +98,12 @@ void UISquareButton::SetPosition(const Vector2& pos)
 
     textureOff.SetPosition(pos);
     textureOn.SetPosition(pos);
-    textureAdd.SetPosition(pos + textureAdd.GetSize() * 0.5f);
+    textureAdd.SetPosition(pos + size * 0.5f);
+}
+
+void UISquareButton::SetColor(const Vector4& color)
+{
+    textureOff.SetColor(color);
+    textureOn.SetColor(color);
+    textureAdd.SetColor(color);
 }

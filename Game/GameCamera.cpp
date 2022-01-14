@@ -31,6 +31,18 @@ void GameCamera::Update()
 
 void GameCamera::UpdateFirstEffect()
 {
+	//ポーズ中はカメラのタイマーをストップ
+	if (GameUtility::GetIsPause()) {
+		if (effectTimer.GetIsStart() == true) {
+			effectTimer.Stop();
+		}
+	}
+	else {
+		if (effectTimer.GetIsStart() == false) {
+			effectTimer.Start();
+		}
+	}
+
 	effectTimer.Update();
 
 	//移動開始時刻（タイマー間指定）
@@ -63,6 +75,18 @@ void GameCamera::UpdateFirstEffect()
 
 void GameCamera::UpdateClearEffect()
 {
+	//ポーズ中はカメラのタイマーをストップ
+	if (GameUtility::GetIsPause()) {
+		if (effectTimer.GetIsStart() == true) {
+			effectTimer.Stop();
+		}
+	}
+	else {
+		if (effectTimer.GetIsStart() == false) {
+			effectTimer.Start();
+		}
+	}
+
 	effectTimer.Update();
 
 	//移動開始時刻（タイマー間指定）
@@ -98,6 +122,8 @@ void GameCamera::UpdateClearEffect()
 
 void GameCamera::SetCameraParamAfterShoot()
 {
+	//強制的にタイマーを終了値に
+	effectTimer.SetNowTime(effectTimer.GetEndTime());
 	SetPositionAndDistance(afterFirstEffectPos, 30.0f);
 	SetRotation(afterFirstEffectRot);
 }

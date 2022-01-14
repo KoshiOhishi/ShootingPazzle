@@ -94,7 +94,7 @@ void BaseBlock::UpdateClearEffect(const Timer& timer)
 	}
 
 	//タイマーの値がclearEffectStartTimeを超えていたらブロックを落とす
-	if ((double)timer.GetNowTime() >= clearEffectStartTime) {
+	if ((double)timer.GetNowTime() >= clearEffectStartTime && timer.GetIsStart()) {
 		Vector3 nPos = object.GetPosition();
 		float sub = (timer.GetNowTime() - clearEffectStartTime) * 0.01f;
 		object.SetPosition({ nPos.x, nPos.y - sub, nPos.z });

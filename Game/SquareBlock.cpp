@@ -62,7 +62,7 @@ void SquareBlock::UpdateCollision()
 
 void SquareBlock::DecrementBreakupCount()
 {
-	if (isBreakable == false) {
+	if (isBreakable == false || breakupCount == 0) {
 		return;
 	}
 

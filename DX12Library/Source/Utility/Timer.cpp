@@ -78,6 +78,14 @@ void Timer::Reset()
 	nowTime = startTime;
 }
 
+void Timer::SetNowTime(int time)
+{
+	if (time < startTime) { time = startTime; }
+	if (time > endTime) { time = endTime; }
+
+	nowTime = time;
+}
+
 int Timer::GetClockNowTime()
 {
 	int t = timeGetTime();

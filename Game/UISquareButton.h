@@ -19,6 +19,8 @@ private:
 
 	Timer pushedEffectTimer;
 
+	bool isDispOverlapMouseTex = true;
+
 public:
 
 	void LoadTexture(const std::wstring& texturePath);
@@ -62,6 +64,16 @@ public:
 	bool IsReleaseButton();
 
 	void SetPosition(const Vector2& pos);
+
+	void SetColor(const Vector4& color);
+
+	/// <summary>
+	/// カーソルとボタンが重なったとき、テクスチャを変化させるか
+	/// </summary>
+	/// <param name="isDispOverlapMouseTex"></param>
+	void SetIsDispOverlapMouseTex(bool isDispOverlapMouseTex) {
+		this->isDispOverlapMouseTex = isDispOverlapMouseTex;
+	}
 
 	const Vector2& GetPosition() { return pos; }
 

@@ -13,7 +13,7 @@ class StageSelect :
 {
 public:
     //ステージ数
-    static const int STAGE_COUNT = 4;
+    static const int STAGE_COUNT = 5;
     static const std::string STAGE_DIRECTORY;
 
 private:

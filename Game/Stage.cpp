@@ -87,6 +87,7 @@ void Stage::LoadStage(std::string filename)
 				StageVec2 pos = { i,j };
 				NormalFloor* newFloor = new NormalFloor;
 				newFloor->Initialize(pos);
+				newFloor->SetPInstancingObjectDraw(&iodNormalFloor);
 				floors.emplace_back(newFloor);
 			}
 		}
@@ -195,6 +196,18 @@ void Stage::Draw()
 
 void Stage::UpdateFirstEffect()
 {
+	//ポーズ中はタイマーをストップ
+	if (GameUtility::GetIsPause()) {
+		if (effectTimer.GetIsStart() == true) {
+			effectTimer.Stop();
+		}
+	}
+	else {
+		if (effectTimer.GetIsStart() == false) {
+			effectTimer.Start();
+		}
+	}
+
 	effectTimer.Update();
 
 	//ブロックが空から降ってくる演出
@@ -210,6 +223,18 @@ void Stage::UpdateFirstEffect()
 
 void Stage::UpdateClearEffect()
 {
+	//ポーズ中はタイマーをストップ
+	if (GameUtility::GetIsPause()) {
+		if (effectTimer.GetIsStart() == true) {
+			effectTimer.Stop();
+		}
+	}
+	else {
+		if (effectTimer.GetIsStart() == false) {
+			effectTimer.Start();
+		}
+	}
+
 	effectTimer.Update();
 
 	//ブロックが空から降ってくる演出
@@ -247,7 +272,7 @@ void Stage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short br
 	//種類ごとにブロック追加
 	if (blockType == BLOCKTYPE_SQUARE) {
 		SquareBlock* newBlock = new SquareBlock;
-		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2 - 0.01f);//ブロックとブロックに挟まった時に備えて少しだけ当たり判定を小さくする
+		newBlock->Initialize(stagePos, ONE_CELL_LENGTH / 2 -0.01f);//ブロックとブロックに挟まった時に備えて少しだけ当たり判定を小さくする
 		newBlock->SetBreakupCount(breakupCount);
 		newBlock->SetBlockColor(blockColor);
 		newBlock->SetPInstancingObjectDraw(iodSquareBlock);

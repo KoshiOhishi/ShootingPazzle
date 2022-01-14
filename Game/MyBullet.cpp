@@ -51,35 +51,38 @@ void MyBullet::Initialize(bool isFirst)
 	}
 	//2回目以降は球の演出のみ
 	else {
-		firstEffectTimer.SetTimer(2500, 3500);
+		firstEffectTimer.SetTimer(2400, 3500);
 		firstEffectTimer.Start();
 	}
 }
 
 void MyBullet::Update()
 {
-	if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT || 
-		GameUtility::GetNowPhase() == PHASE_GAME_SETPOS ||
-		GameUtility::GetNowPhase() == PHASE_GAME_SETANGLE) {
-		//出現エフェクト
-		UpdateFirstEffect();
-		//発射前更新
-		UpdateBeforeShoot();
-		//矢印更新
-		objArrow.Update();
-	}
-	else if (GameUtility::GetNowPhase() == PHASE_GAME_AFTERSHOOT) {
-		//衝突が起こるかチェック
-		CheckCollision();
-		Move();
-		ApplyGravity();
-		ApplyFriction();
-	}
-	else if (GameUtility::GetNowPhase() == PHASE_GAME_CLEAR) {
-		//衝突が起こるかチェック
-		CheckCollision();
-		UpdateClearEffect();
-		Move();
+	//ポーズ中は更新無し
+	if (GameUtility::GetIsPause() == false) {
+		if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT ||
+			GameUtility::GetNowPhase() == PHASE_GAME_SETPOS ||
+			GameUtility::GetNowPhase() == PHASE_GAME_SETANGLE) {
+			//出現エフェクト
+			UpdateFirstEffect();
+			//発射前更新
+			UpdateBeforeShoot();
+			//矢印更新
+			objArrow.Update();
+		}
+		else if (GameUtility::GetNowPhase() == PHASE_GAME_AFTERSHOOT) {
+			//衝突が起こるかチェック
+			CheckCollision();
+			Move();
+			ApplyGravity();
+			ApplyFriction();
+		}
+		else if (GameUtility::GetNowPhase() == PHASE_GAME_CLEAR) {
+			//衝突が起こるかチェック
+			CheckCollision();
+			UpdateClearEffect();
+			Move();
+		}
 	}
 
 	//球更新
@@ -112,7 +115,7 @@ void MyBullet::UpdateFirstEffect()
 
 	firstEffectTimer.Update();
 
-	double y = Easing::GetEaseValue(EASE_OUTEXPO, bounceInitPosY, RADIUS, firstEffectTimer, firstEffectTimer.GetEndTime() - 1000, firstEffectTimer.GetEndTime());
+	double y = Easing::GetEaseValue(EASE_OUTEXPO, bounceInitPosY, RADIUS, firstEffectTimer, (double)firstEffectTimer.GetEndTime() - 1000, firstEffectTimer.GetEndTime());
 
 	position.y = y;
 }
@@ -279,6 +282,9 @@ void MyBullet::CheckCollision()
 
 void MyBullet::CheckBlockCollision()
 {
+	//デバッグ用
+	int debug = false;
+
 	//レイとカプセルの距離の最短算出用
 	float alreadyHitDistance = FLT_MAX;
 	//動いた距離
@@ -304,8 +310,9 @@ void MyBullet::CheckBlockCollision()
 			float lengthSq = (blockPos - position).LengthSq();
 
 			//対象ブロックから遠かったら判定しない
-			bool nearFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH * 2;
+			bool nearFloor = lengthSq <= ONE_CELL_LENGTH * 1.4142f * ONE_CELL_LENGTH * 1.4142f * 2;
 			if (nearFloor == false) {
+				debug = -1;
 				continue;
 			}
 
@@ -329,6 +336,8 @@ void MyBullet::CheckBlockCollision()
 				//既に当たったカプセルとの距離が短いか
 				bool isHitCorrectCapsule = distance < alreadyHitDistance;
 
+				if (isHitRay2Capsule)
+				debug = isHitRay2Capsule;
 				if (isHitRay2Capsule && isHitNextMove && isHitCorrectCapsule) {
 					//既に当たったカプセルとの距離更新
 					alreadyHitDistance = distance;
@@ -376,6 +385,8 @@ void MyBullet::CheckBlockCollision()
 		//レイを最後の衝突した位置と移動量に更新
 		UpdateRay(calcPos, calcVel);
 	}
+
+	DebugText::Print(debug, 0, 20);
 }
 
 void MyBullet::CheckFloorCollision()

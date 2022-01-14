@@ -51,6 +51,12 @@ public:
 	void Reset();
 
 	/// <summary>
+	/// タイマーの現在時間をセット 開始値 <= time <= 終了値にクランプされる。
+	/// </summary>
+	/// <param name="time"></param>
+	void SetNowTime(int time);
+
+	/// <summary>
 	/// タイマーが開始しているかを取得
 	/// </summary>
 	/// <returns></returns>

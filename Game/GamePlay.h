@@ -37,14 +37,33 @@ private:
 	//前景(白)
 	Sprite sprWhite;
 
+	//前景(半透明黒)
+	Sprite sprBlack;
+
+	//ステージセレクトに戻るかのポップアップ
+	Sprite sprPopUp;
+	bool isDispPopup = false;
+
 	//UI(リセット)
 	UISquareButton buttonReset;
 
 	//UI(ステージセレクトに戻る)
 	UISquareButton buttonBack;
 
+	//UI(Yes)
+	UISquareButton buttonYes;
+
+	//UI(No)
+	UISquareButton buttonNo;
+
 	//開幕エフェクトタイマー
 	Timer startEffectTimer;
+
+	//ポップアップ出現タイマー
+	Timer dispPopUpTimer;
+
+	//シーンチェンジタイマー
+	Timer sceneChangeTimer;
 
 
 public:
@@ -60,9 +79,11 @@ public:
 	void UpdateBG();
 	void UpdateImgui();
 	void UpdateUI();
+	void UpdatePopUp();
 
 	void DrawEffect();
 	void DrawUI();
+	void DrawStageBackPopUp();
 
 	/// <summary>
 	/// 盤面をリセットし、フェーズをSET_POSにもどす

@@ -129,7 +129,7 @@ void TriangleBlock::UpdateCollision()
 
 void TriangleBlock::DecrementBreakupCount()
 {
-	if (isBreakable == false) {
+	if (isBreakable == false || breakupCount == 0) {
 		return;
 	}
 
