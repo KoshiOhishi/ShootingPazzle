@@ -7,6 +7,9 @@
 #include "CollisionManager.h"
 #include "Stage.h"
 
+const int MYBULLET_START_FIRST_EFFECT_TIME = 2500;
+const int MYBULLET_END_FIRST_EFFECT_TIME = 3500;
+
 class MyBullet
 {
 private:
@@ -55,7 +58,7 @@ private:
 	Object3D objArrow;
 
 	//エフェクトタイマー
-	Timer firstEffectTimer;
+	Timer* pFirstEffectTimer;
 	//跳ねるエフェクトの初期Y座標 カメラの位置と同期させる
 	float bounceInitPosY = 200;
 
@@ -70,7 +73,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(bool isFirst = true);
+	void Initialize();
 
 	/// <summary>
 	/// 更新
@@ -166,6 +169,8 @@ public:
 	/// </summary>
 	/// <param name="y"> 跳ねるエフェクトの初期Y座標</param>
 	void SetBounceInitPosY(float y) { bounceInitPosY = y; }
+
+	void SetPFirstEffectTimer(Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
 #pragma endregion
 
 #pragma region Getter

@@ -13,7 +13,7 @@ StageSelect::StageSelect()
 	for (int i = 0; i < STAGE_COUNT; i++) {
 		stages.emplace_back(new Stage());
 		stages[i]->LoadStage(STAGE_DIRECTORY + "stage_" + std::to_string(i) + ".spb");
-		stages[i]->Initialize(false);
+		stages[i]->Initialize();
 		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
 
 	}

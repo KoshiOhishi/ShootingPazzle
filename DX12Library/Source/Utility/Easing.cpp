@@ -34,7 +34,7 @@ double Easing::GetEaseValue(int type, double start, double end, double t)
 
 	switch (type) {
 
-	case EASE_INSIDE:
+	case EASE_INSINE:
 		value = 1.0 - cos((t * PI) / 2.0);
 		break;
 
@@ -274,8 +274,8 @@ const std::string& Easing::GetFuncName(int type)
 	case EASE_LINE:
 		return "EASE_LINE";
 
-	case EASE_INSIDE:
-		return "EASE_INSIDE";
+	case EASE_INSINE:
+		return "EASE_INSINE";
 
 	case EASE_OUTSINE:
 		return "EASE_OUTSINE";

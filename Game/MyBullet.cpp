@@ -15,12 +15,12 @@ const float MyBullet::RADIUS = ONE_CELL_LENGTH / 2;
 
 void MyBullet::CreateModel()
 {
-	//モデル生成
+	//モデル生成									金っぽい色
 	modelSphere.CreateSphere(20, 20, RADIUS, true, {0.75f,0.6f,0.0f}, { 0.25f,0.25f,0.25f }, { 0.5f,0.5f,0.5f });
 	modelArrow.CreateSquareTex(8, "Arrow.png", { 1,1,1 });
 }
 
-void MyBullet::Initialize(bool isFirst)
+void MyBullet::Initialize()
 {
 	//パラメータ初期化
 	float z;
@@ -43,17 +43,6 @@ void MyBullet::Initialize(bool isFirst)
 	objArrow.SetDrawShadowToOther(false);
 
 	nextMoveInfo = {};
-
-	//エフェクトタイマー
-	if (isFirst) {
-		firstEffectTimer.SetTimer(0, 3500);
-		firstEffectTimer.Start();
-	}
-	//2回目以降は球の演出のみ
-	else {
-		firstEffectTimer.SetTimer(2400, 3500);
-		firstEffectTimer.Start();
-	}
 }
 
 void MyBullet::Update()
@@ -94,7 +83,7 @@ void MyBullet::Draw()
 {
 	//出現エフェクト開始以降なら
 	//3Dオブジェクト描画
-	if (firstEffectTimer.GetNowTime() >= firstEffectTimer.GetEndTime() - 1000) {
+	if (pFirstEffectTimer->GetNowTime() >= MYBULLET_START_FIRST_EFFECT_TIME) {
 		objSphere.Draw();
 	}
 
@@ -106,16 +95,7 @@ void MyBullet::Draw()
 
 void MyBullet::UpdateFirstEffect()
 {
-	if (firstEffectTimer.GetIsEnd() == true) {
-		if (GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
-			GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
-		}
-		return;
-	}
-
-	firstEffectTimer.Update();
-
-	double y = Easing::GetEaseValue(EASE_OUTEXPO, bounceInitPosY, RADIUS, firstEffectTimer, (double)firstEffectTimer.GetEndTime() - 1000, firstEffectTimer.GetEndTime());
+	double y = Easing::GetEaseValue(EASE_OUTEXPO, bounceInitPosY, RADIUS, *pFirstEffectTimer, MYBULLET_START_FIRST_EFFECT_TIME, MYBULLET_END_FIRST_EFFECT_TIME);
 
 	position.y = y;
 }

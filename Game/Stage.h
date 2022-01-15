@@ -23,8 +23,10 @@ private:
 	unsigned short startLaneZ = stageSize.y - 2;
 	//残り目標破壊ブロック数
 	int targetBlockCount = 0;
-	//出現エフェクトタイマー
-	Timer effectTimer;
+	//出現エフェクトタイマーのポインタ
+	Timer* pFirstEffectTimer;
+	//クリアエフェクトタイマーのポインタ
+	Timer* pClearEffectTimer;
 
 	InstancingObjectDraw iodSquareBlock[4];
 	InstancingObjectDraw iodTriangleBlock[4];
@@ -37,7 +39,7 @@ public:
 	Stage() {}
 	~Stage();
 
-	void Initialize(bool isEnableEffect = true);
+	void Initialize();
 
 	/// <summary>
 	/// ステージを読み込んで初期化
@@ -118,14 +120,6 @@ public:
 	void DecrementTargetBlockCount() { targetBlockCount--; }
 
 	/// <summary>
-	/// エフェクトタイマーをスタートさせる
-	/// </summary>
-	/// <param name="start"></param>
-	/// <param name="end"></param>
-	/// <param name="speed"></param>
-	void StartEffectTimer(int start, int end, float speed = 1.0);
-
-	/// <summary>
 	/// ブロック配置取得
 	/// </summary>
 	/// <returns></returns>
@@ -167,8 +161,6 @@ public:
 	/// <param name="pos"></param>
 	void SetMasterPosition(const Vector3& pos);
 
-	/// <summary>
-	/// エフェクトタイマーの現在時間を強制的に終了値にする
-	/// </summary>
-	void ForceEffectTimerToEnd() { effectTimer.SetNowTime(effectTimer.GetEndTime()); }
+	void SetPFirstEffectTimer(Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
+	void SetPClearEffectTimer(Timer* pClearEffectTimer) { this->pClearEffectTimer = pClearEffectTimer; }
 };

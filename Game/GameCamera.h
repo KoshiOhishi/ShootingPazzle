@@ -7,8 +7,10 @@ class GameCamera :
     public Camera
 {
 private:
-    //出現エフェクト
-    Timer effectTimer;
+    //出現エフェクトタイマーのポインタ
+    Timer* pFirstEffectTimer;
+    //クリアエフェクトタイマーのポインタ
+    Timer* pClearEffectTimer;
 
     //エフェクト前位置
     Vector3 beforeFirstEffectPos;
@@ -46,12 +48,7 @@ public:
     /// <returns>セットされたY座標</returns>
     float SetPosFromStageSize(const StageVec2& stageSize);
 
-    /// <summary>
-    /// エフェクトタイマーをスタートさせる
-    /// </summary>
-    /// <param name="start"></param>
-    /// <param name="end"></param>
-    /// <param name="speed"></param>
-    void StartEffectTimer(int start, int end, float speed = 1.0);
+    void SetPFirstEffectTimer(Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
+    void SetPClearEffectTimer(Timer* pClearEffectTimer) { this->pClearEffectTimer = pClearEffectTimer; }
 };
 

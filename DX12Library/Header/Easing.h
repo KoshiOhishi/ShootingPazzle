@@ -9,7 +9,7 @@ class Easing
 #define PI 3.14159265359
 
 #define EASE_LINE -1
-#define EASE_INSIDE 0
+#define EASE_INSINE 0
 #define EASE_OUTSINE 1
 #define EASE_INOUTSINE 2
 #define EASE_INQUAD 3

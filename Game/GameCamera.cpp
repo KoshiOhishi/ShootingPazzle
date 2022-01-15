@@ -8,13 +8,6 @@ void GameCamera::Initialize()
 	//camera.SetRotation(60, -60, 0);
 	SetPositionAndDistance({ 0,100, -40 }, 15.0f);
 	SetRotation(75, 0, 0);
-
-	//エフェクトは最初の読み込みのみ
-	//if (GameUtility::GetNowPhase() == PHASE_FIRSTEFFECT)
-	{
-		effectTimer.SetTimer(0, 3500);
-		effectTimer.Start();
-	}
 }
 
 void GameCamera::Update()
@@ -31,20 +24,6 @@ void GameCamera::Update()
 
 void GameCamera::UpdateFirstEffect()
 {
-	//ポーズ中はカメラのタイマーをストップ
-	if (GameUtility::GetIsPause()) {
-		if (effectTimer.GetIsStart() == true) {
-			effectTimer.Stop();
-		}
-	}
-	else {
-		if (effectTimer.GetIsStart() == false) {
-			effectTimer.Start();
-		}
-	}
-
-	effectTimer.Update();
-
 	//移動開始時刻（タイマー間指定）
 	double start = 1500;
 	//移動終了時刻（タイマー間指定）
@@ -61,13 +40,13 @@ void GameCamera::UpdateFirstEffect()
 	//設定する角度
 	Vector3 setRot = {};
 
-	setPos.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.x, beforeFirstEffectPos.x + move.x, effectTimer, start, end);
-	setPos.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.y, beforeFirstEffectPos.y + move.y, effectTimer, start, end);
-	setPos.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.z, beforeFirstEffectPos.z + move.z, effectTimer, start, end);
+	setPos.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.x, beforeFirstEffectPos.x + move.x, *pFirstEffectTimer, start, end);
+	setPos.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.y, beforeFirstEffectPos.y + move.y, *pFirstEffectTimer, start, end);
+	setPos.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectPos.z, beforeFirstEffectPos.z + move.z, *pFirstEffectTimer, start, end);
 
-	setRot.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.x, beforeFirstEffectRot.x + rot.x, effectTimer, start, end);
-	setRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.y, beforeFirstEffectRot.y + rot.y, effectTimer, start, end);
-	setRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.z, beforeFirstEffectRot.z + rot.z, effectTimer, start, end);
+	setRot.x = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.x, beforeFirstEffectRot.x + rot.x, *pFirstEffectTimer, start, end);
+	setRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.y, beforeFirstEffectRot.y + rot.y, *pFirstEffectTimer, start, end);
+	setRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, beforeFirstEffectRot.z, beforeFirstEffectRot.z + rot.z, *pFirstEffectTimer, start, end);
 
 	SetPositionAndDistance( setPos, 15.0f);
 	SetRotation(setRot);
@@ -75,20 +54,6 @@ void GameCamera::UpdateFirstEffect()
 
 void GameCamera::UpdateClearEffect()
 {
-	//ポーズ中はカメラのタイマーをストップ
-	if (GameUtility::GetIsPause()) {
-		if (effectTimer.GetIsStart() == true) {
-			effectTimer.Stop();
-		}
-	}
-	else {
-		if (effectTimer.GetIsStart() == false) {
-			effectTimer.Start();
-		}
-	}
-
-	effectTimer.Update();
-
 	//移動開始時刻（タイマー間指定）
 	double start = 500;
 	//移動終了時刻（タイマー間指定）
@@ -108,13 +73,13 @@ void GameCamera::UpdateClearEffect()
 	//設定する角度
 	Vector3 setRot = {};
 
-	setPos.x = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.x, afterFirstEffectPos.x + move.x, effectTimer, start, end);
-	setPos.y = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.y, afterFirstEffectPos.y + move.y, effectTimer, start, end);
-	setPos.z = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.z, afterFirstEffectPos.z + move.z, effectTimer, start, end);
+	setPos.x = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.x, afterFirstEffectPos.x + move.x, *pClearEffectTimer, start, end);
+	setPos.y = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.y, afterFirstEffectPos.y + move.y, *pClearEffectTimer, start, end);
+	setPos.z = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectPos.z, afterFirstEffectPos.z + move.z, *pClearEffectTimer, start, end);
 
-	setRot.x = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.x, afterFirstEffectRot.x + rot.x, effectTimer, start, end);
-	setRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.y, afterFirstEffectRot.y + rot.y, effectTimer, start, end);
-	setRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.z, afterFirstEffectRot.z + rot.z, effectTimer, start, end);
+	setRot.x = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.x, afterFirstEffectRot.x + rot.x, *pClearEffectTimer, start, end);
+	setRot.y = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.y, afterFirstEffectRot.y + rot.y, *pClearEffectTimer, start, end);
+	setRot.z = Easing::GetEaseValue(EASE_INOUTQUAD, afterFirstEffectRot.z, afterFirstEffectRot.z + rot.z, *pClearEffectTimer, start, end);
 
 	SetPositionAndDistance(setPos, 30.0f);
 	SetRotation(setRot);
@@ -122,8 +87,6 @@ void GameCamera::UpdateClearEffect()
 
 void GameCamera::SetCameraParamAfterShoot()
 {
-	//強制的にタイマーを終了値に
-	effectTimer.SetNowTime(effectTimer.GetEndTime());
 	SetPositionAndDistance(afterFirstEffectPos, 30.0f);
 	SetRotation(afterFirstEffectRot);
 }
@@ -177,10 +140,4 @@ float GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
 	afterFirstEffectRot = { ANGLE,0,0 };
 
 	return y;
-}
-
-void GameCamera::StartEffectTimer(int start, int end, float speed)
-{
-	effectTimer.SetTimer(start, end, false, speed);
-	effectTimer.Start();
 }

@@ -23,7 +23,7 @@ Stage::~Stage()
 	floors.clear();
 }
 
-void Stage::Initialize(bool isEnableEffect)
+void Stage::Initialize()
 {
 	//モデルセット
 	for (int i = 0; i < _countof(iodSquareBlock); i++) {
@@ -46,12 +46,6 @@ void Stage::Initialize(bool isEnableEffect)
 	}
 	iodBreakFloor.Initialize();
 	iodBreakFloor.SetObjModel(BreakFloor::GetModel());
-
-	//エフェクトタイマーセット
-	if (isEnableEffect) {
-		effectTimer.SetTimer(0, 3500);
-		effectTimer.Start();
-	}
 }
 
 void Stage::LoadStage(std::string filename)
@@ -196,55 +190,27 @@ void Stage::Draw()
 
 void Stage::UpdateFirstEffect()
 {
-	//ポーズ中はタイマーをストップ
-	if (GameUtility::GetIsPause()) {
-		if (effectTimer.GetIsStart() == true) {
-			effectTimer.Stop();
-		}
-	}
-	else {
-		if (effectTimer.GetIsStart() == false) {
-			effectTimer.Start();
-		}
-	}
-
-	effectTimer.Update();
-
 	//ブロックが空から降ってくる演出
 	for (int i = 0; i < blocks.size(); i++) {
-		blocks[i]->UpdateFirstEffect(effectTimer);
+		blocks[i]->UpdateFirstEffect(*pFirstEffectTimer);
 	}
 
 	//床が下から出てくる演出
 	for (int i = 0; i < floors.size(); i++) {
-		floors[i]->UpdateFirstEffect(effectTimer);
+		floors[i]->UpdateFirstEffect(*pFirstEffectTimer);
 	}
 }
 
 void Stage::UpdateClearEffect()
 {
-	//ポーズ中はタイマーをストップ
-	if (GameUtility::GetIsPause()) {
-		if (effectTimer.GetIsStart() == true) {
-			effectTimer.Stop();
-		}
-	}
-	else {
-		if (effectTimer.GetIsStart() == false) {
-			effectTimer.Start();
-		}
-	}
-
-	effectTimer.Update();
-
 	//ブロックが空から降ってくる演出
 	for (int i = 0; i < blocks.size(); i++) {
-		blocks[i]->UpdateClearEffect(effectTimer);
+		blocks[i]->UpdateClearEffect(*pClearEffectTimer);
 	}
 
 	//床が下から出てくる演出
 	for (int i = 0; i < floors.size(); i++) {
-		floors[i]->UpdateClearEffect(effectTimer);
+		floors[i]->UpdateClearEffect(*pClearEffectTimer);
 	}
 }
 
@@ -316,12 +282,6 @@ void Stage::DeleteBlock(const StageVec2& stagePos)
 	//ブロック削除
 	if (blocks[deleteIndex]) delete blocks[deleteIndex];
 	blocks.erase(blocks.begin() + deleteIndex);
-}
-
-void Stage::StartEffectTimer(int start, int end, float speed)
-{
-	effectTimer.SetTimer(start, end, false, speed);
-	effectTimer.Start();
 }
 
 void Stage::SetMasterPosition(const Vector3& pos)

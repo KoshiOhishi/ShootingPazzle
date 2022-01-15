@@ -57,13 +57,19 @@ private:
 	UISquareButton buttonNo;
 
 	//開幕エフェクトタイマー
-	Timer startEffectTimer;
+	Timer firstEffectTimer;
 
 	//ポップアップ出現タイマー
 	Timer dispPopUpTimer;
 
 	//シーンチェンジタイマー
 	Timer sceneChangeTimer;
+
+	//クリアエフェクトタイマー
+	Timer clearEffectTimer;
+
+	//開幕エフェクト終了フラグ
+	bool isEndFirstEffect = false;
 
 
 public:
@@ -75,6 +81,7 @@ public:
 	virtual void Draw() override;
 
 	void UpdateDebugCamera();
+	void UpdateTimer();
 	void UpdateEffect();
 	void UpdateBG();
 	void UpdateImgui();
