@@ -28,6 +28,10 @@ GamePlay::GamePlay()
 	sprBlack.SetTexture(L"Resources/Black1280x720.png");
 	sprPopUp.Initialize();
 	sprPopUp.SetTexture(L"Resources/Game_PopUp.png");
+	for (int i = 0; i < _countof(sprClearText); i++) {
+		sprClearText[i].Initialize();
+		sprClearText[i].SetTexture(L"Resources/ClearText.png");
+	}
 }
 
 GamePlay::~GamePlay()
@@ -85,12 +89,18 @@ void GamePlay::Initialize()
 
 	//ポップアップ初期化
 	sprPopUp.SetPosition({ DX12Util::GetWindowWidth() * 0.5f - sprPopUp.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.5f - sprPopUp.GetTexSize().y * 0.5f });
+	
 	//初期状態は透明
 	sprPopUp.SetColor({ 1,1,1,0 });
 	isDispPopup = false;
 
 	sprBlack.SetColor({ 1,1,1,0});
-	
+
+	//「Clear」文字の初期位置(画面両端)
+	float clearTextPosY = 150;
+	sprClearText[0].SetPosition({ -sprClearText[0].GetTexSize().x, clearTextPosY });
+	sprClearText[1].SetPosition({ (float)DX12Util::GetWindowWidth(), clearTextPosY });
+
 	//タイマー初期化
 	firstEffectTimer.SetTimer(0, 4250);
 	firstEffectTimer.Start();
@@ -114,7 +124,7 @@ void GamePlay::Initialize()
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
 
 	//開幕エフェクト終了フラグ
-	isEndFirstEffect = false;
+	isEndFirstEffectOnce = false;
 }
 
 void GamePlay::Update()
@@ -129,7 +139,7 @@ void GamePlay::Update()
 	//UI更新
 	UpdateUI();
 	//ポップアップ更新
-	UpdatePopUp();
+	UpdateStageBackPopUp();
 
 	//クリアしているか？
 	CheckIsClear();
@@ -139,8 +149,12 @@ void GamePlay::Update()
 	myBullet.Update();
 	//ステージ更新
 	stage.Update();
-	//エフェクト更新
-	UpdateEffect();
+
+	//白エフェクト更新
+	UpdateFirstEffect();
+
+	//クリアエフェクト更新
+	UpdateClearEffect();
 	
 }
 
@@ -158,11 +172,17 @@ void GamePlay::Draw()
 	//UI描画
 	DrawUI();
 
+	//黒テクスチャ描画
+	DrawBlackEffect();
+
+	//クリアエフェクト描画
+	DrawClearEffect();
+
 	//ポップアップ描画
 	DrawStageBackPopUp();
 
-	//エフェクト描画
-	DrawEffect();
+	//白テクスチャ描画
+	DrawWhiteEffect();
 
 }
 
@@ -228,7 +248,7 @@ void GamePlay::UpdateTimer()
 	if (firstEffectTimer.GetIsEnd() == true &&
 		GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
 		GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
-		isEndFirstEffect = true;
+		isEndFirstEffectOnce = true;
 	}
 
 	firstEffectTimer.Update();
@@ -237,16 +257,18 @@ void GamePlay::UpdateTimer()
 	clearEffectTimer.Update();
 }
 
-void GamePlay::UpdateEffect()
+void GamePlay::UpdateFirstEffect()
 {
 	//完全に透明でなければ更新
-	if (firstEffectTimer.GetIsEnd() == false) {
-		//白テクスチャ透明度更新
-		float alpha = Easing::GetEaseValue(EASE_INOUTEXPO, 1, 0, firstEffectTimer, 0, 500);
-		Vector4 color = sprWhite.GetColor();
-		color.w = alpha;
-		sprWhite.SetColor(color);
+	if (firstEffectTimer.GetIsEnd() == true) {
+		return;
 	}
+
+	//白テクスチャ透明度更新
+	float alpha = Easing::GetEaseValue(EASE_INOUTEXPO, 1, 0, firstEffectTimer, 0, 500);
+	Vector4 color = sprWhite.GetColor();
+	color.w = alpha;
+	sprWhite.SetColor(color);
 }
 
 void GamePlay::UpdateBG()
@@ -286,7 +308,7 @@ void GamePlay::UpdateImgui()
 void GamePlay::UpdateUI()
 {
 	//開幕エフェクトの位置移動(1回だけ)
-	if (isEndFirstEffect == false) {
+	if (isEndFirstEffectOnce == false) {
 		float x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonReset.GetTexSize().x, 10, firstEffectTimer, 3500, 4000);
 		buttonReset.SetPosition({ x, buttonReset.GetPosition().y });
 		x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonBack.GetTexSize().x, 10, firstEffectTimer, 3750, 4250);
@@ -321,7 +343,7 @@ void GamePlay::UpdateUI()
 	}
 }
 
-void GamePlay::UpdatePopUp()
+void GamePlay::UpdateStageBackPopUp()
 {
 
 	if (GameUtility::GetIsPause()) {
@@ -377,9 +399,49 @@ void GamePlay::UpdatePopUp()
 	}
 }
 
-void GamePlay::DrawEffect()
+void GamePlay::UpdateClearEffect()
+{
+	//クリアエフェクト中のみ更新
+	if (clearEffectTimer.GetNowTime() <= clearEffectTimer.GetStartTime()) {
+		return;
+	}
+
+	const int END_MOVE_TEXT_TIME = 5250;
+
+	//クリア文字を画面の両端から中心に
+	for (int i = 0; i < _countof(sprClearText); i++) {
+		//テクスチャ移動開始終了位置
+		float startPosX = 0, endPosX = DX12Util::GetWindowWidth() * 0.5f - sprClearText[i].GetTexSize().x * 0.5f;
+		if (i == 0) { startPosX = -sprClearText[i].GetTexSize().x; }
+		else { startPosX = DX12Util::GetWindowWidth(); }
+
+		Vector2 texPos = { startPosX, 150 };
+		texPos.x = Easing::GetEaseValue(EASE_LINE, startPosX, endPosX, clearEffectTimer, 5000, END_MOVE_TEXT_TIME);
+
+		sprClearText[i].SetPosition(texPos);
+	}
+
+	//白テクスチャと黒テクスチャ
+	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME + 500) {
+		//黒テクスチャ透明度更新
+		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 0.5f, clearEffectTimer, END_MOVE_TEXT_TIME + 500, END_MOVE_TEXT_TIME + 1000);
+		Vector4 color = sprBlack.GetColor();
+		color.w = alpha;
+		sprBlack.SetColor(color);
+	}
+	else{
+		sprBlack.SetColor({ 1,1,1,0 });
+	}
+}
+
+void GamePlay::DrawWhiteEffect()
 {
 	sprWhite.DrawFG();
+}
+
+void GamePlay::DrawBlackEffect()
+{
+	sprBlack.DrawFG();
 }
 
 void GamePlay::DrawUI()
@@ -392,10 +454,25 @@ void GamePlay::DrawStageBackPopUp()
 {
 	//エフェクト中もしくはポーズ中に描画
 	if (GameUtility::GetIsPause() || dispPopUpTimer.GetIsEnd() == false) {
-		sprBlack.DrawFG();
 		sprPopUp.DrawFG();
 		buttonYes.Draw();
 		buttonNo.Draw();
+	}
+}
+
+void GamePlay::DrawClearEffect()
+{
+	//クリアエフェクト中のみ描画
+	if (clearEffectTimer.GetNowTime() <= clearEffectTimer.GetStartTime()) {
+		return;
+	}
+
+	//半透明黒テクスチャ
+	sprBlack.DrawFG();
+
+	//「Clear」文字
+	for (int i = 0; i < _countof(sprClearText); i++) {
+		sprClearText[i].DrawFG();
 	}
 }
 
@@ -417,11 +494,18 @@ void GamePlay::Reset()
 	firstEffectTimer.SetTimer(MYBULLET_START_FIRST_EFFECT_TIME, 4250);
 	firstEffectTimer.Start();
 
+	//クリアエフェクトタイマーリセット
+	clearEffectTimer.Reset();
+
 	//弾初期化
 	myBullet.Initialize();
 
 	//念のためカメラを定位置に
 	camera.SetCameraParamAfterShoot();
+
+	//念のため白と黒テクスチャ透明度0に
+	sprWhite.SetColor({ 1,1,1,0 });
+	sprBlack.SetColor({ 1,1,1,0 });
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);

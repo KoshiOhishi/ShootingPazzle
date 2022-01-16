@@ -27,6 +27,7 @@ private:
 	GameCamera camera;
 	//弾
 	MyBullet myBullet;
+
 	//ステージ
 	Stage stage;
 
@@ -42,7 +43,9 @@ private:
 
 	//ステージセレクトに戻るかのポップアップ
 	Sprite sprPopUp;
-	bool isDispPopup = false;
+
+	//「Clear」文字 (エフェクト用に2こ分)
+	Sprite sprClearText[2];
 
 	//UI(リセット)
 	UISquareButton buttonReset;
@@ -68,8 +71,11 @@ private:
 	//クリアエフェクトタイマー
 	Timer clearEffectTimer;
 
-	//開幕エフェクト終了フラグ
-	bool isEndFirstEffect = false;
+	//1回目の開幕エフェクト終了フラグ
+	bool isEndFirstEffectOnce = false;
+
+	//ポップアップ表示フラグ
+	bool isDispPopup = false;
 
 
 public:
@@ -82,15 +88,18 @@ public:
 
 	void UpdateDebugCamera();
 	void UpdateTimer();
-	void UpdateEffect();
+	void UpdateFirstEffect();
 	void UpdateBG();
 	void UpdateImgui();
 	void UpdateUI();
-	void UpdatePopUp();
+	void UpdateStageBackPopUp();
+	void UpdateClearEffect();
 
-	void DrawEffect();
+	void DrawWhiteEffect();
+	void DrawBlackEffect();
 	void DrawUI();
 	void DrawStageBackPopUp();
+	void DrawClearEffect();
 
 	/// <summary>
 	/// 盤面をリセットし、フェーズをSET_POSにもどす
@@ -98,7 +107,7 @@ public:
 	void Reset();
 
 	/// <summary>
-	/// クリアしているかチェック
+	/// クリアしているかチェック クリアしていたらフェーズをCLEARへ
 	/// </summary>
 	void CheckIsClear();
 };
