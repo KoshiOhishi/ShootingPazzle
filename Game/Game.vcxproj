@@ -210,6 +210,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="SwitchFloor.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="TriangleBlock.cpp" />
     <ClCompile Include="TurnFloor.cpp" />
     <ClCompile Include="UISquareButton.cpp" />
@@ -228,6 +229,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="SwitchFloor.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="TriangleBlock.h" />
     <ClInclude Include="TurnFloor.h" />
     <ClInclude Include="UISquareButton.h" />

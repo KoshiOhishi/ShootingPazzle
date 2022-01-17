@@ -9,6 +9,7 @@
 #include "FPSManager.h"
 #include "GamePlay.h"
 #include "StageSelect.h"
+#include "Title.h"
 #include "FbxLoader.h"
 #include "PostEffect.h"
 #include "Timer.h"
@@ -43,9 +44,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Initialize();
 
 	//シーンセット
+	SceneManager::AddScene(new Title(), "Title");
 	SceneManager::AddScene(new StageSelect(), "StageSelect");
 	SceneManager::AddScene(new GamePlay(), "GamePlay");
-	SceneManager::ChangeScene("StageSelect");
+	SceneManager::ChangeScene("Title");
 
 	//タイマー
 	timer = new Timer(0, INT_MAX);
