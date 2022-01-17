@@ -28,9 +28,15 @@ GamePlay::GamePlay()
 	sprBlack.SetTexture(L"Resources/Black1280x720.png");
 	sprPopUp.Initialize();
 	sprPopUp.SetTexture(L"Resources/Game_PopUp.png");
-	for (int i = 0; i < _countof(sprClearText); i++) {
-		sprClearText[i].Initialize();
-		sprClearText[i].SetTexture(L"Resources/ClearText.png");
+	for (int i = 0; i < _countof(sprTextClear); i++) {
+		sprTextClear[i].Initialize();
+		sprTextClear[i].SetTexture(L"Resources/Text_Clear.png");
+	}
+	sprTextClearTime.Initialize();
+	sprTextClearTime.SetTexture(L"Resources/Text_ClearTime.png");
+	for (int i = 0; i < _countof(sprTextTimeNumber); i++) {
+		sprTextTimeNumber[i].Initialize();
+		sprTextTimeNumber[i].SetTexture(L"Resources/Text_TimeNumber.png");
 	}
 }
 
@@ -87,19 +93,21 @@ void GamePlay::Initialize()
 	objBG.SetScale(5, 5, 5);
 	objBG.SetDrawShadowToMyself(false);
 
+	//ポップアップ表示フラグ
+	isDispPopup = false;
+
 	//ポップアップ初期化
 	sprPopUp.SetPosition({ DX12Util::GetWindowWidth() * 0.5f - sprPopUp.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.5f - sprPopUp.GetTexSize().y * 0.5f });
 	
 	//初期状態は透明
 	sprPopUp.SetColor({ 1,1,1,0 });
-	isDispPopup = false;
-
 	sprBlack.SetColor({ 1,1,1,0});
+	sprTextClearTime.SetPosition({ 175,450 });
 
 	//「Clear」文字の初期位置(画面両端)
 	float clearTextPosY = 150;
-	sprClearText[0].SetPosition({ -sprClearText[0].GetTexSize().x, clearTextPosY });
-	sprClearText[1].SetPosition({ (float)DX12Util::GetWindowWidth(), clearTextPosY });
+	sprTextClear[0].SetPosition({ -sprTextClear[0].GetTexSize().x, clearTextPosY });
+	sprTextClear[1].SetPosition({ (float)DX12Util::GetWindowWidth(), clearTextPosY });
 
 	//タイマー初期化
 	firstEffectTimer.SetTimer(0, 4250);
@@ -107,6 +115,7 @@ void GamePlay::Initialize()
 	dispPopUpTimer.SetTimer(0, 500);
 	sceneChangeTimer.SetTimer(0, 1000);
 	clearEffectTimer.SetTimer(0, 10000);
+	scoreTimer.SetTimer(0, INT_MAX);
 
 	//UIボタン初期化
 	float adjust = 10;
@@ -184,6 +193,8 @@ void GamePlay::Draw()
 	//白テクスチャ描画
 	DrawWhiteEffect();
 
+	DebugText::Print(scoreTimer.GetNowTime(), 0, 20);
+
 }
 
 void GamePlay::UpdateDebugCamera()
@@ -249,9 +260,12 @@ void GamePlay::UpdateTimer()
 		GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
 		GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
 		isEndFirstEffectOnce = true;
+		scoreTimer.Reset();
+		scoreTimer.Start();
 	}
 
 	firstEffectTimer.Update();
+	scoreTimer.Update();
 	dispPopUpTimer.Update();
 	sceneChangeTimer.Update();
 	clearEffectTimer.Update();
@@ -307,13 +321,28 @@ void GamePlay::UpdateImgui()
 
 void GamePlay::UpdateUI()
 {
+	//ボタン移動
 	//開幕エフェクトの位置移動(1回だけ)
 	if (isEndFirstEffectOnce == false) {
 		float x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonReset.GetTexSize().x, 10, firstEffectTimer, 3500, 4000);
 		buttonReset.SetPosition({ x, buttonReset.GetPosition().y });
 		x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonBack.GetTexSize().x, 10, firstEffectTimer, 3750, 4250);
 		buttonBack.SetPosition({ x, buttonBack.GetPosition().y });
+
+		//エフェクト中はボタン入力させない
+		return;
 	}
+	//クリアエフェクトの位置移動
+	else if (clearEffectTimer.GetIsStart()) {
+		float x = Easing::GetEaseValue(EASE_INBACK, 10, -buttonReset.GetTexSize().x, clearEffectTimer, 500, 1000);
+		buttonReset.SetPosition({ x, buttonReset.GetPosition().y });
+		x = Easing::GetEaseValue(EASE_INBACK, 10, -buttonBack.GetTexSize().x, clearEffectTimer, 750, 1250);
+		buttonBack.SetPosition({ x, buttonBack.GetPosition().y });
+
+		//エフェクト中はボタン入力させない
+		return;
+	}
+
 	//ボタン入力
 	if (GameUtility::GetIsPause() == false) {
 		buttonReset.SetIsDispOverlapMouseTex(true);
@@ -321,6 +350,8 @@ void GamePlay::UpdateUI()
 
 		if (buttonReset.IsReleaseButton()) {
 			buttonReset.StartPushedEffect();
+			//スコアタイマーリセット
+			scoreTimer.Reset();
 			Reset();
 		}
 		if (buttonBack.IsReleaseButton()) {
@@ -331,6 +362,8 @@ void GamePlay::UpdateUI()
 			isDispPopup = true;
 			//ポーズ状態にする
 			GameUtility::SetIsPause(true);
+			//スコアタイマー一時停止
+			scoreTimer.Stop();
 		}
 	}
 	else {
@@ -381,6 +414,8 @@ void GamePlay::UpdateStageBackPopUp()
 		//ポップアップタイマー終了でポーズ解除
 		if (isDispPopup == false && dispPopUpTimer.GetIsEnd()) {
 			GameUtility::SetIsPause(false);
+			//スコアタイマー再スタート
+			scoreTimer.Start();
 		}
 	}
 
@@ -409,16 +444,16 @@ void GamePlay::UpdateClearEffect()
 	const int END_MOVE_TEXT_TIME = 5250;
 
 	//クリア文字を画面の両端から中心に
-	for (int i = 0; i < _countof(sprClearText); i++) {
+	for (int i = 0; i < _countof(sprTextClear); i++) {
 		//テクスチャ移動開始終了位置
-		float startPosX = 0, endPosX = DX12Util::GetWindowWidth() * 0.5f - sprClearText[i].GetTexSize().x * 0.5f;
-		if (i == 0) { startPosX = -sprClearText[i].GetTexSize().x; }
+		float startPosX = 0, endPosX = DX12Util::GetWindowWidth() * 0.5f - sprTextClear[i].GetTexSize().x * 0.5f;
+		if (i == 0) { startPosX = -sprTextClear[i].GetTexSize().x; }
 		else { startPosX = DX12Util::GetWindowWidth(); }
 
 		Vector2 texPos = { startPosX, 150 };
 		texPos.x = Easing::GetEaseValue(EASE_LINE, startPosX, endPosX, clearEffectTimer, 5000, END_MOVE_TEXT_TIME);
 
-		sprClearText[i].SetPosition(texPos);
+		sprTextClear[i].SetPosition(texPos);
 	}
 
 	//白テクスチャと黒テクスチャ
@@ -431,6 +466,24 @@ void GamePlay::UpdateClearEffect()
 	}
 	else{
 		sprBlack.SetColor({ 1,1,1,0 });
+	}
+
+	//スコアタイマー
+	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME + 1000) {
+		//「ClearTime」文字の透明度更新
+		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, clearEffectTimer, END_MOVE_TEXT_TIME + 1000, END_MOVE_TEXT_TIME + 1250);
+		Vector4 color = sprTextClearTime.GetColor();
+		color.w = alpha;
+		sprTextClearTime.SetColor(color);
+
+		//スコアタイム数字の準備
+		SetScoreTimeTex(sprTextTimeNumber, _countof(sprTextTimeNumber), END_MOVE_TEXT_TIME + 1500);
+	}
+	else {
+		sprTextClearTime.SetColor({ 1,1,1,0 });
+		for (int i = 0; i < _countof(sprTextTimeNumber); i++) {
+			sprTextTimeNumber[i].SetColor({ 1,1,1,0 });
+		}
 	}
 }
 
@@ -471,8 +524,16 @@ void GamePlay::DrawClearEffect()
 	sprBlack.DrawFG();
 
 	//「Clear」文字
-	for (int i = 0; i < _countof(sprClearText); i++) {
-		sprClearText[i].DrawFG();
+	for (int i = 0; i < _countof(sprTextClear); i++) {
+		sprTextClear[i].DrawFG();
+	}
+
+	//「ClearText」文字
+	sprTextClearTime.DrawFG();
+
+	//スコアタイム文字
+	for (int i = 0; i < _countof(sprTextTimeNumber); i++) {
+		sprTextTimeNumber[i].DrawFG();
 	}
 }
 
@@ -544,5 +605,94 @@ void GamePlay::CheckIsClear()
 		if (clearEffectTimer.GetIsStart() == false) {
 			clearEffectTimer.Start();
 		}
+		//スコアタイマー停止
+		scoreTimer.Stop();
 	}
+}
+
+void GamePlay::SetScoreTimeTex(Sprite* pNumberTexArray, int arraySize, int startDrawTime)
+{
+	//数字テクスチャ1つ分の大きさ
+	const Vector2 ONE_TEX_SIZE = { 72,96 };
+	//スコアタイムの左上座標
+	const Vector2 NUMBER_MASTER_POS = { 575,450 };
+	//桁分ずらす用
+	float drawPosX = 0;
+	//桁が増えるとこの数値分右にずれて描画される
+	float padding = 60;
+	//描画する文字列
+	const std::string DRAW_STR = GetStrScoreTime(arraySize);
+
+	//描画開始位置（sは最初から描画する）
+	int start = arraySize;
+	if (clearEffectTimer.GetNowTime() >= startDrawTime) {
+		start = arraySize - 1 - ((clearEffectTimer.GetNowTime() - startDrawTime) * 0.004f);
+
+		//小数点は演出を飛ばす
+		if (start <= arraySize - 5) {
+			start--;
+		}
+	}
+
+	for (int i = 0; i < arraySize; i++) {
+		//描画する1文字
+		const std::string draw = DRAW_STR.substr(i,1);
+
+		pNumberTexArray[i].SetPosition(NUMBER_MASTER_POS + Vector2{ drawPosX, 0 });
+		pNumberTexArray[i].SetColor({ 1,1,1,1 });
+
+		//描画しない部分
+		if (draw == "#") {
+			SetRectangleNumberTex(&pNumberTexArray[i], 0, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
+			pNumberTexArray[i].SetColor({ 1,1,1,0 });
+		}
+		//小数点
+		else if (draw == ".") {
+			//位置調整
+			padding = 20;
+			pNumberTexArray[i].SetPosition(NUMBER_MASTER_POS + Vector2{ drawPosX - 20, 0 });
+			pNumberTexArray[i].SetDrawRectangle(ONE_TEX_SIZE.x * 11, 0, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
+		}
+		//「s」
+		else if (draw == "s") {
+			pNumberTexArray[i].SetDrawRectangle(ONE_TEX_SIZE.x * 10, 0, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
+		}
+		//数字部分
+		else {
+			int drawNum = stoi(draw);
+			if (i == start) {
+				drawNum = rand() % 10;
+			}
+
+			SetRectangleNumberTex(&pNumberTexArray[i], drawNum, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
+		}
+
+		//描画位置より前の数字は描画しない
+		if (i < start) {
+			pNumberTexArray[i].SetColor({ 1,1,1,0 });
+		}
+
+		drawPosX += padding;
+		padding = 60;
+	}
+}
+
+void GamePlay::SetRectangleNumberTex(Sprite* pNumberTex, const unsigned int num, const float numWidth, const float numHeight)
+{
+	pNumberTex->SetDrawRectangle(num * numWidth, 0, numWidth, numHeight);
+}
+
+std::string GamePlay::GetStrScoreTime(int keta)
+{
+	std::string str = std::to_string(scoreTimer.GetNowTime());
+
+	str = str.insert(str.size() - 3, ".");
+	str = str.insert(str.size(), "s");
+
+	//文字列がketaと同じ桁数になるように#で埋める
+	while (str.size() < keta) {
+		str = "#" + str;
+	}
+
+	return str;
 }

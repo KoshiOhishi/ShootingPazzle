@@ -45,7 +45,13 @@ private:
 	Sprite sprPopUp;
 
 	//「Clear」文字 (エフェクト用に2こ分)
-	Sprite sprClearText[2];
+	Sprite sprTextClear[2];
+
+	//「ClearText」文字
+	Sprite sprTextClearTime;
+
+	//クリアタイムの数字 (9999.999sまで対応)
+	Sprite sprTextTimeNumber[9];
 
 	//UI(リセット)
 	UISquareButton buttonReset;
@@ -70,6 +76,9 @@ private:
 
 	//クリアエフェクトタイマー
 	Timer clearEffectTimer;
+
+	//スコアタイマー
+	Timer scoreTimer;
 
 	//1回目の開幕エフェクト終了フラグ
 	bool isEndFirstEffectOnce = false;
@@ -110,5 +119,26 @@ public:
 	/// クリアしているかチェック クリアしていたらフェーズをCLEARへ
 	/// </summary>
 	void CheckIsClear();
+
+	/// <summary>
+	/// スコアタイムのスプライトを準備する
+	/// </summary>
+	/// <param name="pNumberTexArray"></param>
+	/// <param name="arraySize"></param>
+	/// <param name="startDrawTime"></param>
+	void SetScoreTimeTex(Sprite* pNumberTexArray, int arraySize, int startDrawTime);
+
+	/// <summary>
+	/// 数字テクスチャから
+	/// </summary>
+	/// <param name="pNumberTex"></param>
+	/// <param name="num"></param>
+	void SetRectangleNumberTex(Sprite* pNumberTex, const unsigned int num, const float numWidth, const float numHeight);
+
+	/// <summary>
+	/// スコアタイムをketaで丸めて取得
+	/// </summary>
+	/// <returns></returns>
+	std::string GetStrScoreTime(int keta);
 };
 

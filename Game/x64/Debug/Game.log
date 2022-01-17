@@ -44,27 +44,31 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warnin
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
 E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(6): message : 'PI' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(268,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(312,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(314,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(355,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(359,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(390,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(416,46): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(419,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(427,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-  main.cpp
-  コードを生成中...
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(282,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(327,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(329,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(337,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(339,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(388,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(392,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(425,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(451,46): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(454,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(462,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(474,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(629,25): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warning C4172: ローカル変数またはテンポラリのアドレスを返します
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Background.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Black1280x720.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\ClearText.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Game_PopUp.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\grid.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Stage_BG.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_Clear.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_ClearTime.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_TimeNumber.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Write1280x720.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\BreakFloor.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\BreakFloor.obj
@@ -133,7 +137,7 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_No.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Yes.png
-  76 個のファイルをコピーしました
+  78 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

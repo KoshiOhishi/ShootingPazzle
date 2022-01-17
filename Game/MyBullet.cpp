@@ -262,9 +262,6 @@ void MyBullet::CheckCollision()
 
 void MyBullet::CheckBlockCollision()
 {
-	//デバッグ用
-	int debug = false;
-
 	//レイとカプセルの距離の最短算出用
 	float alreadyHitDistance = FLT_MAX;
 	//動いた距離
@@ -292,7 +289,6 @@ void MyBullet::CheckBlockCollision()
 			//対象ブロックから遠かったら判定しない
 			bool nearFloor = lengthSq <= ONE_CELL_LENGTH * 1.4142f * ONE_CELL_LENGTH * 1.4142f * 2;
 			if (nearFloor == false) {
-				debug = -1;
 				continue;
 			}
 
@@ -316,8 +312,6 @@ void MyBullet::CheckBlockCollision()
 				//既に当たったカプセルとの距離が短いか
 				bool isHitCorrectCapsule = distance < alreadyHitDistance;
 
-				if (isHitRay2Capsule)
-				debug = isHitRay2Capsule;
 				if (isHitRay2Capsule && isHitNextMove && isHitCorrectCapsule) {
 					//既に当たったカプセルとの距離更新
 					alreadyHitDistance = distance;
@@ -365,8 +359,6 @@ void MyBullet::CheckBlockCollision()
 		//レイを最後の衝突した位置と移動量に更新
 		UpdateRay(calcPos, calcVel);
 	}
-
-	DebugText::Print(debug, 0, 20);
 }
 
 void MyBullet::CheckFloorCollision()
