@@ -22,6 +22,16 @@ StageSelect::StageSelect()
 	buttonUp.LoadTexture(L"Resources/UI/UI_Arrow_Up.png");
 	buttonDown.LoadTexture(L"Resources/UI/UI_Arrow_Down.png");
 	buttonStart.LoadTexture(L"Resources/UI/UI_Start.png");
+
+	//スプライト読み込み
+	sprStageBG.Initialize();
+	sprStageBG.SetTexture(L"Resources/Stage_BG.png");
+	sprBackground.Initialize();
+	sprBackground.SetTexture(L"Resources/Background.png");
+	sprWrite.Initialize();
+	sprWrite.SetTexture(L"Resources/Write1280x720.png");
+	sprBlack.Initialize();
+	sprBlack.SetTexture(L"Resources/Black1280x720.png");
 }
 
 StageSelect::~StageSelect()
@@ -69,13 +79,11 @@ void StageSelect::Initialize()
 	buttonStart.Initialize({ DX12Util::GetWindowWidth() - buttonStart.GetTexSize().x - adjust, DX12Util::GetWindowHeight() - buttonStart.GetTexSize().y - adjust });
 
 	//スプライト初期化
-	sprStageBG.Initialize();
-	sprStageBG.SetTexture(L"Resources/Stage_BG.png");
-	sprBackground.Initialize();
-	sprBackground.SetTexture(L"Resources/Background.png");
-	sprWriteAll.Initialize();
-	sprWriteAll.SetTexture(L"Resources/Write1280x720.png");
+	sprBlack.SetColor({ 1,1,1,1 });
+
 	//タイマーセット
+	firstEffectTimer.SetTimer(0, 250);
+	firstEffectTimer.Start();
 	startGameTimer.SetTimer(0, 2000);
 }
 
@@ -83,24 +91,24 @@ void StageSelect::Update()
 {
 	light.Update();
 	UpdateCamera();
+	UpdateTimer();
 
 	//ステージ決定前処理
 	if (startGameTimer.GetIsStart() == false) {
 		UpdateNowSelect();
 	}
 	//ステージ決定後処理
-	else {
-		UpdateAfterDecided();
-	}
+	UpdateAfterDecided();
 
 	UpdateStage();
+	UpdateFG();
 }
 
 void StageSelect::Draw()
 {
 	DrawStage();
 	DrawUI();
-	DrawWrite();
+	DrawFG();
 }
 
 void StageSelect::UpdateCamera()
@@ -142,6 +150,12 @@ void StageSelect::UpdateCamera()
 		camera.SetPositionAndDistance(setPos, 15.0f);
 	}
 	camera.Update();
+}
+
+void StageSelect::UpdateTimer()
+{
+	firstEffectTimer.Update();
+	startGameTimer.Update();
 }
 
 void StageSelect::UpdateNowSelect()
@@ -195,8 +209,6 @@ void StageSelect::UpdateStage()
 
 void StageSelect::UpdateAfterDecided()
 {
-	startGameTimer.Update();
-
 	//エフェクト終了後にゲームプレイシーンへ
 	if (startGameTimer.GetIsEnd())
 	{
@@ -205,6 +217,10 @@ void StageSelect::UpdateAfterDecided()
 		//シーンを移す
 		SceneManager::ChangeScene("GamePlay");
 	}
+}
+
+void StageSelect::UpdateFG()
+{
 }
 
 void StageSelect::DrawStage()
@@ -224,9 +240,15 @@ void StageSelect::DrawUI()
 	buttonStart.Draw();
 }
 
-void StageSelect::DrawWrite()
+void StageSelect::DrawFG()
 {
-	float a = Easing::GetEaseValue(EASE_INQUART, 0, 1, startGameTimer);
-	sprWriteAll.SetColor({1, 1, 1, a});
-	sprWriteAll.DrawFG();
+	//黒
+	float alpha = 1.0f - ((float)firstEffectTimer.GetNowTime() / firstEffectTimer.GetEndTime());
+	sprBlack.SetColor({ 1,1,1,alpha });
+	sprBlack.DrawFG();
+
+	//白
+	alpha = Easing::GetEaseValue(EASE_INQUART, 0, 1, startGameTimer);
+	sprWrite.SetColor({ 1, 1, 1, alpha });
+	sprWrite.DrawFG();
 }

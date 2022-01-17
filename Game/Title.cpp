@@ -44,6 +44,8 @@ void Title::Initialize()
 	//テキスト
 	sprTextTitle.SetPosition({ DX12Util::GetWindowWidth() * 0.5f - sprTextTitle.GetTexSize().x * 0.5f, 150 });
 	sprTextClick.SetPosition({ DX12Util::GetWindowWidth() * 0.5f - sprTextClick.GetTexSize().x * 0.5f, 450 });
+
+	//前景(黒)
 	sprBlack.SetColor({ 1,1,1,0 });
 
 	//背景オブジェクト初期化

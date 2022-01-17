@@ -32,6 +32,9 @@ private:
     //移動が上向きかどうか
     bool isMoveUp = false;
 
+    //開幕エフェクトタイマー
+    Timer firstEffectTimer;
+
     //選択されているステージが変わった時に開始するタイマー
     Timer changeSelectPosTimer;
 
@@ -54,7 +57,10 @@ private:
     Sprite sprBackground;
 
     //前景(白)
-    Sprite sprWriteAll;
+    Sprite sprWrite;
+
+    //前景(黒)
+    Sprite sprBlack;
 
 
 public:
@@ -65,12 +71,14 @@ public:
     virtual void Draw() override;
 
     void UpdateCamera();
+    void UpdateTimer();
     void UpdateNowSelect();
     void UpdateStage();
     void UpdateAfterDecided();
+    void UpdateFG();
 
     void DrawStage();
     void DrawUI();
-    void DrawWrite();
+    void DrawFG();
 };
 

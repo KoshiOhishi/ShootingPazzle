@@ -101,6 +101,7 @@ void GamePlay::Initialize()
 	
 	//初期状態は透明
 	sprPopUp.SetColor({ 1,1,1,0 });
+	sprWhite.SetColor({ 1,1,1,1 });
 	sprBlack.SetColor({ 1,1,1,0});
 	sprTextClearTime.SetPosition({ 175,450 });
 
@@ -423,8 +424,8 @@ void GamePlay::UpdateStageBackPopUp()
 	if (sceneChangeTimer.GetIsStart()) {
 		//白テクスチャ透明度更新
 		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, sceneChangeTimer, 0, 1000);
-		Vector4 color = sprWhite.GetColor();
-		color.w = alpha;
+		//白テクスチャを黒として扱う
+		Vector4 color = {0,0,0,alpha};
 		sprWhite.SetColor(color);
 	}
 
