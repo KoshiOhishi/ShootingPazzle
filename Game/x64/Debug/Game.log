@@ -44,145 +44,28 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warnin
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
 E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(6): message : 'PI' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(288,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(333,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(335,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(343,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(345,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(394,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(398,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(431,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(452,46): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(455,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(463,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(475,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(493,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(653,25): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(107,47): warning C4305: '引数': 'double' から 'const float' へ切り詰めます。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(304,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(350,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(354,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(357,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(360,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(362,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(368,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(372,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(375,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(378,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(380,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(435,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(439,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(472,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(496,46): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(499,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(507,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(519,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(537,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(726,25): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warning C4172: ローカル変数またはテンポラリのアドレスを返します
-DX12Library.lib(xpath.obj) : warning LNK4099: PDB 'libxml2-md.pdb' が 'DX12Library.lib(xpath.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libxml2-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(xmlschemastypes.obj) : warning LNK4099: PDB 'libxml2-md.pdb' が 'DX12Library.lib(xmlschemastypes.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libxml2-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxmanager.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxmanager.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxpropertytypes.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxpropertytypes.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxsystemunit.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxsystemunit.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxtime.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxtime.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxaffinematrix.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxaffinematrix.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxdualquaternion.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxdualquaternion.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxmatrix.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxmatrix.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxquaternion.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxquaternion.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxtransforms.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxtransforms.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxvector4.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxvector4.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxglobalcamerasettings.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxglobalcamerasettings.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxgloballightsettings.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxgloballightsettings.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxglobalsettings.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxglobalsettings.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxiosettings.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxiosettings.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreader3ds.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxreader3ds.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriter3ds.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriter3ds.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(3dsmatr.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(3dsmatr.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxfileacclaimamc.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxfileacclaimamc.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxfileacclaimasf.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxfileacclaimasf.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriteracclaimamc.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriteracclaimamc.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriteracclaimasf.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriteracclaimasf.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxfileadaptiveoptics.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxfileadaptiveoptics.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxalembicgeometry.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxalembicgeometry.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxalembicinterface.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxalembicinterface.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxalembicmaterial.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxalembicmaterial.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxalembicobject.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxalembicobject.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxalembicutils.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxalembicutils.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxalembicxform.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxalembicxform.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxfilebiovision.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxfilebiovision.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriterbiovision.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriterbiovision.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxcolladaelement.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxcolladaelement.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxcolladaiostream.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxcolladaiostream.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxcolladautils.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxcolladautils.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreadercollada14.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxreadercollada14.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwritercollada14.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwritercollada14.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreaderdxf.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxreaderdxf.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriterdxf.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriterdxf.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreaderfbx5.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxreaderfbx5.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreaderfbx6.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxreaderfbx6.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreaderfbx7.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxreaderfbx7.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriterfbx5.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxwriterfbx5.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriterfbx6.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriterfbx6.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriterfbx7.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriterfbx7.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreadermotionbase.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxreadermotionbase.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwritermotionbase.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxwritermotionbase.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxfilemotionanalysishtr.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxfilemotionanalysishtr.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxfilemotionanalysistrc.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxfilemotionanalysistrc.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwritermotionanalysishtr.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwritermotionanalysishtr.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxreaderobj.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxreaderobj.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwriterobj.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwriterobj.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxfilevicon.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxfilevicon.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxviconbase.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxviconbase.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxwritervicon.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxwritervicon.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxaxissystem.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxaxissystem.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxmediaclip.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxmediaclip.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxscene.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxscene.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefilter.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefilter.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefiltergimblekiller.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefiltergimblekiller.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefilterkeyreducer.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefilterkeyreducer.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefilterkeysync.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefilterkeysync.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefiltermatrixconverter.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefiltermatrixconverter.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefilterscale.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxanimcurvefilterscale.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefilterscalecompensate.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefilterscalecompensate.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefiltertss.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefiltertss.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvefilterunroll.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvefilterunroll.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimcurvekfcurve.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimcurvekfcurve.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxanimevalclassic.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxanimevalclassic.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(kfcurve.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(kfcurve.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(kfcurvefiltergimblekiller.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(kfcurvefiltergimblekiller.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(kfcurvefilterkeysync.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(kfcurvefilterkeysync.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(kfcurveglobal.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(kfcurveglobal.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(kfcurvenode.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(kfcurvenode.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxcharacter.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxcharacter.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxconstraintaim.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxconstraintaim.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxconstraintparent.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxconstraintparent.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxconstraintsinglechainik.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxconstraintsinglechainik.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxcache.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxcache.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxcamera.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxcamera.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxcamerastereo.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxcamerastereo.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxlayer.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxlayer.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxlight.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxlight.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxmarker.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxmarker.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxmesh.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxmesh.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxnode.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxnode.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxnurbscurve.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxnurbscurve.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxnurbscurveevaluator.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxnurbscurveevaluator.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxnurbssurface.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxnurbssurface.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxnurbssurfaceevaluator.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxnurbssurfaceevaluator.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxskeleton.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxskeleton.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxskin.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxskin.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxsurfaceevaluator.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxsurfaceevaluator.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxtrimnurbssurface.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxtrimnurbssurface.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxbindingoperator.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxbindingoperator.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxlayeredtexture.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxlayeredtexture.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxtexture.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxtexture.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxdeformationsevaluator.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxdeformationsevaluator.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxgeometryconverter.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxgeometryconverter.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxlimitsutilities.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxlimitsutilities.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxmanipulators.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxmanipulators.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(fbxrootnodeutility.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(fbxrootnodeutility.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinear.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(awLinear.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearAffineMatrix.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(awLinearAffineMatrix.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearNormal.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(awLinearNormal.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearPoint.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(awLinearPoint.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearRange1d.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(awLinearRange1d.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearRange2d.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(awLinearRange2d.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearRange3d.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(awLinearRange3d.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearVector.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(awLinearVector.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awLinearVector2.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(awLinearVector2.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awTess2dConstrainedTriangulate.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(awTess2dConstrainedTriangulate.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awString.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(awString.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(awCacheFileAccessor.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(awCacheFileAccessor.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(TokenMap.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(TokenMap.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(TimeSampling.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(TimeSampling.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(IObject.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(IObject.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(IFactory.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(IFactory.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(IPolyMesh.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(IPolyMesh.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(ISubD.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(ISubD.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(XformOp.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(XformOp.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(XformSample.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(XformSample.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(InternalUtil.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(InternalUtil.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(OStream.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(OStream.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Background.png
@@ -263,9 +146,11 @@ DX12Library.lib(OStream.obj) : warning LNK4099: PDB '' が 'DX12Library.lib(OStr
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Up.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_No.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_OK.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlock.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlockCount.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Yes.png
-  81 個のファイルをコピーしました
+  83 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

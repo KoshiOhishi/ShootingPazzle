@@ -35,11 +35,20 @@ private:
 	Object3D objBG;
 	ObjModel modelBG;
 
+	//UIのブロック
+	Object3D objUISquareBlock;
+
+	//残りブロックの数字 (3桁まで対応)
+	Sprite sprRemainingBlockCount[3];
+
 	//前景(白)
 	Sprite sprWhite;
 
 	//前景(半透明黒)
 	Sprite sprBlack;
+
+	//残りブロック数のUI
+	Sprite sprUIRemainingBlock;
 
 	//ステージセレクトに戻るかのポップアップ
 	Sprite sprPopUp;
@@ -123,6 +132,20 @@ public:
 	/// クリアしているかチェック クリアしていたらフェーズをCLEARへ
 	/// </summary>
 	void CheckIsClear();
+
+	/// <summary>
+	/// 残りブロックカウントの数字画像準備
+	/// </summary>
+	/// <param name="pNumberTexArray"></param>
+	/// <param name="arraySize"></param>
+	/// <param name="drawNum"></param>
+	void SetRemainingBlockCountTex(Sprite* pNumberTexArray, int arraySize, int drawNum, float numWidth, float numHeight);
+
+	/// <summary>
+	/// 残りブロック数の座標一括セット
+	/// </summary>
+	/// <param name="leftUpPos"></param>
+	void SetRemainingBlockCountTexPos(Sprite* pNumberTexArray, int arraySizeconst, const Vector2& leftUpPos, float padding);
 
 	/// <summary>
 	/// スコアタイムのスプライトを準備する

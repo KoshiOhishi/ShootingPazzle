@@ -29,6 +29,12 @@ GamePlay::GamePlay()
 	sprBlack.SetTexture(L"Resources/Black1280x720.png");
 	sprPopUp.Initialize();
 	sprPopUp.SetTexture(L"Resources/Game_PopUp.png");
+	sprUIRemainingBlock.Initialize();
+	sprUIRemainingBlock.SetTexture(L"Resources/UI/UI_RemainingBlock.png");
+	for (int i = 0; i < _countof(sprRemainingBlockCount); i++) {
+		sprRemainingBlockCount[i].Initialize();
+		sprRemainingBlockCount[i].SetTexture(L"Resources/UI/UI_RemainingBlockCount.png");
+	}
 	for (int i = 0; i < _countof(sprTextClear); i++) {
 		sprTextClear[i].Initialize();
 		sprTextClear[i].SetTexture(L"Resources/Text_Clear.png");
@@ -94,6 +100,15 @@ void GamePlay::Initialize()
 	objBG.SetScale(5, 5, 5);
 	objBG.SetDrawShadowToMyself(false);
 
+	//UIにあるブロック
+	objUISquareBlock.Initialize();
+	//一番ボロボロな見た目のモデルを取得
+	objUISquareBlock.SetObjModel(SquareBlock::GetModel(1));
+	objUISquareBlock.SetScale(0.075, 0.075, 0.075);
+	//影描画無し
+	objUISquareBlock.SetDrawShadowToOther(false);
+	objUISquareBlock.SetDrawShadowToMyself(false);
+
 	//ポップアップ表示フラグ
 	isDispPopup = false;
 
@@ -105,6 +120,7 @@ void GamePlay::Initialize()
 	sprWhite.SetColor({ 1,1,1,1 });
 	sprBlack.SetColor({ 1,1,1,0});
 	sprTextClearTime.SetPosition({ 175,450 });
+	sprUIRemainingBlock.SetPosition({ -sprUIRemainingBlock.GetTexSize().x, 95.0f });
 
 	//「Clear」文字の初期位置(画面両端)
 	float clearTextPosY = 150;
@@ -112,7 +128,7 @@ void GamePlay::Initialize()
 	sprTextClear[1].SetPosition({ (float)DX12Util::GetWindowWidth(), clearTextPosY });
 
 	//タイマー初期化
-	firstEffectTimer.SetTimer(0, 4250);
+	firstEffectTimer.SetTimer(0, 4500);
 	firstEffectTimer.Start();
 	dispPopUpTimer.SetTimer(0, 500);
 	sceneChangeTimer.SetTimer(0, 1000);
@@ -327,27 +343,54 @@ void GamePlay::UpdateImgui()
 
 void GamePlay::UpdateUI()
 {
-	//ボタン移動
+	//ToDo:マジックナンバー多いから何とかする
+
+	//移動
 	//開幕エフェクトの位置移動(1回だけ)
 	if (isEndFirstEffectOnce == false) {
-		float x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonReset.GetTexSize().x, 10, firstEffectTimer, 3500, 4000);
+		//ブロック
+		float x = Easing::GetEaseValue(EASE_OUTQUINT, -8.2f, -5.2f, firstEffectTimer, 3500, 4000);
+		Vector3 addPos = { x,0,2 };
+		objUISquareBlock.SetPosition(camera.GetPosition() + camera.GetCameraDir() * 5 + addPos);
+		//その下のUI
+		x = Easing::GetEaseValue(EASE_OUTQUINT, -sprUIRemainingBlock.GetTexSize().x, 8, firstEffectTimer, 3500, 4000);
+		sprUIRemainingBlock.SetPosition({ x, sprUIRemainingBlock.GetPosition().y });
+		//残りブロック数
+		x = Easing::GetEaseValue(EASE_OUTQUINT, -200, 128, firstEffectTimer, 3500, 4000);
+		SetRemainingBlockCountTexPos(sprRemainingBlockCount, _countof(sprRemainingBlockCount), { x, 116 }, 40);
+		//UIボタン
+		x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonReset.GetTexSize().x, 10, firstEffectTimer, 3750, 4250);
 		buttonReset.SetPosition({ x, buttonReset.GetPosition().y });
-		x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonBack.GetTexSize().x, 10, firstEffectTimer, 3750, 4250);
+		x = Easing::GetEaseValue(EASE_OUTQUINT, -buttonBack.GetTexSize().x, 10, firstEffectTimer, 4000, 4500);
 		buttonBack.SetPosition({ x, buttonBack.GetPosition().y });
-
-		//エフェクト中はボタン入力させない
-		return;
 	}
 	//クリアエフェクトの位置移動
 	else if (clearEffectTimer.GetIsStart()) {
-		float x = Easing::GetEaseValue(EASE_INBACK, 10, -buttonReset.GetTexSize().x, clearEffectTimer, 500, 1000);
+		//ブロック
+		float x = Easing::GetEaseValue(EASE_INBACK, -5.2f, -8.2f, clearEffectTimer, 500, 1000);
+		Vector3 addPos = { x,0,2 };
+		objUISquareBlock.SetPosition(camera.GetPosition() + camera.GetCameraDir() * 5 + addPos);
+		//その下のUI
+		x = Easing::GetEaseValue(EASE_INBACK, 8, -sprUIRemainingBlock.GetTexSize().x, clearEffectTimer, 500, 1000);
+		sprUIRemainingBlock.SetPosition({ x, sprUIRemainingBlock.GetPosition().y });
+		//残りブロック数
+		x = Easing::GetEaseValue(EASE_INBACK, 128, -200, clearEffectTimer, 500, 1000);
+		SetRemainingBlockCountTexPos(sprRemainingBlockCount, _countof(sprRemainingBlockCount), { x, 116 }, 40);
+		//UIボタン
+		x = Easing::GetEaseValue(EASE_INBACK, 10, -buttonReset.GetTexSize().x, clearEffectTimer, 750, 1250);
 		buttonReset.SetPosition({ x, buttonReset.GetPosition().y });
-		x = Easing::GetEaseValue(EASE_INBACK, 10, -buttonBack.GetTexSize().x, clearEffectTimer, 750, 1250);
+		x = Easing::GetEaseValue(EASE_INBACK, 10, -buttonBack.GetTexSize().x, clearEffectTimer, 1000, 1500);
 		buttonBack.SetPosition({ x, buttonBack.GetPosition().y });
-
-		//エフェクト中はボタン入力させない
-		return;
 	}
+
+	//ブロック回転
+	static float add = 0;
+	add++;
+	objUISquareBlock.SetRotation(camera.GetRotation() + Vector3(add, add, add));
+	objUISquareBlock.Update();
+
+	//残りブロック数セット
+	SetRemainingBlockCountTex(sprRemainingBlockCount, _countof(sprRemainingBlockCount), stage.GetTargetBlockCount(), 48, 64);
 
 	//ボタン入力
 	if (GameUtility::GetIsPause() == false) {
@@ -442,7 +485,10 @@ void GamePlay::UpdateClearEffect()
 		return;
 	}
 
-	const int END_MOVE_TEXT_TIME = 5250;
+	const int START_MOVE_TEXT_TIME = 5000;
+	const int START_WHITE_EFFECT = 5750;
+	const int START_SCORE_TIMER_EFFECT = 6250;
+	const int START_OK_BUTTON_EFFECT = 8000;
 
 	//クリア文字を画面の両端から中心に
 	for (int i = 0; i < _countof(sprTextClear); i++) {
@@ -452,15 +498,15 @@ void GamePlay::UpdateClearEffect()
 		else { startPosX = DX12Util::GetWindowWidth(); }
 
 		Vector2 texPos = { startPosX, 150 };
-		texPos.x = Easing::GetEaseValue(EASE_LINE, startPosX, endPosX, clearEffectTimer, 5000, END_MOVE_TEXT_TIME);
+		texPos.x = Easing::GetEaseValue(EASE_LINE, startPosX, endPosX, clearEffectTimer, START_MOVE_TEXT_TIME, START_MOVE_TEXT_TIME + 250);
 
 		sprTextClear[i].SetPosition(texPos);
 	}
 
 	//白テクスチャと黒テクスチャ
-	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME + 500) {
+	if (clearEffectTimer.GetNowTime() >= START_WHITE_EFFECT) {
 		//黒テクスチャ透明度更新
-		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 0.5f, clearEffectTimer, END_MOVE_TEXT_TIME + 500, END_MOVE_TEXT_TIME + 1000);
+		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 0.5f, clearEffectTimer, START_WHITE_EFFECT, START_WHITE_EFFECT + 500);
 		Vector4 color = sprBlack.GetColor();
 		color.w = alpha;
 		sprBlack.SetColor(color);
@@ -470,15 +516,15 @@ void GamePlay::UpdateClearEffect()
 	}
 
 	//スコアタイマー
-	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME + 1000) {
+	if (clearEffectTimer.GetNowTime() >= START_SCORE_TIMER_EFFECT) {
 		//「ClearTime」文字の透明度更新
-		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, clearEffectTimer, END_MOVE_TEXT_TIME + 1000, END_MOVE_TEXT_TIME + 1250);
+		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, clearEffectTimer, START_SCORE_TIMER_EFFECT, START_SCORE_TIMER_EFFECT + 500);
 		Vector4 color = sprTextClearTime.GetColor();
 		color.w = alpha;
 		sprTextClearTime.SetColor(color);
 
 		//スコアタイム数字の準備
-		SetScoreTimeTex(sprTextTimeNumber, _countof(sprTextTimeNumber), END_MOVE_TEXT_TIME + 1500);
+		SetScoreTimeTex(sprTextTimeNumber, _countof(sprTextTimeNumber), START_SCORE_TIMER_EFFECT + 500);
 	}
 	else {
 		sprTextClearTime.SetColor({ 1,1,1,0 });
@@ -488,9 +534,9 @@ void GamePlay::UpdateClearEffect()
 	}
 
 	//OKボタン
-	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME + 2500) {
+	if (clearEffectTimer.GetNowTime() >= START_OK_BUTTON_EFFECT) {
 		float adjust = 10;
-		float x = Easing::GetEaseValue(EASE_OUTQUINT, DX12Util::GetWindowWidth(), DX12Util::GetWindowWidth() - buttonOK.GetTexSize().x - adjust, clearEffectTimer, END_MOVE_TEXT_TIME + 2500, END_MOVE_TEXT_TIME + 3000);
+		float x = Easing::GetEaseValue(EASE_OUTQUINT, DX12Util::GetWindowWidth(), DX12Util::GetWindowWidth() - buttonOK.GetTexSize().x - adjust, clearEffectTimer, START_OK_BUTTON_EFFECT, START_OK_BUTTON_EFFECT + 500);
 		buttonOK.SetPosition({ x, buttonOK.GetPosition().y });
 
 		if (buttonOK.IsReleaseButton()) {
@@ -520,8 +566,17 @@ void GamePlay::DrawBlackEffect()
 
 void GamePlay::DrawUI()
 {
+	//ボタン描画
 	buttonReset.Draw();
 	buttonBack.Draw();
+	//ブロック描画
+	objUISquareBlock.Draw();
+	//その下のUI描画
+	sprUIRemainingBlock.DrawFG();
+	//残りブロック数描画
+	for (int i = 0; i < _countof(sprRemainingBlockCount); i++) {
+		sprRemainingBlockCount[i].DrawFG();
+	}
 }
 
 void GamePlay::DrawStageBackPopUp()
@@ -594,29 +649,6 @@ void GamePlay::Reset()
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
-	//}
-
-	//デバッグ用　完成版は消す
-	//if (Keyboard::IsKeyTrigger(DIK_Q)) {
-
-	//	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
-
-	//	//ステージ取得
-	//	stage.Initialize();
-	//	stage.LoadStage(GameUtility::GetNowStagePath());
-
-	//	//弾初期化
-	//	myBullet.Initialize();
-
-	//	//カメラ初期化　完成時はずす
-	//	camera.Initialize();
-
-	//	//ステージサイズからカメラ位置セット
-	//	camera.SetPosFromStageSize(stage.GetStageSize());
-
-	//	//ステージカラー初期化
-	//	GameUtility::SetStageColor(STAGE_COLOR_NONE);
-	//}
 }
 
 void GamePlay::CheckIsClear()
@@ -631,6 +663,49 @@ void GamePlay::CheckIsClear()
 		}
 		//スコアタイマー停止
 		scoreTimer.Stop();
+	}
+}
+
+void GamePlay::SetRemainingBlockCountTex(Sprite* pNumberTexArray, int arraySize, int drawNum, float numWidth, float numHeight)
+{
+	//描画する文字列
+	std::string drawStr = std::to_string(drawNum);
+
+	//文字チェック
+	//桁数オーバーは999埋め
+	if (drawStr.size() > arraySize) {
+		drawStr = "";
+		for (int i = 0; i < arraySize; i++) {
+			drawStr += "9";
+		}
+	}
+	else {
+		//穴埋め
+		while (drawStr.size() < arraySize) {
+			drawStr = "#" + drawStr;
+		}
+	}
+
+	for (int i = 0; i < arraySize; i++) {
+		//描画する1文字
+		const std::string draw = drawStr.substr(i, 1);
+
+		//描画しない
+		if (draw == "#") {
+			pNumberTexArray[i].SetColor({ 1,1,1,0 });
+		}
+		//数字
+		else {
+			pNumberTexArray[i].SetColor({ 1,1,1,1 });
+			pNumberTexArray[i].SetDrawRectangle(stoi(draw) * numWidth, 0, numWidth, numHeight);
+		}
+	}
+}
+
+void GamePlay::SetRemainingBlockCountTexPos(Sprite* pNumberTexArray, int arraySize, const Vector2& leftUpPos, float padding)
+{
+	for (int i = 0; i < arraySize; i++) {
+		pNumberTexArray[i].SetPosition(leftUpPos + Vector2(padding * i, 0));
 	}
 }
 
