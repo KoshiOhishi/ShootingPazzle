@@ -65,6 +65,9 @@ private:
 	//UI(No)
 	UISquareButton buttonNo;
 
+	//UI(OK)
+	UISquareButton buttonOK;
+
 	//開幕エフェクトタイマー
 	Timer firstEffectTimer;
 
@@ -103,6 +106,7 @@ public:
 	void UpdateUI();
 	void UpdateStageBackPopUp();
 	void UpdateClearEffect();
+	void UpdateChangeScene();
 
 	void DrawWhiteEffect();
 	void DrawBlackEffect();

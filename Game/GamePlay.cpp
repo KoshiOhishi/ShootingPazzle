@@ -22,6 +22,7 @@ GamePlay::GamePlay()
 	buttonBack.LoadTexture(L"Resources/UI/UI_Arrow_Back.png");
 	buttonYes.LoadTexture(L"Resources/UI/UI_Yes.png");
 	buttonNo.LoadTexture(L"Resources/UI/UI_No.png");
+	buttonOK.LoadTexture(L"Resources/UI/UI_OK.png");
 	sprWhite.Initialize();
 	sprWhite.SetTexture(L"Resources/Write1280x720.png");
 	sprBlack.Initialize();
@@ -123,6 +124,7 @@ void GamePlay::Initialize()
 	buttonReset.Initialize({ -buttonReset.GetTexSize().x, DX12Util::GetWindowHeight() - buttonBack.GetTexSize().y - buttonReset.GetTexSize().y - adjust * 2 });
 	buttonBack.Initialize({ -buttonBack.GetTexSize().x, DX12Util::GetWindowHeight() - buttonBack.GetTexSize().y - adjust });
 	buttonYes.Initialize({ DX12Util::GetWindowWidth() * 0.375f - buttonYes.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.75f - buttonYes.GetTexSize().y * 0.5f});
+	buttonOK.Initialize({ (float)DX12Util::GetWindowWidth(), (float)DX12Util::GetWindowHeight() - buttonOK.GetTexSize().y - adjust });
 	//初期状態は透明
 	buttonYes.SetColor({ 1,1,1,0 });
 	buttonNo.Initialize({ DX12Util::GetWindowWidth() * 0.625f - buttonNo.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.75f - buttonNo.GetTexSize().y * 0.5f });
@@ -165,6 +167,9 @@ void GamePlay::Update()
 
 	//クリアエフェクト更新
 	UpdateClearEffect();
+
+	//シーンチェンジ更新
+	UpdateChangeScene();
 	
 }
 
@@ -428,11 +433,6 @@ void GamePlay::UpdateStageBackPopUp()
 		Vector4 color = {0,0,0,alpha};
 		sprWhite.SetColor(color);
 	}
-
-	//タイマー終了でシーンチェンジ実行
-	if (sceneChangeTimer.GetIsEnd()) {
-		SceneManager::ChangeScene("StageSelect");
-	}
 }
 
 void GamePlay::UpdateClearEffect()
@@ -486,6 +486,26 @@ void GamePlay::UpdateClearEffect()
 			sprTextTimeNumber[i].SetColor({ 1,1,1,0 });
 		}
 	}
+
+	//OKボタン
+	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME + 2500) {
+		float adjust = 10;
+		float x = Easing::GetEaseValue(EASE_OUTQUINT, DX12Util::GetWindowWidth(), DX12Util::GetWindowWidth() - buttonOK.GetTexSize().x - adjust, clearEffectTimer, END_MOVE_TEXT_TIME + 2500, END_MOVE_TEXT_TIME + 3000);
+		buttonOK.SetPosition({ x, buttonOK.GetPosition().y });
+
+		if (buttonOK.IsReleaseButton()) {
+			buttonOK.StartPushedEffect();
+			sceneChangeTimer.Start();
+		}
+	}
+}
+
+void GamePlay::UpdateChangeScene()
+{
+	//タイマー終了でシーンチェンジ実行
+	if (sceneChangeTimer.GetIsEnd()) {
+		SceneManager::ChangeScene("StageSelect");
+	}
 }
 
 void GamePlay::DrawWhiteEffect()
@@ -536,6 +556,9 @@ void GamePlay::DrawClearEffect()
 	for (int i = 0; i < _countof(sprTextTimeNumber); i++) {
 		sprTextTimeNumber[i].DrawFG();
 	}
+
+	//OKボタン
+	buttonOK.Draw();
 }
 
 void GamePlay::Reset()
