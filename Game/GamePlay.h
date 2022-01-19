@@ -156,13 +156,6 @@ public:
 	void SetScoreTimeTex(Sprite* pNumberTexArray, int arraySize, int startDrawTime);
 
 	/// <summary>
-	/// 数字テクスチャから
-	/// </summary>
-	/// <param name="pNumberTex"></param>
-	/// <param name="num"></param>
-	void SetRectangleNumberTex(Sprite* pNumberTex, const unsigned int num, const float numWidth, const float numHeight);
-
-	/// <summary>
 	/// スコアタイムをketaで丸めて取得
 	/// </summary>
 	/// <returns></returns>

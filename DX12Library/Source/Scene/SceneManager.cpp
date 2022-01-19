@@ -6,6 +6,7 @@
 #include "RenderText.h"
 #include "DebugText.h"
 #include "InstancingObject.h"
+#include "ParticleManager.h"
 
 //静的メンバ変数の実体
 std::string SceneManager::nowScene;
@@ -76,6 +77,9 @@ void SceneManager::Draw()
 
 	//オブジェクト描画
 	Object3D::DrawAll();
+
+	//パーティクル描画
+	ParticleManager::DrawAll();
 
 	//前景スプライト描画
 	Sprite::DrawAllFG();

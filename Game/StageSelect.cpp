@@ -28,6 +28,12 @@ StageSelect::StageSelect()
 	sprStageBG.SetTexture(L"Resources/Stage_BG.png");
 	sprBackground.Initialize();
 	sprBackground.SetTexture(L"Resources/Background.png");
+	sprTextStage.Initialize();
+	sprTextStage.SetTexture(L"Resources/Text_Stage.png");
+	for (int i = 0; i < _countof(sprStageNum); i++) {
+		sprStageNum[i].Initialize();
+		sprStageNum[i].SetTexture(L"Resources/UI/UI_Number.png");
+	}
 	sprWrite.Initialize();
 	sprWrite.SetTexture(L"Resources/Write1280x720.png");
 	sprBlack.Initialize();
@@ -80,11 +86,16 @@ void StageSelect::Initialize()
 
 	//スプライト初期化
 	sprBlack.SetColor({ 1,1,1,1 });
+	sprTextStage.SetPosition({ DX12Util::GetWindowWidth() - sprTextStage.GetTexSize().x, 0 });
 
 	//タイマーセット
 	firstEffectTimer.SetTimer(0, 250);
 	firstEffectTimer.Start();
 	startGameTimer.SetTimer(0, 2000);
+	changeSelectPosTimer.SetTimer(0, 1000);
+	changeSelectPosTimer.SetNowTime(changeSelectPosTimer.GetEndTime());
+	roopEffectTimer.SetTimer(0, 6000, true);
+	roopEffectTimer.Start();
 }
 
 void StageSelect::Update()
@@ -101,7 +112,8 @@ void StageSelect::Update()
 	UpdateAfterDecided();
 
 	UpdateStage();
-	UpdateFG();
+
+	UpdateStageNumTex();
 }
 
 void StageSelect::Draw()
@@ -156,6 +168,7 @@ void StageSelect::UpdateTimer()
 {
 	firstEffectTimer.Update();
 	startGameTimer.Update();
+	roopEffectTimer.Update();
 }
 
 void StageSelect::UpdateNowSelect()
@@ -201,6 +214,11 @@ void StageSelect::UpdateNowSelect()
 
 void StageSelect::UpdateStage()
 {
+	//白い丸の透明度
+	float digrees = (float)roopEffectTimer.GetNowTime() * 180 / roopEffectTimer.GetEndTime();
+	float alpha = sin(digrees * PI / 180) * 0.5f + 0.5f;
+	sprStageBG.SetColor({ 1,1,1,alpha });
+
 	//ステージ更新
 	for (int i = 0; i < stages.size(); i++) {
 		stages[i]->Update();
@@ -219,8 +237,47 @@ void StageSelect::UpdateAfterDecided()
 	}
 }
 
-void StageSelect::UpdateFG()
+void StageSelect::UpdateStageNumTex()
 {
+	std::string drawStr = std::to_string(nowSelectStageIndex);
+	int arraySize = _countof(sprStageNum);
+	float numWidth = 48, numHeight = 64;
+	Vector2 masterPos = { 1185,5 };
+	float padding = 35;
+	float addPosY = Easing::GetEaseValue(EASE_OUTQUINT, masterPos.y - 10, masterPos.y, changeSelectPosTimer, 0, 500);
+
+	//文字チェック
+	//桁数オーバーは99埋め
+	if (drawStr.size() > arraySize) {
+		drawStr = "";
+		for (int i = 0; i < arraySize; i++) {
+			drawStr += "9";
+		}
+	}
+	else {
+		//穴埋め
+		while (drawStr.size() < arraySize) {
+			drawStr = "#" + drawStr;
+		}
+	}
+
+	for (int i = 0; i < arraySize; i++) {
+		//描画する1文字
+		const std::string draw = drawStr.substr(i, 1);
+
+		//描画しない
+		if (draw == "#") {
+			sprStageNum[i].SetColor({ 1,1,1,0 });
+		}
+		//数字
+		else {
+			sprStageNum[i].SetColor({ 1,1,1,1 });
+			sprStageNum[i].SetDrawRectangle(stoi(draw) * numWidth, 0, numWidth, numHeight);
+		}
+
+		sprStageNum[i].SetPosition(masterPos + Vector2(padding * i, addPosY));
+	}
+
 }
 
 void StageSelect::DrawStage()
@@ -238,6 +295,8 @@ void StageSelect::DrawUI()
 	buttonUp.Draw();
 	buttonDown.Draw();
 	buttonStart.Draw();
+	sprTextStage.DrawFG();
+	DrawStageNumTex();
 }
 
 void StageSelect::DrawFG()
@@ -251,4 +310,11 @@ void StageSelect::DrawFG()
 	alpha = Easing::GetEaseValue(EASE_INQUART, 0, 1, startGameTimer);
 	sprWrite.SetColor({ 1, 1, 1, alpha });
 	sprWrite.DrawFG();
+}
+
+void StageSelect::DrawStageNumTex()
+{
+	for (int i = 0; i < _countof(sprStageNum); i++) {
+		sprStageNum[i].DrawFG();
+	}
 }

@@ -41,6 +41,9 @@ private:
     //ゲーム開始エフェクトタイマー
     Timer startGameTimer;
 
+    //繰り返しエフェクトタイマー
+    Timer roopEffectTimer;
+
     //UI 上ボタン
     UISquareButton buttonUp;
 
@@ -55,6 +58,12 @@ private:
 
     //背景(黒)
     Sprite sprBackground;
+
+    //「Stage」文字
+    Sprite sprTextStage;
+
+    //ステージ数字
+    Sprite sprStageNum[2];
 
     //前景(白)
     Sprite sprWrite;
@@ -75,10 +84,11 @@ public:
     void UpdateNowSelect();
     void UpdateStage();
     void UpdateAfterDecided();
-    void UpdateFG();
+    void UpdateStageNumTex();
 
     void DrawStage();
     void DrawUI();
     void DrawFG();
+    void DrawStageNumTex();
 };
 

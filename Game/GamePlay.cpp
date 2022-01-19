@@ -10,6 +10,7 @@
 #include "GameUtility.h"
 #include "SceneManager.h"
 #include "Easing.h"
+#include "ParticleManager.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -33,7 +34,7 @@ GamePlay::GamePlay()
 	sprUIRemainingBlock.SetTexture(L"Resources/UI/UI_RemainingBlock.png");
 	for (int i = 0; i < _countof(sprRemainingBlockCount); i++) {
 		sprRemainingBlockCount[i].Initialize();
-		sprRemainingBlockCount[i].SetTexture(L"Resources/UI/UI_RemainingBlockCount.png");
+		sprRemainingBlockCount[i].SetTexture(L"Resources/UI/UI_Number.png");
 	}
 	for (int i = 0; i < _countof(sprTextClear); i++) {
 		sprTextClear[i].Initialize();
@@ -69,6 +70,7 @@ void GamePlay::Initialize()
 	//カメラをセット
 	Object3D::SetCamera(&camera);
 	Mouse::SetCamera(&camera);
+	ParticleManager::SetCamera(&camera);
 
 	//ライト初期化
 	light.Initialize();
@@ -386,6 +388,7 @@ void GamePlay::UpdateUI()
 	//ブロック回転
 	static float add = 0;
 	add++;
+	if (add >= 360) { add -= 360; }
 	objUISquareBlock.SetRotation(camera.GetRotation() + Vector3(add, add, add));
 	objUISquareBlock.Update();
 
@@ -488,7 +491,7 @@ void GamePlay::UpdateClearEffect()
 	const int START_MOVE_TEXT_TIME = 5000;
 	const int START_WHITE_EFFECT = 5750;
 	const int START_SCORE_TIMER_EFFECT = 6250;
-	const int START_OK_BUTTON_EFFECT = 8000;
+	const int START_OK_BUTTON_EFFECT = 8500;
 
 	//クリア文字を画面の両端から中心に
 	for (int i = 0; i < _countof(sprTextClear); i++) {
@@ -742,7 +745,7 @@ void GamePlay::SetScoreTimeTex(Sprite* pNumberTexArray, int arraySize, int start
 
 		//描画しない部分
 		if (draw == "#") {
-			SetRectangleNumberTex(&pNumberTexArray[i], 0, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
+			pNumberTexArray[i].SetDrawRectangle(0, 0, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
 			pNumberTexArray[i].SetColor({ 1,1,1,0 });
 		}
 		//小数点
@@ -763,7 +766,7 @@ void GamePlay::SetScoreTimeTex(Sprite* pNumberTexArray, int arraySize, int start
 				drawNum = rand() % 10;
 			}
 
-			SetRectangleNumberTex(&pNumberTexArray[i], drawNum, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
+			pNumberTexArray[i].SetDrawRectangle(drawNum * ONE_TEX_SIZE.x, 0, ONE_TEX_SIZE.x, ONE_TEX_SIZE.y);
 		}
 
 		//描画位置より前の数字は描画しない
@@ -774,11 +777,6 @@ void GamePlay::SetScoreTimeTex(Sprite* pNumberTexArray, int arraySize, int start
 		drawPosX += padding;
 		padding = 60;
 	}
-}
-
-void GamePlay::SetRectangleNumberTex(Sprite* pNumberTex, const unsigned int num, const float numWidth, const float numHeight)
-{
-	pNumberTex->SetDrawRectangle(num * numWidth, 0, numWidth, numHeight);
 }
 
 std::string GamePlay::GetStrScoreTime(int keta)

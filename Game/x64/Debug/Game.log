@@ -27,6 +27,10 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJShadowTest.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\OBJVS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\Particle.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ParticleGS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ParticlePS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\ParticleVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTest.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTestPS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\PostEffectTestVS.hlsl
@@ -36,36 +40,20 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
-  38 個のファイルをコピーしました
+  42 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  GamePlay.cpp
+  MyBullet.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
 E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(6): message : 'PI' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(107,47): warning C4305: '引数': 'double' から 'const float' へ切り詰めます。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(304,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(350,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(354,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(357,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(360,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(362,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(368,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(372,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(375,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(378,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(380,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(435,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(439,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(472,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(496,46): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(499,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(507,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(519,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(537,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(726,25): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(105,15): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(201,40): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(234,12): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(236,12): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(239,20): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(241,20): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Background.png
@@ -73,9 +61,12 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Game_PopUp.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\grid.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle_Brown.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Stage_BG.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_Clear.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_ClearTime.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_Stage.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_TimeNumber.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Write1280x720.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\BreakFloor.mtl
@@ -145,12 +136,12 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Reset.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Up.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_No.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Number.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_OK.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlock.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlockCount.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Yes.png
-  83 個のファイルをコピーしました
+  86 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli
@@ -183,6 +174,10 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\OBJShadowTestVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\OBJVertexShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\OBJVS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\Particle.hlsli
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\ParticleGS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\ParticlePS.hlsl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\ParticleVS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\PostEffectTest.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\PostEffectTestPS.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\PostEffectTestVS.hlsl
@@ -195,6 +190,6 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(185): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\TextPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\TextShaderHeader.hlsli
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\TextVertexShader.hlsl
-  44 個のファイルをコピーしました
+  48 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   1 個のファイルをコピーしました

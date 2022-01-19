@@ -1,17 +1,13 @@
 ﻿#include <Windows.h>
 #include <wrl.h>
 #include "Input.h"
-#include "Sprite.h"
 #include "DebugText.h"
-#include "Sound.h"
 #include "DX12Util.h"
 #include "SceneManager.h"
 #include "FPSManager.h"
 #include "Editor.h"
-#include "FbxLoader.h"
 #include "PostEffect.h"
 #include "Timer.h"
-#include "ImguiHelper.h"
 #include "Object3D.h"
 #include "InstancingObject.h"
 #include "RenderText.h"
@@ -82,27 +78,10 @@ void Initialize() {
 	//各種初期化
 	DX12Util::Initialize(L"Game", 1280, 720);
 
-	//ImgUi初期化
-	ImguiHelper::Initialize();
-
 #ifdef _DEBUG
 	DX12Util::GetDevice()->QueryInterface(mDebugDevice.GetAddressOf());
 #endif
 
-	//FbxLoader初期化
-	FbxLoader::GetInstance()->Initialize(DX12Util::GetDevice());
-
-	//インプット初期化
-	Input::Initialize(DX12Util::GetHwnd());
-
-	//サウンド(XAudio2初期化)
-	Sound::StaticInitialize(true);
-
-	//デバイスセット
-	Object3D::SetDevice(DX12Util::GetDevice());
-
-	//ヒープ生成
-	Object3D::StaticInitialize();
 #pragma region FBXパイプライン生成
 	{
 		//グラフィックパイプライン生成
@@ -242,17 +221,6 @@ void Initialize() {
 	InstancingObjectDraw::CreateShadowFbxGraphicsPipeline();
 
 #pragma endregion
-	//オブジェクト管理クラス初期化
-	Object3DManager::Initialize();
-
-	//スプライト初期化
-	Sprite::FirstInit();
-
-	//文字描画クラス初期化
-	RenderText::StaticInitialize();
-
-	//デバッグテキスト初期化
-	DebugText::Initialize(L"Resources/System/debugfont.png");
 
 	//ポストエフェクトの初期化
 	postEffect = new PostEffect();
@@ -261,7 +229,7 @@ void Initialize() {
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();
 
-	FPSManager::SetFPS(60, true);
+	FPSManager::SetFPS(120, true);
 
 }
 void Update() {
@@ -295,11 +263,6 @@ void Update() {
 }
 void Finalize() {
 	//各種解放処理
-	Sound::StaticFinalize();
-	Object3DManager::DeleteAllObject();
-	SceneManager::DeleteScene();
-	FbxLoader::GetInstance()->Finalize();
 	delete postEffect;
-	ImguiHelper::Finalize();
 	DX12Util::End();
 }

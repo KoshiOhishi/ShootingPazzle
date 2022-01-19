@@ -186,9 +186,6 @@
     <ClCompile Include="Source\3D\CollisionPrimitive.cpp">
       <Filter>ソース ファイル\3D\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Header\SphereCollider.cpp">
-      <Filter>ソース ファイル\3D\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="Source\3D\CollisionManager.cpp">
       <Filter>ソース ファイル\3D\Collider</Filter>
     </ClCompile>
@@ -203,6 +200,12 @@
     </ClCompile>
     <ClCompile Include="Source\3D\InstancingObject.cpp">
       <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\3D\SphereCollider.cpp">
+      <Filter>ソース ファイル\3D\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Effect\ParticleManager.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +344,9 @@
     <ClInclude Include="Header\InstancingObject.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ParticleManager.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\BasicPixelShader.hlsl">
@@ -418,6 +424,15 @@
     <FxCompile Include="Shader\OBJShadowTestVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Shader\ParticleGS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ParticlePS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ParticleVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\BasicShaderHeader.hlsli">
@@ -457,6 +472,9 @@
       <Filter>リソース ファイル</Filter>
     </None>
     <None Include="Shader\OBJShadowTest.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="Shader\Particle.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

@@ -8,6 +8,22 @@
 #include <shlwapi.h>
 #include "DX12Util.h"
 #include "ImguiHelper.h"
+#include "Input.h"
+#include "Sprite.h"
+#include "DebugText.h"
+#include "Sound.h"
+#include "DX12Util.h"
+#include "SceneManager.h"
+#include "FPSManager.h"
+#include "FbxLoader.h"
+#include "PostEffect.h"
+#include "Timer.h"
+#include "ImguiHelper.h"
+#include "Object3D.h"
+#include "InstancingObject.h"
+#include "RenderText.h"
+#include "ParticleManager.h"
+
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -270,6 +286,37 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			dsvHeap->GetCPUDescriptorHandleForHeapStart(), 1, DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV))
 	);
+
+
+	//ImgUi初期化
+	ImguiHelper::Initialize();
+
+	//FbxLoader初期化
+	FbxLoader::GetInstance()->Initialize(DX12Util::GetDevice());
+
+	//インプット初期化
+	Input::Initialize(DX12Util::GetHwnd());
+
+	//サウンド(XAudio2初期化)
+	Sound::StaticInitialize(true);
+
+	//デバイスセット
+	Object3D::SetDevice(DX12Util::GetDevice());
+
+	//ヒープ生成
+	Object3D::StaticInitialize();
+
+	//スプライト初期化
+	Sprite::FirstInit();
+
+	//文字描画クラス初期化
+	RenderText::StaticInitialize();
+
+	//デバッグテキスト初期化
+	DebugText::Initialize(L"Resources/System/debugfont.png");
+
+	//パーティクル初期化
+	ParticleManager::StaticInitialize();
 }
 
 void DX12Util::PreDrawBB()
@@ -344,6 +391,11 @@ void DX12Util::PostDrawBB()
 
 void DX12Util::End()
 {
+	Sound::StaticFinalize();
+	SceneManager::DeleteScene();
+	FbxLoader::GetInstance()->Finalize();
+	ImguiHelper::Finalize();
+
 	//コマンドリストの実行完了を待つ
 	cmdQueue->Signal(fence.Get(), ++fenceVal);
 	if (fence->GetCompletedValue() != fenceVal) {

@@ -6,6 +6,7 @@
 #include "BaseBlock.h"
 #include "CollisionManager.h"
 #include "Stage.h"
+#include "ParticleManager.h"
 
 const int MYBULLET_START_FIRST_EFFECT_TIME = 2500;
 const int MYBULLET_END_FIRST_EFFECT_TIME = 3500;
@@ -61,6 +62,9 @@ private:
 	Timer* pFirstEffectTimer;
 	//跳ねるエフェクトの初期Y座標 カメラの位置と同期させる
 	float bounceInitPosY = 200;
+
+	//パーティクル
+	ParticleManager particle;
 
 public:
 	static void CreateModel();
