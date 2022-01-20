@@ -73,6 +73,8 @@ public: // サブクラス
 		float s_scale = 1.0f;
 		//最終値
 		float e_scale = 0.0f;
+		//中間値
+		float m_scale = 0.5f;
 	};
 
 private: // 定数
@@ -85,6 +87,7 @@ private: // 定数
 
 private: // 静的メンバ変数
 	static std::vector<ParticleManager*> drawList;
+	static std::vector<ParticleManager*> drawListFG;
 
 	// デバイス
 	static ID3D12Device* device;
@@ -141,6 +144,11 @@ public:// 静的メンバ関数
 	/// </summary>
 	static void DrawAll();
 
+	/// <summary>
+	/// コンテナに溜めたパーティクルを全て描画
+	/// </summary>
+	static void DrawAllFG();
+
 private:
 	/// <summary>
 	/// 描画前処理
@@ -176,6 +184,11 @@ public: // メンバ関数
 	void Draw();
 
 	/// <summary>
+	/// 描画
+	/// </summary>
+	void DrawFG();
+
+	/// <summary>
 	/// テクスチャ読み込み
 	/// </summary>
 	void LoadTexture(const std::wstring& filename);
@@ -207,7 +220,10 @@ public: // メンバ関数
 	/// <param name="accel">加速度</param>
 	/// <param name="start_scale">開始時スケール値</param>
 	/// <param name="end_scale">終了時スケール値</param>
-	void Add(double life, const Vector3& position, const Vector3& velocity, const Vector3& accel, float start_scale, float end_scale);
+	void Add(double life, const Vector3& position, const Vector3& velocity, 
+		const Vector3& accel, float start_scale, float end_scale);
+	void Add(double life, const Vector3& position, const Vector3& velocity,
+		const Vector3& accel, float start_scale, float end_scale, float middle_scale);
 
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ

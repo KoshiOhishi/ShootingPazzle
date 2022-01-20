@@ -92,12 +92,20 @@ private:
 	//スコアタイマー
 	Timer scoreTimer;
 
+	//パーティクル追加タイマー
+	Timer addParticleTimer;
+
 	//1回目の開幕エフェクト終了フラグ
 	bool isEndFirstEffectOnce = false;
 
 	//ポップアップ表示フラグ
 	bool isDispPopup = false;
 
+	//パーティクル
+	ParticleManager particle[2];
+
+	//クリアエフェクトのパーティクルが追加されたか
+	bool addedParticleClearEffect = false;
 
 public:
 	GamePlay();

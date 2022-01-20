@@ -43,9 +43,6 @@ void MyBullet::Initialize()
 	objArrow.SetDrawShadowToOther(false);
 
 	nextMoveInfo = {};
-
-	particle.Initialize();
-	particle.LoadTexture(L"Resources/Particle_Brown.png");
 }
 
 void MyBullet::Update()
@@ -80,7 +77,6 @@ void MyBullet::Update()
 	//球更新
 	objSphere.SetPosition(position);
 	objSphere.Update();
-	particle.Update();
 }
 
 void MyBullet::Draw()
@@ -89,7 +85,6 @@ void MyBullet::Draw()
 	//3Dオブジェクト描画
 	if (pFirstEffectTimer->GetNowTime() >= MYBULLET_START_FIRST_EFFECT_TIME) {
 		objSphere.Draw();
-		particle.Draw();
 	}
 
 	//矢印描画
@@ -227,23 +222,6 @@ void MyBullet::Move()
 		//通常座標更新
 		position += velocity * speed;
 	}
-
-	//パーティクル追加
-	//if (GameUtility::GetNowPhase() == PHASE_GAME_AFTERSHOOT) {
-	//	for (int i = 0; i < 10; i++) {
-	//		float x = rand() % 40 - 20;
-	//		x *= 0.1f;
-	//		float z = rand() % 40 - 20;
-	//		z *= 0.1f;
-	//		Vector3 pos = position + Vector3(x, -RADIUS, z);
-	//		x = rand() % 40 - 20;
-	//		x *= 0.1f;
-	//		z = rand() % 40 - 20;
-	//		z *= 0.1f;
-	//		Vector3 vel = (Vector3(0, 1, 0) + Vector3(x, 0, z)).Normalize();
-	//		particle.Add(1000, pos, vel, { 0,-0.2f,0 }, 1.0f, 0);
-	//	}
-	//}
 }
 
 void MyBullet::ApplyFriction()

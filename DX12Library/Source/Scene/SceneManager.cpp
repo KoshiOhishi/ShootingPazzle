@@ -75,17 +75,20 @@ void SceneManager::Draw()
 	//深度バッファクリア
 	DX12Util::ClearDepthBuffer(false);
 
-	//オブジェクト描画
-	Object3D::DrawAll();
-
 	//パーティクル描画
 	ParticleManager::DrawAll();
+
+	//オブジェクト描画
+	Object3D::DrawAll();
 
 	//前景スプライト描画
 	Sprite::DrawAllFG();
 
 	//前景テキスト描画
 	RenderText::DrawAllFG();
+
+	//パーティクル描画
+	ParticleManager::DrawAllFG();
 
 	//Imgui描画
 	ImguiHelper::Draw();

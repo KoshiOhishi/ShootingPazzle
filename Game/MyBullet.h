@@ -63,9 +63,6 @@ private:
 	//跳ねるエフェクトの初期Y座標 カメラの位置と同期させる
 	float bounceInitPosY = 200;
 
-	//パーティクル
-	ParticleManager particle;
-
 public:
 	static void CreateModel();
 

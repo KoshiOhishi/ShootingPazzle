@@ -30,6 +30,7 @@ ParticleManager::VertexPos ParticleManager::vertices[VERTEX_COUNT];
 UINT ParticleManager::loadedTextureCount = 0;
 Camera* ParticleManager::camera = nullptr;
 std::vector<ParticleManager*> ParticleManager::drawList;
+std::vector<ParticleManager*> ParticleManager::drawListFG;
 std::unordered_map<std::wstring, UINT> ParticleManager::loadedTextureList;
 
 void ParticleManager::StaticInitialize()
@@ -503,6 +504,18 @@ void ParticleManager::DrawAll()
 	drawList.clear();
 }
 
+void ParticleManager::DrawAllFG()
+{
+	//深度バッファクリア
+	DX12Util::ClearDepthBuffer(false);
+	//オブジェクト描画
+	BeginDraw();
+	for (auto& v : drawListFG) {
+		v->DrawPrivate();
+	}
+	drawListFG.clear();
+}
+
 bool ParticleManager::Initialize()
 {
 	// nullptrチェック
@@ -572,9 +585,13 @@ void ParticleManager::Update()
 		//進行度を0～1の範囲に換算
 		float f = (float)it->life.GetNowTime() / it->life.GetEndTime();
 
-		//スケールの線形補完
-		it->scale = (it->e_scale - it->s_scale) * f;
-		it->scale += it->s_scale;
+		//スケール
+		if (f < 0.5f) {
+			it->scale = it->s_scale + (it->m_scale - it->s_scale) * f * 2.0f;
+		}
+		else {
+			it->scale = it->m_scale + (it->e_scale - it->m_scale) * (f - 0.5f) * 2.0f;
+		}
 	}
 
 	//頂点バッファへデータ転送
@@ -618,6 +635,11 @@ void ParticleManager::Draw()
 	drawList.emplace_back(this);
 }
 
+void ParticleManager::DrawFG()
+{
+	drawListFG.emplace_back(this);
+}
+
 void ParticleManager::Add(double life, const Vector3& position, const Vector3& velocity, const Vector3& accel, float start_scale, float end_scale)
 {
 	//リストに要素を追加
@@ -631,6 +653,25 @@ void ParticleManager::Add(double life, const Vector3& position, const Vector3& v
 	p.scale = start_scale;
 	p.s_scale = start_scale;
 	p.e_scale = end_scale;
+	p.m_scale = start_scale + (end_scale - start_scale) * 0.5f;
+	p.life.SetTimer(0, life);
+	p.life.Start();
+}
+
+void ParticleManager::Add(double life, const Vector3& position, const Vector3& velocity, const Vector3& accel, float start_scale, float end_scale, float middle_scale)
+{
+	//リストに要素を追加
+	particles.emplace_front();
+	//追加した要素の参照
+	Particle& p = particles.front();
+	//値のセット
+	p.position = position;
+	p.velocity = velocity;
+	p.accel = accel;
+	p.scale = start_scale;
+	p.s_scale = start_scale;
+	p.e_scale = end_scale;
+	p.m_scale = middle_scale;
 	p.life.SetTimer(0, life);
 	p.life.Start();
 }

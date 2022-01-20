@@ -11,6 +11,7 @@
 #include "SceneManager.h"
 #include "Easing.h"
 #include "ParticleManager.h"
+#include "Quaternion.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -46,6 +47,8 @@ GamePlay::GamePlay()
 		sprTextTimeNumber[i].Initialize();
 		sprTextTimeNumber[i].SetTexture(L"Resources/Text_TimeNumber.png");
 	}
+	particle[0].LoadTexture(L"Resources/Particle_Yellow.png");
+	particle[1].LoadTexture(L"Resources/Particle_Shine.png");
 }
 
 GamePlay::~GamePlay()
@@ -136,6 +139,7 @@ void GamePlay::Initialize()
 	sceneChangeTimer.SetTimer(0, 1000);
 	clearEffectTimer.SetTimer(0, 10000);
 	scoreTimer.SetTimer(0, INT_MAX);
+	addParticleTimer.SetTimer(0, 100);
 
 	//UIボタン初期化
 	float adjust = 10;
@@ -148,6 +152,14 @@ void GamePlay::Initialize()
 	buttonNo.Initialize({ DX12Util::GetWindowWidth() * 0.625f - buttonNo.GetTexSize().x * 0.5f, DX12Util::GetWindowHeight() * 0.75f - buttonNo.GetTexSize().y * 0.5f });
 	//初期状態は透明
 	buttonNo.SetColor({ 1,1,1,0 });
+
+	//パーティクル初期化
+	for (int i = 0; i < _countof(particle); i++) {
+		particle[i].Initialize();
+		particle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
+	}
+
+	addedParticleClearEffect = false;
 
 
 	//ステージカラー初期化
@@ -293,6 +305,7 @@ void GamePlay::UpdateTimer()
 	dispPopUpTimer.Update();
 	sceneChangeTimer.Update();
 	clearEffectTimer.Update();
+	addParticleTimer.Update();
 }
 
 void GamePlay::UpdateFirstEffect()
@@ -489,6 +502,7 @@ void GamePlay::UpdateClearEffect()
 	}
 
 	const int START_MOVE_TEXT_TIME = 5000;
+	const int END_MOVE_TEXT_TIME = START_MOVE_TEXT_TIME + 250;
 	const int START_WHITE_EFFECT = 5750;
 	const int START_SCORE_TIMER_EFFECT = 6250;
 	const int START_OK_BUTTON_EFFECT = 8500;
@@ -501,7 +515,7 @@ void GamePlay::UpdateClearEffect()
 		else { startPosX = DX12Util::GetWindowWidth(); }
 
 		Vector2 texPos = { startPosX, 150 };
-		texPos.x = Easing::GetEaseValue(EASE_LINE, startPosX, endPosX, clearEffectTimer, START_MOVE_TEXT_TIME, START_MOVE_TEXT_TIME + 250);
+		texPos.x = Easing::GetEaseValue(EASE_LINE, startPosX, endPosX, clearEffectTimer, START_MOVE_TEXT_TIME, END_MOVE_TEXT_TIME);
 
 		sprTextClear[i].SetPosition(texPos);
 	}
@@ -546,6 +560,47 @@ void GamePlay::UpdateClearEffect()
 			buttonOK.StartPushedEffect();
 			sceneChangeTimer.Start();
 		}
+	}
+
+	//パーティクル追加
+	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME && addedParticleClearEffect == false) {
+		for (int i = 0; i < 64; i++) {
+			Quaternion q = Quaternion::CreateQuaternion(camera.GetRotMatrix());
+			float rad = 360.0f / 32 * i * PI / 180;
+
+			Vector3 addPos = Vector3(cos(rad) * 2.0f, sin(rad), 0) * 0.75f + Vector3(0, 1, 0);
+			Quaternion q2 = Quaternion::CreateQuaternion(addPos, q);
+			Vector3 pos = Vector3(camera.GetPosition() + camera.GetCameraDir() * 5 + Vector3(q2.x, q2.y, q2.z));
+			Vector3 vel = { cos(rad) * 2.0f, sin(rad), 0 };
+			q2 = Quaternion::CreateQuaternion(vel, q);
+			vel = Vector3(q2.x, q2.y, q2.z) * 0.04f;
+			Vector3 acc = { 0,-0.0005f,0 };
+			q2 = Quaternion::CreateQuaternion(acc, q);
+			acc = { q2.x, q2.y, q2.z };
+
+			particle[0].Add(1000, pos, vel, acc, 0.25f, 0);
+		}
+		addedParticleClearEffect = true;
+		addParticleTimer.Start();
+	}
+
+	if (addParticleTimer.GetIsEnd()) {
+		Quaternion q = Quaternion::CreateQuaternion(camera.GetRotMatrix());
+		float x = (float)((rand() % 60 - 30) * 0.1f);
+		float y = (float)((rand() % 30 - 15) * 0.1f) + 1.0f;
+		Vector3 addPos = Vector3(x, y, 0);
+		Quaternion q2 = Quaternion::CreateQuaternion(addPos, q);
+		Vector3 pos = Vector3(camera.GetPosition() + camera.GetCameraDir() * 5 + Vector3(q2.x, q2.y, q2.z));
+
+		particle[1].Add(2000, pos, {}, {}, 0, 0, 0.25f);
+		addParticleTimer.Reset();
+		addParticleTimer.Start();
+	}
+
+
+	//パーティクル更新
+	for (int i = 0; i < _countof(particle); i++) {
+		particle[i].Update();
 	}
 }
 
@@ -617,6 +672,11 @@ void GamePlay::DrawClearEffect()
 
 	//OKボタン
 	buttonOK.Draw();
+
+	//パーティクル
+	for (int i = 0; i < _countof(particle); i++) {
+		particle[i].DrawFG();
+	}
 }
 
 void GamePlay::Reset()
