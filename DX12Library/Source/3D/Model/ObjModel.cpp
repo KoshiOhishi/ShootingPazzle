@@ -38,7 +38,7 @@ void ObjModel::Draw(int instancingCount, bool isShadow)
 	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), instancingCount, 0, 0, 0);
 }
 
-void ObjModel::CreateFromOBJ(const std::string& modelname, bool smoothing)
+void ObjModel::CreateFromOBJ(const std::string& modelPath, bool smoothing)
 {
 	HRESULT result;
 	vertices.clear();
@@ -50,15 +50,15 @@ void ObjModel::CreateFromOBJ(const std::string& modelname, bool smoothing)
 	//ディレクトリパス取得
 	string directoryPath;
 	//「/」で検索
-	int findSlash = modelname.rfind("/");
+	int findSlash = modelPath.rfind("/");
 	if (findSlash != string::npos) {
-		directoryPath = modelname.substr(0, findSlash + 1);
+		directoryPath = modelPath.substr(0, findSlash + 1);
 	}
 	else {
 		//「\」で検索
-		findSlash = modelname.rfind("\\");
+		findSlash = modelPath.rfind("\\");
 		if (findSlash != string::npos) {
-			directoryPath = modelname.substr(0, findSlash + 1);
+			directoryPath = modelPath.substr(0, findSlash + 1);
 		}
 		else {
 			//ファイルが.exeと同じ階層にある
@@ -67,7 +67,7 @@ void ObjModel::CreateFromOBJ(const std::string& modelname, bool smoothing)
 	}
 
 	//.objファイルを開く
-	file.open(modelname);
+	file.open(modelPath);
 	//ファイルオープン失敗をチェック
 	if (file.fail()) {
 		assert(0);
@@ -1205,7 +1205,7 @@ void ObjModel::CreateTriangle(const Vector3& p1, const Vector3& p2, const Vector
 	CreateBuffers();
 }
 
-void ObjModel::CreateSquare(float width, float height, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
+void ObjModel::CreatePlane(float width, float height, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();
@@ -1271,7 +1271,7 @@ void ObjModel::CreateSquare(float width, float height, const Vector3& ambient, c
 
 }
 
-void ObjModel::CreateSquareTex(float standardLength, const std::string& texName, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
+void ObjModel::CreatePlaneTex(float width, float height, const std::string& texturePath, const Vector3& ambient, const Vector3& diffuse, const Vector3& specular)
 {
 	vertices.clear();
 	indices.clear();
@@ -1285,31 +1285,37 @@ void ObjModel::CreateSquareTex(float standardLength, const std::string& texName,
 
 	material.name = "square_tex" + Object3D::GetLoadCount();
 
-	material.textureFilename = texName;
-
 	//テクスチャを貼る
 	float* texWidth = new float();
 	float* texHeight = new float();
-	LoadTextureReturnTexSize("Resources/", material.textureFilename, texWidth, texHeight);
 
-	//サイズ調整
-	float than = 0.0f;
+	//ディレクトリパス取得
+	string directoryPath;
+	//「/」で検索
+	int findSlash = texturePath.rfind("/");
+	if (findSlash != string::npos) {
+		directoryPath = texturePath.substr(0, findSlash + 1);
+		material.textureFilename = texturePath.substr(findSlash + 1);
+	}
+	else {
+		//「\」で検索
+		findSlash = texturePath.rfind("\\");
+		if (findSlash != string::npos) {
+			directoryPath = texturePath.substr(0, findSlash + 1);
+			material.textureFilename = texturePath.substr(findSlash + 1);
+		}
+		else {
+			//ファイルが.exeと同じ階層にある
+			directoryPath = "";
+			material.textureFilename = texturePath;
+		}
+	}
+
+	LoadTextureReturnTexSize(directoryPath, material.textureFilename, texWidth, texHeight);
+
+	//サイズ
 	float div2Width = 0.0f;
 	float div2Height = 0.0f;
-	float width = 0.0f;
-	float height = 0.0f;
-	if (*texWidth >= *texHeight)//横長
-	{
-		than = *texWidth / *texHeight;
-		width = standardLength * than;
-		height = standardLength;
-	}
-	else
-	{
-		than = *texHeight / *texWidth;
-		width = standardLength;
-		height = standardLength * than;
-	}
 	div2Width = width / 2.0f;
 	div2Height = height / 2.0f;
 

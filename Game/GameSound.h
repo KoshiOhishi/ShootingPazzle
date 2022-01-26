@@ -1,0 +1,65 @@
+#pragma once
+#include "Sound.h"
+#include "Timer.h"
+#include <unordered_map>
+class GameSound
+{
+	struct SoundData
+	{
+		WaveData waveData;
+		SourceVoice sourceVoice;
+		Timer stopTimer;
+	};
+
+private:
+	static std::unordered_map<std::wstring, SoundData> sounds;
+
+public:
+	/// <summary>
+	/// 静的初期化
+	/// </summary>
+	static void StaticInitialize();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	static void Update();
+
+	/// <summary>
+	/// 音声データ追加
+	/// </summary>
+	/// <param name="path"></param>
+	static void AddSound(const std::wstring& path, bool isLoop = false, float loopStartPos = 0, float loopEndPos = 1000);
+
+	/// <summary>
+	/// ロード済音声データを再生
+	/// </summary>
+	/// <param name="name"></param>
+	static void Play(const std::wstring& name, const Vector3& emitterPos);
+
+	/// <summary>
+	/// ロード済音声データの再生を止める
+	/// </summary>
+	/// <param name="name"></param>
+	static void Stop(const std::wstring& name);
+
+	/// <summary>
+	/// 音量セット
+	/// </summary>
+	/// <param name="name"></param>
+	/// <param name="volume">音量倍率</param>
+	static void SetVolume(const std::wstring& name, float volume);
+
+	/// <summary>
+	/// 3D音響に使うエミッターの位置セット
+	/// </summary>
+	/// <param name="pos"></param>
+	static void SetPosition(const std::wstring& name, const Vector3& pos);
+
+	/// <summary>
+	/// ロードしてある音声ファイル取得
+	/// </summary>
+	/// <param name="name"></param>
+	static SourceVoice& GetLoadedSound(const std::wstring& name);
+
+};

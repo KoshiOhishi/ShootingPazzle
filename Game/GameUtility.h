@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 
+
 #define PI 3.14159265359f
 //1マスの長さ
 #define ONE_CELL_LENGTH (float)5.0f
@@ -90,7 +91,6 @@ struct StageFloor
 
 class GameUtility
 {
-
 private:
 	//現在のフェーズ
 	static int nowPhase;
@@ -109,17 +109,6 @@ public:
 	/// </summary>
 	static void StaticInitialize();
 
-	static void SetNowPhase(int phase) { nowPhase = phase; }
-	static void SetPStageSize(StageVec2* pStageSize) { GameUtility::pStageSize = pStageSize; }
-	static void SetStageColor(int stageColor) { GameUtility::stageColor = stageColor; }
-	static void SetNowStagePath(const std::string& path) { GameUtility::nowStagePath = path; }
-	static void SetIsPause(bool isPause) { GameUtility::isPause = isPause; }
-
-	static const int GetNowPhase() { return nowPhase; }
-	static const int GetStageColor() { return stageColor; }
-	static const std::string& GetNowStagePath() { return nowStagePath; }
-	static bool GetIsPause() { return isPause; }
-	
 	/// <summary>
 	/// ワールド座標のxz平面からステージ上の座標に変換
 	/// </summary>
@@ -135,4 +124,59 @@ public:
 	/// <param name="dstWorldX">ワールド座標x</param>
 	/// <param name="dstWorldZ">ワールド座標z</param>
 	static void CalcStagePos2WorldPos(const StageVec2& stagePos, float* dstWorldX = nullptr, float* dstWorldZ = nullptr);
+
+	/// <summary>
+	/// 現在のゲームフェーズをセット
+	/// </summary>
+	/// <param name="phase">PHASE_...</param>
+	static void SetNowPhase(int phase) { nowPhase = phase; }
+
+	/// <summary>
+	/// 現在プレイ中のステージサイズ変数のポインタをセットする
+	/// </summary>
+	/// <param name="pStageSize"></param>
+	static void SetPStageSize(StageVec2* pStageSize) { GameUtility::pStageSize = pStageSize; }
+
+	/// <summary>
+	/// ステージの設定色をセットする 同じ色のブロックが通り抜けられるようになる
+	/// </summary>
+	/// <param name="stageColor"></param>
+	static void SetStageColor(int stageColor) { GameUtility::stageColor = stageColor; }
+
+	/// <summary>
+	/// 現在プレイ中のステージのパスをセット
+	/// </summary>
+	/// <param name="path"></param>
+	static void SetNowStagePath(const std::string& path) { GameUtility::nowStagePath = path; }
+
+	/// <summary>
+	/// ポーズ中かのフラグセット
+	/// </summary>
+	/// <param name="isPause"></param>
+	static void SetIsPause(bool isPause) { GameUtility::isPause = isPause; }
+
+
+	/// <summary>
+	/// 現在のフェーズ取得
+	/// </summary>
+	/// <returns></returns>
+	static const int GetNowPhase() { return nowPhase; }
+
+	/// <summary>
+	/// ステージの設定色取得
+	/// </summary>
+	/// <returns></returns>
+	static const int GetStageColor() { return stageColor; }
+
+	/// <summary>
+	/// 現在プレイ中のステージのパスを取得
+	/// </summary>
+	/// <returns></returns>
+	static const std::string& GetNowStagePath() { return nowStagePath; }
+
+	/// <summary>
+	/// ポーズ中かどうか取得
+	/// </summary>
+	/// <returns></returns>
+	static bool GetIsPause() { return isPause; }
 };

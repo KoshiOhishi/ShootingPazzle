@@ -11,6 +11,8 @@
 #include "RenderText.h"
 #include "CollisionManager.h"
 #include "UISquareButton.h"
+#include "Particle2D.h"
+#include "Particle3D.h"
 
 #include "MyBullet.h"
 #include "SquareBlock.h"
@@ -102,7 +104,7 @@ private:
 	bool isDispPopup = false;
 
 	//パーティクル
-	ParticleManager particle[2];
+	Particle2D particle[2];
 
 	//クリアエフェクトのパーティクルが追加されたか
 	bool addedParticleClearEffect = false;

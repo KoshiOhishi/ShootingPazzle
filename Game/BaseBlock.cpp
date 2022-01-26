@@ -111,7 +111,7 @@ void BaseBlock::UpdateColor()
 	Vector4 tmp = object.GetColor();
 	//ステージの色とブロックの色が一致していたら透過
 	if (GameUtility::GetStageColor() == blockColor) {
-		object.SetColor({ tmp.x, tmp.y, tmp.z, 0.55f });
+		object.SetColor({ tmp.x, tmp.y, tmp.z, 0.5f });
 	}
 	else {
 		object.SetColor({ tmp.x, tmp.y, tmp.z, 1 });

@@ -13,6 +13,7 @@
 #include "Object3D.h"
 #include "InstancingObject.h"
 #include "GameUtility.h"
+#include "GameSound.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -232,7 +233,10 @@ void Initialize() {
 	//ゲーム静的初期化
 	GameUtility::StaticInitialize();
 
-	FPSManager::SetFPS(60, true);
+	//ゲームサウンド静的初期化
+	GameSound::StaticInitialize();
+
+	FPSManager::SetFPS(0, true);
 
 }
 void Update() {

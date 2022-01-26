@@ -1,5 +1,6 @@
 #include "TriangleBlock.h"
 #include "GameUtility.h"
+#include "GameSound.h"
 
 ObjModel TriangleBlock::modelTriangle[4];
 
@@ -141,8 +142,15 @@ void TriangleBlock::DecrementBreakupCount()
 
 void TriangleBlock::Breakup()
 {
-	//ここに爆発エフェクト入れる
+#ifdef BUILD_GAME
+	//パーティクルを発生させる
+	pStage->GenerateParticleBreakingBlock(20, object.GetPosition());
 
 	//残り目標ブロック数を減らす
 	pStage->DecrementTargetBlockCount();
+
+	//効果音再生
+	GameSound::Play(L"Break", object.GetPosition());
+
+#endif // BUILD_GAME
 }

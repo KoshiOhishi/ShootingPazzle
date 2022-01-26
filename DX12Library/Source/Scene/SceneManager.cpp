@@ -3,10 +3,8 @@
 #include "SceneManager.h"
 #include "ImguiHelper.h"
 #include "PostEffect.h"
-#include "RenderText.h"
 #include "DebugText.h"
-#include "InstancingObject.h"
-#include "ParticleManager.h"
+#include "DrawManager.h"
 
 //静的メンバ変数の実体
 std::string SceneManager::nowScene;
@@ -62,33 +60,18 @@ void SceneManager::Draw()
 	DebugText::DrawAll();
 
 	//まず深度値テクスチャ書き込み
-	Object3D::WriteDepthTex();
+	DrawManager::DrawAllShadow();
 
 	//次にポストエフェクト用テクスチャに描画
 	PostEffect::PreDrawScene();
-	//背景スプライト描画
-	Sprite::DrawAllBG();
-
-	//背景テキスト描画
-	RenderText::DrawAllBG();
+	//背景描画
+	DrawManager::DrawAll(true);
 
 	//深度バッファクリア
 	DX12Util::ClearDepthBuffer(false);
 
-	//パーティクル描画
-	ParticleManager::DrawAll();
-
-	//オブジェクト描画
-	Object3D::DrawAll();
-
-	//前景スプライト描画
-	Sprite::DrawAllFG();
-
-	//前景テキスト描画
-	RenderText::DrawAllFG();
-
-	//パーティクル描画
-	ParticleManager::DrawAllFG();
+	//通常描画
+	DrawManager::DrawAll();
 
 	//Imgui描画
 	ImguiHelper::Draw();

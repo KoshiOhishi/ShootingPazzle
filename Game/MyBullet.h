@@ -7,6 +7,7 @@
 #include "CollisionManager.h"
 #include "Stage.h"
 #include "ParticleManager.h"
+#include "Sound.h"
 
 const int MYBULLET_START_FIRST_EFFECT_TIME = 2500;
 const int MYBULLET_END_FIRST_EFFECT_TIME = 3500;
@@ -67,9 +68,9 @@ public:
 	static void CreateModel();
 
 public:
-	MyBullet() {}
+	MyBullet();
 
-	~MyBullet() {}
+	~MyBullet();
 
 	/// <summary>
 	/// èâä˙âª

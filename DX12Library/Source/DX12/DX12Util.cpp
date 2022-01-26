@@ -23,6 +23,8 @@
 #include "InstancingObject.h"
 #include "RenderText.h"
 #include "ParticleManager.h"
+#include "Particle3D.h"
+#include "Particle2D.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -317,6 +319,9 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 
 	//パーティクル初期化
 	ParticleManager::StaticInitialize();
+	Particle3D::StaticInitialize();
+	Particle2D::StaticInitialize();
+
 }
 
 void DX12Util::PreDrawBB()

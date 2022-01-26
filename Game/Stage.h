@@ -3,6 +3,7 @@
 #include "BaseBlock.h"
 #include "BaseFloor.h"
 #include "Timer.h"
+#include "Particle3D.h"
 
 class Stage
 {
@@ -35,8 +36,10 @@ private:
 	InstancingObjectDraw iodTurnFloor[4];
 	InstancingObjectDraw iodBreakFloor;
 
+	Particle3D particleBreakingBlock;
+
 public:
-	Stage() {}
+	Stage();
 	~Stage();
 
 	void Initialize();
@@ -113,6 +116,12 @@ public:
 	/// </summary>
 	/// <param name="stagePos"></param>
 	void DeleteFloor(const StageVec2& stagePos);
+
+	/// <summary>
+	/// ブロック破壊破壊パーティクルを発生させる
+	/// </summary>
+	/// <param name="num"></param>
+	void GenerateParticleBreakingBlock(int num, const Vector3& pos);
 
 	/// <summary>
 	/// 残り目標破壊ブロック数を減らす

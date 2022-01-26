@@ -5,6 +5,7 @@
 #include "DebugText.h"
 #include "GameUtility.h"
 #include "Input.h"
+#include "GameSound.h"
 
 #include "BreakFloor.h"
 #include "Easing.h"
@@ -17,7 +18,15 @@ void MyBullet::CreateModel()
 {
 	//モデル生成									金っぽい色
 	modelSphere.CreateSphere(20, 20, RADIUS, true, {0.75f,0.6f,0.0f}, { 0.25f,0.25f,0.25f }, { 0.5f,0.5f,0.5f });
-	modelArrow.CreateSquareTex(8, "Arrow.png", { 1,1,1 });
+	modelArrow.CreatePlaneTex(16, 8, "Resources/Arrow.png", { 1,1,1 });
+}
+
+MyBullet::MyBullet()
+{
+}
+
+MyBullet::~MyBullet()
+{
 }
 
 void MyBullet::Initialize()
@@ -43,6 +52,10 @@ void MyBullet::Initialize()
 	objArrow.SetDrawShadowToOther(false);
 
 	nextMoveInfo = {};
+
+	//効果音ストップ
+	GameSound::SetVolume(L"Shooting", 1.0f);
+	GameSound::Stop(L"Shooting");
 }
 
 void MyBullet::Update()
@@ -206,6 +219,10 @@ void MyBullet::Shoot()
 	//念のため正規化
 	velocity = velocity.Normalize();
 
+	//効果音再生
+	GameSound::Play(L"Shoot", position);
+	GameSound::Play(L"Shooting", position);
+
 	isShoot = true;
 }
 
@@ -222,6 +239,11 @@ void MyBullet::Move()
 		//通常座標更新
 		position += velocity * speed;
 	}
+
+	//効果音更新
+	GameSound::SetPosition(L"Shooting", position);
+	GameSound::SetVolume(L"Reflect", speed);
+	GameSound::SetVolume(L"Shooting", speed);
 }
 
 void MyBullet::ApplyFriction()
@@ -338,6 +360,8 @@ void MyBullet::CheckBlockCollision()
 			//ブロックと当たっていれば、壊れるまでのカウントを減らす
 			if (isCollision) {
 				stage->GetBlocks()[i]->DecrementBreakupCount();
+				//ブロックと反射するSE再生
+				GameSound::Play(L"Reflect", position);
 			}
 		}
 

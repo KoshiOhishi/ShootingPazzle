@@ -3,6 +3,7 @@
 #include "BaseCollider.h"
 #include "CollisionManager.h"
 #include "PostEffect.h"
+#include "DrawManager.h"
 #include <typeinfo>
 
 #include <d3dcompiler.h>
@@ -14,7 +15,6 @@ using namespace DirectX;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-std::vector<Object3D*> Object3D::drawList;
 ID3D12Device* Object3D::device = nullptr;
 Camera* Object3D::camera = nullptr;
 Light* Object3D::light = nullptr;
@@ -184,8 +184,8 @@ void Object3D::CreateGraphicsPipeline(int objectType, PipelineData& pipelineData
 	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 	
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 	// デプスステンシルステート
 	//標準的な設定(深度テストを行う、書き込み許可、深度が小さければ合格)
@@ -387,8 +387,8 @@ void Object3D::CreateShadowObjGraphicsPipeline()
 
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 
 	//頂点レイアウトの設定
@@ -536,8 +536,8 @@ void Object3D::CreateShadowFbxGraphicsPipeline()
 
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 	//頂点レイアウトの設定
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
@@ -908,25 +908,6 @@ void Object3D::BeginDrawShadow()
 	prevPipelineIndex = -1;
 }
 
-void Object3D::DrawAll()
-{
-	//オブジェクト描画
-	BeginDraw();
-	for (auto& v : drawList) {
-		v->DrawPrivate();
-	}
-	drawList.clear();
-}
-
-void Object3D::WriteDepthTex()
-{
-	//深度値をテクスチャに書き込み
-	BeginDrawShadow();
-	for (auto& v : drawList) {
-		v->DrawShadow();
-	}
-}
-
 void Object3D::DrawShadow()
 {
 	if (isDrawShadowToOther == false) {
@@ -977,7 +958,7 @@ void Object3D::DrawShadow()
 
 void Object3D::Draw()
 {
-	drawList.emplace_back(this);
+	DrawManager::AddDrawList(DRAW_MANAGER_OBJECT_TYPE_OBJECT3D, this);
 }
 
 void Object3D::PlayAnimation()

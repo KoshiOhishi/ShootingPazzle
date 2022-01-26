@@ -220,6 +220,11 @@ void Sound::AddXAPOEffect(XAPOEffect* pXAPOEffect)
 	}
 }
 
+XAPOEffect::~XAPOEffect()
+{
+	DestroyXAPOEffect();
+}
+
 void XAPOEffect::CreateReverb(bool initialState)
 {
 	//XAPO¶¬
@@ -241,6 +246,11 @@ void XAPOEffect::DestroyXAPOEffect()
 	if (effectDesc.pEffect) {
 		effectDesc.pEffect->Release();
 	}
+}
+
+SubmixVoice::~SubmixVoice()
+{
+	DestroySubmixVoice();
 }
 
 void SubmixVoice::CreateSubmixVoice(const int channelCount, const float samplingRate)
@@ -364,6 +374,11 @@ void SubmixVoice::SetReverbParams(XAPOEffect* pEffect, XAUDIO2FX_REVERB_PARAMETE
 void SubmixVoice::SetVolume(const float volume)
 {
 	HRESULT result = pSubmixVoice->SetVolume(volume);
+}
+
+WaveData::~WaveData()
+{
+	DeleteWave();
 }
 
 void WaveData::LoadWave(const wchar_t* filename)
@@ -523,6 +538,11 @@ float WaveData::GetSamplingRate()
 int WaveData::GetChannelCount()
 {
 	return (int)wfex->nChannels;
+}
+
+SourceVoice::~SourceVoice()
+{
+	DestroySourceVoice();
 }
 
 void SourceVoice::CreateSourceVoice(WaveData* pWaveData, bool isUseEffect, const float maxPitchRate)

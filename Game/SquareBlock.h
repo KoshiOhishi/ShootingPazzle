@@ -9,7 +9,7 @@ private:
 	static ObjModel modelBox[4];
 
 public:
-	static void CreateModel();
+	static void StaticInitialize();
 	static ObjModel* GetModel(int index) { return &modelBox[index]; }
 
 	/// <summary>

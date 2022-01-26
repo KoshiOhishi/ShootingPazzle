@@ -95,9 +95,6 @@ private:
 
 	static int createdCount;
 
-	static std::vector<RenderText*> drawListBG;
-	static std::vector<RenderText*> drawListFG;
-
 private:
 	//テクスチャバッファ
 	ComPtr <ID3D12Resource> texbuff;
@@ -128,10 +125,11 @@ private:
 	void CreateFontTexture(const FontData& fontData, const wstring& str);
 	bool IsReCreate(const wstring& str);
 	void Update(float x, float y, const wstring& str);
-	void DrawString();
-	static void PreDraw();
 
 public:
+	void DrawStringPrivate();
+	static void BeginDraw();
+
 	/// <summary>
 	/// 静的初期化
 	/// </summary>
@@ -160,8 +158,6 @@ public:
 	/// <param name="fontData">設定済フォントデータ構造体</param>
 	void DrawStringFG(float x, float y, const wstring& str);
 
-	static void DrawAllBG();
-	static void DrawAllFG();
 #pragma region Setter
 	/// <summary>
 	/// 文字色セット (各成分0.0～1.0)

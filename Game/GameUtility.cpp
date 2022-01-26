@@ -9,7 +9,6 @@
 #include "SwitchFloor.h"
 #include "HoleFloor.h"
 
-//現在のフェーズ
 int GameUtility::nowPhase;
 StageVec2* GameUtility::pStageSize = nullptr;
 int GameUtility::stageColor = STAGE_COLOR_NONE;
@@ -19,7 +18,7 @@ bool GameUtility::isPause = false;
 void GameUtility::StaticInitialize()
 {
 	MyBullet::CreateModel();
-	SquareBlock::CreateModel();
+	SquareBlock::StaticInitialize();
 	TriangleBlock::CreateModel();
 	NormalFloor::CreateModel();
 	TurnFloor::CreateModel();

@@ -93,6 +93,9 @@
     <ClCompile Include="Title.cpp">
       <Filter>ソース ファイル\シーン</Filter>
     </ClCompile>
+    <ClCompile Include="GameSound.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlay.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="Title.h">
       <Filter>ヘッダー ファイル\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSound.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

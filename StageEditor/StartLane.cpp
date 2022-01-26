@@ -22,7 +22,7 @@ void StartLane::Draw()
 
 void StartLane::CreateModel()
 {
-	model.CreateSquare(stageSize->x * ONE_CELL_LENGTH, ONE_CELL_LENGTH, { 1.0f,1.0f,1.0f });
+	model.CreatePlane(stageSize->x * ONE_CELL_LENGTH, ONE_CELL_LENGTH, { 1.0f,1.0f,1.0f });
 }
 
 void StartLane::SetPosition(unsigned short stagePosZ)

@@ -130,7 +130,6 @@ public: //静的メンバ関数
 	static void SetLight(Light* light) { Object3D::light = light; }
 
 protected: //静的メンバ変数
-	static std::vector<Object3D*> drawList;
 
 	//デバイス
 	static ID3D12Device* device;
@@ -167,17 +166,13 @@ protected: //静的メンバ変数
 	static XMMATRIX matOrthographicLH;
 
 public:
-
-	static void DrawAll();
-	static void WriteDepthTex();
-
 	static int GetLoadCount() { return Object3D::loadCount; }
 	static void IncrementLoadCount() { Object3D::loadCount++; }
 	static void SetMatrixOrthographicLH(float viewWigth, float viewHeight, float nearZ, float farZ) {
 		matOrthographicLH = DirectX::XMMatrixOrthographicLH(viewWigth, viewHeight, nearZ, farZ);
 	}
 
-private:
+public:
 	/// <summary>
 	/// 描画
 	/// </summary>

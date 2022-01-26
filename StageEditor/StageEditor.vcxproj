@@ -89,6 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,6 +114,7 @@ xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,6 +139,7 @@ xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -161,6 +164,7 @@ xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;$(SolutionDir)Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -182,6 +186,7 @@ xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClCompile Include="..\Game\BaseBlock.cpp" />
     <ClCompile Include="..\Game\BaseFloor.cpp" />
     <ClCompile Include="..\Game\BreakFloor.cpp" />
+    <ClCompile Include="..\Game\GameSound.cpp" />
     <ClCompile Include="..\Game\GameUtility.cpp" />
     <ClCompile Include="..\Game\MyBullet.cpp" />
     <ClCompile Include="..\Game\NormalFloor.cpp" />
@@ -198,6 +203,7 @@ xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClInclude Include="..\Game\BaseBlock.h" />
     <ClInclude Include="..\Game\BaseFloor.h" />
     <ClInclude Include="..\Game\BreakFloor.h" />
+    <ClInclude Include="..\Game\GameSound.h" />
     <ClInclude Include="..\Game\GameUtility.h" />
     <ClInclude Include="..\Game\MyBullet.h" />
     <ClInclude Include="..\Game\NormalFloor.h" />

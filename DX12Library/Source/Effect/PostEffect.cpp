@@ -480,8 +480,8 @@ void PostEffect::CreateGraphicsPipelineState(bool isDispDepthTex)
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE; // ソースの値を 100% 使う
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO; // デストの値を 0% 使う
 
-	////透明部分の深度値書き込み禁止
-	//gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 	// ブレンドステートに設定する
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;

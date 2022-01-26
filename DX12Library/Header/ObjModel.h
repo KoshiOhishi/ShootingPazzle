@@ -102,22 +102,10 @@ private:
 	//テクスチャ番号
 	UINT texNumber;
 
-public:
-
-//メンバ関数
-public:
-
-	void Draw(int instancingCount = 1, bool isShadow = false);
-
-	/// <summary>
-	/// OBJファイルからモデルを作成する（フォルダ名と中身の名前は同一のものにしてください。）
-	/// </summary>
-	/// <param name="modelname">objファイルを格納してるフォルダ名</param>
-	/// <param name="smoothing">エッジ平滑化フラグ</param>
-	void CreateFromOBJ(const std::string& modelname, bool smoothing = false);
-	void LoadMaterial(const std::string & directoryPath, const std::string & filename);
-	bool LoadTexture(const std::string & directoryPath, const std::string & filename);
-	bool LoadTextureReturnTexSize(const std::string & directoryPath, const std::string & filename, float* texWidth = nullptr, float* texHeight = nullptr);
+private:
+	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
+	bool LoadTexture(const std::string& directoryPath, const std::string& filename);
+	bool LoadTextureReturnTexSize(const std::string& directoryPath, const std::string& filename, float* texWidth = nullptr, float* texHeight = nullptr);
 	void CreateBuffers();
 
 	/// <summary>
@@ -132,6 +120,17 @@ public:
 	/// </summary>
 	void CalculateSmoothedVertexNormals();
 
+//メンバ関数
+public:
+
+	void Draw(int instancingCount = 1, bool isShadow = false);
+
+	/// <summary>
+	/// OBJファイルからモデルを作成する（フォルダ名と中身の名前は同一のものにしてください。）
+	/// </summary>
+	/// <param name="modelname">objファイルを格納してるフォルダ名</param>
+	/// <param name="smoothing">エッジ平滑化フラグ</param>
+	void CreateFromOBJ(const std::string& modelPath, bool smoothing = false);
 
 	/// <summary>
 	/// OBJファイルから作られたモデルであるかどうか返す
@@ -192,17 +191,18 @@ public:
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreateSquare(float width, float height, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
+	void CreatePlane(float width, float height, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 	/// <summary>
 	/// テクスチャあり四角形板ポリゴンを作成
 	/// </summary>
-	/// <param name="standardLength">ポリゴンの基準の長さ テクスチャが横長の場合は縦幅に、縦長の場合は横幅に適応され、もう片方は自動で合わせる。</param>
+	/// <param name="width">横幅</param>
+	/// <param name="height">縦幅</param>
 	/// <param name="texName">テクスチャの名前</param>
 	/// <param name="ambient">アンビエント(環境光)</param>
 	/// <param name="diffuse">ディフューズ(拡散反射光)</param>
 	/// <param name="specular">スペキュラー(鏡面反射光)</param>
-	void CreateSquareTex(float standardLength, const string& texName, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
+	void CreatePlaneTex(float width, float height, const string& texturePath, const Vector3& ambient = { 0.5f,0.5f,0.5f }, const Vector3& diffuse = { 0.5f,0.5f,0.5f }, const Vector3& specular = { 0,0,0 });
 
 #pragma region Getter
 	/// <summary>

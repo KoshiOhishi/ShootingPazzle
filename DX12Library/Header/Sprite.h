@@ -48,8 +48,6 @@ private:
 
 //静的メンバ変数
 protected:
-	static std::vector<Sprite*> drawListBG;
-	static std::vector<Sprite*> drawListFG;
 
 	// 頂点数
 	static const int vertNum = 4;
@@ -126,23 +124,6 @@ public:
 	void DrawFG();
 
 	/// <summary>
-	/// コンテナに貯めた背景スプライトを一括描画
-	/// </summary>
-	static void DrawAllBG();
-
-	/// <summary>
-	/// コンテナに貯めた前景スプライトを一括描画
-	/// </summary>
-	static void DrawAllFG();
-
-private:
-
-	/// <summary>
-	/// 頂点バッファを更新
-	/// </summary>
-	void UpdateVertBuff();
-
-	/// <summary>
 	/// スプライトパイプラインをセット スプライト描画前に必ず書く
 	/// </summary>
 	static void BeginDraw();
@@ -150,7 +131,14 @@ private:
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw();
+	void DrawPrivate();
+
+private:
+
+	/// <summary>
+	/// 頂点バッファを更新
+	/// </summary>
+	void UpdateVertBuff();
 
 public:
 #pragma region ゲッター

@@ -5,6 +5,7 @@
 #include <wrl.h>
 #include "Sprite.h"
 #include "DX12Util.h"
+#include "DrawManager.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -12,8 +13,6 @@ using namespace std;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-std::vector<Sprite*> Sprite::drawListBG;
-std::vector<Sprite*> Sprite::drawListFG;
 ComPtr<ID3D12RootSignature> Sprite::spriteRootSignature = {};	//ルートシグネチャ
 ComPtr<ID3D12PipelineState> Sprite::spritePipelineState[PIPELINE_COUNT] = {};	//パイプラインステート
 XMMATRIX Sprite::matProjection{};		//射影行列
@@ -210,8 +209,8 @@ void Sprite::FirstInit()
 			break;
 		}
 
-		////透明部分の深度値書き込み禁止
-		//gpipeline.BlendState.AlphaToCoverageEnable = true;
+		//透明部分の深度値書き込み設定
+		gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 		// ブレンドステートに設定する
 		gpipeline.BlendState.RenderTarget[0] = blenddesc;
@@ -230,7 +229,10 @@ void Sprite::FirstInit()
 		&descHeapDesc, IID_PPV_ARGS(descHeap.ReleaseAndGetAddressOf())
 	);
 
-
+	//行列初期化
+	matProjection = XMMatrixOrthographicOffCenterLH(
+		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
+	);
 }
 
 void Sprite::Initialize()
@@ -284,11 +286,6 @@ void Sprite::Initialize()
 	constMap->mat = XMMatrixOrthographicOffCenterLH(
 		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//平行投影行列の合成
 	constBuff->Unmap(0, nullptr);
-
-	//行列初期化
-	matProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
-	);
 }
 
 UINT Sprite::LoadTexture(const std::wstring& filename)
@@ -384,7 +381,7 @@ void Sprite::BeginDraw()
 	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
-void Sprite::Draw()
+void Sprite::DrawPrivate()
 {
 	if (!isDisplay)
 		return;
@@ -604,30 +601,12 @@ void Sprite::UpdateVertBuff()
 
 void Sprite::DrawBG()
 {
-	drawListBG.emplace_back(this);
+	DrawManager::AddDrawListBG(DRAW_MANAGER_OBJECT_TYPE_SPRITE, this);
 }
 
 void Sprite::DrawFG()
 {
-	drawListFG.emplace_back(this);
-}
-
-void Sprite::DrawAllBG()
-{
-	BeginDraw();
-	for (auto& v : drawListBG) {
-		v->Draw();
-	}
-	drawListBG.clear();
-}
-
-void Sprite::DrawAllFG()
-{
-	BeginDraw();
-	for (auto& v : drawListFG) {
-		v->Draw();
-	}
-	drawListFG.clear();
+	DrawManager::AddDrawList(DRAW_MANAGER_OBJECT_TYPE_SPRITE, this);
 }
 
 void Sprite::SetInitParams(float posX, float posY, float width, float height)

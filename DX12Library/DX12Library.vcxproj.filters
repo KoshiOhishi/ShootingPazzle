@@ -207,6 +207,15 @@
     <ClCompile Include="Source\Effect\ParticleManager.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Utility\DrawManager.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Effect\Particle2D.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Effect\Particle3D.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -347,6 +356,15 @@
     <ClInclude Include="Header\ParticleManager.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Header\DrawManager.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Particle2D.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Particle3D.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\BasicPixelShader.hlsl">
@@ -424,13 +442,22 @@
     <FxCompile Include="Shader\OBJShadowTestVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\ParticleGS.hlsl">
+    <FxCompile Include="Shader\Particle2DGS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\ParticlePS.hlsl">
+    <FxCompile Include="Shader\Particle2DPS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\ParticleVS.hlsl">
+    <FxCompile Include="Shader\Particle2DVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DGS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
@@ -474,7 +501,10 @@
     <None Include="Shader\OBJShadowTest.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
-    <None Include="Shader\Particle.hlsli">
+    <None Include="Shader\Particle2D.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="Shader\Particle3D.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

@@ -60,6 +60,7 @@ void StageSelect::Initialize()
 	//カメラをセット
 	Object3D::SetCamera(&camera);
 	Mouse::SetCamera(&camera);
+	Particle3D::SetCamera(&camera);
 
 	//ライト初期化
 	light.Initialize();

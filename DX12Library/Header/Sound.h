@@ -162,6 +162,8 @@ private:
 	bool isReverb = false;
 
 public:
+	~XAPOEffect();
+
 	/// <summary>
 	/// リバーブエフェクト生成
 	/// </summary>
@@ -204,6 +206,8 @@ private:
 	unordered_map<XAPOEffect*, int> effectIndexSubmix;
 
 public:
+	~SubmixVoice();
+
 	/// <summary>
 	/// サブミックスボイスを生成する
 	/// </summary>
@@ -286,6 +290,8 @@ private:
 
 	//メンバ関数
 public:
+	~WaveData();
+
 	/// <summary>
 	/// wavファイルをロードする
 	/// </summary>
@@ -349,9 +355,9 @@ private:
 	//音源データポインタ
 	WaveData* pWaveData;
 	//音源ポインタ
-	XAUDIO2_BUFFER buf;
+	XAUDIO2_BUFFER buf = {};
 
-	XAUDIO2_VOICE_DETAILS voiceDetails;
+	XAUDIO2_VOICE_DETAILS voiceDetails = {};
 
 	//エフェクトを使用するか
 	bool isUseEffect = false;
@@ -381,6 +387,7 @@ private:
 
 	//メンバ関数
 public:
+	~SourceVoice();
 
 	/// <summary>
 	/// ソースボイスを生成する

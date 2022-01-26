@@ -1,8 +1,7 @@
 #include "RenderText.h"
 #include "DX12Util.h"
+#include "DrawManager.h"
 
-std::vector<RenderText*> RenderText::drawListBG;
-std::vector<RenderText*> RenderText::drawListFG;
 //ルートシグネチャ
 Microsoft::WRL::ComPtr<ID3D12RootSignature> RenderText::rootSignature;
 //パイプラインステート
@@ -135,8 +134,8 @@ void RenderText::StaticInitialize()
 	// ブレンドステートに設定する
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 	//頂点レイアウトの設定
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
@@ -198,7 +197,7 @@ void RenderText::StaticInitialize()
 	);
 }
 
-void RenderText::PreDraw()
+void RenderText::BeginDraw()
 {
 	//パイプラインステートの設定
 	DX12Util::GetCmdList()->SetPipelineState(pipelineState.Get());
@@ -221,31 +220,13 @@ void RenderText::SetFontData(const FontData& fontData)
 void RenderText::DrawStringBG(float x, float y, const wstring& str)
 {
 	Update(x, y, str);
-	drawListBG.emplace_back(this);
+	DrawManager::AddDrawListBG(DRAW_MANAGER_OBJECT_TYPE_RENDERTEXT, this);
 }
 
 void RenderText::DrawStringFG(float x, float y, const wstring& str)
 {
 	Update(x, y, str);
-	drawListFG.emplace_back(this);
-}
-
-void RenderText::DrawAllBG()
-{
-	PreDraw();
-	for (auto& v : drawListBG) {
-		v->DrawString();
-	}
-	drawListBG.clear();
-}
-
-void RenderText::DrawAllFG()
-{
-	PreDraw();
-	for (auto& v : drawListFG) {
-		v->DrawString();
-	}
-	drawListFG.clear();
+	DrawManager::AddDrawList(DRAW_MANAGER_OBJECT_TYPE_RENDERTEXT, this);
 }
 
 void RenderText::Initialize(const wstring& str)
@@ -561,7 +542,7 @@ void RenderText::Update(float x, float y, const wstring& str)
 	constBuff->Unmap(0, nullptr);
 }
 
-void RenderText::DrawString()
+void RenderText::DrawStringPrivate()
 {
 	//頂点バッファをセット
 	DX12Util::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);

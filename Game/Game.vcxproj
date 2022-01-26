@@ -96,6 +96,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILD_GAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,6 +120,8 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILD_GAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,6 +147,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>BUILD_GAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,6 +175,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)DX12Library\Header;$(SolutionDir)DX12Library\lib\fbx_sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>BUILD_GAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -201,6 +207,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClCompile Include="BreakFloor.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GamePlay.cpp" />
+    <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="GameUtility.cpp" />
     <ClCompile Include="HoleFloor.cpp" />
     <ClCompile Include="main.cpp" />
@@ -221,6 +228,7 @@ xcopy "$(OutDir)Game.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClInclude Include="BreakFloor.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="GameSound.h" />
     <ClInclude Include="GameUtility.h" />
     <ClInclude Include="HoleFloor.h" />
     <ClInclude Include="MyBullet.h" />

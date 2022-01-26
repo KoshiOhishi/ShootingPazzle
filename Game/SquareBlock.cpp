@@ -1,9 +1,10 @@
 #include "SquareBlock.h"
 #include "GameUtility.h"
+#include "GameSound.h"
 
 ObjModel SquareBlock::modelBox[4];
 
-void SquareBlock::CreateModel()
+void SquareBlock::StaticInitialize()
 {
 	//モデル生成
 	modelBox[0].CreateFromOBJ(modelDir + "SquareBlock/SquareBlock.obj");
@@ -74,8 +75,16 @@ void SquareBlock::DecrementBreakupCount()
 
 void SquareBlock::Breakup()
 {
-	//ここに爆発エフェクト入れる
+#ifdef BUILD_GAME
+	//パーティクルを発生させる
+	pStage->GenerateParticleBreakingBlock(20, object.GetPosition());
 
 	//残り目標ブロック数を減らす
 	pStage->DecrementTargetBlockCount();
+
+	//効果音再生
+	GameSound::Play(L"Break", object.GetPosition());
+
+#endif // BUILD_GAME
+
 }

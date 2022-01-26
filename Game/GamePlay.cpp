@@ -10,8 +10,7 @@
 #include "GameUtility.h"
 #include "SceneManager.h"
 #include "Easing.h"
-#include "ParticleManager.h"
-#include "Quaternion.h"
+#include "GameSound.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -47,7 +46,7 @@ GamePlay::GamePlay()
 		sprTextTimeNumber[i].Initialize();
 		sprTextTimeNumber[i].SetTexture(L"Resources/Text_TimeNumber.png");
 	}
-	particle[0].LoadTexture(L"Resources/Particle_Yellow.png");
+	particle[0].LoadTexture(L"Resources/Particle_Shine.png");
 	particle[1].LoadTexture(L"Resources/Particle_Shine.png");
 }
 
@@ -73,7 +72,7 @@ void GamePlay::Initialize()
 	//カメラをセット
 	Object3D::SetCamera(&camera);
 	Mouse::SetCamera(&camera);
-	ParticleManager::SetCamera(&camera);
+	Particle3D::SetCamera(&camera);
 
 	//ライト初期化
 	light.Initialize();
@@ -201,6 +200,8 @@ void GamePlay::Update()
 	//シーンチェンジ更新
 	UpdateChangeScene();
 	
+	//サウンド更新
+	GameSound::Update();
 }
 
 void GamePlay::Draw()
@@ -208,11 +209,11 @@ void GamePlay::Draw()
 	//背景描画
 	objBG.Draw();
 
-	//弾描画
-	myBullet.Draw();
-
 	//ステージ描画
 	stage.Draw();
+
+	//弾描画
+	myBullet.Draw();
 
 	//UI描画
 	DrawUI();
@@ -228,8 +229,6 @@ void GamePlay::Draw()
 
 	//白テクスチャ描画
 	DrawWhiteEffect();
-
-	DebugText::Print(scoreTimer.GetNowTime(), 0, 20);
 
 }
 
@@ -483,15 +482,6 @@ void GamePlay::UpdateStageBackPopUp()
 			scoreTimer.Start();
 		}
 	}
-
-	//シーンチェンジ更新
-	if (sceneChangeTimer.GetIsStart()) {
-		//白テクスチャ透明度更新
-		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, sceneChangeTimer, 0, 1000);
-		//白テクスチャを黒として扱う
-		Vector4 color = {0,0,0,alpha};
-		sprWhite.SetColor(color);
-	}
 }
 
 void GamePlay::UpdateClearEffect()
@@ -562,37 +552,29 @@ void GamePlay::UpdateClearEffect()
 		}
 	}
 
-	//パーティクル追加
+	//はじけ飛ぶパーティクル追加
 	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME && addedParticleClearEffect == false) {
 		for (int i = 0; i < 64; i++) {
-			Quaternion q = Quaternion::CreateQuaternion(camera.GetRotMatrix());
 			float rad = 360.0f / 32 * i * PI / 180;
 
-			Vector3 addPos = Vector3(cos(rad) * 2.0f, sin(rad), 0) * 0.75f + Vector3(0, 1, 0);
-			Quaternion q2 = Quaternion::CreateQuaternion(addPos, q);
-			Vector3 pos = Vector3(camera.GetPosition() + camera.GetCameraDir() * 5 + Vector3(q2.x, q2.y, q2.z));
-			Vector3 vel = { cos(rad) * 2.0f, sin(rad), 0 };
-			q2 = Quaternion::CreateQuaternion(vel, q);
-			vel = Vector3(q2.x, q2.y, q2.z) * 0.04f;
-			Vector3 acc = { 0,-0.0005f,0 };
-			q2 = Quaternion::CreateQuaternion(acc, q);
-			acc = { q2.x, q2.y, q2.z };
-
+			Vector2 pos = Vector2(DX12Util::GetWindowWidth() / 2, 260);
+			pos += Vector2(cos(rad) * 2.0f, sin(rad)) * 90;
+			Vector2 vel = Vector2(cos(rad) * 2.0f, sin(rad)) * 6;
+			Vector2 acc = { 0,0.005f };
 			particle[0].Add(1000, pos, vel, acc, 0.25f, 0);
 		}
 		addedParticleClearEffect = true;
 		addParticleTimer.Start();
 	}
 
+	//キラキラするパーティクル追加
 	if (addParticleTimer.GetIsEnd()) {
-		Quaternion q = Quaternion::CreateQuaternion(camera.GetRotMatrix());
-		float x = (float)((rand() % 60 - 30) * 0.1f);
-		float y = (float)((rand() % 30 - 15) * 0.1f) + 1.0f;
-		Vector3 addPos = Vector3(x, y, 0);
-		Quaternion q2 = Quaternion::CreateQuaternion(addPos, q);
-		Vector3 pos = Vector3(camera.GetPosition() + camera.GetCameraDir() * 5 + Vector3(q2.x, q2.y, q2.z));
+		float x = (float)((rand() % 550 - 275));
+		float y = (float)((rand() % 300 - 150));
 
-		particle[1].Add(2000, pos, {}, {}, 0, 0, 0.25f);
+		Vector2 pos = Vector2(DX12Util::GetWindowWidth() / 2, 260) + Vector2(x, y);
+
+		particle[1].Add(1000, pos, {}, {}, 0, 0, 0.1f);
 		addParticleTimer.Reset();
 		addParticleTimer.Start();
 	}
@@ -606,6 +588,15 @@ void GamePlay::UpdateClearEffect()
 
 void GamePlay::UpdateChangeScene()
 {
+	//シーンチェンジ更新
+	if (sceneChangeTimer.GetIsStart()) {
+		//白テクスチャ透明度更新
+		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, sceneChangeTimer, 0, 1000);
+		//白テクスチャを黒として扱う
+		Vector4 color = { 0,0,0,alpha };
+		sprWhite.SetColor(color);
+	}
+
 	//タイマー終了でシーンチェンジ実行
 	if (sceneChangeTimer.GetIsEnd()) {
 		SceneManager::ChangeScene("StageSelect");
@@ -675,7 +666,7 @@ void GamePlay::DrawClearEffect()
 
 	//パーティクル
 	for (int i = 0; i < _countof(particle); i++) {
-		particle[i].DrawFG();
+		particle[i].Draw();
 	}
 }
 
@@ -726,6 +717,9 @@ void GamePlay::CheckIsClear()
 		}
 		//スコアタイマー停止
 		scoreTimer.Stop();
+
+		//球の転がる効果音停止
+		GameSound::Stop(L"Shooting");
 	}
 }
 

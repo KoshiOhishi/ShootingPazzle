@@ -275,7 +275,7 @@ void Editor::UpdateDispObject()
 			objDispBlock.SetColor({ 1, 1, 1, 1 });
 		}
 		else {
-			objDispBlock.SetColor({ 0.5f, 0.5f, 0.5f, 1 });
+			objDispBlock.SetColor({ 0.75f, 0.75f, 0.75f, 1 });
 		}
 		break;
 	case BLOCK_COLOR_RED:

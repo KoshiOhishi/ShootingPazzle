@@ -145,8 +145,8 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 	// 深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
@@ -355,8 +355,8 @@ void InstancingObjectDraw::CreateShadowObjGraphicsPipeline()
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースのアルファ値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0f-ソースのアルファ値
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 	// ブレンドステートに設定する
 	//gpipeline.BlendState.RenderTarget[0]
@@ -521,8 +521,8 @@ void InstancingObjectDraw::CreateShadowFbxGraphicsPipeline()
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; // ソースのアルファ値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; // 1.0f-ソースのアルファ値
 
-	//透明部分の深度値書き込み禁止
-	gpipeline.BlendState.AlphaToCoverageEnable = true;
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = false;
 
 	// ブレンドステートに設定する
 	//gpipeline.BlendState.RenderTarget[0]

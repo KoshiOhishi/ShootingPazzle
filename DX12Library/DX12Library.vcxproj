@@ -237,6 +237,8 @@
     <ClCompile Include="Source\3D\SphereCollider.cpp" />
     <ClCompile Include="Source\3D\TouchableObject.cpp" />
     <ClCompile Include="Source\DX12\DX12Util.cpp" />
+    <ClCompile Include="Source\Effect\Particle2D.cpp" />
+    <ClCompile Include="Source\Effect\Particle3D.cpp" />
     <ClCompile Include="Source\Effect\ParticleManager.cpp" />
     <ClCompile Include="Source\Effect\PostEffect.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
@@ -249,6 +251,7 @@
     <ClCompile Include="Source\Sound\Sound.cpp" />
     <ClCompile Include="Source\Text\RenderText.cpp" />
     <ClCompile Include="Source\Utility\DebugText.cpp" />
+    <ClCompile Include="Source\Utility\DrawManager.cpp" />
     <ClCompile Include="Source\Utility\Easing.cpp" />
     <ClCompile Include="Source\Utility\FPSManager.cpp" />
     <ClCompile Include="Source\Utility\ImguiHelper.cpp" />
@@ -260,8 +263,11 @@
     <ClInclude Include="Header\CollisionInfo.h" />
     <ClInclude Include="Header\CollisionManager.h" />
     <ClInclude Include="Header\CollisionTypes.h" />
+    <ClInclude Include="Header\DrawManager.h" />
     <ClInclude Include="Header\InstancingObject.h" />
     <ClInclude Include="Header\MeshCollider.h" />
+    <ClInclude Include="Header\Particle2D.h" />
+    <ClInclude Include="Header\Particle3D.h" />
     <ClInclude Include="Header\ParticleManager.h" />
     <ClInclude Include="Header\RaycastHit.h" />
     <ClInclude Include="Header\SphereCollider.h" />
@@ -509,7 +515,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shader\ParticleGS.hlsl">
+    <FxCompile Include="Shader\Particle2DGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
@@ -519,7 +525,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shader\ParticlePS.hlsl">
+    <FxCompile Include="Shader\Particle2DPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -529,7 +535,37 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shader\ParticleVS.hlsl">
+    <FxCompile Include="Shader\Particle2DVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -619,7 +655,8 @@
     <None Include="Shader\NoShadeShaderHeader.hlsli" />
     <None Include="Shader\OBJ.hlsli" />
     <None Include="Shader\OBJShadowTest.hlsli" />
-    <None Include="Shader\Particle.hlsli" />
+    <None Include="Shader\Particle2D.hlsli" />
+    <None Include="Shader\Particle3D.hlsli" />
     <None Include="Shader\PostEffectTest.hlsli" />
     <None Include="Shader\SpriteShaderHeader.hlsli" />
     <None Include="Shader\TextShaderHeader.hlsli" />
