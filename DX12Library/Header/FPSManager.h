@@ -32,5 +32,11 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static double GetFPS() { return nowFPS; }
+
+	/// <summary>
+	/// ‚ ‚é’l‚ğ60fps‚Å“®ì‚³‚¹‚é‚½‚ß‚ÉæZ‚³‚¹‚é”
+	/// </summary>
+	/// <returns></returns>
+	static double GetMulAdjust60FPS() { return 60.0 / nowFPS; }
 };
 

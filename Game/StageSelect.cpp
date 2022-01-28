@@ -35,7 +35,7 @@ StageSelect::StageSelect()
 		sprStageNum[i].SetTexture(L"Resources/UI/UI_Number.png");
 	}
 	sprWrite.Initialize();
-	sprWrite.SetTexture(L"Resources/Write1280x720.png");
+	sprWrite.SetTexture(L"Resources/White1280x720.png");
 	sprBlack.Initialize();
 	sprBlack.SetTexture(L"Resources/Black1280x720.png");
 }
@@ -95,7 +95,7 @@ void StageSelect::Initialize()
 	startGameTimer.SetTimer(0, 2000);
 	changeSelectPosTimer.SetTimer(0, 1000);
 	changeSelectPosTimer.SetNowTime(changeSelectPosTimer.GetEndTime());
-	roopEffectTimer.SetTimer(0, 6000, true);
+	roopEffectTimer.SetTimer(0, 4000, true);
 	roopEffectTimer.Start();
 }
 

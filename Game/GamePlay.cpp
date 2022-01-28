@@ -25,7 +25,7 @@ GamePlay::GamePlay()
 	buttonNo.LoadTexture(L"Resources/UI/UI_No.png");
 	buttonOK.LoadTexture(L"Resources/UI/UI_OK.png");
 	sprWhite.Initialize();
-	sprWhite.SetTexture(L"Resources/Write1280x720.png");
+	sprWhite.SetTexture(L"Resources/White1280x720.png");
 	sprBlack.Initialize();
 	sprBlack.SetTexture(L"Resources/Black1280x720.png");
 	sprPopUp.Initialize();
@@ -323,7 +323,7 @@ void GamePlay::UpdateFirstEffect()
 
 void GamePlay::UpdateBG()
 {
-	objBG.AddRotation(0, 0.1f, 0);
+	objBG.AddRotation(0, 0.1f * FPSManager::GetMulAdjust60FPS(), 0);
 	objBG.Update();
 }
 
@@ -399,7 +399,7 @@ void GamePlay::UpdateUI()
 
 	//ƒuƒƒbƒN‰ñ“]
 	static float add = 0;
-	add++;
+	add += 1.0f * FPSManager::GetMulAdjust60FPS();
 	if (add >= 360) { add -= 360; }
 	objUISquareBlock.SetRotation(camera.GetRotation() + Vector3(add, add, add));
 	objUISquareBlock.Update();
@@ -466,6 +466,8 @@ void GamePlay::UpdateStageBackPopUp()
 			if (buttonYes.IsReleaseButton()) {
 				buttonYes.StartPushedEffect();
 				sceneChangeTimer.Start();
+				//‹…‚Ì“]‚ª‚éŒø‰Ê‰¹’âŽ~
+				GameSound::Stop(L"Shooting");
 			}
 			if (buttonNo.IsReleaseButton()) {
 				buttonNo.StartPushedEffect();

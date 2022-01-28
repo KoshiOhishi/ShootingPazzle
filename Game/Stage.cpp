@@ -435,8 +435,10 @@ void Stage::GenerateParticleBreakingBlock(int num, const Vector3& pos)
 		float z = (float)((rand() % 200 - 100) * 0.01f);
 		Vector3 vel = Vector3(x, y, z).Normalize() * 0.75f;
 		Vector3 acc = { 0, -0.01f, 0 };
+		float startScale = 4.0f;
+		float endScale = 0;
 
-		particleBreakingBlock.Add(1000, generatePos, vel, acc, 2.5f, 0);
+		particleBreakingBlock.Add(1000, generatePos, vel, acc, startScale, endScale);
 	}
 }
 

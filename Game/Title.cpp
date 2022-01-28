@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Easing.h"
+#include "FPSManager.h"
 
 Title::Title()
 {
@@ -14,6 +15,10 @@ Title::Title()
 	sprTextClick.SetTexture(L"Resources/Title/Text_Click.png");
 	sprBlack.Initialize();
 	sprBlack.SetTexture(L"Resources/Black1280x720.png");
+	sprWhite.Initialize();
+	sprWhite.SetTexture(L"Resources/White1280x720.png");
+	sprAttention.Initialize();
+	sprAttention.SetTexture(L"Resources/Attention.png");
 }
 
 Title::~Title()
@@ -41,12 +46,12 @@ void Title::Initialize()
 	//ライトをセット
 	Object3D::SetLight(&light);
 
+	//前景(黒)は最初透明に
+	sprBlack.SetColor({ 1,1,1,0 });
+
 	//テキスト
 	sprTextTitle.SetPosition({ DX12Util::GetWindowWidth() * 0.5f - sprTextTitle.GetTexSize().x * 0.5f, 150 });
 	sprTextClick.SetPosition({ DX12Util::GetWindowWidth() * 0.5f - sprTextClick.GetTexSize().x * 0.5f, 450 });
-
-	//前景(黒)
-	sprBlack.SetColor({ 1,1,1,0 });
 
 	//背景オブジェクト初期化
 	objBG.Initialize();
@@ -55,7 +60,7 @@ void Title::Initialize()
 	objBG.SetDrawShadowToMyself(false);
 
 	//タイマーセット
-	firstEffectTimer.SetTimer(0, 250);
+	firstEffectTimer.SetTimer(0, 6000);
 	firstEffectTimer.Start();
 	sceneChangeTimer.SetTimer(0, 2000);
 	clickAlphaTimer.SetTimer(0, 3000, true);
@@ -68,6 +73,7 @@ void Title::Update()
 	UpdateInput();
 	UpdateBG();
 	UpdateTextTex();
+	UpdateAttention();
 	UpdateFG();
 }
 
@@ -76,13 +82,19 @@ void Title::Draw()
 	DrawBG();
 	DrawTextTex();
 	DrawFG();
+	DrawAttention();
 }
 
 void Title::UpdateInput()
 {
 	//左クリックでステージセレクトへ
 	if (Mouse::IsMouseButtonRelease(LEFT)) {
-		sceneChangeTimer.Start();
+		if (firstEffectTimer.GetNowTime() < 5000) {
+			firstEffectTimer.SetNowTime(5000);
+		}
+		else if (firstEffectTimer.GetIsEnd()) {
+			sceneChangeTimer.Start();
+		}
 	}
 
 	//シーンチェンジタイマー終了で次のシーンに移る
@@ -121,9 +133,28 @@ void Title::UpdateTextTex()
 	}
 }
 
+void Title::UpdateAttention()
+{
+	if (firstEffectTimer.GetNowTime() < 500) {
+		float alpha = (((float)firstEffectTimer.GetNowTime()) / 500);
+		sprAttention.SetColor({ 1,1,1,alpha });
+		sprWhite.SetColor({ 1,1,1,1 });
+	}
+	else if (firstEffectTimer.GetNowTime() >= 4500) {
+		float alpha = 1.0f - (((float)firstEffectTimer.GetNowTime() - 4500) / 500);
+		sprAttention.SetColor({ 1,1,1,alpha });
+		sprWhite.SetColor({ 1,1,1,alpha });
+	}
+	else {
+		sprAttention.SetColor({ 1,1,1,1 });
+		sprWhite.SetColor({ 1,1,1,1 });
+	}
+}
+
 void Title::UpdateBG()
 {
-	objBG.AddRotation(0, 0.1f, 0);
+	float rotY = 0.1f * FPSManager::GetMulAdjust60FPS();
+	objBG.AddRotation(0, rotY, 0);
 	objBG.Update();
 }
 
@@ -135,8 +166,13 @@ void Title::UpdateFG()
 		sprBlack.SetColor({1,1,1,alpha});
 	}
 	else {
-		float alpha = 1.0f - ((float)firstEffectTimer.GetNowTime() / firstEffectTimer.GetEndTime());
-		sprBlack.SetColor({ 1,1,1,alpha });
+		if (firstEffectTimer.GetNowTime() >= 5500) {
+			float alpha = 1.0f - (((float)firstEffectTimer.GetNowTime() - 5500) / (firstEffectTimer.GetEndTime() - 5500));
+			sprBlack.SetColor({ 1,1,1,alpha });
+		}
+		else if (firstEffectTimer.GetNowTime() >= 4500) {
+			sprBlack.SetColor({ 1,1,1,1 });
+		}
 	}
 }
 
@@ -146,9 +182,21 @@ void Title::DrawTextTex()
 	sprTextClick.DrawFG();
 }
 
+void Title::DrawAttention()
+{
+	if (firstEffectTimer.GetNowTime() < 5000) {
+		sprAttention.DrawFG();
+	}
+}
+
 void Title::DrawBG()
 {
-	objBG.Draw();
+	if (firstEffectTimer.GetNowTime() >= 5000) {
+		objBG.Draw();
+	}
+	else {
+		sprWhite.DrawBG();
+	}
 }
 
 void Title::DrawFG()

@@ -236,7 +236,7 @@ void Initialize() {
 	//ゲームサウンド静的初期化
 	GameSound::StaticInitialize();
 
-	FPSManager::SetFPS(0, true);
+	FPSManager::SetFPS(0, false);
 
 }
 void Update() {

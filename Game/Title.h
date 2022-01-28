@@ -18,9 +18,13 @@ private:
     //テキスト
     Sprite sprTextTitle;
     Sprite sprTextClick;
+    //注意書き
+    Sprite sprAttention;
 
     //前景(黒)
     Sprite sprBlack;
+    //前景(白)
+    Sprite sprWhite;
 
     //背景
     Object3D objBG;
@@ -46,10 +50,12 @@ public:
     void UpdateInput();
     void UpdateTimer();
     void UpdateTextTex();
+    void UpdateAttention();
     void UpdateBG();
     void UpdateFG();
 
     void DrawTextTex();
+    void DrawAttention();
     void DrawBG();
     void DrawFG();
 };

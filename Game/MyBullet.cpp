@@ -6,6 +6,7 @@
 #include "GameUtility.h"
 #include "Input.h"
 #include "GameSound.h"
+#include "FPSManager.h"
 
 #include "BreakFloor.h"
 #include "Easing.h"
@@ -37,7 +38,7 @@ void MyBullet::Initialize()
 
 	position = { 0, RADIUS, z };
 	velocity = { 0,0,0 };
-	speed = 1.5f;
+	speed = 1.5f * FPSManager::GetMulAdjust60FPS();
 	shotAngle = 90;
 	friction = 0.0005f;
 	gravity = 0;
@@ -75,14 +76,19 @@ void MyBullet::Update()
 		else if (GameUtility::GetNowPhase() == PHASE_GAME_AFTERSHOOT) {
 			//衝突が起こるかチェック
 			CheckCollision();
+			//球を動かす
 			Move();
+			//重力適用
 			ApplyGravity();
+			//摩擦適用
 			ApplyFriction();
 		}
 		else if (GameUtility::GetNowPhase() == PHASE_GAME_CLEAR) {
 			//衝突が起こるかチェック
 			CheckCollision();
+			//クリアエフェクト
 			UpdateClearEffect();
+			//球を動かす
 			Move();
 		}
 	}
@@ -117,12 +123,12 @@ void MyBullet::UpdateClearEffect()
 {
 	//減速→ゆっくり天に昇ってゆく感じ
 	if (speed > 0 && velocity.y < 1) {
-		speed -= 0.1f;
+		speed -= (0.1f * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
 		if (speed < 0) { speed = 0; }
 	}
 	else {
 		velocity = { 0,1,0 };
-		speed += 0.01f;
+		speed += (0.01f * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
 	}
 }
 
@@ -219,6 +225,9 @@ void MyBullet::Shoot()
 	//念のため正規化
 	velocity = velocity.Normalize();
 
+	//スピードセット
+	speed = 1.5f * FPSManager::GetMulAdjust60FPS();
+
 	//効果音再生
 	GameSound::Play(L"Shoot", position);
 	GameSound::Play(L"Shooting", position);
@@ -249,7 +258,7 @@ void MyBullet::Move()
 void MyBullet::ApplyFriction()
 {
 	//摩擦
-	speed -= friction;
+	speed -= (friction * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
 	if (speed < 0) {
 		speed = 0;
 	}
@@ -259,7 +268,7 @@ void MyBullet::ApplyGravity()
 {
 	//床の上にいなかったら重力適用
 	if (IsOutStage(position)) {
-		gravity += 0.1f;
+		gravity += (0.1f * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
 		position.y -= gravity;
 	}
 	else {
@@ -416,7 +425,7 @@ void MyBullet::CheckFloorCollision()
 		}
 		else {
 			//中心に近い位置に乗ったら有効
-			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH / 3;
+			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH / 4;
 			if (onFloor) {
 				//方向転換ブロック(左)
 				if (stage->GetFloors()[i]->GetObjectName() == "TurnFloor_Left") {
@@ -536,11 +545,21 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 				if (pos.y >= RADIUS) {
 					isHole = false;
 				}
-				//スピードが0.5以上かつ床より半分以上上の位置にいれば復帰
-				else if (speed >= 0.5f && pos.y > 0) {
-					isHole = false;
+				//床より半分以上上の位置にいる
+				else if (pos.y > 0) {
 					//落ちている状態から復帰するときは高さに応じてスピードを落とす
-					speed -= (ONE_CELL_LENGTH / 2 - pos.y) * 0.5f;
+					float newSpeed = speed * (pos.y) / (ONE_CELL_LENGTH / 2);
+
+					//スピードが0でなければ復帰
+					if (newSpeed > 0) {
+						speed = newSpeed;
+						isHole = false;
+					}
+					else {
+						//床ブロックの側面と反射させる
+						velocity.x *= -1;
+						velocity.z *= -1;
+					}
 					
 				}
 				else {

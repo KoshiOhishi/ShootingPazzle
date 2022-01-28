@@ -5,7 +5,7 @@ double FPSManager::FRAME_TIME = 0.0f;
 std::chrono::steady_clock::time_point FPSManager::start;
 std::chrono::steady_clock::time_point FPSManager::end;
 
-double FPSManager::nowFPS;
+double FPSManager::nowFPS = 60;
 bool FPSManager::isAdjust = false;
 bool FPSManager::isPrintFPS = false;
 
