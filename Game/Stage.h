@@ -8,6 +8,7 @@
 class Stage
 {
 	friend class BaseBlock;
+	friend class BaseFloor;
 
 private:
 	//‹…”¼Œa

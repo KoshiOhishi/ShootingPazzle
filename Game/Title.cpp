@@ -89,8 +89,8 @@ void Title::UpdateInput()
 {
 	//左クリックでステージセレクトへ
 	if (Mouse::IsMouseButtonRelease(LEFT)) {
-		if (firstEffectTimer.GetNowTime() < 5000) {
-			firstEffectTimer.SetNowTime(5000);
+		if (firstEffectTimer.GetNowTime() < 4500) {
+			firstEffectTimer.SetNowTime(4500);
 		}
 		else if (firstEffectTimer.GetIsEnd()) {
 			sceneChangeTimer.Start();

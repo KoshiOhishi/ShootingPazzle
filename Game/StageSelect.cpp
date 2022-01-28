@@ -74,9 +74,6 @@ void StageSelect::Initialize()
 	//フェーズセット
 	GameUtility::SetNowPhase(PHASE_STAGESELECT_SELECT);
 
-	//選択インデックス初期化
-	nowSelectStageIndex = 1;
-
 	//ステージ初期化
 
 	//UIボタン初期化

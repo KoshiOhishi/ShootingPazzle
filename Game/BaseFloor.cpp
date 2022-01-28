@@ -2,6 +2,8 @@
 #include "GameUtility.h"
 #include "Easing.h"
 
+Stage* BaseFloor::pStage = nullptr;
+
 void BaseFloor::UpdateFirstEffect(const Timer& timer)
 {
 	//初回だけエフェクトの種類決め

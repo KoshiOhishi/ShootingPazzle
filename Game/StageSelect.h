@@ -27,7 +27,7 @@ private:
     std::vector<Stage*> stages;
 
     //現在選択されているステージインデックス
-    int nowSelectStageIndex = 0;
+    int nowSelectStageIndex = 1;
 
     //移動が上向きかどうか
     bool isMoveUp = false;

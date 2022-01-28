@@ -687,7 +687,7 @@ void GamePlay::Reset()
 	stage.LoadStage(GameUtility::GetNowStagePath());
 
 	//球のエフェクトのみ反映するような範囲
-	firstEffectTimer.SetTimer(MYBULLET_START_FIRST_EFFECT_TIME, 4250);
+	firstEffectTimer.SetTimer(MYBULLET_START_FIRST_EFFECT_TIME, 4500);
 	firstEffectTimer.Start();
 
 	//クリアエフェクトタイマーリセット
@@ -698,6 +698,7 @@ void GamePlay::Reset()
 
 	//念のためカメラを定位置に
 	camera.SetCameraParamAfterShoot();
+	camera.Update();
 
 	//念のため白と黒テクスチャ透明度0に
 	sprWhite.SetColor({ 1,1,1,0 });
@@ -705,6 +706,18 @@ void GamePlay::Reset()
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
+
+	//UI座標を定位置に
+	//ブロック
+	Vector3 addPos = { -5.2f,0,2 };
+	objUISquareBlock.SetPosition(camera.GetPosition() + camera.GetCameraDir() * 5 + addPos);
+	//その下のUI
+	sprUIRemainingBlock.SetPosition({ 8, sprUIRemainingBlock.GetPosition().y });
+	//残りブロック数
+	SetRemainingBlockCountTexPos(sprRemainingBlockCount, _countof(sprRemainingBlockCount), { 128, 116 }, 40);
+	//UIボタン
+	buttonReset.SetPosition({ 10, buttonReset.GetPosition().y });
+	buttonBack.SetPosition({ 10, buttonBack.GetPosition().y });
 }
 
 void GamePlay::CheckIsClear()

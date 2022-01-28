@@ -59,6 +59,9 @@ void Stage::LoadStage(std::string filename)
 {
 	//BaseBlockにポインタセット
 	BaseBlock::SetPStage(this);
+	//BaseFloorにポインタセット
+	BaseFloor::SetPStage(this);
+
 	targetBlockCount = 0;
 
 	//データ初期化

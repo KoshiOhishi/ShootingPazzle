@@ -4,6 +4,9 @@
 #include "CollisionPrimitive.h"
 #include "GameUtility.h"
 #include "Timer.h"
+#include "Stage.h"
+
+class Stage;
 
 class BaseFloor
 {
@@ -14,7 +17,8 @@ protected:
 	InstancingObjectDraw* pIOD;
 
 	std::string objectName = "";
-
+	//ステージポインタ
+	static Stage* pStage;
 	//出現エフェクトの種類
 	int firstEffectType = -1;
 	//出現エフェクトの終了時間
@@ -54,6 +58,12 @@ public:
 	/// 当たり判定更新
 	/// </summary>
 	virtual void UpdateCollision() = 0;
+
+	/// <summary>
+	/// ステージポインタセット
+	/// </summary>
+	/// <param name="pStage"></param>
+	static void SetPStage(Stage* pStage) { BaseFloor::pStage = pStage; }
 
 	/// <summary>
 	/// 座標セット (ステージ座標基準)

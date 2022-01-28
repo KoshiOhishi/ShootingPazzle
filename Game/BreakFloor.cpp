@@ -1,5 +1,6 @@
 #include "BreakFloor.h"
 #include "GameUtility.h"
+#include "GameSound.h"
 
 ObjModel BreakFloor::modelBox;
 
@@ -45,6 +46,14 @@ void BreakFloor::UpdateCollision()
 
 void BreakFloor::Break()
 {
+#ifdef BUILD_GAME
+
+	//å¯â âπçƒê∂
+	GameSound::Play(L"Break", object.GetPosition());
+
+#endif // BUILD_GAME
+
+
 	isBreak = true;
 	//åäÇ∆Ç›Ç»Ç∑
 	objectName = "HoleFloor";
