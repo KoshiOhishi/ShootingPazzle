@@ -46,7 +46,7 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   46 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  BreakFloor.cpp
+  TurnFloor.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
@@ -111,18 +111,22 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Down\TurnFloor_Down.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Down\TurnFloor_Down.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Down\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Down\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Down\_uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Left\TurnFloor_Left.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Left\TurnFloor_Left.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Left\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Left\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Left\_uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Right\TurnFloor_Right.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Right\TurnFloor_Right.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Right\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Right\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Right\_uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\TurnFloor_Up.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\TurnFloor_Up.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\_uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Break.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Reflect.wav
@@ -142,7 +146,7 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlock.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Yes.png
-  93 個のファイルをコピーしました
+  97 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

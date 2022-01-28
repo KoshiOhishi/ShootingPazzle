@@ -14,11 +14,17 @@ class TurnFloor :
 {
 private:
 	static ObjModel modelBox[4];
+	static ObjModel modelCover[4];
+
+	InstancingObject objCover;
 	int turnType;
 
 public:
 	static void CreateModel();
-	static ObjModel* GetModel(int index) { return &modelBox[index]; }
+	static ObjModel* GetModel(int index) {
+		if (index < 4)	{ return &modelBox[index]; }
+		else { return &modelCover[index - 4]; }
+	}
 
 	/// <summary>
 	/// ‰Šú‰»
@@ -40,5 +46,10 @@ public:
 	/// </summary>
 	/// <param name="turnType">TURNTYPE_...</param>
 	void SetTurnType(int turnType);
+
+	/// <summary>
+	/// ƒuƒƒbƒN‚ÌUV‚ğ“®‚©‚·
+	/// </summary>
+	void RollUV();
 };
 

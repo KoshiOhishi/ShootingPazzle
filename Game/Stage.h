@@ -34,7 +34,7 @@ private:
 	InstancingObjectDraw iodTriangleBlock[4];
 	InstancingObjectDraw iodNormalFloor;
 	InstancingObjectDraw iodSwitchFloor[2];
-	InstancingObjectDraw iodTurnFloor[4];
+	InstancingObjectDraw iodTurnFloor[8];
 	InstancingObjectDraw iodBreakFloor;
 
 	Particle3D particleBreakingBlock;

@@ -102,6 +102,9 @@ private:
 	//テクスチャ番号
 	UINT texNumber;
 
+	//ダーティフラグ
+	bool dirty = false;
+
 private:
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 	bool LoadTexture(const std::string& directoryPath, const std::string& filename);
@@ -122,8 +125,14 @@ private:
 
 //メンバ関数
 public:
+	void Update();
 
 	void Draw(int instancingCount = 1, bool isShadow = false);
+
+	/// <summary>
+	/// 頂点バッファ更新
+	/// </summary>
+	void UpdateVertBuff();
 
 	/// <summary>
 	/// OBJファイルからモデルを作成する（フォルダ名と中身の名前は同一のものにしてください。）
@@ -131,6 +140,13 @@ public:
 	/// <param name="modelname">objファイルを格納してるフォルダ名</param>
 	/// <param name="smoothing">エッジ平滑化フラグ</param>
 	void CreateFromOBJ(const std::string& modelPath, bool smoothing = false);
+
+	/// <summary>
+	/// 1頂点を指定してUV値セット
+	/// </summary>
+	/// <param name="vertexNum"></param>
+	/// <param name="adjustUV"></param>
+	void SetVertexUV(int vertexNum, const Vector2& uv);
 
 	/// <summary>
 	/// OBJファイルから作られたモデルであるかどうか返す

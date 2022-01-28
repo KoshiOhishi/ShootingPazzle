@@ -9,6 +9,14 @@
 
 using namespace DirectX;
 
+void ObjModel::Update()
+{
+	if (dirty) {
+		UpdateVertBuff();
+		dirty = false;
+	}
+}
+
 void ObjModel::Draw(int instancingCount, bool isShadow)
 {
 	//インデックスバッファのセットコマンド
@@ -36,6 +44,18 @@ void ObjModel::Draw(int instancingCount, bool isShadow)
 
 	//描画コマンド
 	DX12Util::GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), instancingCount, 0, 0, 0);
+}
+
+void ObjModel::UpdateVertBuff()
+{
+	//頂点バッファへのデータ転送
+	// GPU 上のバッファに対応した仮想メモリを取得
+	Vertex* vertMap = nullptr;
+	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	if (SUCCEEDED(result)) {
+		std::copy(vertices.begin(), vertices.end(), vertMap);
+		vertBuff->Unmap(0, nullptr);
+	}
 }
 
 void ObjModel::CreateFromOBJ(const std::string& modelPath, bool smoothing)
@@ -179,6 +199,16 @@ void ObjModel::CreateFromOBJ(const std::string& modelPath, bool smoothing)
 	positions.clear();
 	normals.clear();
 	texcoords.clear();
+}
+
+void ObjModel::SetVertexUV(int vertexNum, const Vector2& uv)
+{
+	if (vertexNum < 0 || vertexNum >= vertices.size()) {
+		assert(0);
+	}
+
+	vertices[vertexNum].uv = uv;
+	dirty = true;
 }
 
 void ObjModel::LoadMaterial(const std::string& directoryPath, const std::string& filename)
@@ -413,13 +443,7 @@ void ObjModel::CreateBuffers()
 
 
 	//頂点バッファへのデータ転送
-	// GPU 上のバッファに対応した仮想メモリを取得
-	Vertex* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	if (SUCCEEDED(result)) {
-		std::copy(vertices.begin(), vertices.end(), vertMap);
-		vertBuff->Unmap(0, nullptr);
-	}
+	UpdateVertBuff();
 
 	// 頂点バッファビューの作成
 	vbView.BufferLocation = vertBuff.Get()->GetGPUVirtualAddress();
