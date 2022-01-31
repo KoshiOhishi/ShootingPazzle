@@ -46,8 +46,15 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   46 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  TurnFloor.cpp
+  Tutorial.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(7,1): warning C4005: 'PI': マクロが再定義されました。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9): message : 'PI' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\Game\Tutorial.cpp(83,37): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\Tutorial.cpp(86,37): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\Tutorial.cpp(139,12): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\Tutorial.cpp(140,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(173): warning C4172: ローカル変数またはテンポラリのアドレスを返します
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Attention.png
@@ -56,10 +63,6 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Game_PopUp.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\grid.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle_BreakBlock.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle_Shine.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle_Yellow.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Stage_BG.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_Clear.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_ClearTime.png
@@ -70,6 +73,9 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\BreakFloor.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\_uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\NeedleBlock\NeedleBlock.mtl
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\NeedleBlock\NeedleBlock.obj
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\NeedleBlock\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\NormalFloor\NormalFloor.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\NormalFloor\NormalFloor.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\NormalFloor\uv.png
@@ -128,14 +134,28 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\_uv.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Break.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Shine.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Square.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Triangle.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Break.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\ChangeColor.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Crack.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Reflect.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Shoot.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Shooting.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Start.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\UI_Decide.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\UI_Select.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\white1x1.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Title\Text_Click.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Title\Text_Title.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Mouse.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\MouseCover.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Popup.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Sphere.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Text.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Back.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Down.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Reset.png
@@ -146,7 +166,7 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlock.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Yes.png
-  97 個のファイルをコピーしました
+  110 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

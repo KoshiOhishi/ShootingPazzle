@@ -21,6 +21,8 @@ private:
 
 	bool isDispOverlapMouseTex = true;
 
+	bool prevOverlap = false;
+
 public:
 
 	void LoadTexture(const std::wstring& texturePath);
@@ -32,6 +34,9 @@ public:
 	/// <param name="pos">座標</param>
 	void Initialize(const Vector2& pos);
 
+	/// <summary>
+	/// 描画 各種更新も兼ねる
+	/// </summary>
 	void Draw();
 
 	/// <summary>
@@ -62,6 +67,11 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool IsReleaseButton();
+
+	/// <summary>
+	/// サウンド更新
+	/// </summary>
+	void UpdateSound();
 
 	void SetPosition(const Vector2& pos);
 

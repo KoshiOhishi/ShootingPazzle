@@ -7,6 +7,7 @@
 #include "GameUtility.h"
 #include "Timer.h"
 #include "Stage.h"
+#include "Particle3D.h"
 
 class Stage;
 
@@ -36,6 +37,10 @@ protected:
 	unsigned short breakupCount = 0;
 	//ブロックの色
 	int blockColor = BLOCK_COLOR_NONE;
+	//前フレームのステージ色
+	int prevStageColor = STAGE_COLOR_NONE;
+	//色変更タイマー
+	Timer changeColorTimer;
 	std::string objectName = "";
 
 	//出現エフェクトの種類
@@ -87,7 +92,6 @@ public:
 	/// ブロックを壊す
 	/// </summary>
 	virtual void Breakup() = 0;
-
 
 	/// <summary>
 	/// 色更新

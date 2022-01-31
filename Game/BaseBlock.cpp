@@ -22,50 +22,6 @@ void BaseBlock::SetBreakupCount(unsigned short breakupCount)
 void BaseBlock::SetBlockColor(int blockColor)
 {
 	this->blockColor = blockColor;
-
-	//色設定
-	switch (blockColor) {
-	case BLOCK_COLOR_NONE:
-		if (breakupCount > 0) {
-			object.SetColor({ 1, 1, 1, 1 });
-		}
-		else {
-			object.SetColor({ 0.75f, 0.75f, 0.75f, 1 });
-		}
-		break;
-	case BLOCK_COLOR_RED:
-		if (breakupCount > 0) {
-			object.SetColor({ 1, 0.66f, 0.66f, 1 });
-		}
-		else {
-			object.SetColor({ 1, 0.25f, 0, 1 });
-		}
-		break;
-	case BLOCK_COLOR_BLUE:
-		if (breakupCount > 0) {
-			object.SetColor({ 0.66f, 0.66f, 1, 1 });
-		}
-		else {
-			object.SetColor({ 0, 0.25f, 1, 1 });
-		}
-		break;
-	case BLOCK_COLOR_YELLOW:
-		if (breakupCount > 0) {
-			object.SetColor({ 1, 1, 0.66f, 1 });
-		}
-		else {
-			object.SetColor({ 1, 0.75f, 0, 1 });
-		}
-		break;
-	case BLOCK_COLOR_GREEN:
-		if (breakupCount > 0) {
-			object.SetColor({ 0.66f, 1, 0.66f, 1 });
-		}
-		else {
-			object.SetColor({ 0, 1, 0.25f, 1 });
-		}
-		break;
-	}
 }
 
 void BaseBlock::UpdateFirstEffect(const Timer& timer)
@@ -103,17 +59,77 @@ void BaseBlock::UpdateClearEffect(const Timer& timer)
 
 void BaseBlock::UpdateColor()
 {
-	//黒は通過可能にならない
+	//白は通過可能にならない
 	if (blockColor == BLOCK_COLOR_NONE) {
 		return;
 	}
 
-	Vector4 tmp = object.GetColor();
-	//ステージの色とブロックの色が一致していたら透過
-	if (GameUtility::GetStageColor() == blockColor) {
-		object.SetColor({ tmp.x, tmp.y, tmp.z, 0.5f });
+	//ステージ色が変わったとき　かつ
+	//自分の色が含まれていたらタイマー開始
+	if (prevStageColor != GameUtility::GetStageColor() &&
+		(GameUtility::GetStageColor() == blockColor ||
+			prevStageColor == blockColor)) {
+		changeColorTimer.Reset();
+		changeColorTimer.Start();
+	}
+
+	changeColorTimer.Update();
+
+	//色変更中の処理
+	if (changeColorTimer.GetIsStart()) {
+		double	start = changeColorTimer.GetStartTime(),
+			end = changeColorTimer.GetEndTime(),
+			middle = (end - start) / 4;	//ちょっと早い位置で
+
+		float r = 0, g = 0, b = 0, a = 0;
+		//他の色→ブロックの色
+		if (GameUtility::GetStageColor() == blockColor) {
+			//前の色→白
+			if (changeColorTimer.GetNowTime() < middle) {
+				r = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].x, 2, changeColorTimer, start, middle);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].y, 2, changeColorTimer, start, middle);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].z, 2, changeColorTimer, start, middle);
+				a = 1;
+			}
+			//白→今の色
+			else {
+				r = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].x, changeColorTimer, middle, end);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].y, changeColorTimer, middle, end);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].z, changeColorTimer, middle, end);
+				a = Easing::GetEaseValue(EASE_OUTEXPO, 1, 0.5, changeColorTimer, middle, end);
+			}
+		}
+		//ブロックの色→他の色
+		else {
+			//前の色→白
+			if (changeColorTimer.GetNowTime() < middle) {
+				r = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].x, 2, changeColorTimer, start, middle);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].y, 2, changeColorTimer, start, middle);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].z, 2, changeColorTimer, start, middle);
+				a = Easing::GetEaseValue(EASE_OUTEXPO, 0.5, 1, changeColorTimer, start, middle);
+			}
+			//白→今の色
+			else {
+				r = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].x, changeColorTimer, middle, end);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].y, changeColorTimer, middle, end);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].z, changeColorTimer, middle, end);
+				a = 1;
+			}
+		}
+
+		object.SetColor({ r,g,b,a });
 	}
 	else {
-		object.SetColor({ tmp.x, tmp.y, tmp.z, 1 });
+		Vector4 tmp = GameUtility::COLOR_VALUE[blockColor];
+		//ステージの色とブロックの色が一致していたら透過
+		if (GameUtility::GetStageColor() == blockColor) {
+			object.SetColor({ tmp.x, tmp.y, tmp.z, 0.5f });
+		}
+		else {
+			object.SetColor({ tmp.x, tmp.y, tmp.z, 1 });
+		}
 	}
+
+	//前フレームの色に今の色を入れておく
+	prevStageColor = GameUtility::GetStageColor();
 }

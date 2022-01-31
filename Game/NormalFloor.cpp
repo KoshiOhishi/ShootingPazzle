@@ -3,7 +3,7 @@
 
 ObjModel NormalFloor::modelBox;
 
-void NormalFloor::CreateModel()
+void NormalFloor::StaticInitialize()
 {
     //ÉÇÉfÉãê∂ê¨
     //modelBox.CreateFromOBJ("NormalFloor");

@@ -4,6 +4,7 @@
 #include "Easing.h"
 #include "DebugText.h"
 #include "SceneManager.h"
+#include "GameSound.h"
 
 const std::string StageSelect::STAGE_DIRECTORY = "StageData/";
 
@@ -94,6 +95,9 @@ void StageSelect::Initialize()
 	changeSelectPosTimer.SetNowTime(changeSelectPosTimer.GetEndTime());
 	roopEffectTimer.SetTimer(0, 4000, true);
 	roopEffectTimer.Start();
+
+	//ステージカラー初期化
+	GameUtility::SetStageColor(STAGE_COLOR_NONE);
 }
 
 void StageSelect::Update()
@@ -207,6 +211,7 @@ void StageSelect::UpdateNowSelect()
 	if (buttonStart.IsReleaseButton()) {
 		buttonStart.StartPushedEffect();
 		startGameTimer.Start();
+		GameSound::Play(L"Start");
 	}
 }
 

@@ -5,6 +5,7 @@
 #include "GameUtility.h"
 #include "Timer.h"
 #include "Stage.h"
+#include "Particle3D.h"
 
 class Stage;
 

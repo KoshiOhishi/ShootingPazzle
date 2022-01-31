@@ -7,10 +7,24 @@ class SquareBlock :
 private:
 	//正四面体モデル
 	static ObjModel modelBox[4];
+	//パーティクル(各色)
+	static Particle3D particle[5];
 
 public:
 	static void StaticInitialize();
 	static ObjModel* GetModel(int index) { return &modelBox[index]; }
+
+	/// <summary>
+	/// パーティクル生成
+	/// </summary>
+	/// <param name="pos">生成位置</param>
+	/// <param name="colorIndex">色インデックス</param>
+	static void GenerateParticle(int num, const Vector3& pos, int colorIndex);
+
+	/// <summary>
+	/// パーティクル描画
+	/// </summary>
+	static void DrawParticle();
 
 	/// <summary>
 	/// 初期化
@@ -36,5 +50,6 @@ public:
 	/// ブロックを壊す
 	/// </summary>
 	void Breakup() override;
+
 };
 

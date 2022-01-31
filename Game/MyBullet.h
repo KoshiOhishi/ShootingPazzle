@@ -64,8 +64,13 @@ private:
 	//跳ねるエフェクトの初期Y座標 カメラの位置と同期させる
 	float bounceInitPosY = 200;
 
+	//色変更タイマー
+	Timer changeColorTimer;
+	//色変更に使用する変数 (0...前の色 1...今の色)
+	int myColor[2] = { STAGE_COLOR_NONE, STAGE_COLOR_NONE };
+
 public:
-	static void CreateModel();
+	static void StaticInitialize();
 
 public:
 	MyBullet();
@@ -158,6 +163,16 @@ public:
 	/// <returns></returns>
 	bool IsOutStage(const Vector3& pos);
 
+	/// <summary>
+	/// 色を変更する
+	/// </summary>
+	/// <param name="newColor"></param>
+	void ChangeColor(int newColor);
+
+	/// <summary>
+	/// 色更新
+	/// </summary>
+	void UpdateColor();
 #pragma region Setter
 
 	/// <summary>

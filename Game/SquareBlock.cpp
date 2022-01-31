@@ -1,8 +1,10 @@
 #include "SquareBlock.h"
 #include "GameUtility.h"
 #include "GameSound.h"
+#include "FPSManager.h"
 
 ObjModel SquareBlock::modelBox[4];
+Particle3D SquareBlock::particle[5];
 
 void SquareBlock::StaticInitialize()
 {
@@ -11,6 +13,38 @@ void SquareBlock::StaticInitialize()
 	modelBox[1].CreateFromOBJ(modelDir + "SquareBlock_Breakable_1/SquareBlock_Breakable_1.obj");
 	modelBox[2].CreateFromOBJ(modelDir + "SquareBlock_Breakable_2/SquareBlock_Breakable_2.obj");
 	modelBox[3].CreateFromOBJ(modelDir + "SquareBlock_Breakable_3/SquareBlock_Breakable_3.obj");
+
+	//パーティクル
+	for (int i = 0; i < _countof(particle); i++) {
+		particle[i].LoadTexture(L"Resources/Particle/Square.png");
+		particle[i].Initialize();
+		particle[i].SetColor(GameUtility::COLOR_VALUE[i]);
+	}
+}
+
+void SquareBlock::GenerateParticle(int num, const Vector3& pos, int colorIndex)
+{
+	Vector3 generatePos = pos;
+	for (int i = 0; i < num; i++) {
+		//上方向にランダムで飛ばす
+		float x = (float)((rand() % 200 - 100) * 0.01f);
+		float y = (float)((rand() % 100) * 0.01f);
+		float z = (float)((rand() % 200 - 100) * 0.01f);
+		Vector3 vel = Vector3(x, y, z).Normalize() * 0.75f * FPSManager::GetMulAdjust60FPS();
+		Vector3 acc = Vector3(0, -0.01f, 0) * FPSManager::GetMulAdjust60FPS();;
+		float startScale = 6.0f;
+		float endScale = 0;
+
+		particle[colorIndex].Add(1000, generatePos, vel, acc, startScale, endScale);
+	}
+}
+
+void SquareBlock::DrawParticle()
+{
+	for (int i = 0; i < _countof(particle); i++) {
+		particle[i].Update();
+		particle[i].Draw();
+	}
 }
 
 void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
@@ -25,9 +59,14 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 		capsule[i].radius = sphereRadius;
 	}
 
+	//オブジェクト位置セット
 	SetStagePos(pos);
 
+	//コリジョンセット
 	UpdateCollision();
+
+	//色変更タイマー初期化
+	changeColorTimer.SetTimer(0, 1000);
 
 	objectName = "SquareBlock";
 }
@@ -71,20 +110,26 @@ void SquareBlock::DecrementBreakupCount()
 	if (breakupCount <= 0) {
 		Breakup();
 	}
+	else {
+		//パーティクルを発生させる
+		GenerateParticle(3, object.GetPosition(), blockColor);
+
+		//効果音再生
+		GameSound::Play(L"Crack", object.GetPosition());
+	}
 }
 
 void SquareBlock::Breakup()
 {
-#ifdef BUILD_GAME
 	//パーティクルを発生させる
-	pStage->GenerateParticleBreakingBlock(20, object.GetPosition());
-
-	//残り目標ブロック数を減らす
-	pStage->DecrementTargetBlockCount();
+	GenerateParticle(10, object.GetPosition(), blockColor);
 
 	//効果音再生
 	GameSound::Play(L"Break", object.GetPosition());
 
+#ifdef BUILD_GAME
+	//残り目標ブロック数を減らす
+	pStage->DecrementTargetBlockCount();
 #endif // BUILD_GAME
 
 }

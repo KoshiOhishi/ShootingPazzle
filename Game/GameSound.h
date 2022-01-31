@@ -9,6 +9,7 @@ class GameSound
 		WaveData waveData;
 		SourceVoice sourceVoice;
 		Timer stopTimer;
+		bool isUse3D = true;
 	};
 
 private:
@@ -29,12 +30,18 @@ public:
 	/// 音声データ追加
 	/// </summary>
 	/// <param name="path"></param>
-	static void AddSound(const std::wstring& path, bool isLoop = false, float loopStartPos = 0, float loopEndPos = 1000);
+	static void AddSound(const std::wstring& path, bool isUse3D = true, bool isLoop = false, float loopStartPos = 0, float loopEndPos = 1000);
 
+	/// <summary>
+	/// ロード済音声データを再生 (エミッタ指定なし)
+	/// </summary>
+	/// <param name="name">音源名(拡張子無し)</param>
+	static void Play(const std::wstring& name);
 	/// <summary>
 	/// ロード済音声データを再生
 	/// </summary>
-	/// <param name="name"></param>
+	/// <param name="name">音源名(拡張子無し)</param>
+	/// <param name="emitterPos">音を発する3D空間上での位置</param>
 	static void Play(const std::wstring& name, const Vector3& emitterPos);
 
 	/// <summary>

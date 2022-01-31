@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "DebugText.h"
 #include "Easing.h"
+#include "GameSound.h"
 
 void UISquareButton::LoadTexture(const std::wstring& texturePath)
 {
@@ -41,6 +42,9 @@ void UISquareButton::Initialize(const Vector2& pos)
 
 void UISquareButton::Draw()
 {
+    //サウンド更新
+    UpdateSound();
+
     //加算合成エフェクト
     pushedEffectTimer.Update();
     float alpha = Easing::GetEaseValue(EASE_OUTQUINT, 1, 0, pushedEffectTimer);
@@ -90,6 +94,21 @@ bool UISquareButton::IsTriggerButton()
 bool UISquareButton::IsReleaseButton()
 {
     return IsOverlapMouseCursol() && Mouse::IsMouseButtonRelease(LEFT);
+}
+
+void UISquareButton::UpdateSound()
+{
+    //選択音
+    if (prevOverlap == false && IsOverlapMouseCursol()) {
+        GameSound::Play(L"UI_Select");
+    }
+
+    //決定音
+    if (IsReleaseButton()) {
+        GameSound::Play(L"UI_Decide");
+    }
+
+    prevOverlap = IsOverlapMouseCursol();
 }
 
 void UISquareButton::SetPosition(const Vector2& pos)

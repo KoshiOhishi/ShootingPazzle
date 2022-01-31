@@ -13,7 +13,7 @@
 
 Stage::Stage()
 {
-	particleBreakingBlock.LoadTexture(L"Resources/Particle_BreakBlock.png");
+	
 }
 
 Stage::~Stage()
@@ -51,8 +51,6 @@ void Stage::Initialize()
 	}
 	iodBreakFloor.Initialize();
 	iodBreakFloor.SetObjModel(BreakFloor::GetModel());
-	//パーティクル
-	particleBreakingBlock.Initialize();
 }
 
 void Stage::LoadStage(std::string filename)
@@ -177,9 +175,6 @@ void Stage::Update()
 	for (int i = 0; i < _countof(iodTriangleBlock); i++) {
 		iodTriangleBlock[i].Update();
 	}
-
-	//パーティクル更新
-	particleBreakingBlock.Update();
 }
 
 void Stage::Draw()
@@ -201,7 +196,9 @@ void Stage::Draw()
 	}
 
 	//パーティクル描画
-	particleBreakingBlock.Draw();
+	SquareBlock::DrawParticle();
+	TriangleBlock::DrawParticle();
+	BreakFloor::DrawParticle();
 }
 
 void Stage::UpdateFirstEffect()
@@ -426,23 +423,6 @@ void Stage::DeleteFloor(const StageVec2& stagePos)
 	//床ブロック削除
 	if (floors[deleteIndex]) delete floors[deleteIndex];
 	floors.erase(floors.begin() + deleteIndex);
-}
-
-void Stage::GenerateParticleBreakingBlock(int num, const Vector3& pos)
-{
-	Vector3 generatePos = pos;
-	for (int i = 0; i < num; i++) {
-		//上方向にランダムで飛ばす
-		float x = (float)((rand() % 200 - 100) * 0.01f);
-		float y = (float)((rand() % 100) * 0.01f);
-		float z = (float)((rand() % 200 - 100) * 0.01f);
-		Vector3 vel = Vector3(x, y, z).Normalize() * 0.75f;
-		Vector3 acc = { 0, -0.01f, 0 };
-		float startScale = 4.0f;
-		float endScale = 0;
-
-		particleBreakingBlock.Add(1000, generatePos, vel, acc, startScale, endScale);
-	}
 }
 
 int Stage::CheckExistFloor(const StageVec2& stagePos)

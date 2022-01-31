@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-
+#include "Vector4.h"
 
 #define PI 3.14159265359f
 //1マスの長さ
@@ -91,6 +91,10 @@ struct StageFloor
 
 class GameUtility
 {
+	//定数
+public:
+	static const Vector4 COLOR_VALUE[5];
+
 private:
 	//現在のフェーズ
 	static int nowPhase;

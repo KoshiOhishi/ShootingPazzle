@@ -1,16 +1,50 @@
 #include "TriangleBlock.h"
 #include "GameUtility.h"
 #include "GameSound.h"
+#include "FPSManager.h"
 
 ObjModel TriangleBlock::modelTriangle[4];
+Particle3D TriangleBlock::particle[5];
 
-void TriangleBlock::CreateModel()
+void TriangleBlock::StaticInitialize()
 {
 	//モデル生成
 	modelTriangle[0].CreateFromOBJ(modelDir + "TriangleBlock/TriangleBlock.obj");
 	modelTriangle[1].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_1/TriangleBlock_Breakable_1.obj");
 	modelTriangle[2].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_2/TriangleBlock_Breakable_2.obj");
 	modelTriangle[3].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_3/TriangleBlock_Breakable_3.obj");
+
+	//パーティクル
+	for (int i = 0; i < _countof(particle); i++) {
+		particle[i].LoadTexture(L"Resources/Particle/Triangle.png");
+		particle[i].Initialize();
+		particle[i].SetColor(GameUtility::COLOR_VALUE[i]);
+	}
+}
+
+void TriangleBlock::GenerateParticle(int num, const Vector3& pos, int colorIndex)
+{
+	Vector3 generatePos = pos;
+	for (int i = 0; i < num; i++) {
+		//上方向にランダムで飛ばす
+		float x = (float)((rand() % 200 - 100) * 0.01f);
+		float y = (float)((rand() % 100) * 0.01f);
+		float z = (float)((rand() % 200 - 100) * 0.01f);
+		Vector3 vel = Vector3(x, y, z).Normalize() * 0.75f * FPSManager::GetMulAdjust60FPS();
+		Vector3 acc = Vector3(0, -0.01f, 0) * FPSManager::GetMulAdjust60FPS();;
+		float startScale = 6.0f;
+		float endScale = 0;
+
+		particle[colorIndex].Add(1000, generatePos, vel, acc, startScale, endScale);
+	}
+}
+
+void TriangleBlock::DrawParticle()
+{
+	for (int i = 0; i < _countof(particle); i++) {
+		particle[i].Update();
+		particle[i].Draw();
+	}
 }
 
 void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
@@ -33,9 +67,14 @@ void TriangleBlock::Initialize(const StageVec2& pos, float sphereRadius)
 		capsule[i].radius = sphereRadius;
 	}
 
+	//オブジェクト位置セット
 	SetStagePos(pos);
 
+	//コリジョンセット
 	UpdateCollision();
+
+	//色変更タイマー初期化
+	changeColorTimer.SetTimer(0, 1000);
 }
 
 void TriangleBlock::SetTriangleType(int shapeType)
@@ -138,19 +177,25 @@ void TriangleBlock::DecrementBreakupCount()
 	if (breakupCount <= 0) {
 		Breakup();
 	}
+	else {
+		//パーティクルを発生させる
+		GenerateParticle(3, object.GetPosition(), blockColor);
+
+		//効果音再生
+		GameSound::Play(L"Crack", object.GetPosition());
+	}
 }
 
 void TriangleBlock::Breakup()
 {
-#ifdef BUILD_GAME
 	//パーティクルを発生させる
-	pStage->GenerateParticleBreakingBlock(20, object.GetPosition());
-
-	//残り目標ブロック数を減らす
-	pStage->DecrementTargetBlockCount();
+	GenerateParticle(10, object.GetPosition(), blockColor);
 
 	//効果音再生
 	GameSound::Play(L"Break", object.GetPosition());
 
+#ifdef BUILD_GAME
+	//残り目標ブロック数を減らす
+	pStage->DecrementTargetBlockCount();
 #endif // BUILD_GAME
 }

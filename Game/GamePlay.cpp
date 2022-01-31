@@ -46,8 +46,8 @@ GamePlay::GamePlay()
 		sprTextTimeNumber[i].Initialize();
 		sprTextTimeNumber[i].SetTexture(L"Resources/Text_TimeNumber.png");
 	}
-	particle[0].LoadTexture(L"Resources/Particle_Shine.png");
-	particle[1].LoadTexture(L"Resources/Particle_Shine.png");
+	particle[0].LoadTexture(L"Resources/Particle/Shine.png");
+	particle[1].LoadTexture(L"Resources/Particle/Shine.png");
 }
 
 GamePlay::~GamePlay()
@@ -160,12 +160,14 @@ void GamePlay::Initialize()
 
 	addedParticleClearEffect = false;
 
-
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
 
 	//開幕エフェクト終了フラグ
 	isEndFirstEffectOnce = false;
+
+	//チュートリアル
+	tutorial.Initialize(true);
 }
 
 void GamePlay::Update()
@@ -177,6 +179,8 @@ void GamePlay::Update()
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
 	//UpdateImgui();
+	//チュートリアル
+	tutorial.Update();
 	//UI更新
 	UpdateUI();
 	//ポップアップ更新
@@ -220,6 +224,9 @@ void GamePlay::Draw()
 
 	//黒テクスチャ描画
 	DrawBlackEffect();
+
+	//チュートリアル描画
+	tutorial.Draw();
 
 	//クリアエフェクト描画
 	DrawClearEffect();
@@ -561,8 +568,8 @@ void GamePlay::UpdateClearEffect()
 
 			Vector2 pos = Vector2(DX12Util::GetWindowWidth() / 2, 260);
 			pos += Vector2(cos(rad) * 2.0f, sin(rad)) * 90;
-			Vector2 vel = Vector2(cos(rad) * 2.0f, sin(rad)) * 6;
-			Vector2 acc = { 0,0.005f };
+			Vector2 vel = Vector2(cos(rad) * 2.0f, sin(rad)) * 8 * FPSManager::GetMulAdjust60FPS();
+			Vector2 acc = Vector2(0, 0.005f) * FPSManager::GetMulAdjust60FPS();
 			particle[0].Add(1000, pos, vel, acc, 0.25f, 0);
 		}
 		addedParticleClearEffect = true;
@@ -621,7 +628,9 @@ void GamePlay::DrawUI()
 	buttonReset.Draw();
 	buttonBack.Draw();
 	//ブロック描画
-	objUISquareBlock.Draw();
+	if (firstEffectTimer.GetNowTime() >= 3500 || isEndFirstEffectOnce) {
+		objUISquareBlock.Draw();
+	}
 	//その下のUI描画
 	sprUIRemainingBlock.DrawFG();
 	//残りブロック数描画
@@ -632,8 +641,8 @@ void GamePlay::DrawUI()
 
 void GamePlay::DrawStageBackPopUp()
 {
-	//エフェクト中もしくはポーズ中に描画
-	if (GameUtility::GetIsPause() || dispPopUpTimer.GetIsEnd() == false) {
+	//ポーズ中に描画
+	if (GameUtility::GetIsPause()) {
 		sprPopUp.DrawFG();
 		buttonYes.Draw();
 		buttonNo.Draw();

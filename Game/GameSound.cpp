@@ -10,13 +10,20 @@ void GameSound::StaticInitialize()
 	AddSound(dir + L"Reflect.wav");
 	AddSound(dir + L"Shoot.wav");
 	AddSound(dir + L"Shooting.wav", true, 500, 1500);
+	AddSound(dir + L"Crack.wav");
+	AddSound(dir + L"ChangeColor.wav");
+	AddSound(dir + L"Start.wav", false);
+	AddSound(dir + L"UI_Select.wav", false);
+	AddSound(dir + L"UI_Decide.wav", false);
 }
 
 void GameSound::Update()
 {
 	for (auto itr = sounds.begin(); itr != sounds.end(); itr++) {
 		//3Dオーディオ用アップデート
-		itr->second.sourceVoice.Update3DAudio();
+		if (itr->second.isUse3D) {
+			itr->second.sourceVoice.Update3DAudio();
+		}
 		//タイマー更新
 		itr->second.stopTimer.Update();
 
@@ -39,7 +46,7 @@ void GameSound::Update()
 
 }
 
-void GameSound::AddSound(const std::wstring& path, bool isLoop, float loopStartPos, float loopEndPos)
+void GameSound::AddSound(const std::wstring& path, bool isUse3D, bool isLoop, float loopStartPos, float loopEndPos)
 {
 	float distance = 250.0f;
 
@@ -77,6 +84,17 @@ void GameSound::AddSound(const std::wstring& path, bool isLoop, float loopStartP
 
 	//タイマー初期化
 	sounds[wavName].stopTimer.SetTimer(0, 100);
+
+	//3Dオーディオ効果を使用するか
+	sounds[wavName].isUse3D = isUse3D;
+}
+
+void GameSound::Play(const std::wstring& name)
+{
+	//3D音響のエミッタ位置セット（リスナーと同位置）
+	sounds[name].sourceVoice.Set3DEmitterPos(Sound::GetPListener()->Position.x,Sound::GetPListener()->Position.y, Sound::GetPListener()->Position.z);
+	//再生
+	sounds[name].sourceVoice.PlayWave();
 }
 
 void GameSound::Play(const std::wstring& name, const Vector3& emitterPos)

@@ -18,6 +18,7 @@
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
 #include "Stage.h"
+#include "Tutorial.h"
 
 class GamePlay :
 	public Scene
@@ -108,6 +109,9 @@ private:
 
 	//クリアエフェクトのパーティクルが追加されたか
 	bool addedParticleClearEffect = false;
+
+	//チュートリアルオブジェクト
+	Tutorial tutorial;
 
 public:
 	GamePlay();

@@ -15,10 +15,10 @@ ObjModel MyBullet::modelSphere;
 ObjModel MyBullet::modelArrow;
 const float MyBullet::RADIUS = ONE_CELL_LENGTH / 2;
 
-void MyBullet::CreateModel()
+void MyBullet::StaticInitialize()
 {
-	//モデル生成									金っぽい色
-	modelSphere.CreateSphere(20, 20, RADIUS, true, {0.75f,0.6f,0.0f}, { 0.25f,0.25f,0.25f }, { 0.5f,0.5f,0.5f });
+	//モデル生成
+	modelSphere.CreateSphere(20, 20, RADIUS, true, { 0.5,0.5,0.5 }, { 0.5,0.5,0.5 }, { 0.25,0.25,0.25 });
 	modelArrow.CreatePlaneTex(16, 8, "Resources/Arrow.png", { 1,1,1 });
 }
 
@@ -36,6 +36,7 @@ void MyBullet::Initialize()
 	float z;
 	GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, nullptr, &z);
 
+	//基礎データ初期化
 	position = { 0, RADIUS, z };
 	velocity = { 0,0,0 };
 	speed = 1.5f * FPSManager::GetMulAdjust60FPS();
@@ -53,6 +54,14 @@ void MyBullet::Initialize()
 	objArrow.SetDrawShadowToOther(false);
 
 	nextMoveInfo = {};
+
+	changeColorTimer.SetTimer(0, 1000);
+
+	//色は白っぽい色
+	myColor[0] = STAGE_COLOR_NONE;
+	myColor[1] = STAGE_COLOR_NONE;
+
+	objSphere.SetColor(GameUtility::COLOR_VALUE[STAGE_COLOR_NONE]);
 
 	//効果音ストップ
 	GameSound::SetVolume(L"Shooting", 1.0f);
@@ -82,6 +91,8 @@ void MyBullet::Update()
 			ApplyGravity();
 			//摩擦適用
 			ApplyFriction();
+			//色更新
+			UpdateColor();
 		}
 		else if (GameUtility::GetNowPhase() == PHASE_GAME_CLEAR) {
 			//衝突が起こるかチェック
@@ -90,6 +101,8 @@ void MyBullet::Update()
 			UpdateClearEffect();
 			//球を動かす
 			Move();
+			//色更新
+			UpdateColor();
 		}
 	}
 
@@ -463,35 +476,50 @@ void MyBullet::CheckFloorCollision()
 				//スイッチブロック(白)
 				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_None") {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_NONE) {
-						//ここにエフェクト関数
+						//自分の色を変える
+						ChangeColor(STAGE_COLOR_NONE);
+						//効果音再生
+						GameSound::Play(L"ChangeColor", position);
 					}
 					GameUtility::SetStageColor(STAGE_COLOR_NONE);
 				}
 				//スイッチブロック(赤)
 				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Red") {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_RED) {
-						//ここにエフェクト関数
+						//自分の色を変える
+						ChangeColor(STAGE_COLOR_RED);
+						//効果音再生
+						GameSound::Play(L"ChangeColor", position);
 					}
 					GameUtility::SetStageColor(STAGE_COLOR_RED);
 				}
 				//スイッチブロック(青)
 				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Blue") {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_BLUE) {
-						//ここにエフェクト関数
+						//自分の色を変える
+						ChangeColor(STAGE_COLOR_BLUE);
+						//効果音再生
+						GameSound::Play(L"ChangeColor", position);
 					}
 					GameUtility::SetStageColor(STAGE_COLOR_BLUE);
 				}
 				//スイッチブロック(黄)
 				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Yellow") {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_YELLOW) {
-						//ここにエフェクト関数
+						//自分の色を変える
+						ChangeColor(STAGE_COLOR_YELLOW);
+						//効果音再生
+						GameSound::Play(L"ChangeColor", position);
 					}
 					GameUtility::SetStageColor(STAGE_COLOR_YELLOW);
 				}
 				//スイッチブロック(緑)
 				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Green") {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_GREEN) {
-						//ここにエフェクト関数
+						//自分の色を変える
+						ChangeColor(STAGE_COLOR_GREEN);
+						//効果音再生
+						GameSound::Play(L"ChangeColor", position);
 					}
 					GameUtility::SetStageColor(STAGE_COLOR_GREEN);
 				}
@@ -575,4 +603,41 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 
 	return isOutside || isHole;
 
+}
+
+void MyBullet::ChangeColor(int newColor)
+{
+	//色を入れ替え
+	myColor[0] = myColor[1];
+	myColor[1] = newColor;
+
+	//タイマースタート
+	changeColorTimer.Reset();
+	changeColorTimer.Start();
+}
+
+void MyBullet::UpdateColor()
+{
+	changeColorTimer.Update();
+
+	float r = 0, g = 0, b = 0;
+	double	start = changeColorTimer.GetStartTime(),
+			end = changeColorTimer.GetEndTime(),
+			middle = (end - start) / 4;	//ちょっと早い位置で
+
+	//前の色→白
+	if (changeColorTimer.GetNowTime() < middle) {
+		r = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[myColor[0]].x, 2, changeColorTimer, start, middle);
+		g = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[myColor[0]].y, 2, changeColorTimer, start, middle);
+		b = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[myColor[0]].z, 2, changeColorTimer, start, middle);
+	}
+	//白→今の色
+	else {
+		r = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[myColor[1]].x, changeColorTimer, middle, end);
+		g = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[myColor[1]].y, changeColorTimer, middle, end);
+		b = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[myColor[1]].z, changeColorTimer, middle, end);
+	}
+
+	//適用
+	objSphere.SetColor(r, g, b, 1);
 }

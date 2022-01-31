@@ -1,10 +1,11 @@
 #include "TurnFloor.h"
 #include "GameUtility.h"
+#include "FPSManager.h"
 
 ObjModel TurnFloor::modelBox[4];
 ObjModel TurnFloor::modelCover[4];
 
-void TurnFloor::CreateModel()
+void TurnFloor::StaticInitialize()
 {
 	//モデル生成
 	modelBox[TURNTYPE_LEFT].CreateFromOBJ(modelDir + "TurnFloor_Left/TurnFloor_Left.obj");
@@ -35,6 +36,7 @@ void TurnFloor::Initialize(const StageVec2& pos)
 
 void TurnFloor::Update()
 {
+	//上に覆う用のオブジェクトの位置同期
 	objCover.SetPosition(object.GetPosition() + Vector3(0, ONE_CELL_LENGTH / 2, 0));
 	RollUV();
 	object.Update(pIOD[turnType]);
@@ -63,17 +65,18 @@ void TurnFloor::SetTurnType(int turnType)
 
 void TurnFloor::RollUV()
 {
+	//元々のUVに幾分か加算してUVをずらす
 	const Vector2 OLD_UV[4] = {
 		{0,1}, {0,0}, {1,1}, {1,0} 
 	};
-	static float add = 0;
-	add += 0.001f;
-	if (add >= 1) { add -= 1; }
+	addUV += 0.025f * FPSManager::GetMulAdjust60FPS();
+	if (addUV >= 1) { addUV -= 1; }
 
+	//各頂点において
 	for (int i = 0; i < modelCover[i].GetVertices().size(); i++) {
-		modelCover[TURNTYPE_LEFT].SetVertexUV(i, OLD_UV[i] + Vector2(add, 0));
-		modelCover[TURNTYPE_RIGHT].SetVertexUV(i, OLD_UV[i] + Vector2(-add, 0));
-		modelCover[TURNTYPE_UP].SetVertexUV(i, OLD_UV[i] + Vector2(0, add));
-		modelCover[TURNTYPE_DOWN].SetVertexUV(i, OLD_UV[i] + Vector2(0, -add));
+		modelCover[TURNTYPE_LEFT].SetVertexUV(i, OLD_UV[i] + Vector2(addUV, 0));
+		modelCover[TURNTYPE_RIGHT].SetVertexUV(i, OLD_UV[i] + Vector2(-addUV, 0));
+		modelCover[TURNTYPE_UP].SetVertexUV(i, OLD_UV[i] + Vector2(0, addUV));
+		modelCover[TURNTYPE_DOWN].SetVertexUV(i, OLD_UV[i] + Vector2(0, -addUV));
 	}
 }

@@ -14,16 +14,23 @@ StageVec2* GameUtility::pStageSize = nullptr;
 int GameUtility::stageColor = STAGE_COLOR_NONE;
 std::string GameUtility::nowStagePath = "";
 bool GameUtility::isPause = false;
+const Vector4 GameUtility::COLOR_VALUE[5] = {
+	{0.75,0.75,0.75,1},		//îí
+	{1,0.25,0.25,1},		//ê‘
+	{0.25,0.25,1,1},		//ê¬
+	{1,1,0.25,1},			//â©
+	{0.25,1,0.25,1}			//óŒ
+};
 
 void GameUtility::StaticInitialize()
 {
-	MyBullet::CreateModel();
+	MyBullet::StaticInitialize();
 	SquareBlock::StaticInitialize();
-	TriangleBlock::CreateModel();
-	NormalFloor::CreateModel();
-	TurnFloor::CreateModel();
-	BreakFloor::CreateModel();
-	SwitchFloor::CreateModel();
+	TriangleBlock::StaticInitialize();
+	NormalFloor::StaticInitialize();
+	TurnFloor::StaticInitialize();
+	BreakFloor::StaticInitialize();
+	SwitchFloor::StaticInitialize();
 }
 
 const StageVec2& GameUtility::CalcWorldPos2StagePos(float worldX, float worldZ)

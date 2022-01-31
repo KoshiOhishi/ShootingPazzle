@@ -7,7 +7,7 @@ private:
 	static ObjModel modelBox;
 
 public:
-	static void CreateModel();
+	static void StaticInitialize();
 	static ObjModel* GetModel() { return &modelBox; }
 
 	/// <summary>

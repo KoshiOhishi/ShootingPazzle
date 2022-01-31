@@ -3,7 +3,7 @@
 
 ObjModel SwitchFloor::modelBox[2];
 
-void SwitchFloor::CreateModel()
+void SwitchFloor::StaticInitialize()
 {
 	//ÉÇÉfÉãê∂ê¨
 	modelBox[SWITCH_STATE_OFF].CreateFromOBJ(modelDir + "SwitchFloor_OFF/SwitchFloor_OFF.obj");

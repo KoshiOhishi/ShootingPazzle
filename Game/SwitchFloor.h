@@ -27,7 +27,7 @@ private:
 	Timer colorTimer;
 
 public:
-	static void CreateModel();
+	static void StaticInitialize();
 	static ObjModel* GetModel(int index) { return &modelBox[index]; }
 
 	/// <summary>

@@ -17,10 +17,10 @@ private:
 	static ObjModel modelCover[4];
 
 	InstancingObject objCover;
-	int turnType;
-
+	int turnType = -1;
+	float addUV = 0;
 public:
-	static void CreateModel();
+	static void StaticInitialize();
 	static ObjModel* GetModel(int index) {
 		if (index < 4)	{ return &modelBox[index]; }
 		else { return &modelCover[index - 4]; }
