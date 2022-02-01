@@ -692,8 +692,9 @@ void InstancingObjectDraw::Update()
 			constMap->cameraPos = camera->GetPosition();
 			constBuffShare->Unmap(0, nullptr);
 		}
-
-		objModel->Update();
+		if (objModel != nullptr) {
+			objModel->Update();
+		}
 	}
 	else if (objectType == OBJECTTYPE_INSTANCING_FBX) {
 
@@ -813,7 +814,9 @@ void InstancingObjectDraw::DrawPrivate()
 				//ƒ‰ƒCƒg‚Ì•`‰æ
 				light->Draw(3);
 				//ƒ‚ƒfƒ‹•`‰æ
-				objModel->Draw(roopCount_j);
+				if (objModel != nullptr) {
+					objModel->Draw(roopCount_j);
+				}
 
 				prevDrawObjectType = objectType;
 
@@ -936,7 +939,9 @@ void InstancingObjectDraw::DrawShadow()
 				DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(2, constBuffLightCamera->GetGPUVirtualAddress());
 
 				//ƒ‚ƒfƒ‹•`‰æ
-				objModel->Draw(roopCount_j, true);
+				if (objModel != nullptr) {
+					objModel->Draw(roopCount_j, true);
+				}
 
 			}
 			else if (objectType == OBJECTTYPE_INSTANCING_FBX) {

@@ -1,6 +1,15 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  InstancingObject.cpp
+  Particle2D.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(156,69): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\3D\InstancingObject.cpp(194,189): warning C4267: '引数': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle2D.cpp(18,62): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle2D.cpp(18,33): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle2D.cpp(367,51): warning C4244: '引数': 'UINT' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle2D.cpp(367,36): warning C4244: '引数': 'UINT64' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle2D.cpp(438,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle2D.cpp(456,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  Particle3D.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle3D.cpp(440,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Source\Effect\Particle3D.cpp(458,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  コードを生成中...
   DX12Library.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\DX12Library.lib

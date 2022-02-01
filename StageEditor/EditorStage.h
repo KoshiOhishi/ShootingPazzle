@@ -20,7 +20,7 @@ public:
 	InstancingObjectDraw iodTriangleBlock[4];
 	InstancingObjectDraw iodNormalFloor;
 	InstancingObjectDraw iodSwitchFloor[2];
-	InstancingObjectDraw iodTurnFloor[4];
+	InstancingObjectDraw iodTurnFloor[8];
 	InstancingObjectDraw iodBreakFloor;
 
 public:

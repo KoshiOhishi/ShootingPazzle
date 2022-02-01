@@ -1,4 +1,4 @@
-newmtl lambert2SG
+newmtl TurnFloor_Down:lambert2SG
 illum 4
 Kd 0.50 0.50 0.50
 Ka 0.50 0.50 0.50

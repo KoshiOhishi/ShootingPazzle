@@ -211,7 +211,7 @@ void StageSelect::UpdateNowSelect()
 	if (buttonStart.IsReleaseButton()) {
 		buttonStart.StartPushedEffect();
 		startGameTimer.Start();
-		GameSound::Play(L"Start");
+		GameSound::Play(L"StageDecide");
 	}
 }
 

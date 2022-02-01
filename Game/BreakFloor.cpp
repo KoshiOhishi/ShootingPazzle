@@ -15,6 +15,7 @@ void BreakFloor::StaticInitialize()
 	particle.LoadTexture(L"Resources/Particle/Break.png");
 	particle.Initialize();
 	particle.SetColor({ 0.71f,0.47f, 0.2f, 1 });
+	particle.SetBlendMode(PARTICLE_BLENDMODE_ADD);
 }
 
 void BreakFloor::GenerateParticle(const Vector3& pos)

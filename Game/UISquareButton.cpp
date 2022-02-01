@@ -105,7 +105,7 @@ void UISquareButton::UpdateSound()
 
     //Œˆ’è‰¹
     if (IsReleaseButton()) {
-        GameSound::Play(L"UI_Decide");
+        GameSound::Play(L"UI_Click");
     }
 
     prevOverlap = IsOverlapMouseCursol();

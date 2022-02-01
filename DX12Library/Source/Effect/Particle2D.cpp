@@ -163,11 +163,11 @@ void Particle2D::CreateGraphicsPipeline()
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
-	//透明部分の深度値書き込み設定
-	gpipeline.BlendState.AlphaToCoverageEnable = false;
-
 	// ブレンドステートの設定
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
+
+	//透明部分の深度値書き込み設定
+	gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 	// 深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
@@ -252,7 +252,7 @@ void Particle2D::CreateGraphicsPipeline()
 		}
 
 		//透明部分の深度値書き込み設定
-		gpipeline.BlendState.AlphaToCoverageEnable = false;
+		gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 		// ブレンドステートに設定する
 		gpipeline.BlendState.RenderTarget[0] = blenddesc;

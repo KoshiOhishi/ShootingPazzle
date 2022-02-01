@@ -14,6 +14,7 @@ class GameSound
 
 private:
 	static std::unordered_map<std::wstring, SoundData> sounds;
+	static const float MASTER_DISTANCE;
 
 public:
 	/// <summary>
@@ -47,26 +48,33 @@ public:
 	/// <summary>
 	/// ロード済音声データの再生を止める
 	/// </summary>
-	/// <param name="name"></param>
+	/// <param name="name">音源名(拡張子無し)</param>
 	static void Stop(const std::wstring& name);
 
 	/// <summary>
 	/// 音量セット
 	/// </summary>
-	/// <param name="name"></param>
+	/// <param name="name">音源名(拡張子無し)</param>
 	/// <param name="volume">音量倍率</param>
 	static void SetVolume(const std::wstring& name, float volume);
 
 	/// <summary>
 	/// 3D音響に使うエミッターの位置セット
 	/// </summary>
-	/// <param name="pos"></param>
+	/// <param name="name">音源名(拡張子無し)</param>
+	/// <param name="pos">位置</param>
 	static void SetPosition(const std::wstring& name, const Vector3& pos);
 
 	/// <summary>
 	/// ロードしてある音声ファイル取得
 	/// </summary>
-	/// <param name="name"></param>
+	/// <param name="name">音源名(拡張子無し)</param>
 	static SourceVoice& GetLoadedSound(const std::wstring& name);
 
+	/// <summary>
+	/// 現在再生中か
+	/// </summary>
+	/// <param name="name">音源名(拡張子無し)</param>
+	/// <returns></returns>
+	static bool IsPlaying(const std::wstring& name) { return sounds[name].sourceVoice.GetIsPlay(); }
 };

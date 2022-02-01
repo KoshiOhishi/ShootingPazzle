@@ -63,6 +63,9 @@ void Editor::Initialize()
 	objDispBlock.SetObjModel(SquareBlock::GetModel(0));
 	objDispFloor.Initialize();
 	objDispFloor.SetObjModel(NormalFloor::GetModel());
+	objDispFloorSub.Initialize();
+	objDispFloorSub.SetObjModel(TurnFloor::GetModel(TURNTYPE_LEFT + 4));
+	objDispFloorSub.SetRotation({ 90,0,0 });
 #pragma endregion
 }
 
@@ -245,15 +248,17 @@ void Editor::UpdateObject()
 	GameUtility::CalcStagePos2WorldPos(nowCursolPos, &x, &z);
 	objDispBlock.SetPosition({ x, ONE_CELL_LENGTH / 2, z });
 	objDispFloor.SetPosition({ x, -ONE_CELL_LENGTH / 2, z });
-
+	objDispFloorSub.SetPosition({ x, 0, z });
 	//更新
 	UpdateStartLane();
 	objDispBlock.Update();
 	objDispFloor.Update();
+	objDispFloorSub.Update();
 }
 
 void Editor::UpdateDispObject()
 {
+	//モデルをセットする
 	//ブロック
 	objDispBlock.SetColor(0.5f, 0.5f, 0.5f, 1);
 	objDispBlock.SetRotation({ 0, 0, 0 });
@@ -316,23 +321,34 @@ void Editor::UpdateDispObject()
 	objDispFloor.SetColor(1, 1, 1, 1);
 	objDispFloor.SetRotation({ 0, 0, 0 });
 	switch (floorType) {
-	case FLOORTYPE_NORMAL:			objDispFloor.SetObjModel(NormalFloor::GetModel()); break;
-	case FLOORTYPE_TURN_LEFT:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_LEFT)); break;
-	case FLOORTYPE_TURN_RIGHT:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_RIGHT)); break;
+	case FLOORTYPE_NORMAL:			objDispFloor.SetObjModel(NormalFloor::GetModel());
+									objDispFloorSub.SetObjModel(nullptr); break;
+	case FLOORTYPE_TURN_LEFT:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_LEFT)); 
+									objDispFloorSub.SetObjModel(TurnFloor::GetModel(TURNTYPE_LEFT + 4)); break;
+	case FLOORTYPE_TURN_RIGHT:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_RIGHT));
+									objDispFloorSub.SetObjModel(TurnFloor::GetModel(TURNTYPE_RIGHT + 4)); break;
 	case FLOORTYPE_TURN_UP:			objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_UP));
-									objDispFloor.SetRotation({ 0, 180, 0 }); break;
+									objDispFloor.SetRotation({ 0, 180, 0 });
+									objDispFloorSub.SetObjModel(TurnFloor::GetModel(TURNTYPE_UP + 4)); break;
 	case FLOORTYPE_TURN_DOWN:		objDispFloor.SetObjModel(TurnFloor::GetModel(TURNTYPE_DOWN));
-									objDispFloor.SetRotation({ 0, 180, 0 }); break;
-	case FLOORTYPE_BREAK:			objDispFloor.SetObjModel(BreakFloor::GetModel()); break;
-	case FLOORTYPE_SWITCH_NONE:		objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_ON)); break;
+									objDispFloor.SetRotation({ 0, 180, 0 });
+									objDispFloorSub.SetObjModel(TurnFloor::GetModel(TURNTYPE_DOWN + 4)); break;
+	case FLOORTYPE_BREAK:			objDispFloor.SetObjModel(BreakFloor::GetModel());
+									objDispFloorSub.SetObjModel(nullptr); break;
+	case FLOORTYPE_SWITCH_NONE:		objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_ON));
+									objDispFloorSub.SetObjModel(nullptr); break;
 	case FLOORTYPE_SWITCH_RED:		objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
-									objDispFloor.SetColor(1, 0.66f, 0.66f, 1); break;
+									objDispFloor.SetColor(1, 0.66f, 0.66f, 1);
+									objDispFloorSub.SetObjModel(nullptr); break;
 	case FLOORTYPE_SWITCH_BLUE:		objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
-									objDispFloor.SetColor(0, 0, 1, 1); break;
+									objDispFloor.SetColor(0, 0, 1, 1);
+									objDispFloorSub.SetObjModel(nullptr); break;
 	case FLOORTYPE_SWITCH_YELLOW:	objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
-									objDispFloor.SetColor(1, 1, 0, 1); break;
+									objDispFloor.SetColor(1, 1, 0, 1);
+									objDispFloorSub.SetObjModel(nullptr); break;
 	case FLOORTYPE_SWITCH_GREEN:	objDispFloor.SetObjModel(SwitchFloor::GetModel(SWITCH_STATE_OFF));
-									objDispFloor.SetColor(0, 1, 0, 1); break;
+									objDispFloor.SetColor(0, 1, 0, 1);
+									objDispFloorSub.SetObjModel(nullptr); break;
 	}
 }
 
@@ -394,6 +410,10 @@ void Editor::DrawFloor()
 	}
 
 	objDispFloor.Draw();
+	//モデルセットされてたら描画
+	if (objDispFloorSub.GetObjModel() != nullptr) {
+		objDispFloorSub.Draw();
+	}
 }
 
 void Editor::Save()

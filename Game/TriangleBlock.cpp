@@ -19,6 +19,7 @@ void TriangleBlock::StaticInitialize()
 		particle[i].LoadTexture(L"Resources/Particle/Triangle.png");
 		particle[i].Initialize();
 		particle[i].SetColor(GameUtility::COLOR_VALUE[i]);
+		particle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
 	}
 }
 

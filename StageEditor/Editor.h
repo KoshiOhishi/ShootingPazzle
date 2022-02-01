@@ -63,6 +63,7 @@ private:
 	//表示用オブジェクト
 	Object3D objDispBlock;
 	Object3D objDispFloor;
+	Object3D objDispFloorSub;	//補助オブジェクト
 	StartLane startLane[2];
 
 	//SaveLoad用名前格納

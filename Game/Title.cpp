@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "Easing.h"
 #include "FPSManager.h"
+#include "GameSound.h"
 
 Title::Title()
 {
@@ -90,10 +91,14 @@ void Title::UpdateInput()
 	//左クリックでステージセレクトへ
 	if (Mouse::IsMouseButtonRelease(LEFT)) {
 		if (firstEffectTimer.GetNowTime() < 4500) {
+			//黒くなり始める時間
 			firstEffectTimer.SetNowTime(4500);
 		}
 		else if (firstEffectTimer.GetIsEnd()) {
+			//シーンチェンジタイマー開始
 			sceneChangeTimer.Start();
+			//効果音鳴らす
+			GameSound::Play(L"GameStart");
 		}
 	}
 
@@ -135,6 +140,7 @@ void Title::UpdateTextTex()
 
 void Title::UpdateAttention()
 {
+	//イヤホンつけたほうがいいよ～の表示の透明度更新
 	if (firstEffectTimer.GetNowTime() < 500) {
 		float alpha = (((float)firstEffectTimer.GetNowTime()) / 500);
 		sprAttention.SetColor({ 1,1,1,alpha });
@@ -153,6 +159,7 @@ void Title::UpdateAttention()
 
 void Title::UpdateBG()
 {
+	//天球回転
 	float rotY = 0.1f * FPSManager::GetMulAdjust60FPS();
 	objBG.AddRotation(0, rotY, 0);
 	objBG.Update();
@@ -184,6 +191,7 @@ void Title::DrawTextTex()
 
 void Title::DrawAttention()
 {
+	//イヤホンの注意描画
 	if (firstEffectTimer.GetNowTime() < 5000) {
 		sprAttention.DrawFG();
 	}

@@ -246,7 +246,7 @@ void Particle3D::CreateGraphicsPipeline()
 		}
 
 		//透明部分の深度値書き込み設定
-		gpipeline.BlendState.AlphaToCoverageEnable = false;
+		gpipeline.BlendState.AlphaToCoverageEnable = true;
 
 		// ブレンドステートに設定する
 		gpipeline.BlendState.RenderTarget[0] = blenddesc;

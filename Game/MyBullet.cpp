@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "GameSound.h"
 #include "FPSManager.h"
+#include "GameSound.h"
 
 #include "BreakFloor.h"
 #include "Easing.h"
@@ -66,6 +67,7 @@ void MyBullet::Initialize()
 	//効果音ストップ
 	GameSound::SetVolume(L"Shooting", 1.0f);
 	GameSound::Stop(L"Shooting");
+	GameSound::Stop(L"Ascension");
 }
 
 void MyBullet::Update()
@@ -137,11 +139,17 @@ void MyBullet::UpdateClearEffect()
 	//減速→ゆっくり天に昇ってゆく感じ
 	if (speed > 0 && velocity.y < 1) {
 		speed -= (0.1f * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
-		if (speed < 0) { speed = 0; }
+		if (speed < 0) {
+			speed = 0; 
+			//効果音鳴らす
+			GameSound::Play(L"Ascension", position);
+		}
 	}
 	else {
 		velocity = { 0,1,0 };
 		speed += (0.01f * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
+		//効果音を発する位置更新
+		GameSound::SetPosition(L"Ascension", position);
 	}
 }
 
@@ -155,8 +163,10 @@ void MyBullet::UpdateBeforeShoot()
 		//クリックで決定、角度セットフェーズに移る
 		if (GameUtility::GetNowPhase() == PHASE_GAME_SETPOS &&
 			Mouse::IsMouseButtonRelease(MouseButton::LEFT)) {
-			//矢印描画が崩れないように角度決定
-			DecideShootAngle();
+			//効果音鳴らす
+			GameSound::Play(L"PosDecide");
+			////矢印描画が崩れないように
+			//DecideShootAngle();
 			//フェーズを移す
 			GameUtility::SetNowPhase(PHASE_GAME_SETANGLE);
 		}

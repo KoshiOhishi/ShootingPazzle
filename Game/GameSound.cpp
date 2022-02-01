@@ -1,6 +1,7 @@
 #include "GameSound.h"
 
 std::unordered_map<std::wstring, GameSound::SoundData> GameSound::sounds;
+const float GameSound::MASTER_DISTANCE = 250;
 
 void GameSound::StaticInitialize()
 {
@@ -12,9 +13,16 @@ void GameSound::StaticInitialize()
 	AddSound(dir + L"Shooting.wav", true, 500, 1500);
 	AddSound(dir + L"Crack.wav");
 	AddSound(dir + L"ChangeColor.wav");
-	AddSound(dir + L"Start.wav", false);
+	AddSound(dir + L"StageDecide.wav", false);
+	AddSound(dir + L"GameStart.wav", false);
+	AddSound(dir + L"PosDecide.wav", false);
+	AddSound(dir + L"RollNumber.wav", false);
+	AddSound(dir + L"Ascension.wav");
 	AddSound(dir + L"UI_Select.wav", false);
-	AddSound(dir + L"UI_Decide.wav", false);
+	AddSound(dir + L"UI_Click.wav", false);
+
+	//昇天効果音だけさらに遠くまで響かせる
+	sounds[L"Ascension"].sourceVoice.Set3DEmitterDistanceScaler(MASTER_DISTANCE * 2);
 }
 
 void GameSound::Update()
@@ -48,8 +56,6 @@ void GameSound::Update()
 
 void GameSound::AddSound(const std::wstring& path, bool isUse3D, bool isLoop, float loopStartPos, float loopEndPos)
 {
-	float distance = 250.0f;
-
 	//音源名取得
 	std::wstring wavName = path;
 	//「/」で検索
@@ -77,7 +83,7 @@ void GameSound::AddSound(const std::wstring& path, bool isUse3D, bool isLoop, fl
 	sounds[wavName].sourceVoice.CreateSourceVoice(&sounds[wavName].waveData);
 
 	//各種設定
-	sounds[wavName].sourceVoice.Set3DEmitterDistanceScaler(distance);
+	sounds[wavName].sourceVoice.Set3DEmitterDistanceScaler(MASTER_DISTANCE);
 	if (isLoop) {
 		sounds[wavName].sourceVoice.SetLoopConfig(true, 255, loopStartPos, loopEndPos);
 	}

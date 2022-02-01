@@ -687,7 +687,9 @@ void Object3D::Update()
 
 	if (objectType == OBJECTTYPE_OBJ) {
 
-		objModel->Update();
+		if (objModel != nullptr) {
+			objModel->Update();
+		}
 		//定数バッファへデータ転送
 		ConstBufferDataShare* constMap = nullptr;
 		result = constBuffShare->Map(0, nullptr, (void**)&constMap);
@@ -828,7 +830,9 @@ void Object3D::DrawPrivate()
 		//ライトの描画
 		light->Draw(3);
 		//モデル描画
-		objModel->Draw();
+		if (objModel != nullptr) {
+			objModel->Draw();
+		}
 
 	}
 	else if (objectType == OBJECTTYPE_FBX) {
@@ -932,7 +936,9 @@ void Object3D::DrawShadow()
 		DX12Util::GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffShadow->GetGPUVirtualAddress());
 
 		//モデル描画
-		objModel->Draw(1, true);
+		if (objModel != nullptr) {
+			objModel->Draw(1, true);
+		}
 
 	}
 	else if (objectType == OBJECTTYPE_FBX) {

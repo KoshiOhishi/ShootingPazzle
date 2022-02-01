@@ -443,7 +443,6 @@ void GamePlay::UpdateUI()
 			buttonReset.SetIsDispOverlapMouseTex(false);
 			buttonBack.SetIsDispOverlapMouseTex(false);
 		}
-
 	}
 }
 
@@ -504,6 +503,7 @@ void GamePlay::UpdateClearEffect()
 	const int END_MOVE_TEXT_TIME = START_MOVE_TEXT_TIME + 250;
 	const int START_WHITE_EFFECT = 5750;
 	const int START_SCORE_TIMER_EFFECT = 6250;
+	const int START_SCORE_TIMER_EFFECT_ROLL_NUMBER = 6750;
 	const int START_OK_BUTTON_EFFECT = 8500;
 
 	//クリア文字を画面の両端から中心に
@@ -534,13 +534,31 @@ void GamePlay::UpdateClearEffect()
 	//スコアタイマー
 	if (clearEffectTimer.GetNowTime() >= START_SCORE_TIMER_EFFECT) {
 		//「ClearTime」文字の透明度更新
-		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, clearEffectTimer, START_SCORE_TIMER_EFFECT, START_SCORE_TIMER_EFFECT + 500);
+		float alpha = Easing::GetEaseValue(EASE_INSINE, 0, 1, clearEffectTimer, START_SCORE_TIMER_EFFECT, START_SCORE_TIMER_EFFECT_ROLL_NUMBER);
 		Vector4 color = sprTextClearTime.GetColor();
 		color.w = alpha;
 		sprTextClearTime.SetColor(color);
 
 		//スコアタイム数字の準備
-		SetScoreTimeTex(sprTextTimeNumber, _countof(sprTextTimeNumber), START_SCORE_TIMER_EFFECT + 500);
+		SetScoreTimeTex(sprTextTimeNumber, _countof(sprTextTimeNumber), START_SCORE_TIMER_EFFECT_ROLL_NUMBER);
+
+		//「s」と「.」を抜いた文字数
+		int numberCount = (GetStrScoreTime(-1).size() - 2);
+		int endSound = START_SCORE_TIMER_EFFECT_ROLL_NUMBER + numberCount * 250;
+
+		//効果音再生
+		if (GameSound::IsPlaying(L"RollNumber") == false && 
+			clearEffectTimer.GetNowTime() >= START_SCORE_TIMER_EFFECT_ROLL_NUMBER &&
+			clearEffectTimer.GetNowTime() < endSound) {
+			GameSound::Play(L"RollNumber");
+		}
+		//効果音停止
+		if (clearEffectTimer.GetNowTime() >= endSound) {
+			GameSound::Stop(L"RollNumber");
+		}
+
+		bool b = GameSound::IsPlaying(L"RollNumber");
+		DebugText::Print(b, 0, 0);
 	}
 	else {
 		sprTextClearTime.SetColor({ 1,1,1,0 });
@@ -864,9 +882,11 @@ std::string GamePlay::GetStrScoreTime(int keta)
 	str = str.insert(str.size() - 3, ".");
 	str = str.insert(str.size(), "s");
 
-	//文字列がketaと同じ桁数になるように#で埋める
-	while (str.size() < keta) {
-		str = "#" + str;
+	//ketaが-1じゃないとき、文字列がketaと同じ桁数になるように#で埋める
+	if (keta != -1) {
+		while (str.size() < keta) {
+			str = "#" + str;
+		}
 	}
 
 	return str;
