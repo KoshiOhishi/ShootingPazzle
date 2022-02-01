@@ -553,12 +553,10 @@ void GamePlay::UpdateClearEffect()
 			GameSound::Play(L"RollNumber");
 		}
 		//Œø‰Ê‰¹’âŽ~
-		if (clearEffectTimer.GetNowTime() >= endSound) {
+		if (GameSound::IsPlaying(L"RollNumber") == true && 
+			clearEffectTimer.GetNowTime() >= endSound) {
 			GameSound::Stop(L"RollNumber");
 		}
-
-		bool b = GameSound::IsPlaying(L"RollNumber");
-		DebugText::Print(b, 0, 0);
 	}
 	else {
 		sprTextClearTime.SetColor({ 1,1,1,0 });

@@ -77,8 +77,17 @@ bool UISquareButton::IsOverlapMouseCursol()
 {
     Vector2 mousePos = Mouse::GetMousePos();
 
-    return mousePos.x >= pos.x && mousePos.x < pos.x + size.x &&
+    //マウスが画面の内側にいるか
+    bool isInsideWindow =
+        mousePos.x >= 0 && mousePos.x < DX12Util::GetWindowWidth() &&
+        mousePos.y >= 0 && mousePos.y < DX12Util::GetWindowHeight();
+
+    //マウスがボタンの内側にいるか
+    bool isInsideButton = 
+        mousePos.x >= pos.x&& mousePos.x < pos.x + size.x &&
         mousePos.y >= pos.y && mousePos.y < pos.y + size.y;
+
+    return isInsideWindow && isInsideButton;
 }
 
 bool UISquareButton::IsPushButton()

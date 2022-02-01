@@ -126,7 +126,7 @@ void SquareBlock::Breakup()
 	GenerateParticle(10, object.GetPosition(), blockColor);
 
 	//効果音再生
-	GameSound::Play(L"Break", object.GetPosition());
+	GameSound::Play(L"BreakBlock", object.GetPosition());
 
 #ifdef BUILD_GAME
 	//残り目標ブロック数を減らす

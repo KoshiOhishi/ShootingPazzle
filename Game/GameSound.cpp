@@ -7,7 +7,8 @@ void GameSound::StaticInitialize()
 {
 	//SEì«Ç›çûÇ›
 	std::wstring dir = L"Resources/Sound/SE/";
-	AddSound(dir + L"Break.wav");
+	AddSound(dir + L"BreakBlock.wav");
+	AddSound(dir + L"BreakFloor.wav");
 	AddSound(dir + L"Reflect.wav");
 	AddSound(dir + L"Shoot.wav");
 	AddSound(dir + L"Shooting.wav", true, 500, 1500);
@@ -16,7 +17,7 @@ void GameSound::StaticInitialize()
 	AddSound(dir + L"StageDecide.wav", false);
 	AddSound(dir + L"GameStart.wav", false);
 	AddSound(dir + L"PosDecide.wav", false);
-	AddSound(dir + L"RollNumber.wav", false);
+	AddSound(dir + L"RollNumber.wav", false, true, 0, 127);
 	AddSound(dir + L"Ascension.wav");
 	AddSound(dir + L"UI_Select.wav", false);
 	AddSound(dir + L"UI_Click.wav", false);

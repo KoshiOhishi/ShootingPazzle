@@ -671,7 +671,6 @@ void SourceVoice::PlayWave()
 			assert(0);
 			return;
 		}
-		result = pSourceVoice->FlushSourceBuffers();
 		result = pSourceVoice->SubmitSourceBuffer(&buf);
 	}
 
@@ -688,8 +687,9 @@ void SourceVoice::StopWave()
 	}
 	HRESULT result = pSourceVoice->Stop();
 	if (GetIsLoop()) {
-		result - pSourceVoice->ExitLoop();
+		result = pSourceVoice->ExitLoop();
 	}
+	result = pSourceVoice->FlushSourceBuffers();
 }
 
 void SourceVoice::PauseWave()

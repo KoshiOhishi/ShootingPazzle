@@ -82,7 +82,7 @@ void BreakFloor::Break()
 	GenerateParticle(object.GetPosition());
 
 	//å¯â âπçƒê∂
-	GameSound::Play(L"Break", object.GetPosition());
+	GameSound::Play(L"BreakFloor", object.GetPosition());
 
 #endif // BUILD_GAME
 

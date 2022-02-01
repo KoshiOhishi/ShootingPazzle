@@ -7,9 +7,17 @@
 #include "FPSManager.h"
 #include "GameSound.h"
 
+#include "SquareBlock.h"
+#include "TriangleBlock.h"
+#include "BreakFloor.h"
+
+const float Title::EFFECT_ACCEL = 0.005f;
+
 Title::Title()
 {
+	//モデル
 	modelBG.CreateFromOBJ(modelDir + "Sky/Sky.obj");
+	//スプライト
 	sprTextTitle.Initialize();
 	sprTextTitle.SetTexture(L"Resources/Title/Text_Title.png");
 	sprTextClick.Initialize();
@@ -20,6 +28,23 @@ Title::Title()
 	sprWhite.SetTexture(L"Resources/White1280x720.png");
 	sprAttention.Initialize();
 	sprAttention.SetTexture(L"Resources/Attention.png");
+	//パーティクル
+	for (int i = 0; i < _countof(particleSquare); i++) {
+		particleSquare[i].LoadTexture(L"Resources/Particle/Square.png");
+		particleSquare[i].Initialize();
+		particleSquare[i].SetColor(GameUtility::COLOR_VALUE[i]);
+		particleSquare[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
+	}
+	for (int i = 0; i < _countof(particleTriangle); i++) {
+		particleTriangle[i].LoadTexture(L"Resources/Particle/Triangle.png");
+		particleTriangle[i].Initialize();
+		particleTriangle[i].SetColor(GameUtility::COLOR_VALUE[i]);
+		particleTriangle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
+	}
+	particleBreak.LoadTexture(L"Resources/Particle/Break.png");
+	particleBreak.Initialize();
+	particleBreak.SetColor({ 0.71f,0.47f, 0.2f, 1 });
+	particleBreak.SetBlendMode(PARTICLE_BLENDMODE_ADD);
 }
 
 Title::~Title()
@@ -37,13 +62,14 @@ void Title::Initialize()
 	//カメラをセット
 	Object3D::SetCamera(&camera);
 	Mouse::SetCamera(&camera);
+	Particle3D::SetCamera(&camera);
 
 	//ライト初期化
 	light.Initialize();
 	light.SetLightDir({ 0.5f,-1,0.5f });
 	light.SetLightColor({ 1,1,1 });
 	light.SetLightTarget({ 0,0,0 });
-	light.CalcLightPos(80.0f);
+	light.CalcLightPos(50.0f);
 	//ライトをセット
 	Object3D::SetLight(&light);
 
@@ -66,6 +92,7 @@ void Title::Initialize()
 	sceneChangeTimer.SetTimer(0, 2000);
 	clickAlphaTimer.SetTimer(0, 3000, true);
 	clickAlphaTimer.Start();
+	addEffectTimer.SetTimer(0, 1);
 }
 
 void Title::Update()
@@ -73,6 +100,7 @@ void Title::Update()
 	UpdateTimer();
 	UpdateInput();
 	UpdateBG();
+	UpdateEffectObjects();
 	UpdateTextTex();
 	UpdateAttention();
 	UpdateFG();
@@ -81,6 +109,7 @@ void Title::Update()
 void Title::Draw()
 {
 	DrawBG();
+	DrawEffectObjects();
 	DrawTextTex();
 	DrawFG();
 	DrawAttention();
@@ -104,15 +133,34 @@ void Title::UpdateInput()
 
 	//シーンチェンジタイマー終了で次のシーンに移る
 	if (sceneChangeTimer.GetIsEnd()) {
+		//オブジェクト削除
+		auto itr = effectObjects.begin();
+		while (itr != effectObjects.end())
+		{
+			//パーティクル生成
+			AddParticle(*(*itr));
+			//エフェクトオブジェクト削除
+			delete (*itr);
+			(*itr) = nullptr;
+			itr = effectObjects.erase(itr);
+		}
+		//シーンチェンジ
 		SceneManager::ChangeScene("StageSelect");
 	}
 }
 
 void Title::UpdateTimer()
 {
+	//開幕演出終わったらエフェクトタイマー開始
+	//(以後はaddEffectTimer終了後に新しくランダムに開始される)
+	if (firstEffectTimer.GetIsEnd() && addEffectTimer.GetIsStart() == false) {
+		SetAndStartAddEffectTimer();
+	}
+
 	firstEffectTimer.Update();
 	sceneChangeTimer.Update();
 	clickAlphaTimer.Update();
+	addEffectTimer.Update();
 }
 
 void Title::UpdateTextTex()
@@ -183,6 +231,62 @@ void Title::UpdateFG()
 	}
 }
 
+void Title::UpdateEffectObjects()
+{
+	//エフェクト追加
+	if (addEffectTimer.GetIsEnd()) {
+		AddEffectObject();
+		//タイマーセット
+		SetAndStartAddEffectTimer();
+	}
+
+	//エフェクトオブジェクト更新
+	for (int i = 0; i < effectObjects.size(); i++) {
+		//重力っぽいの適用
+		effectObjects[i]->velocity.y -= EFFECT_ACCEL;
+		//位置更新
+		effectObjects[i]->position += effectObjects[i]->velocity * effectObjects[i]->moveSpeed;
+		effectObjects[i]->object.SetPosition(effectObjects[i]->position);
+		//回転更新
+		Vector3 setRot = effectObjects[i]->object.GetRotation() + effectObjects[i]->addRotVelocity;
+		effectObjects[i]->object.SetRotation(setRot);
+		//破壊するまでのタイマー更新
+		effectObjects[i]->breakTimer.Update();
+		//オブジェクト更新
+		effectObjects[i]->object.Update();
+	}
+
+	//オブジェクト削除
+	auto itr = effectObjects.begin();
+	while (itr != effectObjects.end())
+	{
+		//破壊タイマーが終了していたら
+		if ((*itr)->breakTimer.GetIsEnd())
+		{
+			//パーティクル生成
+			AddParticle(*(*itr));
+			//エフェクトオブジェクト削除
+			delete (*itr);
+			(*itr) = nullptr;
+			itr = effectObjects.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
+
+	//パーティクル更新
+	for (int i = 0; i < _countof(particleSquare); i++) {
+		particleSquare[i].Update();
+	}
+	for (int i = 0; i < _countof(particleTriangle); i++) {
+		particleTriangle[i].Update();
+	}
+	particleBreak.Update();
+
+}
+
 void Title::DrawTextTex()
 {
 	sprTextTitle.DrawFG();
@@ -210,4 +314,128 @@ void Title::DrawBG()
 void Title::DrawFG()
 {
 	sprBlack.DrawFG();
+}
+
+void Title::DrawEffectObjects()
+{
+	//エフェクトオブジェクト描画
+	for (int i = 0; i < effectObjects.size(); i++) {
+		effectObjects[i]->object.Draw();
+	}
+	//パーティクル描画
+	for (int i = 0; i < _countof(particleSquare); i++) {
+		particleSquare[i].Draw();
+	}
+	for (int i = 0; i < _countof(particleTriangle); i++) {
+		particleTriangle[i].Draw();
+	}
+	particleBreak.Draw();
+}
+
+void Title::AddEffectObject()
+{
+	//画面外からオブジェクトが飛んできてパッとはじける演出
+
+	EffectObject* newEffectObject = new EffectObject;
+	//オブジェクトを3種類に分類
+	newEffectObject->type = rand() % 3;
+
+	//それぞれモデルセット
+	if (newEffectObject->type == PARTICLE_TYPE_SQUARE) {
+		newEffectObject->pModel = SquareBlock::GetModel(1);	//ひび割れた四角いブロックのモデル
+	}
+	else if (newEffectObject->type == PARTICLE_TYPE_TRIANGLE) {
+		newEffectObject->pModel = TriangleBlock::GetModel(1);	//ひび割れた三角のブロックのモデル
+	}
+	else if (newEffectObject->type == PARTICLE_TYPE_BREAK) {
+		newEffectObject->pModel = BreakFloor::GetModel();	//壊れる床ブロックのモデル
+	}
+	//オブジェクト初期化とモデルセット
+	newEffectObject->object.Initialize();
+	newEffectObject->object.SetObjModel(newEffectObject->pModel);
+
+	//球面上の位置、移動量、スピードセット
+	int range = 100;
+	newEffectObject->position = GetRandomOnUnitSpherePos() * range;
+	//ここでオブジェクトにも座標を適用しておく
+	newEffectObject->object.SetPosition(newEffectObject->position);
+	//中心に近い方向へ向かう
+	Vector3 center = GetRandomOnUnitSpherePos() * 20;
+	newEffectObject->velocity = (center - newEffectObject->position).Normalize();
+	newEffectObject->moveSpeed = 1.5f;
+	//色セット
+	newEffectObject->colorType = rand() % 5;
+	//TypeがBreakでなければオブジェクトにも反映
+	if (newEffectObject->type != PARTICLE_TYPE_BREAK)
+	newEffectObject->object.SetColor(GameUtility::COLOR_VALUE[newEffectObject->colorType]);
+	//回転を設定
+	float speed = GetRandF(1, 10);//回転スピードは一定
+	newEffectObject->addRotVelocity = GetRandomOnUnitSpherePos() * speed;
+	//影は描画無し
+	newEffectObject->object.SetDrawShadowToMyself(false);
+	//破壊までのタイマーセット
+	newEffectObject->breakTimer.SetTimer(0, rand() % 2000);
+	newEffectObject->breakTimer.Start();
+
+	//追加
+	effectObjects.emplace_back(newEffectObject);
+}
+
+void Title::AddParticle(const EffectObject& effectObject)
+{
+	for (int i = 0; i < 20; i++) {
+		//上方向にランダムで飛ばす
+		float x = (float)((rand() % 200 - 100) * 0.01f);
+		float y = (float)((rand() % 100) * 0.01f);
+		float z = (float)((rand() % 200 - 100) * 0.01f);
+		Vector3 vel = Vector3(x, y, z).Normalize() * 0.75f * FPSManager::GetMulAdjust60FPS();
+		Vector3 acc = Vector3(0, -0.01f, 0) * FPSManager::GetMulAdjust60FPS();;
+		float startScale = 6.0f;
+		float endScale = 0;
+
+		//タイプで分ける
+		if (effectObject.type == PARTICLE_TYPE_SQUARE) {
+			particleSquare[effectObject.colorType].Add(1000, effectObject.position, vel, acc, startScale, endScale);
+		}
+		else if (effectObject.type == PARTICLE_TYPE_TRIANGLE) {
+			particleTriangle[effectObject.colorType].Add(1000, effectObject.position, vel, acc, startScale, endScale);
+		}
+		else if (effectObject.type == PARTICLE_TYPE_BREAK) {
+			particleBreak.Add(1000, effectObject.position, vel, acc, startScale, endScale);
+		}
+	}
+}
+
+void Title::SetAndStartAddEffectTimer()
+{
+	//ランダムにタイマーセット
+	int end = rand() % 800;
+
+	addEffectTimer.SetTimer(0, end);
+	addEffectTimer.Start();
+}
+
+float Title::GetRandF(int min, int max)
+{
+	int sub = (max - min);
+	float randf = (float)(rand() % sub);
+	float result = randf - ((max - min) / 2);
+	return result;
+}
+
+Vector3 Title::GetRandomOnUnitSpherePos()
+{
+	//単位球上のランダムな位置計算
+	//参考サイト:https://ushiostarfish.hatenablog.com/entry/2018/07/13/005942
+
+	float x1, x2, s;
+	do {
+		x1 = GetRandF(-100, 100) / 100;
+		x2 = GetRandF(-100, 100) / 100;
+		s = x1 * x1 + x2 * x2;
+	} while (s >= 1.0);
+
+	float twoSqrtOneMinusS = 2.0 * sqrt(max(1.0 - s, 0.0));
+
+	return Vector3(x1 * twoSqrtOneMinusS, x2 * twoSqrtOneMinusS, 1.0 - 2.0 * s);
 }
