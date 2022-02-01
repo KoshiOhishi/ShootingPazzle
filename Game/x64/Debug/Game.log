@@ -46,23 +46,27 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   46 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  Title.cpp
+  StageSelect.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
 E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(7): message : 'PI' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(172,14): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(184,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(211,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(359,59): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(391,85): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(392,70): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(438,25): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\Title.cpp(440,67): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(173): warning C4172: ローカル変数またはテンポラリのアドレスを返します
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(18,48): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(158,36): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(165,36): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(180,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(181,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(248,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(252,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(258,32): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(272,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(300,16): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\StageSelect.cpp(375,30): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow_Down.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow_Up.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Attention.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Background.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Black1280x720.png
@@ -141,6 +145,7 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(173): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\_uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Break.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Circle.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Shine.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Square.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Triangle.png
@@ -177,7 +182,7 @@ E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(173): warni
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlock.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Yes.png
-  115 個のファイルをコピーしました
+  118 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

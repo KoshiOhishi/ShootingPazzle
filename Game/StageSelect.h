@@ -7,6 +7,7 @@
 #include "Stage.h"
 #include "UISquareButton.h"
 #include "Sprite.h"
+#include "Particle2D.h"
 
 class StageSelect :
     public Scene
@@ -44,6 +45,9 @@ private:
     //繰り返しエフェクトタイマー
     Timer roopEffectTimer;
 
+    //矢印エフェクトタイマー
+    Timer arrowTimer;
+
     //UI 上ボタン
     UISquareButton buttonUp;
 
@@ -70,6 +74,12 @@ private:
 
     //前景(黒)
     Sprite sprBlack;
+
+    //移動可能なことを表す矢印オブジェクト
+    ObjModel modelArrowUp;
+    ObjModel modelArrowDown;
+    Object3D objArrowUp;
+    Object3D objArrowDown;
 
 
 public:

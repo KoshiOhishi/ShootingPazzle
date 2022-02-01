@@ -274,8 +274,8 @@ void MyBullet::Move()
 
 	//å¯â âπçXêV
 	GameSound::SetPosition(L"Shooting", position);
-	GameSound::SetVolume(L"Reflect", speed);
-	GameSound::SetVolume(L"Shooting", speed);
+	GameSound::SetVolume(L"Reflect", speed * FPSManager::GetMulAdjust60FPS());
+	GameSound::SetVolume(L"Shooting", speed * FPSManager::GetMulAdjust60FPS());
 }
 
 void MyBullet::ApplyFriction()

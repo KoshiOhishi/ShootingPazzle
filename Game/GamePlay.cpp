@@ -301,9 +301,12 @@ void GamePlay::UpdateTimer()
 	if (firstEffectTimer.GetIsEnd() == true &&
 		GameUtility::GetNowPhase() == PHASE_GAME_FIRSTEFFECT) {
 		GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
+		//最初の1回だけスコアタイマー開始
+		if (isEndFirstEffectOnce == false) {
+			scoreTimer.Reset();
+			scoreTimer.Start();
+		}
 		isEndFirstEffectOnce = true;
-		scoreTimer.Reset();
-		scoreTimer.Start();
 	}
 
 	firstEffectTimer.Update();
@@ -421,8 +424,6 @@ void GamePlay::UpdateUI()
 
 		if (buttonReset.IsReleaseButton()) {
 			buttonReset.StartPushedEffect();
-			//スコアタイマーリセット
-			scoreTimer.Reset();
 			Reset();
 		}
 		if (buttonBack.IsReleaseButton()) {

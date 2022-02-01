@@ -11,7 +11,7 @@ void GameSound::StaticInitialize()
 	AddSound(dir + L"BreakFloor.wav");
 	AddSound(dir + L"Reflect.wav");
 	AddSound(dir + L"Shoot.wav");
-	AddSound(dir + L"Shooting.wav", true, 500, 1500);
+	AddSound(dir + L"Shooting.wav", true, true, 500, 1500);
 	AddSound(dir + L"Crack.wav");
 	AddSound(dir + L"ChangeColor.wav");
 	AddSound(dir + L"StageDecide.wav", false);

@@ -359,8 +359,8 @@ void Title::AddEffectObject()
 	newEffectObject->position = GetRandomOnUnitSpherePos() * range;
 	//ここでオブジェクトにも座標を適用しておく
 	newEffectObject->object.SetPosition(newEffectObject->position);
-	//中心に近い方向へ向かう
-	Vector3 center = GetRandomOnUnitSpherePos() * 20;
+	//中心(のちょっと上)に近い方向へ向かう
+	Vector3 center = GetRandomOnUnitSpherePos() * 30 + Vector3(0, 20, 0);
 	newEffectObject->velocity = (center - newEffectObject->position).Normalize();
 	newEffectObject->moveSpeed = 1.5f;
 	//色セット

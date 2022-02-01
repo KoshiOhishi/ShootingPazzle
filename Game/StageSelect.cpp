@@ -18,6 +18,9 @@ StageSelect::StageSelect()
 		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
 
 	}
+	//モデル読み込み
+	modelArrowUp.CreatePlaneTex(16, 12, "Resources/Arrow_Up.png");
+	modelArrowDown.CreatePlaneTex(16, 12, "Resources/Arrow_Down.png");
 
 	//UI画像読み込み
 	buttonUp.LoadTexture(L"Resources/UI/UI_Arrow_Up.png");
@@ -39,6 +42,7 @@ StageSelect::StageSelect()
 	sprWrite.SetTexture(L"Resources/White1280x720.png");
 	sprBlack.Initialize();
 	sprBlack.SetTexture(L"Resources/Black1280x720.png");
+
 }
 
 StageSelect::~StageSelect()
@@ -75,7 +79,17 @@ void StageSelect::Initialize()
 	//フェーズセット
 	GameUtility::SetNowPhase(PHASE_STAGESELECT_SELECT);
 
-	//ステージ初期化
+	//オブジェクト初期化
+	objArrowUp.Initialize();
+	objArrowUp.SetObjModel(&modelArrowUp);
+	objArrowUp.SetRotation(90, 0, 0);
+	objArrowUp.SetDrawShadowToMyself(false);
+	objArrowUp.SetDrawShadowToOther(false);
+	objArrowDown.Initialize();
+	objArrowDown.SetObjModel(&modelArrowDown);
+	objArrowDown.SetRotation(90, 0, 0);
+	objArrowDown.SetDrawShadowToMyself(false);
+	objArrowDown.SetDrawShadowToOther(false);
 
 	//UIボタン初期化
 	float adjust = 10;
@@ -85,7 +99,7 @@ void StageSelect::Initialize()
 
 	//スプライト初期化
 	sprBlack.SetColor({ 1,1,1,1 });
-	sprTextStage.SetPosition({ DX12Util::GetWindowWidth() - sprTextStage.GetTexSize().x, 0 });
+	sprTextStage.SetPosition({ 0, 50 });
 
 	//タイマーセット
 	firstEffectTimer.SetTimer(0, 250);
@@ -95,6 +109,8 @@ void StageSelect::Initialize()
 	changeSelectPosTimer.SetNowTime(changeSelectPosTimer.GetEndTime());
 	roopEffectTimer.SetTimer(0, 4000, true);
 	roopEffectTimer.Start();
+	arrowTimer.SetTimer(0, 1500, true);
+	arrowTimer.Start();
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
@@ -113,15 +129,20 @@ void StageSelect::Update()
 	//ステージ決定後処理
 	UpdateAfterDecided();
 
+	//ステージ更新
 	UpdateStage();
 
+	//ステージ番号テクスチャ更新
 	UpdateStageNumTex();
 }
 
 void StageSelect::Draw()
 {
+	//ステージ描画
 	DrawStage();
+	//UI描画
 	DrawUI();
+	//白テクスチャエフェクト描画
 	DrawFG();
 }
 
@@ -171,6 +192,11 @@ void StageSelect::UpdateTimer()
 	firstEffectTimer.Update();
 	startGameTimer.Update();
 	roopEffectTimer.Update();
+	arrowTimer.Update();
+	//移動中は矢印を消す(タイマーを最終値に)
+	if (changeSelectPosTimer.GetIsStart()) {
+		arrowTimer.SetNowTime(arrowTimer.GetEndTime());
+	}
 }
 
 void StageSelect::UpdateNowSelect()
@@ -213,6 +239,30 @@ void StageSelect::UpdateNowSelect()
 		startGameTimer.Start();
 		GameSound::Play(L"StageDecide");
 	}
+
+	//矢印
+	
+	//位置
+	//上
+	Vector3 setPos = { 0, 0, 0 };
+	setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, 60, 80, arrowTimer);
+	setPos.z += nowSelectStageIndex * 500;
+	objArrowUp.SetPosition(setPos);
+	//下
+	setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, -60, -80, arrowTimer);
+	setPos.z += nowSelectStageIndex * 500;
+	objArrowDown.SetPosition(setPos);
+
+	//透明度
+	Vector4 color = { 1,1,1,1 };
+	color.w = Easing::GetEaseValue(EASE_INQUINT, 1, 0, arrowTimer);
+	objArrowUp.SetColor(color);
+	objArrowDown.SetColor(color);
+
+	//更新
+	objArrowUp.Update();
+	objArrowDown.Update();
+
 }
 
 void StageSelect::UpdateStage()
@@ -245,9 +295,9 @@ void StageSelect::UpdateStageNumTex()
 	std::string drawStr = std::to_string(nowSelectStageIndex);
 	int arraySize = _countof(sprStageNum);
 	float numWidth = 48, numHeight = 64;
-	Vector2 masterPos = { 1185,5 };
+	Vector2 masterPos = { 185,60 };
 	float padding = 35;
-	float addPosY = Easing::GetEaseValue(EASE_OUTQUINT, masterPos.y - 10, masterPos.y, changeSelectPosTimer, 0, 500);
+	float addPosY = Easing::GetEaseValue(EASE_OUTQUINT, -10, 0, changeSelectPosTimer, 0, 500);
 
 	//文字チェック
 	//桁数オーバーは99埋め
@@ -285,11 +335,23 @@ void StageSelect::UpdateStageNumTex()
 
 void StageSelect::DrawStage()
 {
+	//背景
 	sprBackground.DrawBG();
+	//白い円
 	sprStageBG.DrawBG();
-
+	//ステージ本体
 	for (int i = 0; i < stages.size(); i++) {
 		stages[i]->Draw();
+	}
+	//矢印
+	//ゲーム開始タイマー開始前なら描画
+	if (startGameTimer.GetIsStart() == false) {
+		if (nowSelectStageIndex < stages.size() - 1) {
+			objArrowUp.Draw();
+		}
+		if (nowSelectStageIndex > 0) {
+			objArrowDown.Draw();
+		}
 	}
 }
 
