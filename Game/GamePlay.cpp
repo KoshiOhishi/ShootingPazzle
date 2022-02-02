@@ -12,10 +12,6 @@
 #include "Easing.h"
 #include "GameSound.h"
 
-#include "../imgui/imgui.h"
-#include "../imgui/imgui_impl_win32.h"
-#include "../imgui/imgui_impl_dx12.h"
-
 GamePlay::GamePlay()
 {
 	modelBG.CreateFromOBJ(modelDir + "Sky/Sky.obj");
@@ -56,8 +52,6 @@ GamePlay::~GamePlay()
 
 void GamePlay::Initialize()
 {
-	Object3D::SetMatrixOrthographicLH(1280 * 0.2f, 720 * 0.2f, 1.0f, 150.0f);
-
 	//フェーズセット
 	GameUtility::SetNowPhase(PHASE_GAME_FIRSTEFFECT);
 
@@ -79,7 +73,6 @@ void GamePlay::Initialize()
 	light.SetLightDir({ 0.5f,-1,0.5f });
 	light.SetLightColor({ 1,1,1 });
 	light.SetLightTarget({ 0,0,0 });
-	light.CalcLightPos(80.0f);
 	//ライトをセット
 	Object3D::SetLight(&light);
 
@@ -91,6 +84,11 @@ void GamePlay::Initialize()
 
 	//ステージサイズからカメラ位置セット
 	float bounceY = camera.SetPosFromStageSize(stage.GetStageSize());
+	//ステージサイズからライト位置と行列セット
+	light.CalcLightPos(stage.GetStageSize().y * 2.5);
+	float mul = stage.GetStageSize().y * 0.012f;
+	float farZ = stage.GetStageSize().y * 4.5 + 5;
+	Object3D::SetMatrixOrthographicLH(1280 * mul, 720 * mul, 1.0f, farZ);
 
 	//弾初期化
 	myBullet.SetPStage(&stage);

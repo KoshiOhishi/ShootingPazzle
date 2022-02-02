@@ -5,8 +5,9 @@
 #include "DebugText.h"
 #include "SceneManager.h"
 #include "GameSound.h"
+#include "ImguiHelper.h"
 
-const std::string StageSelect::STAGE_DIRECTORY = "StageData/";
+const std::string StageSelect::STAGE_DIRECTORY = "../StageEditor/StageData/";
 
 StageSelect::StageSelect()
 {
@@ -16,12 +17,9 @@ StageSelect::StageSelect()
 		stages[i]->LoadStage(STAGE_DIRECTORY + "stage_" + std::to_string(i) + ".spb");
 		stages[i]->Initialize();
 		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
-
+		//ステージの大きさによってカメラの位置を変える
+		cameraPosList.emplace_back(Vector3(0, stages[i]->GetStageSize().y * 10, i * 500 - stages[i]->GetStageSize().y * 3 - 5));
 	}
-	//モデル読み込み
-	modelArrowUp.CreatePlaneTex(16, 12, "Resources/Arrow_Up.png");
-	modelArrowDown.CreatePlaneTex(16, 12, "Resources/Arrow_Down.png");
-
 	//UI画像読み込み
 	buttonUp.LoadTexture(L"Resources/UI/UI_Arrow_Up.png");
 	buttonDown.LoadTexture(L"Resources/UI/UI_Arrow_Down.png");
@@ -34,6 +32,10 @@ StageSelect::StageSelect()
 	sprBackground.SetTexture(L"Resources/Background.png");
 	sprTextStage.Initialize();
 	sprTextStage.SetTexture(L"Resources/Text_Stage.png");
+	sprArrowUp.Initialize();
+	sprArrowUp.SetTexture(L"Resources/Arrow_Up.png");
+	sprArrowDown.Initialize();
+	sprArrowDown.SetTexture(L"Resources/Arrow_Down.png");
 	for (int i = 0; i < _countof(sprStageNum); i++) {
 		sprStageNum[i].Initialize();
 		sprStageNum[i].SetTexture(L"Resources/UI/UI_Number.png");
@@ -52,6 +54,7 @@ StageSelect::~StageSelect()
 		delete stages[i];
 		stages[i] = nullptr;
 	}
+	cameraPosList.clear();
 }
 
 void StageSelect::Initialize()
@@ -78,18 +81,6 @@ void StageSelect::Initialize()
 
 	//フェーズセット
 	GameUtility::SetNowPhase(PHASE_STAGESELECT_SELECT);
-
-	//オブジェクト初期化
-	objArrowUp.Initialize();
-	objArrowUp.SetObjModel(&modelArrowUp);
-	objArrowUp.SetRotation(90, 0, 0);
-	objArrowUp.SetDrawShadowToMyself(false);
-	objArrowUp.SetDrawShadowToOther(false);
-	objArrowDown.Initialize();
-	objArrowDown.SetObjModel(&modelArrowDown);
-	objArrowDown.SetRotation(90, 0, 0);
-	objArrowDown.SetDrawShadowToMyself(false);
-	objArrowDown.SetDrawShadowToOther(false);
 
 	//UIボタン初期化
 	float adjust = 10;
@@ -152,33 +143,67 @@ void StageSelect::UpdateCamera()
 	changeSelectPosTimer.Update();
 
 	if (startGameTimer.GetIsStart() == false) {
+		float add = 5, m = 4.5;
+		Vector3 setPos = {};
+		float lightTargetZ = 0, lightDistance = 0, mul = 0, farZ = 0;
+		//パラメータセット
 		if (changeSelectPosTimer.GetIsStart()) {
 			if (isMoveUp) {
-				Vector3 setPos = camera.GetPosition();
-				setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, (nowSelectStageIndex - 1) * 500 - 50, nowSelectStageIndex * 500 - 50, changeSelectPosTimer);
-				camera.SetPositionAndDistance(setPos, 15.0f);
-				light.SetLightTarget({ 0,0,setPos.z + 50 });
-				light.CalcLightPos(100.0f);
+				//カメラ位置
+				setPos.y = Easing::GetEaseValue(EASE_OUTQUINT, cameraPosList[nowSelectStageIndex - 1].y, cameraPosList[nowSelectStageIndex].y, changeSelectPosTimer);
+				setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, cameraPosList[nowSelectStageIndex - 1].z, cameraPosList[nowSelectStageIndex].z, changeSelectPosTimer);
+				//ライト位置
+				lightTargetZ = Easing::GetEaseValue(EASE_OUTQUINT, (nowSelectStageIndex - 1) * 500, nowSelectStageIndex * 500, changeSelectPosTimer);
+				lightDistance = Easing::GetEaseValue(
+					EASE_OUTQUINT, stages[nowSelectStageIndex - 1]->GetStageSize().y * 2.5,
+					stages[nowSelectStageIndex]->GetStageSize().y * 2.5, changeSelectPosTimer);
+				//ライトに関する行列更新
+				mul = Easing::GetEaseValue(
+					EASE_OUTQUINT, stages[nowSelectStageIndex - 1]->GetStageSize().y * 0.012,
+					stages[nowSelectStageIndex]->GetStageSize().y * 0.012, changeSelectPosTimer);
+				farZ = Easing::GetEaseValue(
+					EASE_OUTQUINT, stages[nowSelectStageIndex - 1]->GetStageSize().y * m + add,
+					stages[nowSelectStageIndex]->GetStageSize().y * m + add, changeSelectPosTimer);
 			}
 			else {
-				Vector3 setPos = camera.GetPosition();
-				setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, (nowSelectStageIndex + 1) * 500 - 50, nowSelectStageIndex * 500 - 50, changeSelectPosTimer);
-				camera.SetPositionAndDistance(setPos, 15.0f);
-				light.SetLightTarget({ 0,0,setPos.z + 50 });
-				light.CalcLightPos(100.0f);
+				//カメラ位置
+				setPos.y = Easing::GetEaseValue(EASE_OUTQUINT, cameraPosList[nowSelectStageIndex + 1].y, cameraPosList[nowSelectStageIndex].y, changeSelectPosTimer);
+				setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, cameraPosList[nowSelectStageIndex + 1].z, cameraPosList[nowSelectStageIndex].z, changeSelectPosTimer);
+				//ライト位置
+				lightTargetZ = Easing::GetEaseValue(EASE_OUTQUINT, (nowSelectStageIndex + 1) * 500, nowSelectStageIndex * 500, changeSelectPosTimer);
+				lightDistance = Easing::GetEaseValue(
+					EASE_OUTQUINT, stages[nowSelectStageIndex + 1]->GetStageSize().y * 2.5, 
+					stages[nowSelectStageIndex]->GetStageSize().y * 2.5, changeSelectPosTimer);
+				//ライトに関する行列更新
+				mul = Easing::GetEaseValue(
+					EASE_OUTQUINT, stages[nowSelectStageIndex + 1]->GetStageSize().y * 0.012,
+					stages[nowSelectStageIndex]->GetStageSize().y * 0.012, changeSelectPosTimer);
+				farZ = Easing::GetEaseValue(
+					EASE_OUTQUINT, stages[nowSelectStageIndex + 1]->GetStageSize().y * m + add,
+					stages[nowSelectStageIndex]->GetStageSize().y * m + add, changeSelectPosTimer);
 			}
 		}
 		else {
-			Vector3 setPos = { 0,150,(float)nowSelectStageIndex * 500 - 50 };
+			//カメラ位置
+			setPos = cameraPosList[nowSelectStageIndex];
 			camera.SetPositionAndDistance(setPos, 15.0f);
-			light.SetLightTarget({ 0,0,setPos.z + 50 });
-			light.CalcLightPos(100.0f);
+			//ライト位置
+			lightTargetZ = nowSelectStageIndex * 500;
+			lightDistance = stages[nowSelectStageIndex]->GetStageSize().y * 2.5;
+			//ライトに関する行列更新
+			mul = stages[nowSelectStageIndex]->GetStageSize().y * 0.012;
+			farZ = stages[nowSelectStageIndex]->GetStageSize().y * m + add;
 		}
+		//反映
+		camera.SetPositionAndDistance(setPos, 15.0f);
+		light.SetLightTarget({ 0,0, lightTargetZ });
+		light.CalcLightPos(lightDistance);
+		Object3D::SetMatrixOrthographicLH(1280 * mul, 720 * mul, 0.01f, farZ);
 	}
 	else {
-		Vector3 setPos = { 0,150,(float)nowSelectStageIndex * 500 - 50 };
-		float addY = Easing::GetEaseValue(EASE_INBACK, 0, -150, startGameTimer);
-		float addZ = Easing::GetEaseValue(EASE_INBACK, 0, 50, startGameTimer);
+		Vector3 setPos = cameraPosList[nowSelectStageIndex];
+		float addY = Easing::GetEaseValue(EASE_INBACK, 0, -cameraPosList[nowSelectStageIndex].y, startGameTimer);
+		float addZ = Easing::GetEaseValue(EASE_INBACK, 0, -cameraPosList[nowSelectStageIndex].z + nowSelectStageIndex * 500, startGameTimer);
 
 		setPos += {0, addY, addZ};
 
@@ -244,25 +269,20 @@ void StageSelect::UpdateNowSelect()
 	
 	//位置
 	//上
-	Vector3 setPos = { 0, 0, 0 };
-	setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, 60, 80, arrowTimer);
-	setPos.z += nowSelectStageIndex * 500;
-	objArrowUp.SetPosition(setPos);
+	Vector2 setPos = { (float)DX12Util::GetWindowWidth() / 2 - sprArrowUp.GetTexSize().x / 2, 0 };//横は中心
+	float start = 80, end = 20;
+	setPos.y = Easing::GetEaseValue(EASE_OUTQUINT, start, end, arrowTimer);
+	sprArrowUp.SetPosition(setPos);
 	//下
-	setPos.z = Easing::GetEaseValue(EASE_OUTQUINT, -60, -80, arrowTimer);
-	setPos.z += nowSelectStageIndex * 500;
-	objArrowDown.SetPosition(setPos);
+	float down = (float)DX12Util::GetWindowHeight() - sprArrowUp.GetTexSize().y;
+	setPos.y = Easing::GetEaseValue(EASE_OUTQUINT, down - start, down - end, arrowTimer);
+	sprArrowDown.SetPosition(setPos);
 
 	//透明度
 	Vector4 color = { 1,1,1,1 };
 	color.w = Easing::GetEaseValue(EASE_INQUINT, 1, 0, arrowTimer);
-	objArrowUp.SetColor(color);
-	objArrowDown.SetColor(color);
-
-	//更新
-	objArrowUp.Update();
-	objArrowDown.Update();
-
+	sprArrowUp.SetColor(color);
+	sprArrowDown.SetColor(color);
 }
 
 void StageSelect::UpdateStage()
@@ -346,11 +366,13 @@ void StageSelect::DrawStage()
 	//矢印
 	//ゲーム開始タイマー開始前なら描画
 	if (startGameTimer.GetIsStart() == false) {
+		//上
 		if (nowSelectStageIndex < stages.size() - 1) {
-			objArrowUp.Draw();
+			sprArrowUp.DrawFG();
 		}
+		//下
 		if (nowSelectStageIndex > 0) {
-			objArrowDown.Draw();
+			sprArrowDown.DrawFG();
 		}
 	}
 }

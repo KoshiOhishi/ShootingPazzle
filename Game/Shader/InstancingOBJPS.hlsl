@@ -41,7 +41,7 @@ PSOutput main(VSOutput input)
 
 	float3 posFromLightVP = input.tpos.xyz / input.tpos.w;
 	float2 shadowUV = (posFromLightVP + float2(1, -1)) * float2(0.5, -0.5);
-	float depthFromLight = lightDepthTex.SampleCmp(shadowSmp, shadowUV, posFromLightVP.z - 0.025f);
+	float depthFromLight = lightDepthTex.SampleCmp(shadowSmp, shadowUV, posFromLightVP.z - 0.005f);
 	float shadowWeight = lerp(0.5f, 1.0f, depthFromLight);
 	
 	//float depthFromLight = lightDepthTex.Sample(smp, shadowUV);

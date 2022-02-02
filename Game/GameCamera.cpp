@@ -1,5 +1,6 @@
 #include "GameCamera.h"
 #include "Easing.h"
+#include "GameSound.h"
 
 void GameCamera::Initialize()
 {
@@ -50,6 +51,8 @@ void GameCamera::UpdateFirstEffect()
 
 	SetPositionAndDistance( setPos, 15.0f);
 	SetRotation(setRot);
+
+	GameSound::SetDistance(eye.Length() * 5);
 }
 
 void GameCamera::UpdateClearEffect()

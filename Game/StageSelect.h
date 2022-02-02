@@ -27,6 +27,9 @@ private:
     //ステージコンテナ
     std::vector<Stage*> stages;
 
+    //カメラの位置リスト
+    std::vector<Vector3> cameraPosList;
+
     //現在選択されているステージインデックス
     int nowSelectStageIndex = 1;
 
@@ -69,18 +72,15 @@ private:
     //ステージ数字
     Sprite sprStageNum[2];
 
+    //矢印
+    Sprite sprArrowUp;
+    Sprite sprArrowDown;
+
     //前景(白)
     Sprite sprWrite;
 
     //前景(黒)
     Sprite sprBlack;
-
-    //移動可能なことを表す矢印オブジェクト
-    ObjModel modelArrowUp;
-    ObjModel modelArrowDown;
-    Object3D objArrowUp;
-    Object3D objArrowDown;
-
 
 public:
     StageSelect();

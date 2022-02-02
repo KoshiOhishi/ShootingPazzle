@@ -52,6 +52,13 @@ public:
 	static void Stop(const std::wstring& name);
 
 	/// <summary>
+	/// 現在再生中か
+	/// </summary>
+	/// <param name="name">音源名(拡張子無し)</param>
+	/// <returns></returns>
+	static bool IsPlaying(const std::wstring& name) { return sounds[name].sourceVoice.GetIsPlay(); }
+
+	/// <summary>
 	/// 音量セット
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
@@ -66,15 +73,14 @@ public:
 	static void SetPosition(const std::wstring& name, const Vector3& pos);
 
 	/// <summary>
+	/// どこまで音を響かせるかの値セット カメラと地面との距離の5倍くらいがよい
+	/// </summary>
+	/// <param name="distance"></param>
+	static void SetDistance(float distance);
+
+	/// <summary>
 	/// ロードしてある音声ファイル取得
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
 	static SourceVoice& GetLoadedSound(const std::wstring& name);
-
-	/// <summary>
-	/// 現在再生中か
-	/// </summary>
-	/// <param name="name">音源名(拡張子無し)</param>
-	/// <returns></returns>
-	static bool IsPlaying(const std::wstring& name) { return sounds[name].sourceVoice.GetIsPlay(); }
 };

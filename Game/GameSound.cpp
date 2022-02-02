@@ -130,6 +130,13 @@ void GameSound::SetPosition(const std::wstring& name, const Vector3& pos)
 	sounds[name].sourceVoice.Set3DEmitterPos(pos.x, pos.y, pos.z);
 }
 
+void GameSound::SetDistance(float distance)
+{
+	for (auto itr = sounds.begin(); itr != sounds.end(); itr++) {
+		itr->second.sourceVoice.Set3DEmitterDistanceScaler(distance);
+	}
+}
+
 SourceVoice& GameSound::GetLoadedSound(const std::wstring& name)
 {
 	return sounds[name].sourceVoice;
