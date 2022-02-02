@@ -1,6 +1,16 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingOBJPS.hlsl(43,21-50): warning X3206: implicit truncation of vector type
-E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingOBJPS.hlsl(15,13-29): warning X3578: Output value 'main' is not completely initialized
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\FBXPS.hlsl(185,21-50): warning X3206: implicit truncation of vector type
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\FBXPS.hlsl(146,13-29): warning X3578: Output value 'main' is not completely initialized
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\FBXPS.hlsl(103,56): warning X4000: use of potentially uninitialized variable (BRDF)
   
-  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingOBJPS.cso
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\FBXPS.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingFBXPS.hlsl(184,21-50): warning X3206: implicit truncation of vector type
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingFBXPS.hlsl(145,13-29): warning X3578: Output value 'main' is not completely initialized
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\InstancingFBXPS.hlsl(102,56): warning X4000: use of potentially uninitialized variable (BRDF)
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\InstancingFBXPS.cso
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\OBJPS.hlsl(43,21-50): warning X3206: implicit truncation of vector type
+E:\K019G1301\�l����\ShootingPazzle\DX12Library\Shader\OBJPS.hlsl(15,13-29): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\OBJPS.cso
   DX12Library.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\DX12Library.lib

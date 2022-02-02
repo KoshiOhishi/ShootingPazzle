@@ -323,6 +323,7 @@ void MyBullet::CheckBlockCollision()
 	//次フレームで球が移動する残りの長さ
 	float limitLength = (velocity * speed).Length();
 
+	//計算用
 	Vector3 calcPos = position;
 	Vector3 calcVel = velocity;
 
@@ -330,7 +331,7 @@ void MyBullet::CheckBlockCollision()
 	//衝突したらそのブロックとぶつかるまで移動→残りの移動の長さ分で再び判定
 	//残りの移動の長さが0になる(次の移動で衝突しなくなる)まで判定
 	while (1) {
-		bool isCollision = false;
+		int breakIndex = -1;
 
 		//ブロック全て
 		for (int i = 0; i < stage->GetBlocks().size(); i++) {
@@ -385,25 +386,24 @@ void MyBullet::CheckBlockCollision()
 					//残りの長さを記憶
 					moveLength = limitLength * mul;
 
-					isCollision = true;
+					breakIndex = i;
 				}
-			}
-
-			//ブロックと当たっていれば、壊れるまでのカウントを減らす
-			if (isCollision) {
-				stage->GetBlocks()[i]->DecrementBreakupCount();
-				//ブロックと反射するSE再生
-				GameSound::Play(L"Reflect", position);
 			}
 		}
 
+		//ブロックと当たっていれば、壊れるまでのカウントを減らす
+		if (breakIndex != -1) {
+			stage->GetBlocks()[breakIndex]->DecrementBreakupCount();
+			//ブロックと反射するSE再生
+			GameSound::Play(L"Reflect", position);
+		}
 		//衝突しなかったら最後の衝突した位置から残りの長さを移動させて終了
-		if (isCollision == false) {
+		else {
 			nextMoveInfo.nextPos += calcVel * limitLength;
 			break;
 		}
 
-		//次回の判定用に情報更新
+		//次ループの判定用に情報更新
 		//次フレームで球が移動する残りの長さ
 		limitLength -= moveLength;
 		//計算に使う位置と移動量

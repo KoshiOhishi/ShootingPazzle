@@ -34,7 +34,7 @@ void Editor::Initialize()
 
 	//ƒ‰ƒCƒg‰Šú‰»
 	light.Initialize();
-	light.SetLightDir({ 1,-1,1 });
+	light.SetLightDir({ 0.5,-1,0.5 });
 	light.SetLightColor({ 1,1,1 });
 	light.SetLightTarget({ 0,0,0 });
 	light.CalcLightPos(80.0f);
