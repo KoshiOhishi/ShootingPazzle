@@ -417,9 +417,6 @@ void GamePlay::UpdateUI()
 
 	//ボタン入力
 	if (GameUtility::GetIsPause() == false) {
-		buttonReset.SetIsDispOverlapMouseTex(true);
-		buttonBack.SetIsDispOverlapMouseTex(true);
-
 		if (buttonReset.IsReleaseButton()) {
 			buttonReset.StartPushedEffect();
 			Reset();
@@ -434,15 +431,16 @@ void GamePlay::UpdateUI()
 			GameUtility::SetIsPause(true);
 			//スコアタイマー一時停止
 			scoreTimer.Stop();
+			//ボタンを押せるように
+			buttonYes.SetIsEnable(true);
+			buttonNo.SetIsEnable(true);
 		}
 	}
-	else {
-		//ポーズ中はカーソルとボタンが重なってもテクスチャを変化させない
-		if (dispPopUpTimer.GetIsEnd()) {
-			buttonReset.SetIsDispOverlapMouseTex(false);
-			buttonBack.SetIsDispOverlapMouseTex(false);
-		}
-	}
+
+	//ポーズ中とクリア時はボタン無効化
+	bool isClear = stage.GetTargetBlockCount() <= 0;
+	buttonReset.SetIsEnable(!isDispPopup && !isClear);
+	buttonBack.SetIsEnable(!isDispPopup && !isClear);
 }
 
 void GamePlay::UpdateStageBackPopUp()
@@ -473,12 +471,18 @@ void GamePlay::UpdateStageBackPopUp()
 				sceneChangeTimer.Start();
 				//球の転がる効果音停止
 				GameSound::Stop(L"Shooting");
+				//ボタンを押せないように
+				buttonYes.SetIsEnable(false);
+				buttonNo.SetIsEnable(false);
 			}
 			if (buttonNo.IsReleaseButton()) {
 				buttonNo.StartPushedEffect();
 				dispPopUpTimer.Reset();
 				dispPopUpTimer.Start();
 				isDispPopup = false;
+				//ボタンを押せないように
+				buttonYes.SetIsEnable(false);
+				buttonNo.SetIsEnable(false);
 			}
 		}
 		
@@ -573,6 +577,7 @@ void GamePlay::UpdateClearEffect()
 		if (buttonOK.IsReleaseButton()) {
 			buttonOK.StartPushedEffect();
 			sceneChangeTimer.Start();
+			buttonOK.SetIsEnable(false);
 		}
 	}
 

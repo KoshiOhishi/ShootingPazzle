@@ -38,12 +38,16 @@ void UISquareButton::Initialize(const Vector2& pos)
     //タイマーは基本終了値にする
     pushedEffectTimer.SetTimer(0,1);
     pushedEffectTimer.Start();
+
+    isEnable = true;
 }
 
 void UISquareButton::Draw()
 {
     //サウンド更新
-    UpdateSound();
+    if (isEnable) {
+        UpdateSound();
+    }
 
     //加算合成エフェクト
     pushedEffectTimer.Update();
@@ -54,7 +58,7 @@ void UISquareButton::Draw()
     textureAdd.SetColor({ nowColor.x, nowColor.y, nowColor.z, alpha});
     textureAdd.SetSize({ sizeX,sizeY });
 
-    if (IsOverlapMouseCursol() && isDispOverlapMouseTex) {
+    if (IsOverlapMouseCursol() && isEnable) {
         textureOn.DrawFG();
     }
     else {
@@ -92,17 +96,17 @@ bool UISquareButton::IsOverlapMouseCursol()
 
 bool UISquareButton::IsPushButton()
 {
-    return IsOverlapMouseCursol() && Mouse::IsMouseButtonPush(LEFT);
+    return IsOverlapMouseCursol() && Mouse::IsMouseButtonPush(LEFT) && isEnable;
 }
 
 bool UISquareButton::IsTriggerButton()
 {
-    return IsOverlapMouseCursol() && Mouse::IsMouseButtonTrigger(LEFT);
+    return IsOverlapMouseCursol() && Mouse::IsMouseButtonTrigger(LEFT) && isEnable;
 }
 
 bool UISquareButton::IsReleaseButton()
 {
-    return IsOverlapMouseCursol() && Mouse::IsMouseButtonRelease(LEFT);
+    return IsOverlapMouseCursol() && Mouse::IsMouseButtonRelease(LEFT) && isEnable;
 }
 
 void UISquareButton::UpdateSound()

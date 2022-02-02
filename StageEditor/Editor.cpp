@@ -274,47 +274,12 @@ void Editor::UpdateDispObject()
 	case BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM: objDispBlock.SetObjModel(TriangleBlock::GetModel(breakupCount)); break;
 	}
 
-	switch (blockColor) {
-	case BLOCK_COLOR_NONE:
-		if (breakupCount > 0) {
-			objDispBlock.SetColor({ 1, 1, 1, 1 });
-		}
-		else {
-			objDispBlock.SetColor({ 0.75f, 0.75f, 0.75f, 1 });
-		}
-		break;
-	case BLOCK_COLOR_RED:
-		if (breakupCount > 0) {
-			objDispBlock.SetColor({ 1, 0.66f, 0.66f, 1 });
-		}
-		else {
-			objDispBlock.SetColor({ 1, 0.25f, 0, 1 });
-		}
-		break;
-	case BLOCK_COLOR_BLUE:
-		if (breakupCount > 0) {
-			objDispBlock.SetColor({ 0.66f, 0.66f, 1, 1 });
-		}
-		else {
-			objDispBlock.SetColor({ 0, 0.25f, 1, 1 });
-		}
-		break;
-	case BLOCK_COLOR_YELLOW:
-		if (breakupCount > 0) {
-			objDispBlock.SetColor({ 1, 1, 0.66f, 1 });
-		}
-		else {
-			objDispBlock.SetColor({ 1, 0.75f, 0, 1 });
-		}
-		break;
-	case BLOCK_COLOR_GREEN:
-		if (breakupCount > 0) {
-			objDispBlock.SetColor({ 0.66f, 1, 0.66f, 1 });
-		}
-		else {
-			objDispBlock.SetColor({ 0, 1, 0.25f, 1 });
-		}
-		break;
+	//色セット
+	if (breakupCount > 0) {
+		objDispBlock.SetColor(GameUtility::COLOR_VALUE_BREAKABLE[blockColor]);
+	}
+	else {
+		objDispBlock.SetColor(GameUtility::COLOR_VALUE[blockColor]);
 	}
 
 	//床

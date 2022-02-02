@@ -15,11 +15,18 @@ int GameUtility::stageColor = STAGE_COLOR_NONE;
 std::string GameUtility::nowStagePath = "";
 bool GameUtility::isPause = false;
 const Vector4 GameUtility::COLOR_VALUE[5] = {
-	{0.75,0.75,0.75,1},		//”’
+	{0.75,0.75,0.75,1},		//ƒOƒŒ[
 	{1,0.25,0.25,1},		//Ô
 	{0.25,0.25,1,1},		//Â
-	{1,1,0.25,1},			//‰©
+	{1,0.75,0.25,1},		//‰©
 	{0.25,1,0.25,1}			//—Î
+};
+const Vector4 GameUtility::COLOR_VALUE_BREAKABLE[5] = {
+	{1,1,1,1},				//”’
+	{1,0.66,0.66,1},		//”’‚Á‚Û‚¢Ô
+	{0.66,0.66,1,1},		//”’‚Á‚Û‚¢Â
+	{1,1,0.66,1},			//”’‚Á‚Û‚¢‰©
+	{0.66,1,0.66,1}			//”’‚Á‚Û‚¢—Î
 };
 
 void GameUtility::StaticInitialize()

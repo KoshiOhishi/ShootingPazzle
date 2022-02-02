@@ -125,6 +125,9 @@ void StageSelect::Update()
 
 	//ステージ番号テクスチャ更新
 	UpdateStageNumTex();
+
+	//ボタン更新
+	UpdateButton();
 }
 
 void StageSelect::Draw()
@@ -351,6 +354,15 @@ void StageSelect::UpdateStageNumTex()
 		sprStageNum[i].SetPosition(masterPos + Vector2(padding * i, addPosY));
 	}
 
+}
+
+void StageSelect::UpdateButton()
+{
+	//ボタン有効設定
+	//startGameTimer開始前は有効
+	buttonUp.SetIsEnable(startGameTimer.GetNowTime() <= 0);
+	buttonDown.SetIsEnable(startGameTimer.GetNowTime() <= 0);
+	buttonStart.SetIsEnable(startGameTimer.GetNowTime() <= 0);
 }
 
 void StageSelect::DrawStage()

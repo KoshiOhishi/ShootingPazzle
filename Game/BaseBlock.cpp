@@ -59,8 +59,19 @@ void BaseBlock::UpdateClearEffect(const Timer& timer)
 
 void BaseBlock::UpdateColor()
 {
+	//色情報取得
+	const Vector4* pColor = nullptr;
+	if (breakupCount > 0) {
+		pColor = GameUtility::COLOR_VALUE_BREAKABLE;
+	}
+	else {
+		pColor = GameUtility::COLOR_VALUE;
+	}
+
 	//白は通過可能にならない
 	if (blockColor == BLOCK_COLOR_NONE) {
+		Vector4 tmp = pColor[blockColor];
+		object.SetColor({ tmp.x, tmp.y, tmp.z, 1 });
 		return;
 	}
 
@@ -86,16 +97,16 @@ void BaseBlock::UpdateColor()
 		if (GameUtility::GetStageColor() == blockColor) {
 			//前の色→白
 			if (changeColorTimer.GetNowTime() < middle) {
-				r = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].x, 2, changeColorTimer, start, middle);
-				g = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].y, 2, changeColorTimer, start, middle);
-				b = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].z, 2, changeColorTimer, start, middle);
+				r = Easing::GetEaseValue(EASE_OUTEXPO, pColor[blockColor].x, 2, changeColorTimer, start, middle);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, pColor[blockColor].y, 2, changeColorTimer, start, middle);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, pColor[blockColor].z, 2, changeColorTimer, start, middle);
 				a = 1;
 			}
 			//白→今の色
 			else {
-				r = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].x, changeColorTimer, middle, end);
-				g = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].y, changeColorTimer, middle, end);
-				b = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].z, changeColorTimer, middle, end);
+				r = Easing::GetEaseValue(EASE_OUTEXPO, 2, pColor[blockColor].x, changeColorTimer, middle, end);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, 2, pColor[blockColor].y, changeColorTimer, middle, end);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, 2, pColor[blockColor].z, changeColorTimer, middle, end);
 				a = Easing::GetEaseValue(EASE_OUTEXPO, 1, 0.5, changeColorTimer, middle, end);
 			}
 		}
@@ -103,16 +114,16 @@ void BaseBlock::UpdateColor()
 		else {
 			//前の色→白
 			if (changeColorTimer.GetNowTime() < middle) {
-				r = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].x, 2, changeColorTimer, start, middle);
-				g = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].y, 2, changeColorTimer, start, middle);
-				b = Easing::GetEaseValue(EASE_OUTEXPO, GameUtility::COLOR_VALUE[blockColor].z, 2, changeColorTimer, start, middle);
+				r = Easing::GetEaseValue(EASE_OUTEXPO, pColor[blockColor].x, 2, changeColorTimer, start, middle);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, pColor[blockColor].y, 2, changeColorTimer, start, middle);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, pColor[blockColor].z, 2, changeColorTimer, start, middle);
 				a = Easing::GetEaseValue(EASE_OUTEXPO, 0.5, 1, changeColorTimer, start, middle);
 			}
 			//白→今の色
 			else {
-				r = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].x, changeColorTimer, middle, end);
-				g = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].y, changeColorTimer, middle, end);
-				b = Easing::GetEaseValue(EASE_OUTEXPO, 2, GameUtility::COLOR_VALUE[blockColor].z, changeColorTimer, middle, end);
+				r = Easing::GetEaseValue(EASE_OUTEXPO, 2, pColor[blockColor].x, changeColorTimer, middle, end);
+				g = Easing::GetEaseValue(EASE_OUTEXPO, 2, pColor[blockColor].y, changeColorTimer, middle, end);
+				b = Easing::GetEaseValue(EASE_OUTEXPO, 2, pColor[blockColor].z, changeColorTimer, middle, end);
 				a = 1;
 			}
 		}
@@ -120,7 +131,7 @@ void BaseBlock::UpdateColor()
 		object.SetColor({ r,g,b,a });
 	}
 	else {
-		Vector4 tmp = GameUtility::COLOR_VALUE[blockColor];
+		Vector4 tmp = pColor[blockColor];
 		//ステージの色とブロックの色が一致していたら透過
 		if (GameUtility::GetStageColor() == blockColor) {
 			object.SetColor({ tmp.x, tmp.y, tmp.z, 0.5f });

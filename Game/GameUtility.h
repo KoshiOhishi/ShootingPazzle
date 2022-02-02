@@ -94,6 +94,7 @@ class GameUtility
 	//定数
 public:
 	static const Vector4 COLOR_VALUE[5];
+	static const Vector4 COLOR_VALUE_BREAKABLE[5];
 
 private:
 	//現在のフェーズ

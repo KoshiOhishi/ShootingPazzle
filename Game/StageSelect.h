@@ -95,6 +95,7 @@ public:
     void UpdateStage();
     void UpdateAfterDecided();
     void UpdateStageNumTex();
+    void UpdateButton();
 
     void DrawStage();
     void DrawUI();

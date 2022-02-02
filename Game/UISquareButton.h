@@ -19,7 +19,7 @@ private:
 
 	Timer pushedEffectTimer;
 
-	bool isDispOverlapMouseTex = true;
+	bool isEnable = true;
 
 	bool prevOverlap = false;
 
@@ -80,9 +80,12 @@ public:
 	/// <summary>
 	/// カーソルとボタンが重なったとき、テクスチャを変化させるか
 	/// </summary>
-	/// <param name="isDispOverlapMouseTex"></param>
-	void SetIsDispOverlapMouseTex(bool isDispOverlapMouseTex) {
-		this->isDispOverlapMouseTex = isDispOverlapMouseTex;
+	/// <param name="flag"></param>
+	void SetIsEnable(bool flag) {
+		if (isEnable) {
+			UpdateSound();
+		}
+		isEnable = flag;
 	}
 
 	const Vector2& GetPosition() { return pos; }
