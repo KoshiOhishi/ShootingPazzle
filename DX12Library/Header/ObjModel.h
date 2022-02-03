@@ -102,9 +102,6 @@ private:
 	//テクスチャ番号
 	UINT texNumber;
 
-	//ダーティフラグ
-	bool dirty = false;
-
 private:
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 	bool LoadTexture(const std::string& directoryPath, const std::string& filename);
@@ -125,7 +122,6 @@ private:
 
 //メンバ関数
 public:
-	void Update();
 
 	void Draw(int instancingCount = 1, bool isShadow = false);
 

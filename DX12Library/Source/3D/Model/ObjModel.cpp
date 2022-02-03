@@ -9,14 +9,6 @@
 
 using namespace DirectX;
 
-void ObjModel::Update()
-{
-	if (dirty) {
-		UpdateVertBuff();
-		dirty = false;
-	}
-}
-
 void ObjModel::Draw(int instancingCount, bool isShadow)
 {
 	//インデックスバッファのセットコマンド
@@ -208,7 +200,8 @@ void ObjModel::SetVertexUV(int vertexNum, const Vector2& uv)
 	}
 
 	vertices[vertexNum].uv = uv;
-	dirty = true;
+
+	UpdateVertBuff();
 }
 
 void ObjModel::LoadMaterial(const std::string& directoryPath, const std::string& filename)

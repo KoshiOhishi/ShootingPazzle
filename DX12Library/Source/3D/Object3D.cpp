@@ -687,9 +687,6 @@ void Object3D::Update()
 
 	if (objectType == OBJECTTYPE_OBJ) {
 
-		if (objModel != nullptr) {
-			objModel->Update();
-		}
 		//定数バッファへデータ転送
 		ConstBufferDataShare* constMap = nullptr;
 		result = constBuffShare->Map(0, nullptr, (void**)&constMap);

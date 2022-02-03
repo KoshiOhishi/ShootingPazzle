@@ -692,9 +692,6 @@ void InstancingObjectDraw::Update()
 			constMap->cameraPos = camera->GetPosition();
 			constBuffShare->Unmap(0, nullptr);
 		}
-		if (objModel != nullptr) {
-			objModel->Update();
-		}
 	}
 	else if (objectType == OBJECTTYPE_INSTANCING_FBX) {
 

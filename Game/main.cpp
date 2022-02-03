@@ -57,12 +57,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			TranslateMessage(&msg); // キー入力メッセージの処理
 			DispatchMessage(&msg); // プロシージャにメッセージを送る
 		}
+
+		Update();
+
 		// 終了メッセージが来たらループを抜ける
 		if (msg.message == WM_QUIT) {
 			break;
 		}
 
-		Update();
 	}
 
 	Finalize();
@@ -80,7 +82,7 @@ void Initialize() {
 #endif
 
 	//各種初期化
-	DX12Util::Initialize(L"Game", 1280, 720);
+	DX12Util::Initialize(L"Reflect Breaker", 1280, 720);
 
 #ifdef _DEBUG
 	DX12Util::GetDevice()->QueryInterface(mDebugDevice.GetAddressOf());

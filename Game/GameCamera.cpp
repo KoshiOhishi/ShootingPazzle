@@ -102,7 +102,7 @@ float GameCamera::SetPosFromStageSize(const StageVec2& stageSize)
 
 	StageVec2 size = stageSize;
 
-	//‰œs‚Å”»’è‚ð‚Æ‚é‚Ì‚ÅA‰¡•‚Æc•‚Ì·‚ªŽ‹ŠE‚ÌŒÀŠE(2.5”{)ˆÈã‚Å‚ ‚Á‚½‚çc‰¡‚Ì”ä—¦‚ðŠÉ˜a‚³‚¹‚é
+	//‰œs‚Å”»’è‚ð‚Æ‚é‚Ì‚ÅA‰¡•‚Æc•‚Ì·‚ªŽ‹ŠE‚ÌŒÀŠE(2.0”{)ˆÈã‚Å‚ ‚Á‚½‚çc‰¡‚Ì”ä—¦‚ðŠÉ˜a‚³‚¹‚é
 	if (size.x >= size.y * 2.0f) {
 		size.y = size.x / 2.0f;
 	}

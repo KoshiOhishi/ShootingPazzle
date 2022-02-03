@@ -76,7 +76,7 @@ void Initialize() {
 #endif
 
 	//各種初期化
-	DX12Util::Initialize(L"Game", 1280, 720);
+	DX12Util::Initialize(L"Stage Editor", 1280, 720);
 
 #ifdef _DEBUG
 	DX12Util::GetDevice()->QueryInterface(mDebugDevice.GetAddressOf());

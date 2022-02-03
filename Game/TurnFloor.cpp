@@ -38,7 +38,7 @@ void TurnFloor::Update()
 {
 	//上に覆う用のオブジェクトの位置同期
 	objCover.SetPosition(object.GetPosition() + Vector3(0, ONE_CELL_LENGTH / 2, 0));
-	RollUV();
+	//RollUV();
 	object.Update(pIOD[turnType]);
 	objCover.Update(pIOD[turnType + 4]);
 	UpdateCollision();
