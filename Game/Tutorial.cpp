@@ -5,7 +5,7 @@
 #include "GameUtility.h"
 #include "Input.h"
 
-const std::wstring Tutorial::DIR = L"Resources/Tutorial/";
+const std::wstring Tutorial::DIR = TEX_DIR_GAMEPLAY + L"Tutorial/";
 const float Tutorial::ADJUST_POS = 10;
 
 Tutorial::Tutorial()

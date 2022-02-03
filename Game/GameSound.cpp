@@ -1,26 +1,33 @@
 #include "GameSound.h"
 
+static const std::wstring SE_DIR = L"Resources/Sound/SE/";
+static const std::wstring BGM_DIR = L"Resources/Sound/BGM/";
+
 std::unordered_map<std::wstring, GameSound::SoundData> GameSound::sounds;
 const float GameSound::MASTER_DISTANCE = 250;
 
 void GameSound::StaticInitialize()
 {
+	//BGMì«Ç›çûÇ›
+	AddSound(BGM_DIR + L"Title.wav", false, true, 0, 133575);
+	AddSound(BGM_DIR + L"GamePlay.wav", false, true, 0, 75139);
+
 	//SEì«Ç›çûÇ›
-	std::wstring dir = L"Resources/Sound/SE/";
-	AddSound(dir + L"BreakBlock.wav");
-	AddSound(dir + L"BreakFloor.wav");
-	AddSound(dir + L"Reflect.wav");
-	AddSound(dir + L"Shoot.wav");
-	AddSound(dir + L"Shooting.wav", true, true, 500, 1500);
-	AddSound(dir + L"Crack.wav");
-	AddSound(dir + L"ChangeColor.wav");
-	AddSound(dir + L"StageDecide.wav", false);
-	AddSound(dir + L"GameStart.wav", false);
-	AddSound(dir + L"PosDecide.wav", false);
-	AddSound(dir + L"RollNumber.wav", false, true, 0, 127);
-	AddSound(dir + L"Ascension.wav", false);
-	AddSound(dir + L"UI_Select.wav", false);
-	AddSound(dir + L"UI_Click.wav", false);
+	AddSound(SE_DIR + L"BreakBlock.wav");
+	AddSound(SE_DIR + L"BreakFloor.wav");
+	AddSound(SE_DIR + L"Reflect.wav");
+	AddSound(SE_DIR + L"Shoot.wav");
+	AddSound(SE_DIR + L"Shooting.wav", true, true, 500, 1500);
+	AddSound(SE_DIR + L"Crack.wav");
+	AddSound(SE_DIR + L"ChangeColor.wav");
+	AddSound(SE_DIR + L"StageDecide.wav", false);
+	AddSound(SE_DIR + L"GameStart.wav", false);
+	AddSound(SE_DIR + L"PosDecide.wav", false);
+	AddSound(SE_DIR + L"RollNumber.wav", false, true, 0, 127);
+	AddSound(SE_DIR + L"Ascension.wav", false);
+	AddSound(SE_DIR + L"Clear.wav", false);
+	AddSound(SE_DIR + L"UI_Select.wav", false);
+	AddSound(SE_DIR + L"UI_Click.wav", false);
 
 	//è∏ìVå¯â âπÇæÇØÇ≥ÇÁÇ…âìÇ≠Ç‹Ç≈ãøÇ©ÇπÇÈ
 	sounds[L"Ascension"].sourceVoice.Set3DEmitterDistanceScaler(MASTER_DISTANCE * 2);
@@ -112,10 +119,11 @@ void GameSound::Play(const std::wstring& name, const Vector3& emitterPos)
 	sounds[name].sourceVoice.PlayWave();
 }
 
-void GameSound::Stop(const std::wstring& name)
+void GameSound::Stop(const std::wstring& name, int fadeOutMs)
 {
 	//ã}Ç…â∫Ç∞Ç»Ç¢èàóù
 	if (sounds[name].stopTimer.GetIsStart() == false) {
+		sounds[name].stopTimer.SetTimer(0, fadeOutMs);
 		sounds[name].stopTimer.Start();
 	}
 }

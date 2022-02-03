@@ -16,32 +16,32 @@ const float Title::EFFECT_ACCEL = 0.005f;
 Title::Title()
 {
 	//モデル
-	modelBG.CreateFromOBJ(modelDir + "Sky/Sky.obj");
+	modelBG.CreateFromOBJ(MODEL_DIR + "Sky/Sky.obj");
 	//スプライト
 	sprTextTitle.Initialize();
-	sprTextTitle.SetTexture(L"Resources/Title/Text_Title.png");
+	sprTextTitle.SetTexture(TEX_DIR_TITLE + L"Text_Title.png");
 	sprTextClick.Initialize();
-	sprTextClick.SetTexture(L"Resources/Title/Text_Click.png");
+	sprTextClick.SetTexture(TEX_DIR_TITLE + L"Text_Click.png");
 	sprBlack.Initialize();
-	sprBlack.SetTexture(L"Resources/Black1280x720.png");
+	sprBlack.SetTexture(TEX_DIR_UTIL + L"Black1280x720.png");
 	sprWhite.Initialize();
-	sprWhite.SetTexture(L"Resources/White1280x720.png");
+	sprWhite.SetTexture(TEX_DIR_UTIL + L"White1280x720.png");
 	sprAttention.Initialize();
-	sprAttention.SetTexture(L"Resources/Attention.png");
+	sprAttention.SetTexture(TEX_DIR_TITLE + L"Attention.png");
 	//パーティクル
 	for (int i = 0; i < _countof(particleSquare); i++) {
-		particleSquare[i].LoadTexture(L"Resources/Particle/Square.png");
+		particleSquare[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Square.png");
 		particleSquare[i].Initialize();
 		particleSquare[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particleSquare[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
 	}
 	for (int i = 0; i < _countof(particleTriangle); i++) {
-		particleTriangle[i].LoadTexture(L"Resources/Particle/Triangle.png");
+		particleTriangle[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Triangle.png");
 		particleTriangle[i].Initialize();
 		particleTriangle[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particleTriangle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
 	}
-	particleBreak.LoadTexture(L"Resources/Particle/Break.png");
+	particleBreak.LoadTexture(TEX_DIR_UTIL + L"Particle/Break.png");
 	particleBreak.Initialize();
 	particleBreak.SetColor({ 0.71f,0.47f, 0.2f, 1 });
 	particleBreak.SetBlendMode(PARTICLE_BLENDMODE_ADD);
@@ -104,6 +104,9 @@ void Title::Update()
 	UpdateTextTex();
 	UpdateAttention();
 	UpdateFG();
+	UpdateSound();
+	//サウンド更新
+	GameSound::Update();
 }
 
 void Title::Draw()
@@ -286,6 +289,14 @@ void Title::UpdateEffectObjects()
 	}
 	particleBreak.Update();
 
+}
+
+void Title::UpdateSound()
+{
+	//開幕エフェクト終わったらBGM再生
+	if (firstEffectTimer.GetIsEnd() && GameSound::IsPlaying(L"Title") == false) {
+		GameSound::Play(L"Title");
+	}
 }
 
 void Title::DrawTextTex()

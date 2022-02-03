@@ -2,6 +2,8 @@
 #include <cassert>
 #include <cmath>
 
+const float Easing::PI = 3.14159265359f;
+
 const double Easing::c1 = 1.70158;
 const double Easing::c2 = c1 * 1.525;
 const double Easing::c3 = c1 + 1.0;
@@ -266,7 +268,7 @@ double Easing::GetEaseValue(int type, double start, double end, const Timer& tim
 
 const std::string& Easing::GetFuncName(int type)
 {
-	if (type < -1 || type > 29) {
+	if (type < 0 || type > 30) {
 		return "NONE";
 	}
 

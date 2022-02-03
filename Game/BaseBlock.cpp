@@ -28,9 +28,9 @@ void BaseBlock::UpdateFirstEffect(const Timer& timer)
 {
 	//初回だけエフェクトの種類決め
 	if (firstEffectType == -1) {
-		//easeOut系の中からランダムで。(1,4,7,10,...)
+		//easeOut系の中からランダムで。(2,5,8,11,...)
 		firstEffectType = rand() % 7;
-		firstEffectType = 3 * firstEffectType + 1;
+		firstEffectType = 3 * firstEffectType + 2;
 	}
 	if (firstEffectEndTime == -1) {
 		firstEffectEndTime = 1700 + rand() % 200;

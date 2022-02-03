@@ -4,11 +4,20 @@
 #include <unordered_map>
 #include "Vector4.h"
 
-#define PI 3.14159265359f
+//円周率
+const float PI = 3.14159265359f;
 //1マスの長さ
-#define ONE_CELL_LENGTH (float)5.0f
+const float ONE_CELL_LENGTH = 5.0f;
+//モデルのディレクトリ
+const std::string MODEL_DIR = "Resources/Model/";
+//2Dテクスチャのディレクトリ
+const std::wstring TEX_DIR_UTIL = L"Resources/2DTexture/Utility/";
+const std::wstring TEX_DIR_TITLE = L"Resources/2DTexture/Title/";
+const std::wstring TEX_DIR_STAGESELECT = L"Resources/2DTexture/StageSelect/";
+const std::wstring TEX_DIR_GAMEPLAY = L"Resources/2DTexture/GamePlay/";
+const std::string TEX_DIR_GAMEPLAY_S = "Resources/2DTexture/GamePlay/";
 
-const std::string modelDir = "Resources/Model/";
+const std::string STAGE_DIR = "Resources/StageData/";
 
 /// <summary>
 /// ステージ座標 左上が原点

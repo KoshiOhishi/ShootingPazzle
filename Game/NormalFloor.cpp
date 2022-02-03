@@ -7,7 +7,7 @@ void NormalFloor::StaticInitialize()
 {
     //ÉÇÉfÉãê∂ê¨
     //modelBox.CreateFromOBJ("NormalFloor");
-    modelBox.CreateFromOBJ(modelDir + "NormalFloor/NormalFloor.obj");
+    modelBox.CreateFromOBJ(MODEL_DIR + "NormalFloor/NormalFloor.obj");
 }
 
 void NormalFloor::Initialize(const StageVec2& pos)

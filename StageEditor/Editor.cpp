@@ -18,6 +18,11 @@
 #include "../DX12Library/imgui/imgui_impl_win32.h"
 #include "../DX12Library/imgui/imgui_impl_dx12.h"
 
+Editor::Editor()
+{
+	modelBG.CreateFromOBJ(MODEL_DIR + "Sky/Sky.obj");
+}
+
 void Editor::Initialize()
 {
 	Object3D::SetMatrixOrthographicLH(1280 * 0.2f, 720 * 0.2f, 0.1f, 150.0f);
@@ -43,6 +48,12 @@ void Editor::Initialize()
 	//フェーズ初期化
 	GameUtility::SetNowPhase(PHASE_GAME_SETPOS);
 
+	//背景オブジェクト初期化
+	objBG.Initialize();
+	objBG.SetObjModel(&modelBG);
+	objBG.SetScale(5, 5, 5);
+	objBG.SetDrawShadowToMyself(false);
+
 	//タイマーセット
 	timer.SetTimer(0, 1000000);
 	timer.Start();
@@ -67,16 +78,65 @@ void Editor::Initialize()
 	objDispFloorSub.SetObjModel(TurnFloor::GetModel(TURNTYPE_LEFT + 4));
 	objDispFloorSub.SetRotation({ 90,0,0 });
 #pragma endregion
+
+	//テキスト描画初期化
+	FontData fd = {};
+	fd.fontName = L"HGPｺﾞｼｯｸE";
+	fd.height = 32;
+	txtCursol.SetFontData(fd);
 }
 
 void Editor::Update()
 {
-	// DirectX 毎フレーム処理 ここから
+	//カメラ更新
+	UpdateCamera();
 
-	//入力処理ここから
+	light.Update();
+	timer.Update();
+	//3Dサウンドで使用するリスナーの位置更新
+	Sound::Set3DListenerPosAndVec(camera);
 
-#pragma region カメラ
-#ifdef _DEBUG
+	//背景オブジェクト更新
+	objBG.AddRotation(0, 0.1f * FPSManager::GetMulAdjust60FPS(), 0);
+	objBG.Update();
+
+	//エディター部分の更新処理
+	UpdateEdit();
+
+}
+
+void Editor::Draw()
+{
+	//背景描画
+	objBG.Draw();
+
+	//ステージ描画
+	stage.Draw();
+
+	//スタートレーン描画
+	DrawStartLane();
+
+	if (mode == MODE_ADD) {
+		//カーソル位置にブロック描画
+		if (objectType == OBJECTTYPE_BLOCK) {
+			DrawDispBlock();
+		}
+		else if (objectType == OBJECTTYPE_FLOOR) {
+			DrawDispFloor();
+		}
+	}
+	else if (mode == MODE_DELETE) {
+
+	}
+
+	//今のカーソル座標表示
+	if (IsInsideCursol()) {
+		txtCursol.DrawStringFG(0, 0, L"StagePos:(" + std::to_wstring(nowCursolPos.x) + L", " + std::to_wstring(nowCursolPos.y) + L")");
+	}
+}
+
+void Editor::UpdateCamera()
+{
 	if (isEnteringIOName == false) {
 		//カメラ移動
 		if (Keyboard::IsKeyPush(DIK_W)) {
@@ -97,90 +157,11 @@ void Editor::Update()
 		if (Keyboard::IsKeyPush(DIK_X)) {
 			camera.MoveCamera(0, -1, 0, false, true, false);
 		}
-
-		//カメラ回転
-		if (Keyboard::IsKeyPush(DIK_UP)) {
-			Vector3 f = { camera.GetRotation().x - 1.5f, camera.GetRotation().y, camera.GetRotation().z };
-			camera.SetRotation(f);
-		}
-		if (Keyboard::IsKeyPush(DIK_DOWN)) {
-			Vector3 f = { camera.GetRotation().x + 1.5f, camera.GetRotation().y, camera.GetRotation().z };
-			camera.SetRotation(f);
-		}
-		if (Keyboard::IsKeyPush(DIK_LEFT)) {
-			//Shiftが押されていたらZ軸回転
-			if (Keyboard::IsKeyPush(DIK_LSHIFT) || Keyboard::IsKeyPush(DIK_RSHIFT)) {
-				Vector3 f = { camera.GetRotation().x, camera.GetRotation().y, camera.GetRotation().z + 1.5f };
-				camera.SetRotation(f);
-			}
-			else {
-				Vector3 f = { camera.GetRotation().x, camera.GetRotation().y - 1.5f, camera.GetRotation().z };
-				camera.SetRotation(f);
-			}
-		}
-		if (Keyboard::IsKeyPush(DIK_RIGHT)) {
-			if (Keyboard::IsKeyPush(DIK_LSHIFT) || Keyboard::IsKeyPush(DIK_RSHIFT)) {
-				Vector3 f = { camera.GetRotation().x, camera.GetRotation().y, camera.GetRotation().z - 1.5f };
-				camera.SetRotation(f);
-			}
-			else {
-				Vector3 f = { camera.GetRotation().x, camera.GetRotation().y + 1.5f, camera.GetRotation().z };
-				camera.SetRotation(f);
-			}
-		}
-
 		//Vector3 f = { camera.GetRotation().x, camera.GetRotation().y - 1.5f, camera.GetRotation().z };
 		//camera.SetRotation(f);
 	}
-#endif
-#pragma endregion
 
 	camera.Update();
-	light.Update();
-	timer.Update();
-	//3Dサウンドで使用するリスナーの位置更新
-	Sound::Set3DListenerPosAndVec(camera);
-	UpdateEdit();
-
-
-#ifdef _DEBUG
-	//リセット
-	if (Keyboard::IsKeyTrigger(DIK_R) && isEnteringIOName == false) {
-		Initialize();
-	}
-
-#endif
-
-
-}
-
-void Editor::Draw()
-{
-	//ステージ描画
-	stage.Draw();
-
-	//スタートレーン描画
-	DrawStartLane();
-
-	if (mode == MODE_ADD) {
-		//カーソル位置にブロック描画
-		if (objectType == OBJECTTYPE_BLOCK) {
-			DrawBlock();
-		}
-		else if (objectType == OBJECTTYPE_FLOOR) {
-			DrawFloor();
-		}
-	}
-	else if (mode == MODE_DELETE) {
-
-	}
-
-	//今のカーソル座標表示
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
-		return;
-	}
-	DebugText::Print("CursolPos:(" + std::to_string(nowCursolPos.x) + ", " + std::to_string(nowCursolPos.y) + ")", 0, 20);
 }
 
 void Editor::UpdateEdit()
@@ -203,8 +184,7 @@ void Editor::UpdateEdit()
 void Editor::UpdateAdd()
 {
 	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+	if (IsInsideCursol() == false) {
 		return;
 	}
 
@@ -222,8 +202,7 @@ void Editor::UpdateAdd()
 void Editor::UpdateDelete()
 {
 	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+	if (IsInsideCursol() == false) {
 		return;
 	}
 
@@ -323,12 +302,8 @@ void Editor::UpdateStartLane()
 	startLane[0].SetPosition(stage.startLaneZ);
 	startLane[0].Update();
 	//1...カーソル位置に描画されるスタートレーン
-	if (mode == MODE_OPTION && optionMode == OPTION_SET_STARTLANE) {
-		//ステージ範囲外なら即リターン
-		if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-			nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
-			return;
-		}
+	if (mode == MODE_OPTION && optionMode == OPTION_SET_STARTLANE && IsInsideCursol()) {
+
 		startLane[1].SetPosition(nowCursolPos.y);
 
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
@@ -343,9 +318,8 @@ void Editor::DrawStartLane()
 	//0...設置されたスタートレーン
 	startLane[0].Draw();
 
-	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+	//ステージ範囲外なら描画しない
+	if (IsInsideCursol() == false) {
 		return;
 	}
 
@@ -355,22 +329,20 @@ void Editor::DrawStartLane()
 	}
 }
 
-void Editor::DrawBlock()
+void Editor::DrawDispBlock()
 {
-	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+	//ステージ範囲外なら描画しない
+	if (IsInsideCursol() == false) {
 		return;
 	}
 
 	objDispBlock.Draw();
 }
 
-void Editor::DrawFloor()
+void Editor::DrawDispFloor()
 {
-	//ステージ範囲外なら即リターン
-	if (nowCursolPos.x < 0 || nowCursolPos.x >= stage.stageSize.x ||
-		nowCursolPos.y < 0 || nowCursolPos.y >= stage.stageSize.y) {
+	//ステージ範囲外なら描画しない
+	if (IsInsideCursol() == false) {
 		return;
 	}
 
@@ -385,7 +357,7 @@ void Editor::Save()
 {
 	std::ofstream file;
 	//バイナリモードで開く
-	file.open("./StageData/" + ioname + ".spb", std::ios_base::binary);
+	file.open(STAGE_DIR + ioname + ".spb", std::ios_base::binary);
 	//ファイルオープン失敗を検出する
 	assert(file.is_open());
 
@@ -400,6 +372,7 @@ void Editor::Save()
 	file.write((char*)&header, sizeof(header));
 
 	//データ部
+	//ブロック追加
 	for (int i = 0; i < stage.blocks.size(); i++) {
 		StageBlock object = {};
 		std::string blockType = stage.blocks[i]->GetObjectName();
@@ -430,6 +403,7 @@ void Editor::Save()
 		file.write((char*)&object, sizeof(object));
 	}
 
+	//床追加
 	for (int i = 0; i < stage.floors.size(); i++) {
 		StageFloor object = {};
 		std::string floorType = stage.floors[i]->GetObjectName();
@@ -479,13 +453,14 @@ void Editor::Save()
 		file.write((char*)&object, sizeof(object));
 	}
 
+	//閉じる
 	file.close();
 }
 
 void Editor::Load()
 {
 	//ステージロード
-	stage.LoadStage("./StageData/" + ioname + ".spb");
+	stage.LoadStage(STAGE_DIR + ioname + ".spb");
 	//ImGuiのスライダーの値を初期化しておく
 	sliderWidth = stage.stageSize.x;
 	sliderDepth = stage.stageSize.y;
@@ -689,6 +664,12 @@ void Editor::ReCreateStage(unsigned short width, unsigned short depth)
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].CreateModel();
 	}
+}
+
+bool Editor::IsInsideCursol()
+{
+	return nowCursolPos.x >= 0 && nowCursolPos.x < stage.stageSize.x &&
+		nowCursolPos.y >= 0 && nowCursolPos.y < stage.stageSize.y;
 }
 
 //bool blnChk = false;

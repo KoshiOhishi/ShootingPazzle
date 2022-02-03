@@ -14,36 +14,36 @@
 
 GamePlay::GamePlay()
 {
-	modelBG.CreateFromOBJ(modelDir + "Sky/Sky.obj");
-	buttonReset.LoadTexture(L"Resources/UI/UI_Arrow_Reset.png");
-	buttonBack.LoadTexture(L"Resources/UI/UI_Arrow_Back.png");
-	buttonYes.LoadTexture(L"Resources/UI/UI_Yes.png");
-	buttonNo.LoadTexture(L"Resources/UI/UI_No.png");
-	buttonOK.LoadTexture(L"Resources/UI/UI_OK.png");
+	modelBG.CreateFromOBJ(MODEL_DIR + "Sky/Sky.obj");
+	buttonReset.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_Arrow_Reset.png");
+	buttonBack.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_Arrow_Back.png");
+	buttonYes.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_Yes.png");
+	buttonNo.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_No.png");
+	buttonOK.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_OK.png");
 	sprWhite.Initialize();
-	sprWhite.SetTexture(L"Resources/White1280x720.png");
+	sprWhite.SetTexture(TEX_DIR_UTIL + L"White1280x720.png");
 	sprBlack.Initialize();
-	sprBlack.SetTexture(L"Resources/Black1280x720.png");
+	sprBlack.SetTexture(TEX_DIR_UTIL + L"Black1280x720.png");
 	sprPopUp.Initialize();
-	sprPopUp.SetTexture(L"Resources/Game_PopUp.png");
+	sprPopUp.SetTexture(TEX_DIR_GAMEPLAY + L"Game_PopUp.png");
 	sprUIRemainingBlock.Initialize();
-	sprUIRemainingBlock.SetTexture(L"Resources/UI/UI_RemainingBlock.png");
+	sprUIRemainingBlock.SetTexture(TEX_DIR_GAMEPLAY + L"UI_RemainingBlock.png");
 	for (int i = 0; i < _countof(sprRemainingBlockCount); i++) {
 		sprRemainingBlockCount[i].Initialize();
-		sprRemainingBlockCount[i].SetTexture(L"Resources/UI/UI_Number.png");
+		sprRemainingBlockCount[i].SetTexture(TEX_DIR_GAMEPLAY + L"UI_Number.png");
 	}
 	for (int i = 0; i < _countof(sprTextClear); i++) {
 		sprTextClear[i].Initialize();
-		sprTextClear[i].SetTexture(L"Resources/Text_Clear.png");
+		sprTextClear[i].SetTexture(TEX_DIR_GAMEPLAY + L"Text_Clear.png");
 	}
 	sprTextClearTime.Initialize();
-	sprTextClearTime.SetTexture(L"Resources/Text_ClearTime.png");
+	sprTextClearTime.SetTexture(TEX_DIR_GAMEPLAY + L"Text_ClearTime.png");
 	for (int i = 0; i < _countof(sprTextTimeNumber); i++) {
 		sprTextTimeNumber[i].Initialize();
-		sprTextTimeNumber[i].SetTexture(L"Resources/Text_TimeNumber.png");
+		sprTextTimeNumber[i].SetTexture(TEX_DIR_GAMEPLAY + L"Text_TimeNumber.png");
 	}
-	particle[0].LoadTexture(L"Resources/Particle/Shine.png");
-	particle[1].LoadTexture(L"Resources/Particle/Shine.png");
+	particle[0].LoadTexture(TEX_DIR_UTIL + L"Particle/Shine.png");
+	particle[1].LoadTexture(TEX_DIR_UTIL + L"Particle/Shine.png");
 }
 
 GamePlay::~GamePlay()
@@ -84,10 +84,16 @@ void GamePlay::Initialize()
 
 	//ステージサイズからカメラ位置セット
 	float bounceY = camera.SetPosFromStageSize(stage.GetStageSize());
+
 	//ステージサイズからライト位置と行列セット
-	light.CalcLightPos(stage.GetStageSize().y * 2.5);
-	float mul = stage.GetStageSize().y * 0.012f;
-	float farZ = stage.GetStageSize().y * 4.5 + 5;
+	//幅が長い方を基準にする
+	float length = stage.GetStageSize().x < stage.GetStageSize().y ?
+		(float)stage.GetStageSize().y : (float)stage.GetStageSize().x;
+
+	//行列をセット
+	light.CalcLightPos(length * 2.5);
+	float mul = length * 0.012f;
+	float farZ = length * 4.5 + 5;
 	Object3D::SetMatrixOrthographicLH(1280 * mul, 720 * mul, 1.0f, farZ);
 
 	//弾初期化
@@ -166,6 +172,11 @@ void GamePlay::Initialize()
 
 	//チュートリアル
 	tutorial.Initialize(true);
+
+	//BGM鳴ってなかったら再生
+	if (GameSound::IsPlaying(L"GamePlay") == false) {
+		GameSound::Play(L"GamePlay");
+	}
 }
 
 void GamePlay::Update()
@@ -431,11 +442,14 @@ void GamePlay::UpdateUI()
 			GameUtility::SetIsPause(true);
 			//スコアタイマー一時停止
 			scoreTimer.Stop();
+			//球の転がる効果音停止
+			GameSound::Stop(L"Shooting");
 			//ボタンを押せるように
 			buttonYes.SetIsEnable(true);
 			buttonNo.SetIsEnable(true);
 		}
 	}
+
 
 	//ポーズ中とクリア時はボタン無効化
 	bool isClear = stage.GetTargetBlockCount() <= 0;
@@ -469,11 +483,11 @@ void GamePlay::UpdateStageBackPopUp()
 			if (buttonYes.IsReleaseButton()) {
 				buttonYes.StartPushedEffect();
 				sceneChangeTimer.Start();
-				//球の転がる効果音停止
-				GameSound::Stop(L"Shooting");
 				//ボタンを押せないように
 				buttonYes.SetIsEnable(false);
 				buttonNo.SetIsEnable(false);
+				//BGMストップ(1秒かけてフェードアウト)
+				GameSound::Stop(L"GamePlay", 1000);
 			}
 			if (buttonNo.IsReleaseButton()) {
 				buttonNo.StartPushedEffect();
@@ -574,14 +588,17 @@ void GamePlay::UpdateClearEffect()
 		float x = Easing::GetEaseValue(EASE_OUTQUINT, DX12Util::GetWindowWidth(), DX12Util::GetWindowWidth() - buttonOK.GetTexSize().x - adjust, clearEffectTimer, START_OK_BUTTON_EFFECT, START_OK_BUTTON_EFFECT + 500);
 		buttonOK.SetPosition({ x, buttonOK.GetPosition().y });
 
+		//OKボタン押された
 		if (buttonOK.IsReleaseButton()) {
 			buttonOK.StartPushedEffect();
 			sceneChangeTimer.Start();
 			buttonOK.SetIsEnable(false);
+			//BGMストップ(1秒かけてフェードアウト)
+			GameSound::Stop(L"GamePlay", 1000);
 		}
 	}
 
-	//はじけ飛ぶパーティクル追加
+	//はじけ飛ぶパーティクル追加とクリア効果音
 	if (clearEffectTimer.GetNowTime() >= END_MOVE_TEXT_TIME && addedParticleClearEffect == false) {
 		for (int i = 0; i < 64; i++) {
 			float rad = 360.0f / 32 * i * PI / 180;
@@ -594,6 +611,9 @@ void GamePlay::UpdateClearEffect()
 		}
 		addedParticleClearEffect = true;
 		addParticleTimer.Start();
+
+		//クリア効果音
+		GameSound::Play(L"Clear");
 	}
 
 	//キラキラするパーティクル追加

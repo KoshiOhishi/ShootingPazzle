@@ -163,6 +163,12 @@ public:
 	/// <param name="pos"></param>
 	void SetMasterPosition(const Vector3& pos);
 
+	/// <summary>
+	/// ‰e‚ð•`‰æ‚·‚é‚©
+	/// </summary>
+	/// <param name="isDraw"></param>
+	void SetDrawShadow(bool isDraw);
+
 	void SetPFirstEffectTimer(Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
 	void SetPClearEffectTimer(Timer* pClearEffectTimer) { this->pClearEffectTimer = pClearEffectTimer; }
 };

@@ -46,25 +46,78 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   46 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  SwitchFloor.cpp
+  GamePlay.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\Game\SwitchFloor.cpp(49,55): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(94,28): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(96,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(115,47): warning C4305: '引数': 'double' から 'const float' へ切り詰めます。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(337,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(345,28): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(385,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(389,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(392,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(395,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(397,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(403,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(407,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(410,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(413,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(415,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(421,47): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(469,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(473,33): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(531,46): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(534,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(542,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(554,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(563,53): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(588,11): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(606,53): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(608,88): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(609,68): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(624,52): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(643,15): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GamePlay.cpp(849,25): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Sprite.h(173): warning C4172: ローカル変数またはテンポラリのアドレスを返します
   Game.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\Game.exe
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow_Down.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Arrow_Up.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Attention.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Background.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Black1280x720.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Floor.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Game_PopUp.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\grid.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Stage_BG.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_Clear.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_ClearTime.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_Stage.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Text_TimeNumber.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\White1280x720.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Arrow.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Game_PopUp.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Text_Clear.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Text_ClearTime.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Text_TimeNumber.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\UI_Arrow_Back.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\UI_Arrow_Reset.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\UI_No.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\UI_Number.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\UI_OK.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\UI_RemainingBlock.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\UI_Yes.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Tutorial\Mouse.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Tutorial\MouseCover.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Tutorial\Popup.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Tutorial\Sphere.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\GamePlay\Tutorial\Text.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\Arrow_Down.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\Arrow_Up.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\Background.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\Stage_BG.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\Text_Stage.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\UI_Arrow_Down.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\UI_Arrow_Up.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\UI_Number.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\StageSelect\UI_Start.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Title\Attention.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Title\Text_Click.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Title\Text_Title.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Utility\Black1280x720.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Utility\White1280x720.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Utility\Particle\Break.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Utility\Particle\Circle.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Utility\Particle\Shine.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Utility\Particle\Square.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\2DTexture\Utility\Particle\Triangle.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\BreakFloor.mtl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\BreakFloor.obj
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\BreakFloor\uv.png
@@ -130,15 +183,13 @@ E:\K019G1301\個人制作\ShootingPazzle\Game\SwitchFloor.cpp(49,55): warning C4
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Model\TurnFloor_Up\_uv.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Break.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Circle.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Shine.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Square.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Particle\Triangle.png
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\BGM\GamePlay.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\BGM\Title.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Ascension.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\BreakBlock.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\BreakFloor.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\ChangeColor.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Clear.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\Crack.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\GameStart.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\PosDecide.wav
@@ -149,26 +200,15 @@ E:\K019G1301\個人制作\ShootingPazzle\Game\SwitchFloor.cpp(49,55): warning C4
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\StageDecide.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\UI_Click.wav
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Sound\SE\UI_Select.wav
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\StageData\stage_0.spb
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\StageData\stage_1.spb
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\StageData\stage_2.spb
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\StageData\stage_3.spb
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\StageData\stage_4.spb
+  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\StageData\stage_5.spb
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\System\white1x1.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Title\Text_Click.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Title\Text_Title.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Mouse.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\MouseCover.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Popup.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Sphere.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\Tutorial\Text.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Back.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Down.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Reset.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Arrow_Up.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_No.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Number.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_OK.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_RemainingBlock.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Start.png
-  E:\K019G1301\個人制作\ShootingPazzle\Game\Resources\UI\UI_Yes.png
-  118 個のファイルをコピーしました
+  126 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicGeometryShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicPixelShader.hlsl
   E:\K019G1301\個人制作\ShootingPazzle\Game\Shader\BasicShaderHeader.hlsli

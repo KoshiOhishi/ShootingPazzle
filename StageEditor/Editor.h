@@ -45,6 +45,9 @@ private:
 	//ステージ
 	EditorStage stage;
 
+	//背景
+	Object3D objBG;
+	ObjModel modelBG;
 
 	//Editor
 	//モード
@@ -76,13 +79,17 @@ private:
 	int sliderWidth;
 	int sliderDepth;
 
+	//カーソル位置表示
+	RenderText txtCursol;
+
 public:
-	Editor(){}
+	Editor();
 	~Editor(){}
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
 
+	void UpdateCamera();
 	void UpdateEdit();
 
 	void UpdateAdd();
@@ -92,8 +99,8 @@ public:
 	void UpdateStartLane();
 
 	void DrawStartLane();
-	void DrawBlock();
-	void DrawFloor();
+	void DrawDispBlock();
+	void DrawDispFloor();
 
 	void Save();
 
@@ -110,4 +117,6 @@ public:
 	/// ステージを再構築する
 	/// </summary>
 	void ReCreateStage(unsigned short width, unsigned short depth);
+
+	bool IsInsideCursol();
 };

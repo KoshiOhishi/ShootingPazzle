@@ -9,14 +9,14 @@ Particle3D TriangleBlock::particle[5];
 void TriangleBlock::StaticInitialize()
 {
 	//モデル生成
-	modelTriangle[0].CreateFromOBJ(modelDir + "TriangleBlock/TriangleBlock.obj");
-	modelTriangle[1].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_1/TriangleBlock_Breakable_1.obj");
-	modelTriangle[2].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_2/TriangleBlock_Breakable_2.obj");
-	modelTriangle[3].CreateFromOBJ(modelDir + "TriangleBlock_Breakable_3/TriangleBlock_Breakable_3.obj");
+	modelTriangle[0].CreateFromOBJ(MODEL_DIR + "TriangleBlock/TriangleBlock.obj");
+	modelTriangle[1].CreateFromOBJ(MODEL_DIR + "TriangleBlock_Breakable_1/TriangleBlock_Breakable_1.obj");
+	modelTriangle[2].CreateFromOBJ(MODEL_DIR + "TriangleBlock_Breakable_2/TriangleBlock_Breakable_2.obj");
+	modelTriangle[3].CreateFromOBJ(MODEL_DIR + "TriangleBlock_Breakable_3/TriangleBlock_Breakable_3.obj");
 
 	//パーティクル
 	for (int i = 0; i < _countof(particle); i++) {
-		particle[i].LoadTexture(L"Resources/Particle/Triangle.png");
+		particle[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Triangle.png");
 		particle[i].Initialize();
 		particle[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);

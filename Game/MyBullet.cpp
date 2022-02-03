@@ -20,7 +20,7 @@ void MyBullet::StaticInitialize()
 {
 	//ÉÇÉfÉãê∂ê¨
 	modelSphere.CreateSphere(20, 20, RADIUS, true, { 0.5,0.5,0.5 }, { 0.5,0.5,0.5 }, { 0.25,0.25,0.25 });
-	modelArrow.CreatePlaneTex(16, 8, "Resources/Arrow.png", { 1,1,1 });
+	modelArrow.CreatePlaneTex(16, 8, TEX_DIR_GAMEPLAY_S + "Arrow.png", { 1,1,1 });
 }
 
 MyBullet::MyBullet()

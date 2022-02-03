@@ -49,7 +49,8 @@ public:
 	/// ロード済音声データの再生を止める
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
-	static void Stop(const std::wstring& name);
+	/// <param name="fadeOutMs">フェードアウトにかける秒数(ms)</param>
+	static void Stop(const std::wstring& name, int fadeOutMs = 100);
 
 	/// <summary>
 	/// 現在再生中か

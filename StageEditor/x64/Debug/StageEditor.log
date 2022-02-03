@@ -48,8 +48,6 @@
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
   BaseBlock.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Easing.h(9,1): warning C4005: 'PI': マクロが再定義されました。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(7): message : 'PI' の以前の定義を確認してください
 E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(55,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
 E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(100,29): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
 E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(101,29): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
@@ -65,20 +63,116 @@ E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(120,29): warning C42
 E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(124,29): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
 E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(125,29): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
 E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(126,29): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  BaseFloor.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\BaseFloor.cpp(35,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  BreakFloor.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\BreakFloor.cpp(29,85): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\BreakFloor.cpp(30,71): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+  GameSound.cpp
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameSound.cpp(69,34): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameSound.cpp(75,32): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  GameUtility.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.cpp(30,1): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.cpp(48,60): warning C4244: '=': 'float' から 'unsigned short' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.cpp(49,61): warning C4244: '=': 'float' から 'unsigned short' への変換です。データが失われる可能性があります。
+  MyBullet.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(43,15): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(134,15): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(141,86): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(150,87): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(253,15): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(278,41): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(279,42): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(285,89): warning C4244: '-=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(295,88): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(649,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(650,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(651,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(655,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(656,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\MyBullet.cpp(657,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  NormalFloor.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  SquareBlock.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\SquareBlock.cpp(34,85): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\SquareBlock.cpp(35,70): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+  SwitchFloor.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\SwitchFloor.cpp(49,55): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  TriangleBlock.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\TriangleBlock.cpp(34,85): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\TriangleBlock.cpp(35,70): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+  TurnFloor.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\Game\TurnFloor.cpp(72,51): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Editor.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(100,28): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(80,36): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(369,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(370,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
+  EditorStage.cpp
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\EditorStage.cpp(76,23): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\EditorStage.cpp(76,25): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
+  main.cpp
+  コードを生成中...
+E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.cpp(51): warning C4172: ローカル変数またはテンポラリのアドレスを返します: result
+DX12Library.lib(fbxpropertydef.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxpropertydef.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DX12Library.lib(fbxpropertyhandle.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxpropertyhandle.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DX12Library.lib(fbxviconbase.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxviconbase.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DX12Library.lib(fbxlayer.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxlayer.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DX12Library.lib(fbxgeometryconverter.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(fbxgeometryconverter.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DX12Library.lib(AwImpl.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(AwImpl.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DX12Library.lib(ReadUtil.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(ReadUtil.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DX12Library.lib(WriteUtil.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(WriteUtil.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Arrow.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Attention.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Background.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Black1280x720.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Floor.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Game_PopUp.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\grid.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Stage_BG.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Text_Clear.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Text_ClearTime.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Text_Stage.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Text_TimeNumber.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\White1280x720.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Arrow.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Game_PopUp.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Text_Clear.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Text_ClearTime.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Text_TimeNumber.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\UI_Arrow_Back.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\UI_Arrow_Reset.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\UI_No.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\UI_Number.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\UI_OK.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\UI_RemainingBlock.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\UI_Yes.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Tutorial\Mouse.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Tutorial\MouseCover.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Tutorial\Popup.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Tutorial\Sphere.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Tutorial\Text.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\Arrow_Down.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\Arrow_Up.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\Background.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\Stage_BG.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\Text_Stage.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\UI_Arrow_Down.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\UI_Arrow_Up.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\UI_Number.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\StageSelect\UI_Start.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Title\Attention.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Title\Text_Click.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Title\Text_Title.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Utility\Black1280x720.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Utility\White1280x720.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Utility\Particle\Break.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Utility\Particle\Circle.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Utility\Particle\Shine.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Utility\Particle\Square.png
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\Utility\Particle\Triangle.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Model\BreakFloor\BreakFloor.mtl
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Model\BreakFloor\BreakFloor.obj
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Model\BreakFloor\uv.png
@@ -144,38 +238,30 @@ E:\K019G1301\個人制作\ShootingPazzle\Game\BaseBlock.cpp(126,29): warning C42
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Model\TurnFloor_Up\uv.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Model\TurnFloor_Up\uv_cover.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Model\TurnFloor_Up\_uv.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Particle\Break.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Particle\Shine.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Particle\Square.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Particle\Triangle.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\Break.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\Ascension.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\BreakBlock.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\BreakFloor.wav
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\ChangeColor.wav
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\Crack.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\GameStart.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\PosDecide.wav
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\Reflect.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\RollNumber.wav
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\Shoot.wav
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\Shooting.wav
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\Start.wav
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\UI_Decide.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\StageDecide.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\UI_Click.wav
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Sound\SE\UI_Select.wav
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_0.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_1.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_2.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_3.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_4.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_5.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\test_color.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\test_disp.spb
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\System\white1x1.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Title\Text_Click.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Title\Text_Title.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Tutorial\Mouse.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Tutorial\MouseCover.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Tutorial\Popup.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Tutorial\Sphere.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\Tutorial\Text.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_Arrow_Back.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_Arrow_Down.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_Arrow_Reset.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_Arrow_Up.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_No.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_Number.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_OK.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_RemainingBlock.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_Start.png
-  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\UI\UI_Yes.png
-  110 個のファイルをコピーしました
+  125 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   1 個のファイルをコピーしました

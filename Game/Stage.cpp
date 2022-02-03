@@ -313,6 +313,31 @@ void Stage::SetMasterPosition(const Vector3& pos)
 	}
 }
 
+void Stage::SetDrawShadow(bool isDraw)
+{
+	//‰e‚Ì•`‰æİ’èƒZƒbƒg
+	for (int i = 0; i < _countof(iodSquareBlock); i++) {
+		iodSquareBlock[i].SetDrawShadowToMyself(isDraw);
+		iodSquareBlock[i].SetDrawShadowToOther(isDraw);
+	}
+	for (int i = 0; i < _countof(iodTriangleBlock); i++) {
+		iodTriangleBlock[i].SetDrawShadowToMyself(isDraw);
+		iodTriangleBlock[i].SetDrawShadowToOther(isDraw);
+	}
+	iodNormalFloor.SetDrawShadowToMyself(isDraw);
+	iodNormalFloor.SetDrawShadowToOther(isDraw);
+	for (int i = 0; i < _countof(iodSwitchFloor); i++) {
+		iodSwitchFloor[i].SetDrawShadowToMyself(isDraw);
+		iodSwitchFloor[i].SetDrawShadowToOther(isDraw);
+	}
+	for (int i = 0; i < _countof(iodTurnFloor); i++) {
+		iodTurnFloor[i].SetDrawShadowToMyself(isDraw);
+		iodTurnFloor[i].SetDrawShadowToOther(isDraw);
+	}
+	iodBreakFloor.SetDrawShadowToMyself(isDraw);
+	iodBreakFloor.SetDrawShadowToOther(isDraw);
+}
+
 int Stage::CheckExistBlock(const StageVec2& stagePos)
 {
 	float x, z;

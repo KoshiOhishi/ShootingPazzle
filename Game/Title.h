@@ -91,6 +91,7 @@ public:
     void UpdateBG();
     void UpdateFG();
     void UpdateEffectObjects();
+    void UpdateSound();
 
     //ŠeŽí•`‰æ
     void DrawTextTex();

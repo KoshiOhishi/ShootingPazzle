@@ -9,14 +9,14 @@ Particle3D SquareBlock::particle[5];
 void SquareBlock::StaticInitialize()
 {
 	//モデル生成
-	modelBox[0].CreateFromOBJ(modelDir + "SquareBlock/SquareBlock.obj");
-	modelBox[1].CreateFromOBJ(modelDir + "SquareBlock_Breakable_1/SquareBlock_Breakable_1.obj");
-	modelBox[2].CreateFromOBJ(modelDir + "SquareBlock_Breakable_2/SquareBlock_Breakable_2.obj");
-	modelBox[3].CreateFromOBJ(modelDir + "SquareBlock_Breakable_3/SquareBlock_Breakable_3.obj");
+	modelBox[0].CreateFromOBJ(MODEL_DIR + "SquareBlock/SquareBlock.obj");
+	modelBox[1].CreateFromOBJ(MODEL_DIR + "SquareBlock_Breakable_1/SquareBlock_Breakable_1.obj");
+	modelBox[2].CreateFromOBJ(MODEL_DIR + "SquareBlock_Breakable_2/SquareBlock_Breakable_2.obj");
+	modelBox[3].CreateFromOBJ(MODEL_DIR + "SquareBlock_Breakable_3/SquareBlock_Breakable_3.obj");
 
 	//パーティクル
 	for (int i = 0; i < _countof(particle); i++) {
-		particle[i].LoadTexture(L"Resources/Particle/Square.png");
+		particle[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Square.png");
 		particle[i].Initialize();
 		particle[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
@@ -70,6 +70,7 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 	changeColorTimer.SetTimer(0, 1000);
 
 	objectName = "SquareBlock";
+
 }
 
 void SquareBlock::Update()

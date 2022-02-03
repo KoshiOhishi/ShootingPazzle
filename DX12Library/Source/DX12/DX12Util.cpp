@@ -375,6 +375,9 @@ void DX12Util::PostDrawBB()
 	ID3D12CommandList* cmdLists[] = { cmdList.Get() }; // コマンドリストの配列
 	cmdQueue->ExecuteCommandLists(1, cmdLists);
 
+	//13.バッファをフリップ(裏表の入替え)
+	swapchain->Present(1, 0);
+
 	//14.コマンドリストの実行完了を待つ
 	cmdQueue->Signal(fence.Get(), ++fenceVal);
 	if (fence->GetCompletedValue() != fenceVal) {
@@ -389,9 +392,6 @@ void DX12Util::PostDrawBB()
 
 	//16.コマンドリストのリセット
 	cmdList->Reset(cmdAllocator.Get(), nullptr); // 再びコマンドリストを貯める準備
-
-	//13.バッファをフリップ(裏表の入替え)
-	swapchain->Present(1, 0);
 }
 
 void DX12Util::End()

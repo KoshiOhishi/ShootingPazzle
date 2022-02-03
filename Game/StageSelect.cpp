@@ -7,43 +7,44 @@
 #include "GameSound.h"
 #include "ImguiHelper.h"
 
-const std::string StageSelect::STAGE_DIRECTORY = "../StageEditor/StageData/";
-
 StageSelect::StageSelect()
 {
 	//ステージロード
 	for (int i = 0; i < STAGE_COUNT; i++) {
 		stages.emplace_back(new Stage());
-		stages[i]->LoadStage(STAGE_DIRECTORY + "stage_" + std::to_string(i) + ".spb");
+		stages[i]->LoadStage(STAGE_DIR + "stage_" + std::to_string(i) + ".spb");
 		stages[i]->Initialize();
 		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
 		//ステージの大きさによってカメラの位置を変える
 		cameraPosList.emplace_back(Vector3(0, stages[i]->GetStageSize().y * 10, i * 500 - stages[i]->GetStageSize().y * 3 - 5));
+
+		//ステージセレクトでは影描画無しにする
+		stages[i]->SetDrawShadow(false);
 	}
 	//UI画像読み込み
-	buttonUp.LoadTexture(L"Resources/UI/UI_Arrow_Up.png");
-	buttonDown.LoadTexture(L"Resources/UI/UI_Arrow_Down.png");
-	buttonStart.LoadTexture(L"Resources/UI/UI_Start.png");
+	buttonUp.LoadTexture(TEX_DIR_STAGESELECT + L"UI_Arrow_Up.png");
+	buttonDown.LoadTexture(TEX_DIR_STAGESELECT + L"UI_Arrow_Down.png");
+	buttonStart.LoadTexture(TEX_DIR_STAGESELECT + L"UI_Start.png");
 
 	//スプライト読み込み
 	sprStageBG.Initialize();
-	sprStageBG.SetTexture(L"Resources/Stage_BG.png");
+	sprStageBG.SetTexture(TEX_DIR_STAGESELECT + L"Stage_BG.png");
 	sprBackground.Initialize();
-	sprBackground.SetTexture(L"Resources/Background.png");
+	sprBackground.SetTexture(TEX_DIR_STAGESELECT + L"Background.png");
 	sprTextStage.Initialize();
-	sprTextStage.SetTexture(L"Resources/Text_Stage.png");
+	sprTextStage.SetTexture(TEX_DIR_STAGESELECT + L"Text_Stage.png");
 	sprArrowUp.Initialize();
-	sprArrowUp.SetTexture(L"Resources/Arrow_Up.png");
+	sprArrowUp.SetTexture(TEX_DIR_STAGESELECT + L"Arrow_Up.png");
 	sprArrowDown.Initialize();
-	sprArrowDown.SetTexture(L"Resources/Arrow_Down.png");
+	sprArrowDown.SetTexture(TEX_DIR_STAGESELECT + L"Arrow_Down.png");
 	for (int i = 0; i < _countof(sprStageNum); i++) {
 		sprStageNum[i].Initialize();
-		sprStageNum[i].SetTexture(L"Resources/UI/UI_Number.png");
+		sprStageNum[i].SetTexture(TEX_DIR_STAGESELECT + L"UI_Number.png");
 	}
 	sprWrite.Initialize();
-	sprWrite.SetTexture(L"Resources/White1280x720.png");
+	sprWrite.SetTexture(TEX_DIR_UTIL + L"White1280x720.png");
 	sprBlack.Initialize();
-	sprBlack.SetTexture(L"Resources/Black1280x720.png");
+	sprBlack.SetTexture(TEX_DIR_UTIL + L"Black1280x720.png");
 
 }
 
@@ -105,6 +106,11 @@ void StageSelect::Initialize()
 
 	//ステージカラー初期化
 	GameUtility::SetStageColor(STAGE_COLOR_NONE);
+
+	//BGM鳴ってなかったら再生
+	if (GameSound::IsPlaying(L"Title") == false) {
+		GameSound::Play(L"Title");
+	}
 }
 
 void StageSelect::Update()
@@ -128,6 +134,9 @@ void StageSelect::Update()
 
 	//ボタン更新
 	UpdateButton();
+
+	//サウンド更新
+	GameSound::Update();
 }
 
 void StageSelect::Draw()
@@ -265,6 +274,10 @@ void StageSelect::UpdateNowSelect()
 	if (buttonStart.IsReleaseButton()) {
 		buttonStart.StartPushedEffect();
 		startGameTimer.Start();
+		//BGMストップ(1秒かけてフェードアウト)
+		GameSound::Stop(L"Title", 1000);
+
+		//効果音再生
 		GameSound::Play(L"StageDecide");
 	}
 
@@ -307,7 +320,7 @@ void StageSelect::UpdateAfterDecided()
 	if (startGameTimer.GetIsEnd())
 	{
 		//ステージセット
-		GameUtility::SetNowStagePath(STAGE_DIRECTORY + "stage_" + std::to_string(nowSelectStageIndex) + ".spb");
+		GameUtility::SetNowStagePath(STAGE_DIR + "stage_" + std::to_string(nowSelectStageIndex) + ".spb");
 		//シーンを移す
 		SceneManager::ChangeScene("GamePlay");
 	}
