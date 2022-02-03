@@ -3,6 +3,7 @@
 #include "DX12Util.h"
 #include "DebugText.h"
 #include "GameUtility.h"
+#include "Input.h"
 
 const std::wstring Tutorial::DIR = L"Resources/Tutorial/";
 const float Tutorial::ADJUST_POS = 10;
@@ -39,6 +40,8 @@ void Tutorial::Initialize(bool isEnable)
 	moveMasterPosTimer.SetTimer(0, 500);
 	roopEffectTimer.SetTimer(0, 4000, true);
 	roopEffectTimer.Start();
+	moveOverlapMouseTimer.SetTimer(0, 500);
+	moveOverlapMouseTimer.SetNowTime(moveOverlapMouseTimer.GetEndTime());
 
 	reverseMove = false;
 	isEndFirstEffect = false;
@@ -85,6 +88,9 @@ void Tutorial::UpdateTexPos()
 	else {
 		masterPos.x = Easing::GetEaseValue(EASE_OUTQUINT, (double)DX12Util::GetWindowWidth(), (double)DX12Util::GetWindowWidth() - ADJUST_POS - popup.GetTexSize().x, moveMasterPosTimer);
 	}
+
+	//マウスと重なった時の処理
+	UpdateTexPosOverlapMouse(masterPos);
 
 	int nowPhase = GameUtility::GetNowPhase();
 
@@ -145,6 +151,36 @@ void Tutorial::UpdateTexPos()
 	}
 }
 
+void Tutorial::UpdateTexPosOverlapMouse(Vector2& masterPos)
+{
+	static bool prevOverlap = false;
+	//マウスとチュートリアルが重なってない状態から重なったり
+	//重なった状態から重なっていない状態になったらタイマー開始
+	if (prevOverlap != IsOverlapMouse()) {
+		moveOverlapMouseTimer.Reset();
+		moveOverlapMouseTimer.Start();
+	}
+
+	moveOverlapMouseTimer.Update();
+
+	//タイマーが動いていたらイージング使って値を動かす
+	if (moveOverlapMouseTimer.GetIsStart()) {
+		if (IsOverlapMouse()) {
+			masterPos.x += Easing::GetEaseValue(EASE_OUTQUINT, 0, popup.GetTexSize().x + ADJUST_POS, moveOverlapMouseTimer);
+		}
+		else {
+			masterPos.x += Easing::GetEaseValue(EASE_OUTQUINT, popup.GetTexSize().x + ADJUST_POS, 0, moveOverlapMouseTimer);
+		}
+	}
+	else {
+		if (IsOverlapMouse()) {
+			masterPos.x += popup.GetTexSize().x + ADJUST_POS;
+		}
+	}
+
+	prevOverlap = IsOverlapMouse();
+}
+
 void Tutorial::UpdateTexFromPhase()
 {
 	static int prevPhase = PHASE_GAME_FIRSTEFFECT;
@@ -177,3 +213,15 @@ void Tutorial::UpdateTexFromPhase()
 
 }
 //最初のFIRSTEFFECTってややこしいからどうにかしたいなあ
+
+bool Tutorial::IsOverlapMouse() {
+	const Vector2 TUTORIAL_POS = {
+	DX12Util::GetWindowWidth() - ADJUST_POS - popup.GetTexSize().x,
+	DX12Util::GetWindowHeight() - ADJUST_POS - popup.GetTexSize().y
+	};
+
+	Vector2 mousePos = Mouse::GetMousePos();
+
+	return mousePos.x >= TUTORIAL_POS.x && mousePos.x < DX12Util::GetWindowWidth() &&
+		mousePos.y >= TUTORIAL_POS.y && mousePos.y < DX12Util::GetWindowHeight();
+}

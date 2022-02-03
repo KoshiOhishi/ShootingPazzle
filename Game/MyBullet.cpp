@@ -142,14 +142,12 @@ void MyBullet::UpdateClearEffect()
 		if (speed < 0) {
 			speed = 0; 
 			//効果音鳴らす
-			GameSound::Play(L"Ascension", position);
+			GameSound::Play(L"Ascension");
 		}
 	}
 	else {
 		velocity = { 0,1,0 };
 		speed += (0.01f * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
-		//効果音を発する位置更新
-		GameSound::SetPosition(L"Ascension", position);
 	}
 }
 
@@ -193,6 +191,9 @@ void MyBullet::DecideShootPos()
 	//スタート位置のz座標取得
 	float z;
 	GameUtility::CalcStagePos2WorldPos({ 0,stage->GetStartLaneZ() }, nullptr, &z);
+
+	//矢印オブジェクト更新のために呼び出し
+	DecideShootAngle();
 
 	//マウスとレイとの交点のx座標取得
 	Vector3 mouse;
@@ -293,10 +294,18 @@ void MyBullet::ApplyGravity()
 	if (IsOutStage(position)) {
 		gravity += (0.1f * FPSManager::GetMulAdjust60FPS() * FPSManager::GetMulAdjust60FPS());
 		position.y -= gravity;
+
+		//地面に乗っていないので効果音ストップ
+		GameSound::Stop(L"Shooting");
 	}
 	else {
 		gravity = 0;
 		position.y = RADIUS;
+
+		//効果音　なっていなければならす
+		if (GameSound::IsPlaying(L"Shooting") == false) {
+			GameSound::Play(L"Shooting", position);
+		}
 	}
 }
 

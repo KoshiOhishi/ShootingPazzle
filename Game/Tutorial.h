@@ -23,6 +23,7 @@ private:
 	//タイマー
 	Timer moveMasterPosTimer;
 	Timer roopEffectTimer;
+	Timer moveOverlapMouseTimer;
 
 	//チュートリアル有効か
 	bool isEnable = false;
@@ -41,4 +42,8 @@ public:
 
 	void UpdateTexFromPhase();
 	void UpdateTexPos();
+	void UpdateTexPosOverlapMouse(Vector2& masterPos);
+
+	//マウスとチュートリアルが重なっているか
+	bool IsOverlapMouse();
 };

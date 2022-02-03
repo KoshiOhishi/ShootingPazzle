@@ -117,13 +117,14 @@ void Title::Draw()
 
 void Title::UpdateInput()
 {
-	//左クリックでステージセレクトへ
 	if (Mouse::IsMouseButtonRelease(LEFT)) {
+		//左クリックでタイトルへ
 		if (firstEffectTimer.GetNowTime() < 4500) {
 			//黒くなり始める時間
 			firstEffectTimer.SetNowTime(4500);
 		}
-		else if (firstEffectTimer.GetIsEnd()) {
+		//左クリックでステージセレクトへ
+		else if (firstEffectTimer.GetIsEnd() && sceneChangeTimer.GetIsStart() == false) {
 			//シーンチェンジタイマー開始
 			sceneChangeTimer.Start();
 			//効果音鳴らす

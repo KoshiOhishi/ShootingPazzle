@@ -18,7 +18,7 @@ void GameSound::StaticInitialize()
 	AddSound(dir + L"GameStart.wav", false);
 	AddSound(dir + L"PosDecide.wav", false);
 	AddSound(dir + L"RollNumber.wav", false, true, 0, 127);
-	AddSound(dir + L"Ascension.wav");
+	AddSound(dir + L"Ascension.wav", false);
 	AddSound(dir + L"UI_Select.wav", false);
 	AddSound(dir + L"UI_Click.wav", false);
 
