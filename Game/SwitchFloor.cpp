@@ -1,5 +1,6 @@
 #include "SwitchFloor.h"
 #include "GameUtility.h"
+#include "FPSManager.h"
 
 ObjModel SwitchFloor::modelBox[2];
 
@@ -18,9 +19,6 @@ void SwitchFloor::Initialize(const StageVec2& pos)
 	SetStagePos(pos);
 
 	UpdateCollision();
-
-	colorTimer.SetTimer(0, 1000, true, 0.5f);
-	colorTimer.Start();
 }
 
 void SwitchFloor::Update()
@@ -48,10 +46,11 @@ void SwitchFloor::UpdateSwitchState()
 
 void SwitchFloor::UpdateSwitchColor()
 {
-	colorTimer.Update();
+	addColorTime += 0.5 * FPSManager::GetMulAdjust60FPS();
+	if (addColorTime >= 60) { addColorTime -= 60; }
 
 	if (switchState == SWITCH_STATE_OFF) {
-		float digrees = colorTimer.GetNowTime() * 180 / colorTimer.GetEndTime();
+		float digrees = addColorTime * 180 / 60;
 		float val = sin(digrees * PI / 180) * 0.75f;
 
 		Vector4 add = { val,val,val,0 };

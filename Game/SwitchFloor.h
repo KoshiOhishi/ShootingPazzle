@@ -24,7 +24,7 @@ private:
 	int switchColor = SWITCH_COLOR_NONE;
 	int switchState = SWITCH_STATE_OFF;
 
-	Timer colorTimer;
+	float addColorTime;
 
 public:
 	static void StaticInitialize();
