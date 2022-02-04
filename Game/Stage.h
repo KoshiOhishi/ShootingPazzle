@@ -4,6 +4,7 @@
 #include "BaseFloor.h"
 #include "Timer.h"
 #include "Particle3D.h"
+#include <memory>
 
 class Stage
 {
@@ -16,9 +17,9 @@ private:
 	//ステージの大きさ マス単位
 	StageVec2 stageSize = { 20,20 };
 	//ブロックコンテナ
-	std::vector<BaseBlock*> blocks;
+	std::vector<std::unique_ptr<BaseBlock>> blocks;
 	//床ブロックコンテナ
-	std::vector<BaseFloor*> floors;
+	std::vector< std::unique_ptr<BaseFloor>> floors;
 	//マウスカーソルと判定を取る用の板コリジョン
 	Plane floorCollision;
 	//球のスタート奥行
@@ -125,13 +126,13 @@ public:
 	/// ブロック配置取得
 	/// </summary>
 	/// <returns></returns>
-	std::vector<BaseBlock*>& GetBlocks() { return blocks; }
+	std::vector<std::unique_ptr<BaseBlock>>& GetBlocks() { return blocks; }
 
 	/// <summary>
 	/// 床ブロック配置取得
 	/// </summary>
 	/// <returns></returns>
-	std::vector<BaseFloor*>& GetFloors() { return floors; }
+	std::vector<std::unique_ptr<BaseFloor>>& GetFloors() { return floors; }
 
 	/// <summary>
 	/// マウスと床の当たり判定に使用する板コリジョン取得

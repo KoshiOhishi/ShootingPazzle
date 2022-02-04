@@ -9,7 +9,7 @@
 //Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
 std::string SceneManager::nowScene;
 std::string SceneManager::nextScene = "";
-std::unordered_map<std::string, Scene*> SceneManager::scenes;
+std::unordered_map<std::string, std::unique_ptr<Scene>> SceneManager::scenes;
 
 void SceneManager::AddScene(Scene* scene, const string& sceneName)
 {
@@ -27,11 +27,6 @@ void SceneManager::ChangeScene(const string& sceneName)
 
 void SceneManager::DeleteScene()
 {
-	for (auto itr = scenes.begin(); itr != scenes.end(); itr++)
-	{
-		delete itr->second;
-	}
-
 	scenes.clear();
 }
 

@@ -18,13 +18,6 @@ Stage::Stage()
 
 Stage::~Stage()
 {
-	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i]) delete blocks[i];
-	}
-	blocks.clear();
-	for (int i = 0; i < floors.size(); i++) {
-		if (floors[i]) delete floors[i];
-	}
 	floors.clear();
 }
 
@@ -63,13 +56,6 @@ void Stage::LoadStage(std::string filename)
 	targetBlockCount = 0;
 
 	//データ初期化
-	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i]) delete blocks[i];
-	}
-	blocks.clear();
-	for (int i = 0; i < floors.size(); i++) {
-		if (floors[i]) delete floors[i];
-	}
 	floors.clear();
 
 	//GameUtilityにステージサイズを渡す
@@ -152,7 +138,6 @@ void Stage::Update()
 	for (int i = 0; i < blocks.size(); i++) {
 		//ブロックが壊れていたら削除
 		if (blocks[i]->IsBreakup()) {
-			delete blocks[i];
 			blocks.erase(blocks.begin() + i);
 			i--;
 			continue;
@@ -293,7 +278,6 @@ void Stage::DeleteBlock(const StageVec2& stagePos)
 	}
 
 	//ブロック削除
-	if (blocks[deleteIndex]) delete blocks[deleteIndex];
 	blocks.erase(blocks.begin() + deleteIndex);
 }
 
@@ -446,7 +430,6 @@ void Stage::DeleteFloor(const StageVec2& stagePos)
 	}
 
 	//床ブロック削除
-	if (floors[deleteIndex]) delete floors[deleteIndex];
 	floors.erase(floors.begin() + deleteIndex);
 }
 

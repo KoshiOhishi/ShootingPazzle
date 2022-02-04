@@ -448,7 +448,7 @@ void MyBullet::CheckFloorCollision()
 		}
 
 		if (stage->GetFloors()[i]->GetObjectName() == "BreakFloor") {
-			BreakFloor* floor = dynamic_cast<BreakFloor*>(stage->GetFloors()[i]);
+			BreakFloor* floor = dynamic_cast<BreakFloor*>(stage->GetFloors()[i].get());
 
 			//球が床ブロックから離れた時を検知させるためにフラグをセット
 			//(検知はBreakFloorのUpdate()で行う)

@@ -19,9 +19,9 @@ using namespace Microsoft::WRL;
 
 HRESULT result;
 //ポストエフェクト
-PostEffect* postEffect = nullptr;
+std::unique_ptr<PostEffect> postEffect = nullptr;
 //タイマー
-Timer* timer;
+std::unique_ptr<Timer> timer = nullptr;
 //デバッグレイヤーをオンに
 ComPtr<ID3D12Debug> debugController;
 ComPtr<ID3D12DebugDevice> mDebugDevice;
@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SceneManager::ChangeScene("Editor");
 
 	//タイマー
-	timer = new Timer(0, INT_MAX);
+	timer = std::make_unique<Timer>(0, INT_MAX);
 	timer->Start();
 
 	MSG msg{}; // メッセージ
@@ -223,7 +223,7 @@ void Initialize() {
 #pragma endregion
 
 	//ポストエフェクトの初期化
-	postEffect = new PostEffect();
+	postEffect = std::make_unique<PostEffect>();
 	postEffect->Initialize();
 
 	//ゲーム静的初期化
@@ -263,6 +263,5 @@ void Update() {
 }
 void Finalize() {
 	//各種解放処理
-	delete postEffect;
 	DX12Util::End();
 }

@@ -352,19 +352,19 @@ void Title::AddEffectObject()
 	//オブジェクトを3種類に分類
 	newEffectObject->type = rand() % 3;
 
-	//それぞれモデルセット
-	if (newEffectObject->type == PARTICLE_TYPE_SQUARE) {
-		newEffectObject->pModel = SquareBlock::GetModel(1);	//ひび割れた四角いブロックのモデル
-	}
-	else if (newEffectObject->type == PARTICLE_TYPE_TRIANGLE) {
-		newEffectObject->pModel = TriangleBlock::GetModel(1);	//ひび割れた三角のブロックのモデル
-	}
-	else if (newEffectObject->type == PARTICLE_TYPE_BREAK) {
-		newEffectObject->pModel = BreakFloor::GetModel();	//壊れる床ブロックのモデル
-	}
 	//オブジェクト初期化とモデルセット
 	newEffectObject->object.Initialize();
-	newEffectObject->object.SetObjModel(newEffectObject->pModel);
+
+	//それぞれモデルセット
+	if (newEffectObject->type == PARTICLE_TYPE_SQUARE) {
+		newEffectObject->object.SetObjModel(SquareBlock::GetModel(1));	//ひび割れた四角いブロックのモデル
+	}
+	else if (newEffectObject->type == PARTICLE_TYPE_TRIANGLE) {
+		newEffectObject->object.SetObjModel(TriangleBlock::GetModel(1));	//ひび割れた三角のブロックのモデル
+	}
+	else if (newEffectObject->type == PARTICLE_TYPE_BREAK) {
+		newEffectObject->object.SetObjModel(BreakFloor::GetModel());	//壊れる床ブロックのモデル
+	}
 
 	//球面上の位置、移動量、スピードセット
 	int range = 100;

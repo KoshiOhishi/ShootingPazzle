@@ -10,6 +10,7 @@
 #include <x3daudio.h>
 #include <DirectXMath.h>
 #include "Camera.h"
+#include <memory>
 
 #pragma comment(lib, "xaudio2.lib")
 

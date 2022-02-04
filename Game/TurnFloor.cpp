@@ -38,7 +38,7 @@ void TurnFloor::Update()
 {
 	//上に覆う用のオブジェクトの位置同期
 	objCover.SetPosition(object.GetPosition() + Vector3(0, ONE_CELL_LENGTH / 2, 0));
-	//RollUV();
+	RollUV();
 	object.Update(pIOD[turnType]);
 	objCover.Update(pIOD[turnType + 4]);
 	UpdateCollision();
@@ -73,7 +73,7 @@ void TurnFloor::RollUV()
 	if (addUV >= 1) { addUV -= 1; }
 
 	//各頂点において
-	for (int i = 0; i < modelCover[i].GetVertices().size(); i++) {
+	for (int i = 0; i < 4; i++) {
 		modelCover[TURNTYPE_LEFT].SetVertexUV(i, OLD_UV[i] + Vector2(addUV, 0));
 		modelCover[TURNTYPE_RIGHT].SetVertexUV(i, OLD_UV[i] + Vector2(-addUV, 0));
 		modelCover[TURNTYPE_UP].SetVertexUV(i, OLD_UV[i] + Vector2(0, addUV));

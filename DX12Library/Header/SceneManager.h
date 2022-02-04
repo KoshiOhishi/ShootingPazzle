@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include "Scene.h"
+#include <memory>
 
 class SceneManager
 {
@@ -12,7 +13,7 @@ class SceneManager
 private:
 	static string nowScene;
 	static string nextScene;
-	static unordered_map<string, Scene*> scenes;
+	static unordered_map<string, std::unique_ptr<Scene>> scenes;
 
 public:
 	static void AddScene(Scene* scene, const string& sceneName);

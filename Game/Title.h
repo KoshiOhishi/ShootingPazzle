@@ -22,7 +22,6 @@ class Title :
     {
         int type = -1;          //パーティクルタイプ
         int colorType = -1;     //色
-        ObjModel* pModel;       //モデル
         Object3D object;        //オブジェクト
         Vector3 position;       //位置
         Vector3 velocity;       //移動量
