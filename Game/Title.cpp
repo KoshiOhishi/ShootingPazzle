@@ -49,6 +49,7 @@ Title::Title()
 
 Title::~Title()
 {
+	effectObjects.clear();
 }
 
 void Title::Initialize()
@@ -138,16 +139,7 @@ void Title::UpdateInput()
 	//シーンチェンジタイマー終了で次のシーンに移る
 	if (sceneChangeTimer.GetIsEnd()) {
 		//オブジェクト削除
-		auto itr = effectObjects.begin();
-		while (itr != effectObjects.end())
-		{
-			//パーティクル生成
-			AddParticle(*(*itr));
-			//エフェクトオブジェクト削除
-			delete (*itr);
-			(*itr) = nullptr;
-			itr = effectObjects.erase(itr);
-		}
+		effectObjects.clear();
 		//シーンチェンジ
 		SceneManager::ChangeScene("StageSelect");
 	}
@@ -270,8 +262,6 @@ void Title::UpdateEffectObjects()
 			//パーティクル生成
 			AddParticle(*(*itr));
 			//エフェクトオブジェクト削除
-			delete (*itr);
-			(*itr) = nullptr;
 			itr = effectObjects.erase(itr);
 		}
 		else

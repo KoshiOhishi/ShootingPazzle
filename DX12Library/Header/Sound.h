@@ -285,8 +285,8 @@ class WaveData
 	//メンバ変数
 private:
 	//フォーマット
-	WAVEFORMATEX* wfex;
-	char* soundBuffer;
+	std::unique_ptr<WAVEFORMATEX> wfex;
+	std::unique_ptr<char> soundBuffer;
 	UINT32 audioBytes;
 
 	//メンバ関数
@@ -326,9 +326,9 @@ public:
 	/// WAVEFORMATEX取得
 	/// </summary>
 	/// <returns>WAVEFORMATEX</returns>
-	WAVEFORMATEX* GetPWaveFormatEx() { return wfex; }
+	WAVEFORMATEX* GetPWaveFormatEx() { return wfex.get(); }
 
-	char* GetSoundBuffer() { return soundBuffer; }
+	char* GetSoundBuffer() { return soundBuffer.get(); }
 
 	UINT32 GetAudioBytes() { return audioBytes; }
 
@@ -383,8 +383,9 @@ private:
 	X3DAUDIO_CONE emitterCone;
 	X3DAUDIO_DSP_SETTINGS dspSettings;
 	XMFLOAT3 emitterPrevPos;
-	float* azimuths;
-	float* matrix;
+
+	FLOAT32 azimuths[2];
+	FLOAT32 matrix[2];
 
 	//メンバ関数
 public:

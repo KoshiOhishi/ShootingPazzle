@@ -27,15 +27,6 @@ void Sound::StaticInitialize(bool use3DAudio)
 {
 	HRESULT result;
 
-	//COMの初期化
-	if (FAILED(CoInitializeEx(NULL, COINIT_MULTITHREADED)))
-	{
-		assert(0);
-		//解放
-		CoUninitialize();
-		return;
-	}
-
 	//XAudioエンジンのインスタンスを生成
 	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	if (FAILED(result))
@@ -90,22 +81,22 @@ void Sound::StaticInitialize(bool use3DAudio)
 
 void Sound::StaticFinalize()
 {
-	//ソースボイス後始末
-	for (int i = 0; i < sourceVoiceManager.size(); i++) {
-		sourceVoiceManager[i]->DestroySourceVoice();
-	}
-	//サブミックスボイス後始末
-	for (int i = 0; i < submixVoiceManager.size(); i++) {
-		submixVoiceManager[i]->DestroySubmixVoice();
-	}
-	//XAPOEffect後始末
-	for (int i = 0; i < xapoEffectManager.size(); i++) {
-		xapoEffectManager[i]->DestroyXAPOEffect();
-	}
-	//WaveData後始末
-	for (int i = 0; i < waveDataManager.size(); i++) {
-		waveDataManager[i]->DeleteWave();
-	}
+	////ソースボイス後始末
+	//for (int i = 0; i < sourceVoiceManager.size(); i++) {
+	//	sourceVoiceManager[i]->DestroySourceVoice();
+	//}
+	////サブミックスボイス後始末
+	//for (int i = 0; i < submixVoiceManager.size(); i++) {
+	//	submixVoiceManager[i]->DestroySubmixVoice();
+	//}
+	////XAPOEffect後始末
+	//for (int i = 0; i < xapoEffectManager.size(); i++) {
+	//	xapoEffectManager[i]->DestroyXAPOEffect();
+	//}
+	////WaveData後始末
+	//for (int i = 0; i < waveDataManager.size(); i++) {
+	//	waveDataManager[i]->DeleteWave();
+	//}
 
 	//マスターボイス解放
 	if (pMasterVoice)
@@ -238,7 +229,7 @@ void XAPOEffect::CreateReverb(bool initialState)
 
 	isReverb = true;
 
-	Sound::AddXAPOEffect(this);
+	//Sound::AddXAPOEffect(this);
 }
 
 void XAPOEffect::DestroyXAPOEffect()
@@ -251,6 +242,7 @@ void XAPOEffect::DestroyXAPOEffect()
 SubmixVoice::~SubmixVoice()
 {
 	DestroySubmixVoice();
+	pSubmixVoice = nullptr;
 }
 
 void SubmixVoice::CreateSubmixVoice(const int channelCount, const float samplingRate)
@@ -258,7 +250,7 @@ void SubmixVoice::CreateSubmixVoice(const int channelCount, const float sampling
 	//引数の情報をもとにサブミックスボイス生成
 	HRESULT result = Sound::GetXAudio2Instance()->CreateSubmixVoice(&pSubmixVoice, (UINT32)channelCount, (UINT32)samplingRate);
 	
-	Sound::AddSubmixVoice(this);
+	//Sound::AddSubmixVoice(this);
 }
 
 void SubmixVoice::DestroySubmixVoice()
@@ -268,7 +260,6 @@ void SubmixVoice::DestroySubmixVoice()
 		ClearXAPOEffect();
 
 		pSubmixVoice->DestroyVoice();
-		pSubmixVoice = nullptr;
 	}
 }
 
@@ -427,7 +418,8 @@ void WaveData::LoadWave(const wchar_t* filename)
 
 	//余分なBYTEがあるか
 	if (pwf.wf.wFormatTag == WAVE_FORMAT_PCM) {
-		wfex = (WAVEFORMATEX*)new CHAR[sizeof(WAVEFORMATEX)];
+		WAVEFORMATEX* p = (WAVEFORMATEX*)new CHAR[sizeof(WAVEFORMATEX)];
+		wfex.reset(p);
 		if (wfex == NULL) {
 			assert(0);
 			//クローズ
@@ -436,7 +428,7 @@ void WaveData::LoadWave(const wchar_t* filename)
 		}
 
 		//WAVEFORMATEXにコピー
-		memcpy(wfex, &pwf, sizeof(pwf));
+		memcpy(wfex.get(), &pwf, sizeof(pwf));
 		wfex->cbSize = 0;
 	}
 	else {
@@ -450,7 +442,8 @@ void WaveData::LoadWave(const wchar_t* filename)
 			return;
 		}
 
-		wfex = (WAVEFORMATEX*)new CHAR[sizeof(WAVEFORMATEX) + cbExtraBytes];
+		WAVEFORMATEX* p = (WAVEFORMATEX*)new CHAR[sizeof(WAVEFORMATEX)];
+		wfex.reset(p);
 		if (wfex == NULL) {
 			assert(0);
 			//クローズ
@@ -459,7 +452,7 @@ void WaveData::LoadWave(const wchar_t* filename)
 		}
 
 		//WAVEFORMATEXにコピー
-		memcpy(wfex, &pwf, sizeof(pwf));
+		memcpy(wfex.get(), &pwf, sizeof(pwf));
 		wfex->cbSize = cbExtraBytes;
 
 		//余分なBYTE読み込み
@@ -492,10 +485,10 @@ void WaveData::LoadWave(const wchar_t* filename)
 	}
 
 	//音データの読み込み
-	soundBuffer = new char[ckinfo.cksize];
-	size = mmioRead(mmioHandle, (HPSTR)soundBuffer, ckinfo.cksize);
+	soundBuffer.reset(new char[ckinfo.cksize]);
+	size = mmioRead(mmioHandle, (HPSTR)soundBuffer.get(), ckinfo.cksize);
 	if (size != ckinfo.cksize) {
-		delete[] soundBuffer;
+		soundBuffer.release();
 		assert(0);
 		//クローズ
 		mmioClose(mmioHandle, MMIO_FHOPEN);
@@ -508,21 +501,12 @@ void WaveData::LoadWave(const wchar_t* filename)
 
 	audioBytes = ckinfo.cksize;
 
-	Sound::AddWaveData(this);
+	//Sound::AddWaveData(this);
 
 }
 
 void WaveData::DeleteWave()
 {
-	if (wfex) {
-		delete[] wfex;
-		wfex = nullptr;
-	}
-
-	if (soundBuffer) {
-		delete[] soundBuffer;
-		soundBuffer = nullptr;
-	}
 }
 
 float WaveData::GetSoundLength()
@@ -616,7 +600,6 @@ void SourceVoice::CreateSourceVoice(WaveData* pWaveData, bool isUseEffect, const
 
 		emitter.InnerRadius = 2.0f;
 		emitter.InnerRadiusAngle = X3DAUDIO_PI / 4.0f;
-		azimuths = new float[Sound::GetDeviceDetails().InputChannels];
 		emitter.pChannelAzimuths = azimuths;
 
 		static const X3DAUDIO_DISTANCE_CURVE_POINT Emitter_LFE_CurvePoints[3] = { 0.0f, 1.0f, 0.25f, 0.0f, 1.0f, 0.0f };
@@ -635,14 +618,13 @@ void SourceVoice::CreateSourceVoice(WaveData* pWaveData, bool isUseEffect, const
 		emitter.DopplerScaler = 1.0f;
 
 		//DSP
-		matrix = new float[Sound::GetDeviceDetails().InputChannels];
 		dspSettings.SrcChannelCount = voiceDetails.InputChannels;
 		dspSettings.DstChannelCount = Sound::GetDeviceDetails().InputChannels;
 		dspSettings.pMatrixCoefficients = matrix;
 
 	}
 
-	Sound::AddSourceVoice(this);
+	//Sound::AddSourceVoice(this);
 }
 
 void SourceVoice::DestroySourceVoice()

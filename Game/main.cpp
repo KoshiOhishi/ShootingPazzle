@@ -272,6 +272,8 @@ void Update() {
 	FPSManager::Update();
 }
 void Finalize() {
+	//ゲームサウンド解放
+	GameSound::StaticFinalize();
 	//各種解放処理
 	DX12Util::End();
 }

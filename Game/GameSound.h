@@ -1,19 +1,24 @@
 #pragma once
 #include "Sound.h"
 #include "Timer.h"
+#include <vector>
 #include <unordered_map>
+#include <memory>
+
 class GameSound
 {
+public:
 	struct SoundData
 	{
-		WaveData waveData;
-		SourceVoice sourceVoice;
+		std::unique_ptr<WaveData> waveData;
+		std::unique_ptr<SourceVoice> sourceVoice;
 		Timer stopTimer;
 		bool isUse3D = true;
 	};
 
 private:
-	static std::unordered_map<std::wstring, SoundData> sounds;
+	static std::vector<std::unique_ptr<SoundData>> sounds;
+	static std::unordered_map<std::wstring, int> indexes;
 	static const float MASTER_DISTANCE;
 
 public:
@@ -21,6 +26,11 @@ public:
 	/// 静的初期化
 	/// </summary>
 	static void StaticInitialize();
+
+	/// <summary>
+	/// 後始末
+	/// </summary>
+	static void StaticFinalize();
 
 	/// <summary>
 	/// 更新
@@ -57,7 +67,7 @@ public:
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
 	/// <returns></returns>
-	static bool IsPlaying(const std::wstring& name) { return sounds[name].sourceVoice.GetIsPlay(); }
+	static bool IsPlaying(const std::wstring& name);
 
 	/// <summary>
 	/// 音量セット
@@ -84,4 +94,5 @@ public:
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
 	static SourceVoice& GetLoadedSound(const std::wstring& name);
+
 };

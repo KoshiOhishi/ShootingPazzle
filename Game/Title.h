@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Particle3D.h"
 #include <vector>
+#include <memory>
 
 class Title :
     public Scene
@@ -62,7 +63,7 @@ private:
     Timer clickAlphaTimer;
 
     //エフェクトに使用するオブジェクト配列
-    std::vector<EffectObject*> effectObjects;
+    std::vector<std::unique_ptr<EffectObject>> effectObjects;
 
     //エフェクト追加タイマー
     Timer addEffectTimer;
