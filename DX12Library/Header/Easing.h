@@ -83,6 +83,6 @@ public:
 	/// <returns>イージングをかけた値</returns>
 	static double GetEaseValue(int type, double start, double end, double t);
 
-	static const std::string& GetFuncName(int type);
+	static const std::string GetFuncName(int type);
 };
 

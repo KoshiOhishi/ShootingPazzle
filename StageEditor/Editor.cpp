@@ -559,22 +559,20 @@ void Editor::UpdateImgui()
 			if (ImGui::Button("All Delete")) {
 				//全て削除
 				for (int i = 0; i < stage.blocks.size(); i++) {
-					if (stage.blocks[i]) {
-						//ステージ上の座標取得
-						StageVec2 pos = GameUtility::CalcWorldPos2StagePos(stage.blocks[i]->GetPosition().x, stage.blocks[i]->GetPosition().z);
-						//コマンドに追加
-						CommandDetail data;
-						data.commandType = COMMAND_TYPE_DELETE;
-						data.args1 = pos.x;
-						data.args2 = pos.y;
-						data.objectType = OBJECTTYPE_BLOCK;
-						data.blockFloorType = stage.blocks[i]->GetBlockType();
-						data.breakupCount = stage.blocks[i]->GetBreakupCount();
-						data.colorType = stage.blocks[i]->GetBlockColor();
-						Command::AddCommand(data);
+					//ステージ上の座標取得
+					StageVec2 pos = GameUtility::CalcWorldPos2StagePos(stage.blocks[i]->GetPosition().x, stage.blocks[i]->GetPosition().z);
+					//コマンドに追加
+					CommandDetail data;
+					data.commandType = COMMAND_TYPE_DELETE;
+					data.args1 = pos.x;
+					data.args2 = pos.y;
+					data.objectType = OBJECTTYPE_BLOCK;
+					data.blockFloorType = stage.blocks[i]->GetBlockType();
+					data.breakupCount = stage.blocks[i]->GetBreakupCount();
+					data.colorType = stage.blocks[i]->GetBlockColor();
+					Command::AddCommand(data);
 
-						delete stage.blocks[i];
-					}
+					//オブジェクト削除
 					stage.blocks.erase(stage.blocks.begin() + i);
 					i--;
 				}
@@ -585,20 +583,18 @@ void Editor::UpdateImgui()
 			if (ImGui::Button("All Delete")) {
 				//全て削除
 				for (int i = 0; i < stage.floors.size(); i++) {
-					if (stage.floors[i]) {
-						//ステージ上の座標取得
-						StageVec2 pos = GameUtility::CalcWorldPos2StagePos(stage.floors[i]->GetPosition().x, stage.floors[i]->GetPosition().z);
-						//コマンドに追加
-						CommandDetail data;
-						data.commandType = COMMAND_TYPE_DELETE;
-						data.args1 = pos.x;
-						data.args2 = pos.y;
-						data.objectType = OBJECTTYPE_FLOOR;
-						data.blockFloorType = stage.floors[i]->GetFloorType();
-						Command::AddCommand(data);
+					//ステージ上の座標取得
+					StageVec2 pos = GameUtility::CalcWorldPos2StagePos(stage.floors[i]->GetPosition().x, stage.floors[i]->GetPosition().z);
+					//コマンドに追加
+					CommandDetail data;
+					data.commandType = COMMAND_TYPE_DELETE;
+					data.args1 = pos.x;
+					data.args2 = pos.y;
+					data.objectType = OBJECTTYPE_FLOOR;
+					data.blockFloorType = stage.floors[i]->GetFloorType();
+					Command::AddCommand(data);
 
-						delete stage.floors[i]; 
-					}
+					//オブジェクト削除
 					stage.floors.erase(stage.floors.begin() + i);
 					i--;
 				}
@@ -682,7 +678,6 @@ void Editor::ReCreateStage(const StageVec2& prevSize, const StageVec2& nowSize)
 
 		if (stagePos.x < 0 || stagePos.x >= nowSize.x ||
 			stagePos.y < 0 || stagePos.y >= nowSize.y) {
-			if (stage.blocks[i]) delete stage.blocks[i];
 			stage.blocks.erase(stage.blocks.begin() + i);
 			i--;
 		}
@@ -696,7 +691,6 @@ void Editor::ReCreateStage(const StageVec2& prevSize, const StageVec2& nowSize)
 
 		if (stagePos.x < 0 || stagePos.x >= nowSize.x ||
 			stagePos.y < 0 || stagePos.y >= nowSize.y) {
-			if (stage.floors[i]) delete stage.floors[i];
 			stage.floors.erase(stage.floors.begin() + i);
 			i--;
 		}

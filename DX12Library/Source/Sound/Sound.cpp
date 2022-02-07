@@ -374,7 +374,6 @@ WaveData::~WaveData()
 
 void WaveData::LoadWave(const wchar_t* filename)
 {
-	HRESULT result;
 	MMRESULT mmResult;
 
 	//wavファイルを開く
@@ -733,7 +732,7 @@ void SourceVoice::AddOutputSubmixVoice(SubmixVoice* pSubmixVoice)
 	}
 
 	//複数版
-	XAUDIO2_VOICE_SENDS sendlist = { send.size(), send.data() };
+	XAUDIO2_VOICE_SENDS sendlist = { (UINT32)send.size(), send.data() };
 
 	if (pSourceVoice == nullptr) {
 		assert(0);

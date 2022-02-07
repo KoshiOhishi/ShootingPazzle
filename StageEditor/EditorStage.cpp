@@ -13,13 +13,7 @@
 
 EditorStage::~EditorStage()
 {
-	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i]) delete blocks[i];
-	}
 	blocks.clear();
-	for (int i = 0; i < floors.size(); i++) {
-		if (floors[i]) delete floors[i];
-	}
 	floors.clear();
 }
 
@@ -51,13 +45,7 @@ void EditorStage::Initialize()
 void EditorStage::LoadStage(std::string filename)
 {
 	//データ初期化
-	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i]) delete blocks[i];
-	}
 	blocks.clear();
-	for (int i = 0; i < floors.size(); i++) {
-		if (floors[i]) delete floors[i];
-	}
 	floors.clear();
 
 	//GameUtilityにステージサイズを渡す
@@ -239,7 +227,6 @@ void EditorStage::DeleteBlock(const StageVec2& stagePos, bool addCommand)
 	}
 
 	//ブロック削除
-	if (blocks[deleteIndex]) delete blocks[deleteIndex];
 	blocks.erase(blocks.begin() + deleteIndex);
 }
 
@@ -373,7 +360,6 @@ void EditorStage::DeleteFloor(const StageVec2& stagePos, bool addCommand)
 	}
 
 	//床ブロック削除
-	if (floors[deleteIndex]) delete floors[deleteIndex];
 	floors.erase(floors.begin() + deleteIndex);
 
 }

@@ -8,14 +8,20 @@ class EditorStage
 {
 //エディット用なので公開でOK
 public:
+	//球の大きさ
 	const float sphereRadius = ONE_CELL_LENGTH / 2;
-
+	//ステージサイズ
 	StageVec2 stageSize = { 20,20 };
-	std::vector<BaseBlock*> blocks;
-	std::vector<BaseFloor*> floors;
+	//ブロックコンテナ
+	std::vector<std::unique_ptr<BaseBlock>> blocks;
+	//床ブロックコンテナ
+	std::vector< std::unique_ptr<BaseFloor>> floors;
+	//床当たり判定(マウス用)
 	Plane floorCollision;
+	//スタート縦位置
 	unsigned short startLaneZ = stageSize.y - 2;
 
+	//以下表示用オブジェクト
 	InstancingObjectDraw iodSquareBlock[4];
 	InstancingObjectDraw iodTriangleBlock[4];
 	InstancingObjectDraw iodNormalFloor;

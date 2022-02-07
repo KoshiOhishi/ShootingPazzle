@@ -101,7 +101,7 @@ public: //メンバ関数
 	//Getter
 public:
 	//ビュープロジェクション行列取得
-	const XMMATRIX& GetViewProjection()const;
+	const XMMATRIX GetViewProjection()const;
 
 	//ビルボード行列取得
 	const XMMATRIX& GetBillboard()const { return matBillboard; }
@@ -119,7 +119,7 @@ public:
 	/// 注視点座標取得
 	/// </summary>
 	/// <returns>注視点座標</returns>
-	const Vector3& GetTarget()const { return eye + GetCameraDir() * GetDistance(); }
+	const Vector3 GetTarget()const { return eye + GetCameraDir() * GetDistance(); }
 
 	/// <summary>
 	/// 上方向ベクトル取得
@@ -149,7 +149,7 @@ public:
 	/// ビュー行列を取得
 	/// </summary>
 	/// <returns>ビュー行列を</returns>
-	const XMMATRIX& GetViewMatrix()const { return matView; }
+	const XMMATRIX GetViewMatrix()const { return matView; }
 
 	/// <summary>
 	/// 射影変換行列を取得

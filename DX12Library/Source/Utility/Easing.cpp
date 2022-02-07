@@ -266,7 +266,7 @@ double Easing::GetEaseValue(int type, double start, double end, const Timer& tim
 	return GetEaseValue(type, start, end, t);
 }
 
-const std::string& Easing::GetFuncName(int type)
+const std::string Easing::GetFuncName(int type)
 {
 	if (type < 0 || type > 30) {
 		return "NONE";
@@ -365,6 +365,8 @@ const std::string& Easing::GetFuncName(int type)
 
 	case EASE_INOUTBOUNCE:
 		return "EASE_INOUTBOUNCE";
-	}
 
+	default:
+		return "NONE";
+	}
 }

@@ -231,7 +231,7 @@ void Sprite::FirstInit()
 
 	//行列初期化
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
+		0.0f, (float)DX12Util::GetWindowWidth(), (float)DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
 	);
 }
 
@@ -284,7 +284,7 @@ void Sprite::Initialize()
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = Vector4(1, 1, 1, 1);		//色指定 (RGBA)
 	constMap->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//平行投影行列の合成
+		0.0f, (float)DX12Util::GetWindowWidth(), (float)DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//平行投影行列の合成
 	constBuff->Unmap(0, nullptr);
 }
 
@@ -461,16 +461,16 @@ void Sprite::SetTexture(const std::wstring& filename, const bool loadNewerIfNotF
 		texbuff[texNumber]->GetDesc();
 
 	if (width == 0) {
-		width = resDesc.Width;
+		width = (float)resDesc.Width;
 	}
 	if (height == 0) {
-		height = resDesc.Height;
+		height = (float)resDesc.Height;
 	}
 	if (tex_width == 0) {
-		tex_width = resDesc.Width;
+		tex_width = (float)resDesc.Width;
 	}
 	if (tex_height == 0) {
-		tex_height = resDesc.Height;
+		tex_height = (float)resDesc.Height;
 	}
 
 	size.x = width;

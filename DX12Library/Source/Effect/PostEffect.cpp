@@ -22,9 +22,6 @@ using namespace DirectX;
 
 void PostEffect::Initialize(bool isDispDepthTex)
 {
-	HRESULT result;
-
-
 	//VBV作成
 	CreateVBV();
 	//定数バッファ生成
