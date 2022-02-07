@@ -2,6 +2,15 @@
 #include "Input.h"
 #include "DebugText.h"
 
+//コマンド格納コンテナ
+std::vector<CommandDetail> Command::commands;
+//編集するステージのポインタ
+EditorStage* Command::pStage;
+//現在のコマンド位置
+int Command::commandPos = -1;
+//長押しタイマー
+Timer Command::longPushTimer;
+
 void Command::Initialize()
 {
 	//コマンド全クリア
@@ -32,14 +41,16 @@ void Command::Update()
 
 void Command::AddCommand(const CommandDetail& commandDetail)
 {
-	//同じ内容のコマンドが既に末尾に存在していたら追加しない
-	if (commands.size() > 0 && commandDetail == commands[commands.size() - 1]) {
-		return;
-	}
 
+	//コマンドの位置が末尾なら
+	if (commandPos == commands.size() - 1) {
+		//同じ内容のコマンドが既に末尾に存在していたら追加しない
+		if (commands.size() > 0 && commandDetail == commands[commands.size() - 1]) {
+			return;
+		}
+	}
 	//コマンドの位置が末尾でないなら
-	//末尾まで削除してから追加
-	if (commandPos != commands.size() - 1) {
+	else {
 		//末尾からコマンドの位置までの数削除
 		int count = commands.size() - 1 - commandPos;
 		for (int i = 0; i < count; i++) {
@@ -134,20 +145,20 @@ void Command::ApplyCommand(const CommandDetail& commandDetail)
 	case COMMAND_TYPE_ADD:
 		//種類別に追加
 		if (commandDetail.objectType == OBJECTTYPE_BLOCK) {
-			pStage->AddBlock(pos, commandDetail.blockFloorType, commandDetail.breakupCount, commandDetail.colorType);
+			pStage->AddBlock(pos, commandDetail.blockFloorType, commandDetail.breakupCount, commandDetail.colorType, false);//コマンド追加無し
 		}
 		else if (commandDetail.objectType == OBJECTTYPE_FLOOR) {
-			pStage->AddFloor(pos, commandDetail.blockFloorType);
+			pStage->AddFloor(pos, commandDetail.blockFloorType, false);//コマンド追加無し
 		}
 		break;
 
 	case COMMAND_TYPE_DELETE:
 		//種類別に削除
 		if (commandDetail.objectType == OBJECTTYPE_BLOCK) {
-			pStage->DeleteBlock(pos);
+			pStage->DeleteBlock(pos, false);//コマンド追加無し
 		}
 		else if (commandDetail.objectType == OBJECTTYPE_FLOOR) {
-			pStage->DeleteFloor(pos);
+			pStage->DeleteFloor(pos, false);//コマンド追加無し
 		}
 		break;
 

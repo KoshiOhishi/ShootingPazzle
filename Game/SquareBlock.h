@@ -42,6 +42,12 @@ public:
 	void UpdateCollision() override;
 
 	/// <summary>
+	/// ブロックの種類を返す
+	/// </summary>
+	/// <returns></returns>
+	int GetBlockType() override;
+
+	/// <summary>
 	/// 壊れるまでのカウントを1減らす 0になったらBreakup()を呼ぶ
 	/// </summary>
 	void DecrementBreakupCount() override;

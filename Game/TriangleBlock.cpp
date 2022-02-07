@@ -86,19 +86,15 @@ void TriangleBlock::SetTriangleType(int shapeType)
 	switch (this->triangleType) {
 	case TRIANGLETYPE_NO_LEFTTOP:
 		object.SetRotation({ 0, 180, 0 });
-		objectName = "TriangleBlock_No_LeftTop";
 		break;
 	case TRIANGLETYPE_NO_RIGHTTOP:
 		object.SetRotation({ 0, 270, 0 });
-		objectName = "TriangleBlock_No_RightTop";
 		break;
 	case TRIANGLETYPE_NO_LEFTBOTTOM:
 		object.SetRotation({ 0, 90, 0 });
-		objectName = "TriangleBlock_No_LeftBottom";
 		break;
 	case TRIANGLETYPE_NO_RIGHTBOTTOM:
 		//そのまま
-		objectName = "TriangleBlock_No_RightBottom";
 		break;
 	}
 
@@ -166,6 +162,28 @@ void TriangleBlock::UpdateCollision()
 		capsule[2].end = topLeft;
 		break;
 	}
+}
+
+int TriangleBlock::GetBlockType()
+{
+	int result = -1;
+	//タイプによって返す値を変える
+	switch (this->triangleType) {
+	case TRIANGLETYPE_NO_LEFTTOP:
+		result = BLOCKTYPE_TRIANGLE_NO_LEFTTOP;
+		break;
+	case TRIANGLETYPE_NO_RIGHTTOP:
+		result = BLOCKTYPE_TRIANGLE_NO_RIGHTTOP;
+		break;
+	case TRIANGLETYPE_NO_LEFTBOTTOM:
+		result = BLOCKTYPE_TRIANGLE_NO_LEFTBOTTOM;
+		break;
+	case TRIANGLETYPE_NO_RIGHTBOTTOM:
+		result = BLOCKTYPE_TRIANGLE_NO_RIGHTBOTTOM;
+		break;
+	}
+
+	return result;
 }
 
 void TriangleBlock::DecrementBreakupCount()

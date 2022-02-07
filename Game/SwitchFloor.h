@@ -46,6 +46,12 @@ public:
 	void UpdateCollision() override;
 
 	/// <summary>
+	/// ブロックの種類を返す
+	/// </summary>
+	/// <returns></returns>
+	int GetFloorType() override;
+
+	/// <summary>
 	/// 現在のステージの色によってモデルを更新
 	/// </summary>
 	void UpdateSwitchState();

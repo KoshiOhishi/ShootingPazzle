@@ -42,6 +42,12 @@ public:
 	void UpdateCollision() override;
 
 	/// <summary>
+	/// ブロックの種類を返す
+	/// </summary>
+	/// <returns></returns>
+	int GetFloorType() override;
+
+	/// <summary>
 	/// 方向転換の向き指定
 	/// </summary>
 	/// <param name="turnType">TURNTYPE_...</param>

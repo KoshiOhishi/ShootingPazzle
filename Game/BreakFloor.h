@@ -48,6 +48,12 @@ public:
 	void UpdateCollision() override;
 
 	/// <summary>
+	/// ブロックの種類を返す
+	/// </summary>
+	/// <returns></returns>
+	int GetFloorType() override;
+
+	/// <summary>
 	/// ブロックを壊す
 	/// </summary>
 	void Break();

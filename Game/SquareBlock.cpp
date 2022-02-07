@@ -68,9 +68,6 @@ void SquareBlock::Initialize(const StageVec2& pos, float sphereRadius)
 
 	//色変更タイマー初期化
 	changeColorTimer.SetTimer(0, 1000);
-
-	objectName = "SquareBlock";
-
 }
 
 void SquareBlock::Update()
@@ -100,6 +97,11 @@ void SquareBlock::UpdateCollision()
 
 	capsule[3].start = bottomLeft;
 	capsule[3].end = topLeft;
+}
+
+int SquareBlock::GetBlockType()
+{
+	return BLOCKTYPE_SQUARE;
 }
 
 void SquareBlock::DecrementBreakupCount()

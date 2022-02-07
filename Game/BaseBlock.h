@@ -41,7 +41,6 @@ protected:
 	int prevStageColor = STAGE_COLOR_NONE;
 	//色変更タイマー
 	Timer changeColorTimer;
-	std::string objectName = "";
 
 	//出現エフェクトの種類
 	int firstEffectType = -1;
@@ -94,6 +93,11 @@ public:
 	virtual void Breakup() = 0;
 
 	/// <summary>
+	/// ブロックの種類を返す
+	/// </summary>
+	virtual int GetBlockType() = 0;
+
+	/// <summary>
 	/// 色更新
 	/// </summary>
 	void UpdateColor();
@@ -133,11 +137,6 @@ public:
 
 #pragma endregion
 #pragma region Getter
-	/// <summary>
-	/// ブロックの種類を取得する
-	/// </summary>
-	/// <returns>ブロックの種類</returns>
-	const std::string& GetObjectName() { return objectName; }
 
 	const Vector3& GetPosition() { return object.GetPosition(); }
 

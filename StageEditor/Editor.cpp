@@ -63,7 +63,7 @@ void Editor::Initialize()
 	stage.LoadStage("");
 	sliderWidth = stage.stageSize.x;
 	sliderDepth = stage.stageSize.y;
-
+	prevSize = stage.stageSize;
 
 	//オブジェクト初期化
 	for (int i = 0; i < _countof(startLane); i++) {
@@ -86,8 +86,8 @@ void Editor::Initialize()
 	txtCursol.SetFontData(fd);
 
 	//コマンド初期化
-	command.Initialize();
-	command.SetPStage(&stage);
+	Command::Initialize();
+	Command::SetPStage(&stage);
 }
 
 void Editor::Update()
@@ -188,7 +188,7 @@ void Editor::UpdateEdit()
 	else if (mode == MODE_OPTION) {
 		UpdateOption();
 	}
-	command.Update();
+	Command::Update();
 }
 
 void Editor::UpdateAdd()
@@ -201,37 +201,13 @@ void Editor::UpdateAdd()
 	if (objectType == OBJECTTYPE_BLOCK) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
 			//ステージに追加
-			bool result = stage.AddBlock(nowCursolPos, blockType, breakupCount, blockColor);
-
-			//コマンドに追加
-			if (result == true) {
-				CommandDetail data;
-				data.commandType = COMMAND_TYPE_ADD;
-				data.args1 = nowCursolPos.x;
-				data.args2 = nowCursolPos.y;
-				data.objectType = OBJECTTYPE_BLOCK;
-				data.blockFloorType = blockType;
-				data.breakupCount = breakupCount;
-				data.colorType = blockColor;
-				command.AddCommand(data);
-			}
+			stage.AddBlock(nowCursolPos, blockType, breakupCount, blockColor);
 		}
 	}
 	else if (objectType == OBJECTTYPE_FLOOR) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
 			//ステージに追加
-			bool result = stage.AddFloor(nowCursolPos, floorType);
-
-			//コマンドに追加
-			if (result == true) {
-				CommandDetail data;
-				data.commandType = COMMAND_TYPE_ADD;
-				data.args1 = nowCursolPos.x;
-				data.args2 = nowCursolPos.y;
-				data.objectType = OBJECTTYPE_FLOOR;
-				data.blockFloorType = floorType;
-				command.AddCommand(data);
-			}
+			stage.AddFloor(nowCursolPos, floorType);
 		}
 	}
 }
@@ -246,37 +222,13 @@ void Editor::UpdateDelete()
 	if (objectType == OBJECTTYPE_BLOCK) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
 			//ステージから削除
-			bool result = stage.DeleteBlock(nowCursolPos);
-
-			//コマンドに追加
-			if (result == true) {
-				CommandDetail data;
-				data.commandType = COMMAND_TYPE_DELETE;
-				data.args1 = nowCursolPos.x;
-				data.args2 = nowCursolPos.y;
-				data.objectType = OBJECTTYPE_BLOCK;
-				data.blockFloorType = blockType;
-				data.breakupCount = breakupCount;
-				data.colorType = blockColor;
-				command.AddCommand(data);
-			}
+			stage.DeleteBlock(nowCursolPos);
 		}
 	}
 	else if (objectType == OBJECTTYPE_FLOOR) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
 			//ステージから削除
-			bool result = stage.DeleteFloor(nowCursolPos);
-
-			//コマンドに追加
-			if (result == true) {
-				CommandDetail data;
-				data.commandType = COMMAND_TYPE_DELETE;
-				data.args1 = nowCursolPos.x;
-				data.args2 = nowCursolPos.y;
-				data.objectType = OBJECTTYPE_FLOOR;
-				data.blockFloorType = floorType;
-				command.AddCommand(data);
-			}
+			stage.DeleteFloor(nowCursolPos);
 		}
 	}
 }
@@ -290,7 +242,7 @@ void Editor::UpdateOption()
 		data.commandType = COMMAND_TYPE_STAGE_WIDTH;
 		data.args1 = stage.stageSize.x;
 		data.args2 = sliderWidth;
-		command.AddCommand(data);
+		Command::AddCommand(data);
 	}
 	else if (sliderDepth != stage.stageSize.y) {
 		//コマンドに追加
@@ -298,7 +250,7 @@ void Editor::UpdateOption()
 		data.commandType = COMMAND_TYPE_STAGE_HEIGHT;
 		data.args1 = stage.stageSize.y;
 		data.args2 = sliderDepth;
-		command.AddCommand(data);
+		Command::AddCommand(data);
 	}
 
 	//反映
@@ -327,7 +279,6 @@ void Editor::UpdateObject()
 void Editor::UpdateStage()
 {
 	//前フレームからステージの大きさが変わっていたらステージを再構築
-	static StageVec2 prevSize = stage.stageSize;
 	if (prevSize.x != stage.stageSize.x || prevSize.y != stage.stageSize.y) {
 		StageVec2 nowSize = stage.stageSize;
 		ReCreateStage(prevSize, nowSize);
@@ -335,10 +286,11 @@ void Editor::UpdateStage()
 		sliderWidth = nowSize.x;
 		sliderDepth = nowSize.y;
 	}
+
 	prevSize = stage.stageSize;
 
+	//ステージ更新
 	stage.Update();
-
 }
 
 void Editor::UpdateDispObject()
@@ -420,7 +372,7 @@ void Editor::UpdateStartLane()
 			data.commandType = COMMAND_TYPE_SET_STARTLANE;
 			data.args1 = stage.startLaneZ;
 			data.args2 = nowCursolPos.y;
-			command.AddCommand(data);
+			Command::AddCommand(data);
 
 			//スタート縦位置変更
 			stage.startLaneZ = nowCursolPos.y;
@@ -491,23 +443,8 @@ void Editor::Save()
 	//ブロック追加
 	for (int i = 0; i < stage.blocks.size(); i++) {
 		StageBlock object = {};
-		std::string blockType = stage.blocks[i]->GetObjectName();
 
-		if (blockType == "SquareBlock") {
-			object.type = 0;
-		}
-		else if (blockType == "TriangleBlock_No_LeftTop") {
-			object.type = 1;
-		}
-		else if (blockType == "TriangleBlock_No_RightTop") {
-			object.type = 2;
-		}
-		else if (blockType == "TriangleBlock_No_LeftBottom") {
-			object.type = 3;
-		}
-		else if (blockType == "TriangleBlock_No_RightBottom") {
-			object.type = 4;
-		}
+		object.type = stage.blocks[i]->GetBlockType();
 
 		StageVec2 pos = GameUtility::CalcWorldPos2StagePos(
 			stage.blocks[i]->GetPosition().x, stage.blocks[i]->GetPosition().z);
@@ -522,43 +459,8 @@ void Editor::Save()
 	//床追加
 	for (int i = 0; i < stage.floors.size(); i++) {
 		StageFloor object = {};
-		std::string floorType = stage.floors[i]->GetObjectName();
 
-#pragma region SetType
-		if (floorType == "NormalFloor") {
-			object.type = 0;
-		}
-		else if (floorType == "TurnFloor_Left") {
-			object.type = 1;
-		}
-		else if (floorType == "TurnFloor_Right") {
-			object.type = 2;
-		}
-		else if (floorType == "TurnFloor_Up") {
-			object.type = 3;
-		}
-		else if (floorType == "TurnFloor_Down") {
-			object.type = 4;
-		}
-		else if (floorType == "BreakFloor") {
-			object.type = 5;
-		}
-		else if (floorType == "SwitchFloor_None") {
-			object.type = 6;
-		}
-		else if (floorType == "SwitchFloor_Red") {
-			object.type = 7;
-		}
-		else if (floorType == "SwitchFloor_Blue") {
-			object.type = 8;
-		}
-		else if (floorType == "SwitchFloor_Yellow") {
-			object.type = 9;
-		}
-		else if (floorType == "SwitchFloor_Green") {
-			object.type = 10;
-		}
-#pragma endregion
+		object.type = stage.floors[i]->GetFloorType();
 
 		StageVec2 pos = GameUtility::CalcWorldPos2StagePos(
 			stage.floors[i]->GetPosition().x, stage.floors[i]->GetPosition().z);
@@ -580,12 +482,13 @@ void Editor::Load()
 	//ImGuiのスライダーの値を初期化しておく
 	sliderWidth = stage.stageSize.x;
 	sliderDepth = stage.stageSize.y;
+	prevSize = stage.stageSize;
 	//スタートレーンモデル再生成
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].CreateModel();
 	}
 	//コマンド初期化
-	command.Initialize();
+	Command::Initialize();
 }
 
 void Editor::UpdateImgui()
@@ -656,7 +559,22 @@ void Editor::UpdateImgui()
 			if (ImGui::Button("All Delete")) {
 				//全て削除
 				for (int i = 0; i < stage.blocks.size(); i++) {
-					if (stage.blocks[i]) delete stage.blocks[i];
+					if (stage.blocks[i]) {
+						//ステージ上の座標取得
+						StageVec2 pos = GameUtility::CalcWorldPos2StagePos(stage.blocks[i]->GetPosition().x, stage.blocks[i]->GetPosition().z);
+						//コマンドに追加
+						CommandDetail data;
+						data.commandType = COMMAND_TYPE_DELETE;
+						data.args1 = pos.x;
+						data.args2 = pos.y;
+						data.objectType = OBJECTTYPE_BLOCK;
+						data.blockFloorType = stage.blocks[i]->GetBlockType();
+						data.breakupCount = stage.blocks[i]->GetBreakupCount();
+						data.colorType = stage.blocks[i]->GetBlockColor();
+						Command::AddCommand(data);
+
+						delete stage.blocks[i];
+					}
 					stage.blocks.erase(stage.blocks.begin() + i);
 					i--;
 				}
@@ -667,7 +585,20 @@ void Editor::UpdateImgui()
 			if (ImGui::Button("All Delete")) {
 				//全て削除
 				for (int i = 0; i < stage.floors.size(); i++) {
-					if (stage.floors[i]) delete stage.floors[i];
+					if (stage.floors[i]) {
+						//ステージ上の座標取得
+						StageVec2 pos = GameUtility::CalcWorldPos2StagePos(stage.floors[i]->GetPosition().x, stage.floors[i]->GetPosition().z);
+						//コマンドに追加
+						CommandDetail data;
+						data.commandType = COMMAND_TYPE_DELETE;
+						data.args1 = pos.x;
+						data.args2 = pos.y;
+						data.objectType = OBJECTTYPE_FLOOR;
+						data.blockFloorType = stage.floors[i]->GetFloorType();
+						Command::AddCommand(data);
+
+						delete stage.floors[i]; 
+					}
 					stage.floors.erase(stage.floors.begin() + i);
 					i--;
 				}
@@ -771,6 +702,27 @@ void Editor::ReCreateStage(const StageVec2& prevSize, const StageVec2& nowSize)
 		}
 	}
 
+	//増えた横幅分床ブロックを追加
+	if (nowSize.x > prevSize.x){
+		for (int i = 0; i < nowSize.y; i++) {
+			for (int j = prevSize.x; j < nowSize.x; j++) {
+				StageVec2 pos = { (unsigned short)j,(unsigned short)i };
+				stage.AddFloor(pos, FLOORTYPE_NORMAL);
+			}
+		}
+	}
+
+	//増えた縦幅分床ブロックを追加
+	if (nowSize.y > prevSize.y) {
+		for (int i = prevSize.y; i < nowSize.y; i++) {
+			for (int j = 0; j < nowSize.x; j++) {
+				StageVec2 pos = { (unsigned short)j,(unsigned short)i };
+				stage.AddFloor(pos, FLOORTYPE_NORMAL);
+			}
+		}
+	}
+
+
 	stage.startLaneZ = nowSize.y - 2;
 
 	//スタートレーンモデル再生成
@@ -787,22 +739,3 @@ bool Editor::IsInsideCursol()
 	return nowCursolPos.x >= 0 && nowCursolPos.x < stage.stageSize.x &&
 		nowCursolPos.y >= 0 && nowCursolPos.y < stage.stageSize.y;
 }
-
-//bool blnChk = false;
-//ImGui::Checkbox("CheckboxTest", &blnChk);
-//int radio = 0;
-//ImGui::RadioButton("Radio 1", &radio, 0);
-//ImGui::SameLine();
-//ImGui::RadioButton("Radio 2", &radio, 1);
-//ImGui::SameLine();
-//ImGui::RadioButton("Radio 3", &radio, 2);
-//int nSlider = 0;
-//ImGui::SliderInt("Int Slider", &nSlider, 0, 100);
-//float fSlider = 0.0f;
-//ImGui::SliderFloat("Float Slider", &fSlider, 0.0f, 100.0f);
-//float col3[3] = {};
-//ImGui::ColorPicker3("ColorPicker3", col3, ImGuiColorEditFlags_::ImGuiColorEditFlags_InputRGB);
-//float col4[4] = {};
-//ImGui::ColorPicker4(" ColorPicker4", col4, ImGuiColorEditFlags_::ImGuiColorEditFlags_PickerHueWheel | 
-//ImGuiColorEditFlags_::ImGuiColorEditFlags_AlphaBar);
-

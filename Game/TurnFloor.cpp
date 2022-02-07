@@ -49,17 +49,40 @@ void TurnFloor::UpdateCollision()
 
 }
 
+int TurnFloor::GetFloorType()
+{
+	int result = -1;
+	switch (turnType) {
+	case TURNTYPE_LEFT:
+		result = FLOORTYPE_TURN_LEFT;
+		break;
+	case TURNTYPE_RIGHT:
+		result = FLOORTYPE_TURN_RIGHT;
+		break;
+	case TURNTYPE_UP:
+		result = FLOORTYPE_TURN_UP;
+		break;
+	case TURNTYPE_DOWN:
+		result = FLOORTYPE_TURN_DOWN;
+		break;
+	}
+
+	return result;
+}
+
 void TurnFloor::SetTurnType(int turnType)
 {
 	this->turnType = turnType;
 
+	//è„Ç∆â∫ÇÃéûÇÕè„â∫ãtÇ…Ç∑ÇÈÇ∆ê≥ÇµÇ≠ï\é¶Ç≥ÇÍÇÈ
 	switch (turnType) {
-	case TURNTYPE_LEFT:		objectName = "TurnFloor_Left";		break;
-	case TURNTYPE_RIGHT:	objectName = "TurnFloor_Right";		break;
-	case TURNTYPE_UP:		objectName = "TurnFloor_Up";
-							object.SetRotation({ 0,180,0 });	break;
-	case TURNTYPE_DOWN:		objectName = "TurnFloor_Down";
-							object.SetRotation({ 0,180,0 });	break;
+	case TURNTYPE_LEFT:
+	case TURNTYPE_RIGHT:
+		break;
+	case TURNTYPE_UP:
+		object.SetRotation({ 0,180,0 });	break;
+	case TURNTYPE_DOWN:
+		object.SetRotation({ 0,180,0 });	break;
 	}
 }
 

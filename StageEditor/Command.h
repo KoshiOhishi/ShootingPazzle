@@ -55,76 +55,76 @@ class Command
 {
 private:
 	//コマンド格納コンテナ
-	std::vector<CommandDetail> commands;
+	static std::vector<CommandDetail> commands;
 	//編集するステージのポインタ
-	EditorStage* pStage;
+	static EditorStage* pStage;
 	//現在のコマンド位置
-	int commandPos;
+	static int commandPos;
 	//長押しタイマー
-	Timer longPushTimer;
+	static Timer longPushTimer;
 
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	static void Initialize();
 
 	/// <summary>
 	/// 更新　Ctrl+Zの適用などはここ
 	/// </summary>
-	void Update();
+	static void Update();
 
 	/// <summary>
 	/// コマンド追加
 	/// </summary>
 	/// <param name="commandDetail"></param>
-	void AddCommand(const CommandDetail& commandDetail);
+	static void AddCommand(const CommandDetail& commandDetail);
 
 	/// <summary>
 	/// 編集するステージのポインタセット
 	/// </summary>
 	/// <param name="pStage">ステージのポインタ</param>
-	void SetPStage(EditorStage* pStage) { this->pStage = pStage; }
+	static void SetPStage(EditorStage* pStage) { Command::pStage = pStage; }
 
 private:
 	/// <summary>
 	/// タイマー更新
 	/// </summary>
-	void UpdateTimer();
+	static void UpdateTimer();
 
 	/// <summary>
 	/// Ctrl + Zが押されたかを返す
 	/// </summary>
 	/// <returns>Ctrl + Zが押されたか</returns>
-	bool IsUndo();
+	static bool IsUndo();
 
 	/// <summary>
 	/// Ctrl + Yが押されたかを返す
 	/// </summary>
 	/// <returns>Ctrl + Yが押されたか</returns>
-	bool IsRedo();
+	static bool IsRedo();
 
 	/// <summary>
 	/// アンドゥを適用
 	/// </summary>
-	void ApplyUndo();
+	static void ApplyUndo();
 
 	/// <summary>
 	/// リドゥを適用
 	/// </summary>
-	void ApplyRedo();
+	static void ApplyRedo();
 
 	/// <summary>
 	/// コマンド実行
 	/// </summary>
 	/// <param name="commandDetail"></param>
-	void ApplyCommand(const CommandDetail& commandDetail);
+	static void ApplyCommand(const CommandDetail& commandDetail);
 
 	/// <summary>
 	/// 入力されたコマンドの逆操作のコマンドを返す アンドゥ用
 	/// </summary>
 	/// <param name="src">元コマンド</param>
 	/// <returns>元コマンドの逆操作</returns>
-	CommandDetail GetReverseCommand(const CommandDetail& src);
+	static CommandDetail GetReverseCommand(const CommandDetail& src);
 };
 

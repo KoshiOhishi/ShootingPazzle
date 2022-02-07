@@ -24,5 +24,11 @@ public:
 	/// 当たり判定更新
 	/// </summary>
 	void UpdateCollision() override;
+
+	/// <summary>
+	/// ブロックの種類を返す
+	/// </summary>
+	/// <returns></returns>
+	int GetFloorType() override;
 };
 

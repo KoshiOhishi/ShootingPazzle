@@ -17,7 +17,6 @@ protected:
 	//インスタンシング描画親オブジェクトポインタ
 	InstancingObjectDraw* pIOD;
 
-	std::string objectName = "";
 	//ステージポインタ
 	static Stage* pStage;
 	//出現エフェクトの種類
@@ -61,6 +60,12 @@ public:
 	virtual void UpdateCollision() = 0;
 
 	/// <summary>
+	/// 床ブロックの種類を返す
+	/// </summary>
+	/// <returns></returns>
+	virtual int GetFloorType() = 0;
+
+	/// <summary>
 	/// ステージポインタセット
 	/// </summary>
 	/// <param name="pStage"></param>
@@ -83,12 +88,6 @@ public:
 	/// </summary>
 	/// <param name="pIOD"></param>
 	void SetPInstancingObjectDraw(InstancingObjectDraw* pIOD) { this->pIOD = pIOD; }
-
-	/// <summary>
-	/// ブロックの種類を取得する
-	/// </summary>
-	/// <returns>ブロックの種類</returns>
-	const std::string& GetObjectName() { return objectName; }
 
 	const Vector3& GetPosition() { return object.GetPosition(); }
 };

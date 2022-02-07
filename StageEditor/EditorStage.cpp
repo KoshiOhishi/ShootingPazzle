@@ -9,6 +9,7 @@
 #include "BreakFloor.h"
 #include "SwitchFloor.h"
 #include "GameUtility.h"
+#include "Command.h"
 
 EditorStage::~EditorStage()
 {
@@ -165,11 +166,11 @@ void EditorStage::Draw()
 	}
 }
 
-bool EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor)
+void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor, bool addCommand)
 {
 	//既にブロックが配置されていたらリターン
 	if (CheckExistBlock(stagePos) != -1) {
-		return false;
+		return;
 	}
 
 	//種類ごとにブロック追加
@@ -202,22 +203,44 @@ bool EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned sh
 		blocks.emplace_back(newBlock);
 	}
 
-	return true;
+	if (addCommand) {
+		//コマンド追加
+		CommandDetail data;
+		data.commandType = COMMAND_TYPE_ADD;
+		data.args1 = stagePos.x;
+		data.args2 = stagePos.y;
+		data.objectType = OBJECTTYPE_BLOCK;
+		data.blockFloorType = blockType;
+		data.breakupCount = breakupCount;
+		data.colorType = blockColor;
+		Command::AddCommand(data);
+	}
 }
 
-bool EditorStage::DeleteBlock(const StageVec2& stagePos)
+void EditorStage::DeleteBlock(const StageVec2& stagePos, bool addCommand)
 {
 	//ブロックが配置されていなかったらリターン
 	int deleteIndex = CheckExistBlock(stagePos);
 	if (deleteIndex == -1) {
-		return false;
+		return;
+	}
+
+	if (addCommand) {
+		//コマンド追加
+		CommandDetail data;
+		data.commandType = COMMAND_TYPE_DELETE;
+		data.args1 = stagePos.x;
+		data.args2 = stagePos.y;
+		data.objectType = OBJECTTYPE_BLOCK;
+		data.blockFloorType = blocks[deleteIndex]->GetBlockType();
+		data.breakupCount = blocks[deleteIndex]->GetBreakupCount();
+		data.colorType = blocks[deleteIndex]->GetBlockColor();
+		Command::AddCommand(data);
 	}
 
 	//ブロック削除
 	if (blocks[deleteIndex]) delete blocks[deleteIndex];
 	blocks.erase(blocks.begin() + deleteIndex);
-
-	return true;
 }
 
 int EditorStage::CheckExistBlock(const StageVec2& stagePos)
@@ -234,11 +257,11 @@ int EditorStage::CheckExistBlock(const StageVec2& stagePos)
 	return -1;
 }
 
-bool EditorStage::AddFloor(const StageVec2& stagePos, int floorType)
+void EditorStage::AddFloor(const StageVec2& stagePos, int floorType, bool addCommand)
 {
 	//既に床ブロックが配置されていたらリターン
 	if (CheckExistFloor(stagePos) != -1) {
-		return false;
+		return;
 	}
 
 	//種類ごとに床ブロック追加
@@ -318,22 +341,41 @@ bool EditorStage::AddFloor(const StageVec2& stagePos, int floorType)
 		floors.emplace_back(newFloor);
 	}
 
-	return true;
+	if (addCommand) {
+		//コマンド追加
+		CommandDetail data;
+		data.commandType = COMMAND_TYPE_ADD;
+		data.args1 = stagePos.x;
+		data.args2 = stagePos.y;
+		data.objectType = OBJECTTYPE_FLOOR;
+		data.blockFloorType = floorType;
+		Command::AddCommand(data);
+	}
 }
 
-bool EditorStage::DeleteFloor(const StageVec2& stagePos)
+void EditorStage::DeleteFloor(const StageVec2& stagePos, bool addCommand)
 {
 	//床ブロックが配置されていなかったらリターン
 	int deleteIndex = CheckExistFloor(stagePos);
 	if (deleteIndex == -1) {
-		return false;
+		return ;
+	}
+
+	if (addCommand) {
+		//コマンド追加
+		CommandDetail data;
+		data.commandType = COMMAND_TYPE_DELETE;
+		data.args1 = stagePos.x;
+		data.args2 = stagePos.y;
+		data.objectType = OBJECTTYPE_FLOOR;
+		data.blockFloorType = floors[deleteIndex]->GetFloorType();
+		Command::AddCommand(data);
 	}
 
 	//床ブロック削除
 	if (floors[deleteIndex]) delete floors[deleteIndex];
 	floors.erase(floors.begin() + deleteIndex);
 
-	return true;
 }
 
 int EditorStage::CheckExistFloor(const StageVec2& stagePos)

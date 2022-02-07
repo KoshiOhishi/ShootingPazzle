@@ -51,8 +51,6 @@ void BreakFloor::Initialize(const StageVec2& pos)
 	UpdateCollision();
 
 	isBreak = false;
-
-	objectName = "BreakFloor";
 }
 
 void BreakFloor::Update()
@@ -75,6 +73,17 @@ void BreakFloor::UpdateCollision()
 {
 }
 
+int BreakFloor::GetFloorType()
+{
+	if (isBreak) {
+		//”j‰óŒã‚ÍŒŠ‚Æ‚Ý‚È‚·
+		return FLOORTYPE_HOLE;
+	}
+	else {
+		return FLOORTYPE_BREAK;
+	}
+}
+
 void BreakFloor::Break()
 {
 #ifdef BUILD_GAME
@@ -87,6 +96,4 @@ void BreakFloor::Break()
 #endif // BUILD_GAME
 
 	isBreak = true;
-	//ŒŠ‚Æ‚Ý‚È‚·
-	objectName = "HoleFloor";
 }

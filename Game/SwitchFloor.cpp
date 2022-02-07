@@ -33,6 +33,30 @@ void SwitchFloor::UpdateCollision()
 {
 }
 
+int SwitchFloor::GetFloorType()
+{
+	int result = -1;
+	switch (switchColor) {
+	case SWITCH_COLOR_NONE:
+		result = FLOORTYPE_SWITCH_NONE;
+		break;
+	case SWITCH_COLOR_RED:
+		result = FLOORTYPE_SWITCH_RED;
+		break;
+	case SWITCH_COLOR_BLUE:
+		result = FLOORTYPE_SWITCH_BLUE;
+		break;
+	case SWITCH_COLOR_YELLOW:
+		result = FLOORTYPE_SWITCH_YELLOW;
+		break;
+	case SWITCH_COLOR_GREEN:
+		result = FLOORTYPE_SWITCH_GREEN;
+		break;
+	}
+
+	return result;
+}
+
 void SwitchFloor::UpdateSwitchState()
 {
 	//自分の色とステージの色が一致していたらスイッチON状態
@@ -77,12 +101,4 @@ void SwitchFloor::UpdateSwitchColor()
 void SwitchFloor::SetSwitchColor(int switchColor)
 {
 	this->switchColor = switchColor;
-	//オブジェクトのカラーセット
-	switch (switchColor) {
-	case SWITCH_COLOR_NONE:		objectName = "SwitchFloor_None"; break;
-	case SWITCH_COLOR_RED:		objectName = "SwitchFloor_Red"; break;
-	case SWITCH_COLOR_BLUE:		objectName = "SwitchFloor_Blue"; break;
-	case SWITCH_COLOR_YELLOW:	objectName = "SwitchFloor_Yellow"; break;
-	case SWITCH_COLOR_GREEN:	objectName = "SwitchFloor_Green"; break;
-	}
 }

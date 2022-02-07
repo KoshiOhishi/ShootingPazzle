@@ -18,8 +18,6 @@ void NormalFloor::Initialize(const StageVec2& pos)
 	SetStagePos(pos);
 
 	UpdateCollision();
-
-	objectName = "NormalFloor";
 }
 
 void NormalFloor::Update()
@@ -30,4 +28,9 @@ void NormalFloor::Update()
 
 void NormalFloor::UpdateCollision()
 {
+}
+
+int NormalFloor::GetFloorType()
+{
+	return FLOORTYPE_NORMAL;
 }

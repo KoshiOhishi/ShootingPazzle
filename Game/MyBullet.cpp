@@ -432,7 +432,7 @@ void MyBullet::CheckFloorCollision()
 	for (int i = 0; i < stage->GetFloors().size(); i++) {
 
 		//ノーマルブロックは特に何もしない
-		if (stage->GetFloors()[i]->GetObjectName() == "NormalFloor") {
+		if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_NORMAL) {
 			continue;
 		}
 
@@ -447,7 +447,7 @@ void MyBullet::CheckFloorCollision()
 			continue;
 		}
 
-		if (stage->GetFloors()[i]->GetObjectName() == "BreakFloor") {
+		if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_BREAK) {
 			BreakFloor* floor = dynamic_cast<BreakFloor*>(stage->GetFloors()[i].get());
 
 			//球が床ブロックから離れた時を検知させるためにフラグをセット
@@ -460,7 +460,7 @@ void MyBullet::CheckFloorCollision()
 			bool onFloor = lengthSq <= ONE_CELL_LENGTH * ONE_CELL_LENGTH / 4;
 			if (onFloor) {
 				//方向転換ブロック(左)
-				if (stage->GetFloors()[i]->GetObjectName() == "TurnFloor_Left") {
+				if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_TURN_LEFT) {
 					if (velocity.x != -1) {
 						//ここにエフェクト関数
 					}
@@ -468,7 +468,7 @@ void MyBullet::CheckFloorCollision()
 					velocity = velocity.Normalize();
 				}
 				//方向転換ブロック(右)
-				else if (stage->GetFloors()[i]->GetObjectName() == "TurnFloor_Right") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_TURN_RIGHT) {
 					if (velocity.x != 1) {
 						//ここにエフェクト関数
 					}
@@ -476,7 +476,7 @@ void MyBullet::CheckFloorCollision()
 					velocity = velocity.Normalize();
 				}
 				//方向転換ブロック(上)
-				else if (stage->GetFloors()[i]->GetObjectName() == "TurnFloor_Up") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_TURN_UP) {
 					if (velocity.z != 1) {
 						//ここにエフェクト関数
 					}
@@ -484,7 +484,7 @@ void MyBullet::CheckFloorCollision()
 					velocity = velocity.Normalize();
 				}
 				//方向転換ブロック(下)
-				else if (stage->GetFloors()[i]->GetObjectName() == "TurnFloor_Down") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_TURN_DOWN) {
 					if (velocity.z != -1) {
 						//ここにエフェクト関数
 					}
@@ -493,7 +493,7 @@ void MyBullet::CheckFloorCollision()
 				}
 
 				//スイッチブロック(白)
-				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_None") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_SWITCH_NONE) {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_NONE) {
 						//自分の色を変える
 						ChangeColor(STAGE_COLOR_NONE);
@@ -503,7 +503,7 @@ void MyBullet::CheckFloorCollision()
 					GameUtility::SetStageColor(STAGE_COLOR_NONE);
 				}
 				//スイッチブロック(赤)
-				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Red") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_SWITCH_RED) {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_RED) {
 						//自分の色を変える
 						ChangeColor(STAGE_COLOR_RED);
@@ -513,7 +513,7 @@ void MyBullet::CheckFloorCollision()
 					GameUtility::SetStageColor(STAGE_COLOR_RED);
 				}
 				//スイッチブロック(青)
-				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Blue") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_SWITCH_BLUE) {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_BLUE) {
 						//自分の色を変える
 						ChangeColor(STAGE_COLOR_BLUE);
@@ -523,7 +523,7 @@ void MyBullet::CheckFloorCollision()
 					GameUtility::SetStageColor(STAGE_COLOR_BLUE);
 				}
 				//スイッチブロック(黄)
-				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Yellow") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_SWITCH_YELLOW) {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_YELLOW) {
 						//自分の色を変える
 						ChangeColor(STAGE_COLOR_YELLOW);
@@ -533,7 +533,7 @@ void MyBullet::CheckFloorCollision()
 					GameUtility::SetStageColor(STAGE_COLOR_YELLOW);
 				}
 				//スイッチブロック(緑)
-				else if (stage->GetFloors()[i]->GetObjectName() == "SwitchFloor_Green") {
+				else if (stage->GetFloors()[i]->GetFloorType() == FLOORTYPE_SWITCH_GREEN) {
 					if (GameUtility::GetStageColor() != STAGE_COLOR_GREEN) {
 						//自分の色を変える
 						ChangeColor(STAGE_COLOR_GREEN);
@@ -588,7 +588,7 @@ bool MyBullet::IsOutStage(const Vector3& pos)
 			}
 
 			//乗ってる床ブロックが穴以外なら穴に落ちていない可能性
-			if (stage->GetFloors()[i]->GetObjectName() != "HoleFloor") {
+			if (stage->GetFloors()[i]->GetFloorType() != FLOORTYPE_HOLE) {
 				if (pos.y >= RADIUS) {
 					isHole = false;
 				}

@@ -76,15 +76,15 @@ private:
 	//文字入力中か
 	bool isEnteringIOName = false;
 
+	//Stage再構築用前フレームステージサイズ
+	StageVec2 prevSize;
+
 	//ImGuiスライダーWidthDepth
 	int sliderWidth;
 	int sliderDepth;
 
 	//カーソル位置表示
 	RenderText txtCursol;
-
-	//コマンド管理
-	Command command;
 
 public:
 	Editor();

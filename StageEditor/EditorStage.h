@@ -52,13 +52,13 @@ public:
 	/// <param name="blockType">ブロックの種類</param>
 	/// <param name="breakupCount">壊れるまでの衝突回数　0で壊れないブロック</param>
 	/// <param name="blockColor">ブロックの色指定</param>
-	bool AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor);
+	void AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor, bool addCommand = true);
 
 	/// <summary>
 	/// ブロックを削除 (引数の位置になにもない場合は削除しない)
 	/// </summary>
 	/// <param name="stagePos"></param>
-	bool DeleteBlock(const StageVec2& stagePos);
+	void DeleteBlock(const StageVec2& stagePos, bool addCommand = true);
 
 	/// <summary>
 	/// 既にブロックが配置されているかチェック
@@ -72,13 +72,13 @@ public:
 	/// </summary>
 	/// <param name="stagePos">ステージ上の座標</param>
 	/// <param name="floorType">床ブロックの種類</param>
-	bool AddFloor(const StageVec2& stagePos, int floorType);
+	void AddFloor(const StageVec2& stagePos, int floorType, bool addCommand = true);
 
 	/// <summary>
 	/// 床ブロックを削除 (引数の位置になにもない場合は削除しない)
 	/// </summary>
 	/// <param name="stagePos"></param>
-	bool DeleteFloor(const StageVec2& stagePos);
+	void DeleteFloor(const StageVec2& stagePos, bool addCommand = true);
 
 	/// <summary>
 	/// 既に床ブロックが配置されているかチェック

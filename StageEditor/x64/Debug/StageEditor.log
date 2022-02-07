@@ -46,21 +46,12 @@
   E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Shader\TextVertexShader.hlsl
   46 個のファイルをコピーしました
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 中間ディレクトリ (x64\Debug\) に別のプロジェクト (Project1.vcxproj) と共有されているファイルが含まれています。これにより、クリーンしてリビルド動作が適切に行われない可能性があります。
-  Editor.cpp
+  Command.cpp
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\K019G1301\個人制作\ShootingPazzle\DX12Library\Header\Input.h(2,1): warning C4005: 'DIRECTINPUT_VERSION': マクロが再定義されました。
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\dinput.h(48): message : 'DIRECTINPUT_VERSION' の以前の定義を確認してください
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(104,28): warning C4244: '引数': 'double' から 'const float' への変換です。データが失われる可能性があります。
-E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(86,36): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(485,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
-E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(486,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
-  main.cpp
-  コードを生成中...
-DX12Library.lib(awCacheChannel.obj) : warning LNK4099: PDB 'libfbxsdk-md.pdb' が 'DX12Library.lib(awCacheChannel.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\libfbxsdk-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(IFactory.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(IFactory.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(OStream.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(OStream.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(CprImpl.cpp.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(CprImpl.cpp.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-DX12Library.lib(OrImpl.cpp.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX12Library.lib(OrImpl.cpp.obj)' で、または 'E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\alembic-md.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Command.cpp(55,47): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Command.cpp(65,34): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Game_PopUp.png
@@ -183,10 +174,11 @@ DX12Library.lib(OrImpl.cpp.obj) : warning LNK4099: PDB 'alembic-md.pdb' が 'DX1
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_3.spb
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_4.spb
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\stage_5.spb
+  E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\test.spb
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\test_color.spb
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\StageData\test_disp.spb
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\System\debugfont.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\System\white1x1.png
-  125 個のファイルをコピーしました
+  126 個のファイルをコピーしました
   E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   1 個のファイルをコピーしました
