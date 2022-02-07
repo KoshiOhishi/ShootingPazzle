@@ -701,7 +701,7 @@ void Editor::ReCreateStage(const StageVec2& prevSize, const StageVec2& nowSize)
 		for (int i = 0; i < nowSize.y; i++) {
 			for (int j = prevSize.x; j < nowSize.x; j++) {
 				StageVec2 pos = { (unsigned short)j,(unsigned short)i };
-				stage.AddFloor(pos, FLOORTYPE_NORMAL);
+				stage.AddFloor(pos, FLOORTYPE_NORMAL, false);
 			}
 		}
 	}
@@ -711,7 +711,7 @@ void Editor::ReCreateStage(const StageVec2& prevSize, const StageVec2& nowSize)
 		for (int i = prevSize.y; i < nowSize.y; i++) {
 			for (int j = 0; j < nowSize.x; j++) {
 				StageVec2 pos = { (unsigned short)j,(unsigned short)i };
-				stage.AddFloor(pos, FLOORTYPE_NORMAL);
+				stage.AddFloor(pos, FLOORTYPE_NORMAL, false);
 			}
 		}
 	}
