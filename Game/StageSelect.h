@@ -24,7 +24,7 @@ private:
     Camera camera;
 
     //ステージコンテナ
-    std::vector<Stage*> stages;
+    std::vector<std::unique_ptr<Stage>> stages;
 
     //カメラの位置リスト
     std::vector<Vector3> cameraPosList;

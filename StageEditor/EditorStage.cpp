@@ -165,11 +165,11 @@ void EditorStage::Draw()
 	}
 }
 
-void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor)
+bool EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor)
 {
 	//既にブロックが配置されていたらリターン
 	if (CheckExistBlock(stagePos) != -1) {
-		return;
+		return false;
 	}
 
 	//種類ごとにブロック追加
@@ -201,19 +201,23 @@ void EditorStage::AddBlock(const StageVec2& stagePos, int blockType, unsigned sh
 		newBlock->SetPInstancingObjectDraw(iodTriangleBlock);
 		blocks.emplace_back(newBlock);
 	}
+
+	return true;
 }
 
-void EditorStage::DeleteBlock(const StageVec2& stagePos)
+bool EditorStage::DeleteBlock(const StageVec2& stagePos)
 {
 	//ブロックが配置されていなかったらリターン
 	int deleteIndex = CheckExistBlock(stagePos);
 	if (deleteIndex == -1) {
-		return;
+		return false;
 	}
 
 	//ブロック削除
 	if (blocks[deleteIndex]) delete blocks[deleteIndex];
 	blocks.erase(blocks.begin() + deleteIndex);
+
+	return true;
 }
 
 int EditorStage::CheckExistBlock(const StageVec2& stagePos)
@@ -230,11 +234,11 @@ int EditorStage::CheckExistBlock(const StageVec2& stagePos)
 	return -1;
 }
 
-void EditorStage::AddFloor(const StageVec2& stagePos, int floorType)
+bool EditorStage::AddFloor(const StageVec2& stagePos, int floorType)
 {
 	//既に床ブロックが配置されていたらリターン
 	if (CheckExistFloor(stagePos) != -1) {
-		return;
+		return false;
 	}
 
 	//種類ごとに床ブロック追加
@@ -313,19 +317,23 @@ void EditorStage::AddFloor(const StageVec2& stagePos, int floorType)
 		newFloor->SetPInstancingObjectDraw(iodSwitchFloor);
 		floors.emplace_back(newFloor);
 	}
+
+	return true;
 }
 
-void EditorStage::DeleteFloor(const StageVec2& stagePos)
+bool EditorStage::DeleteFloor(const StageVec2& stagePos)
 {
 	//床ブロックが配置されていなかったらリターン
 	int deleteIndex = CheckExistFloor(stagePos);
 	if (deleteIndex == -1) {
-		return;
+		return false;
 	}
 
 	//床ブロック削除
 	if (floors[deleteIndex]) delete floors[deleteIndex];
 	floors.erase(floors.begin() + deleteIndex);
+
+	return true;
 }
 
 int EditorStage::CheckExistFloor(const StageVec2& stagePos)

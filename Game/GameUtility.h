@@ -27,6 +27,12 @@ struct StageVec2 {
 	unsigned short y = 0;
 };
 
+//配置するオブジェクトタイプ
+enum MaptipType {
+	OBJECTTYPE_BLOCK,
+	OBJECTTYPE_FLOOR
+};
+
 /// <summary>
 /// ブロックタイプ
 /// </summary>

@@ -52,13 +52,13 @@ public:
 	/// <param name="blockType">ブロックの種類</param>
 	/// <param name="breakupCount">壊れるまでの衝突回数　0で壊れないブロック</param>
 	/// <param name="blockColor">ブロックの色指定</param>
-	void AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor);
+	bool AddBlock(const StageVec2& stagePos, int blockType, unsigned short breakupCount, int blockColor);
 
 	/// <summary>
 	/// ブロックを削除 (引数の位置になにもない場合は削除しない)
 	/// </summary>
 	/// <param name="stagePos"></param>
-	void DeleteBlock(const StageVec2& stagePos);
+	bool DeleteBlock(const StageVec2& stagePos);
 
 	/// <summary>
 	/// 既にブロックが配置されているかチェック
@@ -72,13 +72,13 @@ public:
 	/// </summary>
 	/// <param name="stagePos">ステージ上の座標</param>
 	/// <param name="floorType">床ブロックの種類</param>
-	void AddFloor(const StageVec2& stagePos, int floorType);
+	bool AddFloor(const StageVec2& stagePos, int floorType);
 
 	/// <summary>
 	/// 床ブロックを削除 (引数の位置になにもない場合は削除しない)
 	/// </summary>
 	/// <param name="stagePos"></param>
-	void DeleteFloor(const StageVec2& stagePos);
+	bool DeleteFloor(const StageVec2& stagePos);
 
 	/// <summary>
 	/// 既に床ブロックが配置されているかチェック
@@ -88,5 +88,6 @@ public:
 	int CheckExistFloor(const StageVec2& stagePos);
 
 	const Plane& GetFloorCollision()const { return floorCollision; }
+
 };
 

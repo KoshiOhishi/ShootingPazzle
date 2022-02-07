@@ -56,6 +56,7 @@ void Stage::LoadStage(std::string filename)
 	targetBlockCount = 0;
 
 	//データ初期化
+	blocks.clear();
 	floors.clear();
 
 	//GameUtilityにステージサイズを渡す

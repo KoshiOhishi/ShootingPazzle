@@ -66,6 +66,9 @@
     <ClCompile Include="..\Game\GameSound.cpp">
       <Filter>ソース ファイル\Gameから参照</Filter>
     </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorStage.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="..\Game\MyBullet.h">
       <Filter>ヘッダー ファイル\Gameから参照</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

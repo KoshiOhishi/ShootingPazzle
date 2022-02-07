@@ -17,17 +17,16 @@
 #include "EditorStage.h"
 #include "StartLane.h"
 
+#include "Command.h"
+
+//モード
 enum EditorMode {
 	MODE_ADD,
 	MODE_DELETE,
 	MODE_OPTION
 };
 
-enum EditObjectType {
-	OBJECTTYPE_BLOCK,
-	OBJECTTYPE_FLOOR
-};
-
+//オプションモード
 enum OptionMode {
 	OPTION_SET_STARTLANE
 };
@@ -67,6 +66,8 @@ private:
 	Object3D objDispBlock;
 	Object3D objDispFloor;
 	Object3D objDispFloorSub;	//補助オブジェクト
+
+	//スタートレーン表示用
 	StartLane startLane[2];
 
 	//SaveLoad用名前格納
@@ -82,6 +83,9 @@ private:
 	//カーソル位置表示
 	RenderText txtCursol;
 
+	//コマンド管理
+	Command command;
+
 public:
 	Editor();
 	~Editor(){}
@@ -94,7 +98,9 @@ public:
 
 	void UpdateAdd();
 	void UpdateDelete();
+	void UpdateOption();
 	void UpdateObject();
+	void UpdateStage();
 	void UpdateDispObject();
 	void UpdateStartLane();
 
@@ -116,7 +122,7 @@ public:
 	/// <summary>
 	/// ステージを再構築する
 	/// </summary>
-	void ReCreateStage(unsigned short width, unsigned short depth);
+	void ReCreateStage(const StageVec2& prevSize, const StageVec2& nowSize);
 
 	bool IsInsideCursol();
 };

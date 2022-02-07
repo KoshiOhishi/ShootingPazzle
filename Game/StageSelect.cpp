@@ -11,7 +11,7 @@ StageSelect::StageSelect()
 {
 	//ステージロード
 	for (int i = 0; i < STAGE_COUNT; i++) {
-		stages.emplace_back(new Stage());
+		stages.emplace_back(std::make_unique<Stage>());
 		stages[i]->LoadStage(STAGE_DIR + "stage_" + std::to_string(i) + ".spb");
 		stages[i]->Initialize();
 		stages[i]->SetMasterPosition(Vector3(0, 0, i * 500));
@@ -51,10 +51,6 @@ StageSelect::StageSelect()
 StageSelect::~StageSelect()
 {
 	//解放
-	for (int i = 0; i < stages.size(); i++) {
-		delete stages[i];
-		stages[i] = nullptr;
-	}
 	cameraPosList.clear();
 }
 

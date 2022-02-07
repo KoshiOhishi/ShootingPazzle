@@ -7,27 +7,25 @@
 #include <vector>
 #pragma comment(lib, "d3d12.lib")
 
-//Todo:毎フレームテキストが変わるとすごい重たくなるので要改善
+static const int DX12TEXT_QUALITY_DEFAULT = 0;			//フォントの文字品質は重視されません。
+static const int DX12TEXT_QUALITY_DRAFT = 1;			//フォントの文字品質は、 PROOF_QUALITY を使用したときほどは重視されません。
+static const int DX12TEXT_QUALITY_PROOF = 2;		//フォントの文字品質が、論理フォントの属性を正確に一致させることよりも重視されます。
+static const int DX12TEXT_QUALITY_NONANTIALIASED = 3;	//フォントはアンチエイリアス表示されないようにします。
+static const int DX12TEXT_QUALITY_ANTIALIASED = 4;		//フォントがアンチエイリアスをサポートしている場合はアンチエイリアス表示になります。
+static const int DX12TEXT_QUALITY_CLEARTYPE = 5;	//ClearType アンチエイリアスメソッドを使用してレンダリングされます。
 
-#define DX12TEXT_QUALITY_DEFAULT 0			//フォントの文字品質は重視されません。
-#define DX12TEXT_QUALITY_DRAFT 1			//フォントの文字品質は、 PROOF_QUALITY を使用したときほどは重視されません。
-#define DX12TEXT_QUALITY_PROOF 2			//フォントの文字品質が、論理フォントの属性を正確に一致させることよりも重視されます。
-#define DX12TEXT_QUALITY_NONANTIALIASED 3	//フォントはアンチエイリアス表示されないようにします。
-#define DX12TEXT_QUALITY_ANTIALIASED 4		//フォントがアンチエイリアスをサポートしている場合はアンチエイリアス表示になります。
-#define DX12TEXT_QUALITY_CLEARTYPE 5		//ClearType アンチエイリアスメソッドを使用してレンダリングされます。
+static const int DX12TEXT_WEIGHT_DONTCARE = 0;
+static const int DX12TEXT_WEIGHT_THIN = 100;
+static const int DX12TEXT_WEIGHT_ULTRALIGHT = 200;
+static const int DX12TEXT_WEIGHT_LIGHT = 300;
+static const int DX12TEXT_WEIGHT_NORMAL = 400;
+static const int DX12TEXT_WEIGHT_REGULAR = 500;
+static const int DX12TEXT_WEIGHT_SEMIBOLD = 600;
+static const int DX12TEXT_WEIGHT_BOLD = 700;
+static const int DX12TEXT_WEIGHT_ULTRABOLD = 800;
+static const int DX12TEXT_WEIGHT_HEAVY = 900;
 
-#define DX12TEXT_WEIGHT_DONTCARE 0
-#define DX12TEXT_WEIGHT_THIN 100
-#define DX12TEXT_WEIGHT_ULTRALIGHT 200
-#define DX12TEXT_WEIGHT_LIGHT 300
-#define DX12TEXT_WEIGHT_NORMAL 400
-#define DX12TEXT_WEIGHT_REGULAR 500
-#define DX12TEXT_WEIGHT_SEMIBOLD 600
-#define DX12TEXT_WEIGHT_BOLD 700
-#define DX12TEXT_WEIGHT_ULTRABOLD 800
-#define DX12TEXT_WEIGHT_HEAVY 900
-
-#define DX12TEXT_COLOR_MAX_RATE 255
+static const int DX12TEXT_COLOR_MAX_RATE = 255;
 
 struct FontData {
 	int  height = 32;// 文字セルまたは文字の高さ (フォントサイズ)

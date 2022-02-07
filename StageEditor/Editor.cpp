@@ -84,6 +84,10 @@ void Editor::Initialize()
 	fd.fontName = L"HGPｺﾞｼｯｸE";
 	fd.height = 32;
 	txtCursol.SetFontData(fd);
+
+	//コマンド初期化
+	command.Initialize();
+	command.SetPStage(&stage);
 }
 
 void Editor::Update()
@@ -167,18 +171,24 @@ void Editor::UpdateCamera()
 void Editor::UpdateEdit()
 {
 	UpdateImgui();
+	//現在のマウスカーソルの位置をステージ座標基準で計算
 	CalcNowCursolPos();
-	//ステージ更新
-	stage.Update();
+	//表示用オブジェクト更新
 	UpdateObject();
+	//ステージ更新
+	UpdateStage();
 
+	//モードごとの更新
 	if (mode == MODE_ADD) {
 		UpdateAdd();
 	}
 	else if (mode == MODE_DELETE) {
 		UpdateDelete();
 	}
-
+	else if (mode == MODE_OPTION) {
+		UpdateOption();
+	}
+	command.Update();
 }
 
 void Editor::UpdateAdd()
@@ -190,11 +200,38 @@ void Editor::UpdateAdd()
 
 	if (objectType == OBJECTTYPE_BLOCK) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-			stage.AddBlock(nowCursolPos, blockType, breakupCount, blockColor);
-		}	}
+			//ステージに追加
+			bool result = stage.AddBlock(nowCursolPos, blockType, breakupCount, blockColor);
+
+			//コマンドに追加
+			if (result == true) {
+				CommandDetail data;
+				data.commandType = COMMAND_TYPE_ADD;
+				data.args1 = nowCursolPos.x;
+				data.args2 = nowCursolPos.y;
+				data.objectType = OBJECTTYPE_BLOCK;
+				data.blockFloorType = blockType;
+				data.breakupCount = breakupCount;
+				data.colorType = blockColor;
+				command.AddCommand(data);
+			}
+		}
+	}
 	else if (objectType == OBJECTTYPE_FLOOR) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-			stage.AddFloor(nowCursolPos, floorType);
+			//ステージに追加
+			bool result = stage.AddFloor(nowCursolPos, floorType);
+
+			//コマンドに追加
+			if (result == true) {
+				CommandDetail data;
+				data.commandType = COMMAND_TYPE_ADD;
+				data.args1 = nowCursolPos.x;
+				data.args2 = nowCursolPos.y;
+				data.objectType = OBJECTTYPE_FLOOR;
+				data.blockFloorType = floorType;
+				command.AddCommand(data);
+			}
 		}
 	}
 }
@@ -208,14 +245,65 @@ void Editor::UpdateDelete()
 
 	if (objectType == OBJECTTYPE_BLOCK) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-			stage.DeleteBlock(nowCursolPos);
+			//ステージから削除
+			bool result = stage.DeleteBlock(nowCursolPos);
+
+			//コマンドに追加
+			if (result == true) {
+				CommandDetail data;
+				data.commandType = COMMAND_TYPE_DELETE;
+				data.args1 = nowCursolPos.x;
+				data.args2 = nowCursolPos.y;
+				data.objectType = OBJECTTYPE_BLOCK;
+				data.blockFloorType = blockType;
+				data.breakupCount = breakupCount;
+				data.colorType = blockColor;
+				command.AddCommand(data);
+			}
 		}
 	}
 	else if (objectType == OBJECTTYPE_FLOOR) {
 		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
-			stage.DeleteFloor(nowCursolPos);
+			//ステージから削除
+			bool result = stage.DeleteFloor(nowCursolPos);
+
+			//コマンドに追加
+			if (result == true) {
+				CommandDetail data;
+				data.commandType = COMMAND_TYPE_DELETE;
+				data.args1 = nowCursolPos.x;
+				data.args2 = nowCursolPos.y;
+				data.objectType = OBJECTTYPE_FLOOR;
+				data.blockFloorType = floorType;
+				command.AddCommand(data);
+			}
 		}
 	}
+}
+
+void Editor::UpdateOption()
+{
+	//大きさが変更されたときの処理
+	if (sliderWidth != stage.stageSize.x) {
+		//コマンドに追加
+		CommandDetail data;
+		data.commandType = COMMAND_TYPE_STAGE_WIDTH;
+		data.args1 = stage.stageSize.x;
+		data.args2 = sliderWidth;
+		command.AddCommand(data);
+	}
+	else if (sliderDepth != stage.stageSize.y) {
+		//コマンドに追加
+		CommandDetail data;
+		data.commandType = COMMAND_TYPE_STAGE_HEIGHT;
+		data.args1 = stage.stageSize.y;
+		data.args2 = sliderDepth;
+		command.AddCommand(data);
+	}
+
+	//反映
+	stage.stageSize.x = sliderWidth;
+	stage.stageSize.y = sliderDepth;
 }
 
 void Editor::UpdateObject()
@@ -233,6 +321,24 @@ void Editor::UpdateObject()
 	objDispBlock.Update();
 	objDispFloor.Update();
 	objDispFloorSub.Update();
+	
+}
+
+void Editor::UpdateStage()
+{
+	//前フレームからステージの大きさが変わっていたらステージを再構築
+	static StageVec2 prevSize = stage.stageSize;
+	if (prevSize.x != stage.stageSize.x || prevSize.y != stage.stageSize.y) {
+		StageVec2 nowSize = stage.stageSize;
+		ReCreateStage(prevSize, nowSize);
+		//Imguiのスライダーの値も更新しておく
+		sliderWidth = nowSize.x;
+		sliderDepth = nowSize.y;
+	}
+	prevSize = stage.stageSize;
+
+	stage.Update();
+
 }
 
 void Editor::UpdateDispObject()
@@ -306,7 +412,17 @@ void Editor::UpdateStartLane()
 
 		startLane[1].SetPosition(nowCursolPos.y);
 
-		if (Mouse::IsMouseButtonPush(MouseButton::LEFT)) {
+		//カーソルの位置がセットされているスタート位置と異なっていれば
+		if (Mouse::IsMouseButtonTrigger(MouseButton::LEFT) &&
+			stage.startLaneZ != nowCursolPos.y) {
+			//コマンドに追加
+			CommandDetail data;
+			data.commandType = COMMAND_TYPE_SET_STARTLANE;
+			data.args1 = stage.startLaneZ;
+			data.args2 = nowCursolPos.y;
+			command.AddCommand(data);
+
+			//スタート縦位置変更
 			stage.startLaneZ = nowCursolPos.y;
 		}
 	}
@@ -468,6 +584,8 @@ void Editor::Load()
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].CreateModel();
 	}
+	//コマンド初期化
+	command.Initialize();
 }
 
 void Editor::UpdateImgui()
@@ -560,10 +678,7 @@ void Editor::UpdateImgui()
 		//ステージサイズ変更
 		ImGui::SliderInt("StageWidth", &sliderWidth, 5, 50);
 		ImGui::SliderInt("StageDepth", &sliderDepth, 5, 50);
-		//大きさが変更されたら地面再生成
-		if (sliderWidth != stage.stageSize.x || sliderDepth != stage.stageSize.y) {
-			ReCreateStage(sliderWidth, sliderDepth);
-		}
+
 		//オプションモード選択
 		ImGui::Text("OptionMode");
 		ImGui::RadioButton("SetStartLane", &optionMode, OPTION_SET_STARTLANE);
@@ -599,36 +714,34 @@ void Editor::CalcNowCursolPos()
 	//DebugText::Print("StagePos:(" + std::to_string(nowCursolPos.x) + ", " + std::to_string(nowCursolPos.y) + ")", 0, 20);
 }
 
-void Editor::ReCreateStage(unsigned short width, unsigned short depth)
+void Editor::ReCreateStage(const StageVec2& prevSize, const StageVec2& nowSize)
 {
+	//ステージ位置計算に使用するステージサイズを一時的に変更
+	StageVec2 calc = nowSize;
+	GameUtility::SetPStageSize(&calc);
+
 	//まず変動したステージサイズに合わせてオブジェクト移動
-	StageVec2 prev = stage.stageSize;
 	for (int i = 0; i < stage.blocks.size(); i++) {
 		//CalcWorldPos2StagePosでstage.stageSizeが参照されるので変更前の値を代入
-		stage.stageSize = prev;
+		calc = prevSize;
 		Vector3 wpos = stage.blocks[i]->GetPosition();
 		StageVec2 stagePos = GameUtility::CalcWorldPos2StagePos(wpos.x, wpos.z);
 
 		//SetStagePosで変更後の座標にするために新ステージサイズを代入
-		stage.stageSize.x = width;
-		stage.stageSize.y = depth;
+		calc = nowSize;
 		stage.blocks[i]->SetStagePos(stagePos);
 	}
 
 	for (int i = 0; i < stage.floors.size(); i++) {
 		//CalcWorldPos2StagePosでstage.stageSizeが参照されるので変更前の値を代入
-		stage.stageSize = prev;
+		calc = prevSize;
 		Vector3 wpos = stage.floors[i]->GetPosition();
 		StageVec2 stagePos = GameUtility::CalcWorldPos2StagePos(wpos.x, wpos.z);
 
 		//SetStagePosで変更後の座標にするために新ステージサイズを代入
-		stage.stageSize.x = width;
-		stage.stageSize.y = depth;
+		calc = nowSize;
 		stage.floors[i]->SetStagePos(stagePos);
 	}
-
-	stage.stageSize.x = width;
-	stage.stageSize.y = depth;
 
 	//ブロックがステージ外に配置されていたら削除
 	for (int i = 0; i < stage.blocks.size(); i++) {
@@ -636,8 +749,8 @@ void Editor::ReCreateStage(unsigned short width, unsigned short depth)
 		Vector3 wpos = stage.blocks[i]->GetPosition();
 		StageVec2 stagePos = GameUtility::CalcWorldPos2StagePos(wpos.x, wpos.z);
 
-		if (stagePos.x < 0 || stagePos.x >= stage.stageSize.x ||
-			stagePos.y < 0 || stagePos.y >= stage.stageSize.y) {
+		if (stagePos.x < 0 || stagePos.x >= nowSize.x ||
+			stagePos.y < 0 || stagePos.y >= nowSize.y) {
 			if (stage.blocks[i]) delete stage.blocks[i];
 			stage.blocks.erase(stage.blocks.begin() + i);
 			i--;
@@ -650,20 +763,23 @@ void Editor::ReCreateStage(unsigned short width, unsigned short depth)
 		Vector3 wpos = stage.floors[i]->GetPosition();
 		StageVec2 stagePos = GameUtility::CalcWorldPos2StagePos(wpos.x, wpos.z);
 
-		if (stagePos.x < 0 || stagePos.x >= stage.stageSize.x ||
-			stagePos.y < 0 || stagePos.y >= stage.stageSize.y) {
+		if (stagePos.x < 0 || stagePos.x >= nowSize.x ||
+			stagePos.y < 0 || stagePos.y >= nowSize.y) {
 			if (stage.floors[i]) delete stage.floors[i];
 			stage.floors.erase(stage.floors.begin() + i);
 			i--;
 		}
 	}
 
-	stage.startLaneZ = stage.stageSize.y - 2;
+	stage.startLaneZ = nowSize.y - 2;
 
 	//スタートレーンモデル再生成
 	for (int i = 0; i < _countof(startLane); i++) {
 		startLane[i].CreateModel();
 	}
+
+	//ステージ位置計算に使用するステージサイズを戻す
+	GameUtility::SetPStageSize(&stage.stageSize);
 }
 
 bool Editor::IsInsideCursol()

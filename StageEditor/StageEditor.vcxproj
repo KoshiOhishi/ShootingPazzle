@@ -194,6 +194,7 @@ xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClCompile Include="..\Game\SwitchFloor.cpp" />
     <ClCompile Include="..\Game\TriangleBlock.cpp" />
     <ClCompile Include="..\Game\TurnFloor.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="EditorStage.cpp" />
@@ -211,6 +212,7 @@ xcopy "$(OutDir)StageEditor.exe" "$(ProjectDir)" /i /y /h /e</Command>
     <ClInclude Include="..\Game\SwitchFloor.h" />
     <ClInclude Include="..\Game\TriangleBlock.h" />
     <ClInclude Include="..\Game\TurnFloor.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorStage.h" />
     <ClInclude Include="StartLane.h" />
