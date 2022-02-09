@@ -606,8 +606,8 @@ void Editor::UpdateImgui()
 		ImGui::Text("OptionMode");
 		ImGui::RadioButton("ChangeStageSize", &optionMode, OPTION_CHANGE_STAGESIZE);
 		ImGui::RadioButton("SetStartLane", &optionMode, OPTION_SET_STARTLANE);
-		ImGui::RadioButton("Save", &optionMode, OPTION_SAVE);
-		ImGui::RadioButton("Load", &optionMode, OPTION_LOAD);
+		ImGui::RadioButton("SaveStage", &optionMode, OPTION_SAVE);
+		ImGui::RadioButton("LoadStage", &optionMode, OPTION_LOAD);
 
 		ImGui::NewLine();
 
