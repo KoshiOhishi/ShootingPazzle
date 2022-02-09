@@ -28,7 +28,10 @@ enum EditorMode {
 
 //オプションモード
 enum OptionMode {
-	OPTION_SET_STARTLANE
+	OPTION_CHANGE_STAGESIZE,
+	OPTION_SET_STARTLANE,
+	OPTION_SAVE,
+	OPTION_LOAD
 };
 
 class Editor :
@@ -60,7 +63,7 @@ private:
 	//現在のカーソル位置
 	StageVec2 nowCursolPos;
 	//オプションでのモード
-	int optionMode = OPTION_SET_STARTLANE;
+	int optionMode = OPTION_CHANGE_STAGESIZE;
 
 	//表示用オブジェクト
 	Object3D objDispBlock;

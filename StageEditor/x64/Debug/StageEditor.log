@@ -54,6 +54,8 @@ E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(104,28): warning
 E:\K019G1301\個人制作\ShootingPazzle\Game\GameUtility.h(87,36): warning C4838: 'int' から 'unsigned short' への変換には縮小変換が必要です
 E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(437,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
 E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Editor.cpp(438,41): warning C4267: '=': 'size_t' から 'unsigned short' に変換しました。データが失われているかもしれません。
+  main.cpp
+  コードを生成中...
   StageEditor.vcxproj -> E:\K019G1301\個人制作\ShootingPazzle\x64\Debug\StageEditor.exe
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Arrow.png
   E:\K019G1301\個人制作\ShootingPazzle\StageEditor\Resources\2DTexture\GamePlay\Game_PopUp.png

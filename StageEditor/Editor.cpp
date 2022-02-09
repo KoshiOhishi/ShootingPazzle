@@ -30,7 +30,7 @@ void Editor::Initialize()
 	//カメラ初期化
 	camera.Initialize();
 	//camera.SetPositionAndDistance({ 0,100.0f,0.0f }, 30.0f);
-	camera.SetEyeTargetUpVec({ 0,100,0 }, { 0,0,0 }, { 0,0,1 });
+	camera.SetEyeTargetUpVec({ 20,100,0 }, { 0,0,0 }, { 0,0,1 });
 	camera.SetRotation(90, 0, 0);
 
 	//カメラをセット
@@ -495,8 +495,8 @@ void Editor::UpdateImgui()
 {
 	//ImGui
 	ImguiHelper::BeginCommand("Settings");
-	ImguiHelper::SetWindowSize(250, 720);
-	ImguiHelper::SetWindowPos(1280 - 250, 0);
+	ImguiHelper::SetWindowSize(300, 720);
+	ImguiHelper::SetWindowPos(1280 - 300, 0);
 	//Mode
 	ImGui::Text("Mode");
 	ImGui::RadioButton("Add",		&mode, MODE_ADD);
@@ -602,28 +602,43 @@ void Editor::UpdateImgui()
 		}
 	}
 	else if (mode == MODE_OPTION) {
-		//ステージサイズ変更
-		ImGui::SliderInt("StageWidth", &sliderWidth, 5, 50);
-		ImGui::SliderInt("StageDepth", &sliderDepth, 5, 50);
-
 		//オプションモード選択
 		ImGui::Text("OptionMode");
+		ImGui::RadioButton("ChangeStageSize", &optionMode, OPTION_CHANGE_STAGESIZE);
 		ImGui::RadioButton("SetStartLane", &optionMode, OPTION_SET_STARTLANE);
-	}
+		ImGui::RadioButton("Save", &optionMode, OPTION_SAVE);
+		ImGui::RadioButton("Load", &optionMode, OPTION_LOAD);
 
-	ImGui::NewLine();
+		ImGui::NewLine();
 
-	static char c[128] = "test";
-	ImGui::InputText("IO_Name", c, sizeof(c));
-	ioname = c;
-	isEnteringIOName = ImGui::IsItemActive();
+		//ステージサイズ変更
+		if (optionMode == OPTION_CHANGE_STAGESIZE) {
+			ImGui::Text("ChangeStageSize");
+			ImGui::SliderInt("StageWidth", &sliderWidth, 5, 50);
+			ImGui::SliderInt("StageDepth", &sliderDepth, 5, 50);
+		}
+		//セーブ
+		else if (optionMode == OPTION_SAVE) {
+			static char c[128] = "test";
+			ImGui::InputText("IO_Name", c, sizeof(c));
+			ioname = c;
+			isEnteringIOName = ImGui::IsItemActive();
 
-	if (ImGui::Button("Save")) {
-		Save();
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Load")) {
-		Load();
+			if (ImGui::Button("Save")) {
+				Save();
+			}
+		}
+		//ロード
+		else if (optionMode == OPTION_LOAD) {
+			static char c[128] = "test";
+			ImGui::InputText("IO_Name", c, sizeof(c));
+			ioname = c;
+			isEnteringIOName = ImGui::IsItemActive();
+
+			if (ImGui::Button("Load")) {
+				Load();
+			}
+		}
 	}
 
 	ImguiHelper::EndCommand();
