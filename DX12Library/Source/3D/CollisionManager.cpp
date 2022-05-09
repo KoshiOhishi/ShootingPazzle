@@ -4,6 +4,7 @@
 #include "MeshCollider.h"
 
 using namespace DirectX;
+using namespace DX12Library;
 
 CollisionManager* CollisionManager::GetInstance()
 {

@@ -1,6 +1,7 @@
 #include "CollisionPrimitive.h"
 
 using namespace DirectX;
+using namespace DX12Library;
 
 void Triangle::ComputeNormal()
 {

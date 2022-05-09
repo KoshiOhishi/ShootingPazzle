@@ -1,5 +1,7 @@
 #include "SphereCollider.h"
 
+using namespace DX12Library;
+
 void SphereCollider::Update()
 {
 	//ワールド行列から座標を抽出

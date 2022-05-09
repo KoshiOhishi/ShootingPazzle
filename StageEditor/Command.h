@@ -61,7 +61,7 @@ private:
 	//現在のコマンド位置
 	static int commandPos;
 	//長押しタイマー
-	static Timer longPushTimer;
+	static DX12Library::Timer longPushTimer;
 
 public:
 	/// <summary>

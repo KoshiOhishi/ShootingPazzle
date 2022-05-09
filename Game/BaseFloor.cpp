@@ -2,6 +2,8 @@
 #include "GameUtility.h"
 #include "Easing.h"
 
+using namespace DX12Library;
+
 Stage* BaseFloor::pStage = nullptr;
 
 void BaseFloor::UpdateFirstEffect(const Timer& timer)

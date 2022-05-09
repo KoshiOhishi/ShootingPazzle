@@ -24,13 +24,13 @@ class BaseBlock
 {
 protected:
 	//インスタンシング描画オブジェクト
-	InstancingObject object;
+	DX12Library::InstancingObject object;
 	//インスタンシング描画親オブジェクトポインタ
-	InstancingObjectDraw* pIOD;
+	DX12Library::InstancingObjectDraw* pIOD;
 	//ステージポインタ
 	static Stage* pStage;
 	//球との衝突判定用カプセル
-	std::vector<Capsule> capsule;
+	std::vector<DX12Library::Capsule> capsule;
 	//衝突後に壊れるブロックか
 	bool isBreakable = false;
 	//あと何回当たれば壊れるか　初期値0で破壊不可能ブロックになる
@@ -40,7 +40,7 @@ protected:
 	//前フレームのステージ色
 	int prevStageColor = STAGE_COLOR_NONE;
 	//色変更タイマー
-	Timer changeColorTimer;
+	DX12Library::Timer changeColorTimer;
 
 	//出現エフェクトの種類
 	int firstEffectType = -1;
@@ -69,13 +69,13 @@ public:
 	/// <summary>
 	/// 出現エフェクト時の更新
 	/// </summary>
-	virtual void UpdateFirstEffect(const Timer& timer);
+	virtual void UpdateFirstEffect(const DX12Library::Timer& timer);
 
 	/// <summary>
 	/// クリアエフェクトの更新
 	/// </summary>
 	/// <param name="timer"></param>
-	virtual void UpdateClearEffect(const Timer& timer);
+	virtual void UpdateClearEffect(const DX12Library::Timer& timer);
 
 	/// <summary>
 	/// 当たり判定更新
@@ -115,7 +115,7 @@ public:
 	/// 座標セット
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPosition(const Vector3& pos) { object.SetPosition(pos); }
+	void SetPosition(const DX12Library::Vector3& pos) { object.SetPosition(pos); }
 
 	/// <summary>
 	/// 壊れるかどうかのフラグセット
@@ -133,18 +133,18 @@ public:
 	/// インスタンシング描画親オブジェクトのポインタセット
 	/// </summary>
 	/// <param name="pIOD"></param>
-	void SetPInstancingObjectDraw(InstancingObjectDraw* pIOD) { this->pIOD = pIOD; }
+	void SetPInstancingObjectDraw(DX12Library::InstancingObjectDraw* pIOD) { this->pIOD = pIOD; }
 
 #pragma endregion
 #pragma region Getter
 
-	const Vector3& GetPosition() { return object.GetPosition(); }
+	const DX12Library::Vector3& GetPosition() { return object.GetPosition(); }
 
 	/// <summary>
 	/// カプセル当たり判定を取得
 	/// </summary>
 	/// <returns>カプセル当たり判定</returns>
-	const std::vector<Capsule> GetCapsule()const {
+	const std::vector<DX12Library::Capsule> GetCapsule()const {
 		return capsule;
 	}
 

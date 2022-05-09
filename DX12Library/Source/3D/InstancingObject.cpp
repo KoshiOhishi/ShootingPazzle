@@ -1,8 +1,11 @@
 #include "InstancingObject.h"
 #include "BaseCollider.h"
+#include "Archive.h"
+#include "Encorder.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+using namespace DX12Library;
 
 ComPtr<ID3D12RootSignature> InstancingObjectDraw::instancingFbxRootsignature = nullptr;
 ComPtr<ID3D12PipelineState> InstancingObjectDraw::instancingFbxPipelinestate[PIPELINE_COUNT] = {};
@@ -24,14 +27,40 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 	assert(device);
 
 	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		pipelineData.vertexShaderFileName,    // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
+	bool isLoadedArchiveVS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(pipelineData.vertexShaderFileName), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(pipelineData.vertexShaderFileName));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&vsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveVS = true; 
+			}
+		}
+	}
+
+	if (isLoadedArchiveVS == false) {
+		result = D3DCompileFromFile(
+			pipelineData.vertexShaderFileName,    // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&vsBlob, &errorBlob);
+	}
+
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
@@ -48,14 +77,40 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 
 	// ジオメトリシェーダの読み込みとコンパイル
 	if (pipelineData.geometryShaderFileName != nullptr) {
-		result = D3DCompileFromFile(
-			pipelineData.geometryShaderFileName,    // シェーダファイル名
-			nullptr,
-			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-			"main", "gs_5_0",    // エントリーポイント名、シェーダーモデル指定
-			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-			0,
-			&gsBlob, &errorBlob);
+		bool isLoadedArchiveGS = false;
+		if (Archive::IsOpenArchive()) {
+			int size;
+			void* pData = Archive::GetPData(Encorder::WstrToStr(pipelineData.geometryShaderFileName), &size);
+			std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(pipelineData.geometryShaderFileName));
+
+			if (pData != nullptr) {
+
+				result = D3DCompile(
+					mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+					nullptr,
+					nullptr, // インクルード可能にする
+					"main", "gs_5_0",    // エントリーポイント名、シェーダーモデル指定
+					D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+					0,
+					&gsBlob, &errorBlob);
+
+				if (result == S_OK) {
+					isLoadedArchiveGS = true;
+				}
+			}
+		}
+
+		if (isLoadedArchiveGS == false) {
+			result = D3DCompileFromFile(
+				pipelineData.geometryShaderFileName,    // シェーダファイル名
+				nullptr,
+				D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+				"main", "gs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&gsBlob, &errorBlob);
+		}
+
 		if (FAILED(result)) {
 			// errorBlobからエラー内容をstring型にコピー
 			std::string errstr;
@@ -72,14 +127,40 @@ void InstancingObjectDraw::CreateGraphicsPipeline(int objectType, PipelineData& 
 	}
 
 	// ピクセルシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		pipelineData.pixelShaderFileName,    // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&psBlob, &errorBlob);
+	bool isLoadedArchivePS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(pipelineData.pixelShaderFileName), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(pipelineData.pixelShaderFileName));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&psBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchivePS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchivePS == false) {
+		result = D3DCompileFromFile(
+			pipelineData.pixelShaderFileName,    // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&psBlob, &errorBlob);
+	}
+
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
@@ -278,16 +359,41 @@ void InstancingObjectDraw::CreateShadowObjGraphicsPipeline()
 	//各シェーダファイルの読み込みとコンパイル
 	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
-	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/InstancingOBJShadowTestVS.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
 
+	// 頂点シェーダの読み込みとコンパイル
+	bool isLoadedArchiveVS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/InstancingOBJShadowTestVS.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/InstancingOBJShadowTestVS.hlsl"));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&vsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveVS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchiveVS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/InstancingOBJShadowTestVS.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&vsBlob, &errorBlob);
+	}
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー
@@ -426,14 +532,39 @@ void InstancingObjectDraw::CreateShadowFbxGraphicsPipeline()
 	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/InstancingFBXShadowTestVS.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
+	bool isLoadedArchiveVS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/InstancingFBXShadowTestVS.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/InstancingFBXShadowTestVS.hlsl"));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&vsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveVS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchiveVS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/InstancingFBXShadowTestVS.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&vsBlob, &errorBlob);
+	}
 
 
 	if (FAILED(result)) {

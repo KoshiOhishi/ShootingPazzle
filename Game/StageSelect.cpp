@@ -7,6 +7,8 @@
 #include "GameSound.h"
 #include "ImguiHelper.h"
 
+using namespace DX12Library;
+
 StageSelect::StageSelect()
 {
 	//ステージロード
@@ -22,29 +24,29 @@ StageSelect::StageSelect()
 		stages[i]->SetDrawShadow(false);
 	}
 	//UI画像読み込み
-	buttonUp.LoadTexture(TEX_DIR_STAGESELECT + L"UI_Arrow_Up.png");
-	buttonDown.LoadTexture(TEX_DIR_STAGESELECT + L"UI_Arrow_Down.png");
-	buttonStart.LoadTexture(TEX_DIR_STAGESELECT + L"UI_Start.png");
+	buttonUp.LoadTexture(TEX_DIR_STAGESELECT + "UI_Arrow_Up.png");
+	buttonDown.LoadTexture(TEX_DIR_STAGESELECT + "UI_Arrow_Down.png");
+	buttonStart.LoadTexture(TEX_DIR_STAGESELECT + "UI_Start.png");
 
 	//スプライト読み込み
 	sprStageBG.Initialize();
-	sprStageBG.SetTexture(TEX_DIR_STAGESELECT + L"Stage_BG.png");
+	sprStageBG.SetTexture(TEX_DIR_STAGESELECT + "Stage_BG.png");
 	sprBackground.Initialize();
-	sprBackground.SetTexture(TEX_DIR_STAGESELECT + L"Background.png");
+	sprBackground.SetTexture(TEX_DIR_STAGESELECT + "Background.png");
 	sprTextStage.Initialize();
-	sprTextStage.SetTexture(TEX_DIR_STAGESELECT + L"Text_Stage.png");
+	sprTextStage.SetTexture(TEX_DIR_STAGESELECT + "Text_Stage.png");
 	sprArrowUp.Initialize();
-	sprArrowUp.SetTexture(TEX_DIR_STAGESELECT + L"Arrow_Up.png");
+	sprArrowUp.SetTexture(TEX_DIR_STAGESELECT + "Arrow_Up.png");
 	sprArrowDown.Initialize();
-	sprArrowDown.SetTexture(TEX_DIR_STAGESELECT + L"Arrow_Down.png");
+	sprArrowDown.SetTexture(TEX_DIR_STAGESELECT + "Arrow_Down.png");
 	for (int i = 0; i < _countof(sprStageNum); i++) {
 		sprStageNum[i].Initialize();
-		sprStageNum[i].SetTexture(TEX_DIR_STAGESELECT + L"UI_Number.png");
+		sprStageNum[i].SetTexture(TEX_DIR_STAGESELECT + "UI_Number.png");
 	}
 	sprWrite.Initialize();
-	sprWrite.SetTexture(TEX_DIR_UTIL + L"White1280x720.png");
+	sprWrite.SetTexture(TEX_DIR_UTIL + "White1280x720.png");
 	sprBlack.Initialize();
-	sprBlack.SetTexture(TEX_DIR_UTIL + L"Black1280x720.png");
+	sprBlack.SetTexture(TEX_DIR_UTIL + "Black1280x720.png");
 
 }
 
@@ -63,9 +65,7 @@ void StageSelect::Initialize()
 	camera.SetPositionAndDistance({ 0,150, -50 }, 15.0f);
 	camera.SetRotation(75, 0, 0);
 	//カメラをセット
-	Object3D::SetCamera(&camera);
-	Mouse::SetCamera(&camera);
-	Particle3D::SetCamera(&camera);
+	DX12Util::SetCameraAll(&camera);
 
 	//ライト初期化
 	light.Initialize();
@@ -147,9 +147,6 @@ void StageSelect::Draw()
 
 void StageSelect::UpdateCamera()
 {
-	//タイマー更新
-	changeSelectPosTimer.Update();
-
 	if (startGameTimer.GetIsStart() == false) {
 		float add = 5, m = 4.5;
 		Vector3 setPos = {};
@@ -222,10 +219,6 @@ void StageSelect::UpdateCamera()
 
 void StageSelect::UpdateTimer()
 {
-	firstEffectTimer.Update();
-	startGameTimer.Update();
-	roopEffectTimer.Update();
-	arrowTimer.Update();
 	//移動中は矢印を消す(タイマーを最終値に)
 	if (changeSelectPosTimer.GetIsStart()) {
 		arrowTimer.SetNowTime(arrowTimer.GetEndTime());

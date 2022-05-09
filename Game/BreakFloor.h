@@ -6,9 +6,9 @@ class BreakFloor :
 {
 private:
 	//モデル
-	static ObjModel modelBox;
+	static DX12Library::ObjModel modelBox;
 	//パーティクル
-	static Particle3D particle;
+	static DX12Library::Particle3D particle;
 
 	//破壊されたか
 	bool isBreak;
@@ -19,13 +19,13 @@ private:
 
 public:
 	static void StaticInitialize();
-	static ObjModel* GetModel() { return &modelBox; }
+	static DX12Library::ObjModel* GetModel() { return &modelBox; }
 
 	/// <summary>
 	/// パーティクル生成
 	/// </summary>
 	/// <param name="pos">生成位置</param>
-	static void GenerateParticle(const Vector3& pos);
+	static void GenerateParticle(const DX12Library::Vector3& pos);
 
 	/// <summary>
 	/// パーティクル描画

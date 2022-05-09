@@ -6,10 +6,12 @@
 #include "Sprite.h"
 #include "DX12Util.h"
 #include "DrawManager.h"
+#include "Archive.h"
+#include "Encorder.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
-using namespace std;
+using namespace DX12Library;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
@@ -19,7 +21,7 @@ XMMATRIX Sprite::matProjection{};		//射影行列
 ComPtr <ID3D12DescriptorHeap> Sprite::descHeap = nullptr;
 const int Sprite::spriteSRVCount = 512;
 ComPtr <ID3D12Resource> Sprite::texbuff[Sprite::spriteSRVCount];	//テクスチャバッファ
-std::unordered_map<std::wstring, UINT> Sprite::loadedTextureList;
+std::unordered_map<std::string, UINT> Sprite::loadedTextureList;
 UINT Sprite::loadedTextureCount = 0;
 
 
@@ -31,16 +33,41 @@ void Sprite::FirstInit()
 	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> psBlob;    // ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
-	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/SpriteVertexShader.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"VSmain", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
 
+	// 頂点シェーダの読み込みとコンパイル
+	bool isLoadedArchiveVS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/SpriteVertexShader.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/SpriteVertexShader.hlsl"));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&vsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveVS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchiveVS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/SpriteVertexShader.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&vsBlob, &errorBlob);
+	}
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー
@@ -56,15 +83,39 @@ void Sprite::FirstInit()
 	}
 
 	// ピクセルシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/SpritePixelShader.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"PSmain", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&psBlob, &errorBlob);
+	bool isLoadedArchivePS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/SpritePixelShader.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/SpritePixelShader.hlsl"));
 
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&psBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchivePS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchivePS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/SpritePixelShader.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&psBlob, &errorBlob);
+	}
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー
@@ -231,7 +282,7 @@ void Sprite::FirstInit()
 
 	//行列初期化
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, (float)DX12Util::GetWindowWidth(), (float)DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
+		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f
 	);
 }
 
@@ -284,11 +335,11 @@ void Sprite::Initialize()
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = Vector4(1, 1, 1, 1);		//色指定 (RGBA)
 	constMap->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, (float)DX12Util::GetWindowWidth(), (float)DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//平行投影行列の合成
+		0.0f, DX12Util::GetWindowWidth(), DX12Util::GetWindowHeight(), 0.0f, 0.0f, 1.0f);	//平行投影行列の合成
 	constBuff->Unmap(0, nullptr);
 }
 
-UINT Sprite::LoadTexture(const std::wstring& filename)
+UINT Sprite::LoadTexture(const std::string& filepath)
 {
 	HRESULT result = S_FALSE;
 
@@ -301,12 +352,31 @@ UINT Sprite::LoadTexture(const std::wstring& filename)
 	TexMetadata metadata{};
 	ScratchImage scratchimg{};
 
-	result = LoadFromWICFile(
-		filename.c_str(),		//「Resources」フォルダの「gazoudayo.png」
-		WIC_FLAGS_NONE,
-		&metadata,
-		scratchimg
-	);
+	//まずアーカイブ読み込み
+	bool isLoaded = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(filepath, &size);
+		if (pData != nullptr) {
+			result = LoadFromWICMemory(
+				pData, size, WIC_FLAGS_FORCE_RGB,
+				&metadata, scratchimg);
+			if (FAILED(result)) {
+				return result;
+			}
+
+			isLoaded = true;
+		}
+	}
+	//アーカイブファイルから読み取れなかったら直接読み取る
+	if (isLoaded == false) {
+		result = LoadFromWICFile(
+			Encorder::StrToWstr(filepath).c_str(), WIC_FLAGS_FORCE_RGB,
+			&metadata, scratchimg);
+		if (FAILED(result)) {
+			return result;
+		}
+	}
 
 	const Image* img = scratchimg.GetImage(0, 0, 0);	//生データ抽出
 
@@ -358,7 +428,7 @@ UINT Sprite::LoadTexture(const std::wstring& filename)
 	);
 
 	//リストに追加
-	loadedTextureList.emplace(filename, loadedTextureCount);
+	loadedTextureList.emplace(filepath, loadedTextureCount);
 
 	loadedTextureCount++;
 
@@ -441,7 +511,7 @@ void Sprite::SetIsDisplay(const bool isDisplay)
 }
 
 
-void Sprite::SetTexture(const std::wstring& filename, const bool loadNewerIfNotFound)
+void Sprite::SetTexture(const std::string& filename, const bool loadNewerIfNotFound)
 {
 	if (loadedTextureList.find(filename) != loadedTextureList.end())
 	{
@@ -461,16 +531,16 @@ void Sprite::SetTexture(const std::wstring& filename, const bool loadNewerIfNotF
 		texbuff[texNumber]->GetDesc();
 
 	if (width == 0) {
-		width = (float)resDesc.Width;
+		width = resDesc.Width;
 	}
 	if (height == 0) {
-		height = (float)resDesc.Height;
+		height = resDesc.Height;
 	}
 	if (tex_width == 0) {
-		tex_width = (float)resDesc.Width;
+		tex_width = resDesc.Width;
 	}
 	if (tex_height == 0) {
-		tex_height = (float)resDesc.Height;
+		tex_height = resDesc.Height;
 	}
 
 	size.x = width;

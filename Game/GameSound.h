@@ -10,9 +10,9 @@ class GameSound
 public:
 	struct SoundData
 	{
-		std::unique_ptr<WaveData> waveData;
-		std::unique_ptr<SourceVoice> sourceVoice;
-		Timer stopTimer;
+		std::unique_ptr<DX12Library::WaveData> waveData;
+		std::unique_ptr<DX12Library::SourceVoice> sourceVoice;
+		DX12Library::Timer stopTimer;
 		bool isUse3D = true;
 	};
 
@@ -53,7 +53,7 @@ public:
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
 	/// <param name="emitterPos">音を発する3D空間上での位置</param>
-	static void Play(const std::wstring& name, const Vector3& emitterPos);
+	static void Play(const std::wstring& name, const DX12Library::Vector3& emitterPos);
 
 	/// <summary>
 	/// ロード済音声データの再生を止める
@@ -81,7 +81,7 @@ public:
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
 	/// <param name="pos">位置</param>
-	static void SetPosition(const std::wstring& name, const Vector3& pos);
+	static void SetPosition(const std::wstring& name, const DX12Library::Vector3& pos);
 
 	/// <summary>
 	/// どこまで音を響かせるかの値セット カメラと地面との距離の5倍くらいがよい
@@ -93,6 +93,6 @@ public:
 	/// ロードしてある音声ファイル取得
 	/// </summary>
 	/// <param name="name">音源名(拡張子無し)</param>
-	static SourceVoice& GetLoadedSound(const std::wstring& name);
+	static DX12Library::SourceVoice& GetLoadedSound(const std::wstring& name);
 
 };

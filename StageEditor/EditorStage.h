@@ -17,17 +17,17 @@ public:
 	//床ブロックコンテナ
 	std::vector< std::unique_ptr<BaseFloor>> floors;
 	//床当たり判定(マウス用)
-	Plane floorCollision;
+	DX12Library::Plane floorCollision;
 	//スタート縦位置
 	unsigned short startLaneZ = stageSize.y - 2;
 
 	//以下表示用オブジェクト
-	InstancingObjectDraw iodSquareBlock[4];
-	InstancingObjectDraw iodTriangleBlock[4];
-	InstancingObjectDraw iodNormalFloor;
-	InstancingObjectDraw iodSwitchFloor[2];
-	InstancingObjectDraw iodTurnFloor[8];
-	InstancingObjectDraw iodBreakFloor;
+	DX12Library::InstancingObjectDraw iodSquareBlock[4];
+	DX12Library::InstancingObjectDraw iodTriangleBlock[4];
+	DX12Library::InstancingObjectDraw iodNormalFloor;
+	DX12Library::InstancingObjectDraw iodSwitchFloor[2];
+	DX12Library::InstancingObjectDraw iodTurnFloor[8];
+	DX12Library::InstancingObjectDraw iodBreakFloor;
 
 public:
 	EditorStage(){}
@@ -93,7 +93,7 @@ public:
 	/// <returns>存在すればブロック配列のインデックス、なければ-1を返す</returns>
 	int CheckExistFloor(const StageVec2& stagePos);
 
-	const Plane& GetFloorCollision()const { return floorCollision; }
+	const DX12Library::Plane& GetFloorCollision()const { return floorCollision; }
 
 };
 

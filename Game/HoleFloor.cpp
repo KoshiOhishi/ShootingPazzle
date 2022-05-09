@@ -1,6 +1,8 @@
 #include "HoleFloor.h"
 #include "GameUtility.h"
 
+using namespace DX12Library;
+
 void HoleFloor::Initialize(const StageVec2& pos)
 {
 	object.Initialize();

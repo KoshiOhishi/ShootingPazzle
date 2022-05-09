@@ -1,13 +1,15 @@
 #include "DebugText.h"
 #include <string>
 
+using namespace DX12Library;
+
 //Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
 Sprite DebugText::sprites[maxCharCount];
 int DebugText::spriteIndex = 0;
 UINT DebugText::debugTextTexNumber;
 
 
-void DebugText::Initialize(const wchar_t* texfilename)
+void DebugText::Initialize(const std::string& texfilename)
 {
 	Sprite::LoadTexture(texfilename);
 	for (int i = 0; i < _countof(sprites); i++)
@@ -63,6 +65,21 @@ void DebugText::Print(int text, float x, float y, float scale)
 void DebugText::Print(float text, float x, float y, float scale)
 {
 	Print(std::to_string(text), x, y, scale);
+}
+
+void DebugText::Print(const Vector2& text, float x, float y, float scale)
+{
+	Print("(" + std::to_string(text.x) + ", " + std::to_string(text.y) + ")", x, y, scale);
+}
+
+void DebugText::Print(const Vector3& text, float x, float y, float scale)
+{
+	Print("(" + std::to_string(text.x) + ", " + std::to_string(text.y) + ", " + std::to_string(text.z) + ")", x, y, scale);
+}
+
+void DebugText::Print(const Vector4& text, float x, float y, float scale)
+{
+	Print("(" + std::to_string(text.x) + ", " + std::to_string(text.y) + ", " + std::to_string(text.z) + ", " + std::to_string(text.w) + ")", x, y, scale);
 }
 
 void DebugText::DrawAll()

@@ -2,6 +2,9 @@
 #include "GameUtility.h"
 #include "GameSound.h"
 #include "FPSManager.h"
+#include "Encorder.h"
+
+using namespace DX12Library;
 
 ObjModel TriangleBlock::modelTriangle[4];
 Particle3D TriangleBlock::particle[5];
@@ -16,7 +19,7 @@ void TriangleBlock::StaticInitialize()
 
 	//パーティクル
 	for (int i = 0; i < _countof(particle); i++) {
-		particle[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Triangle.png");
+		particle[i].LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Triangle.png");
 		particle[i].Initialize();
 		particle[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);

@@ -1,11 +1,17 @@
 #include "Sound.h"
 #include <fstream>
+#include <sstream>
 #include <cassert>
 #include <mmsystem.h>
 #include "Quaternion.h"
 #include "Vector3.h"
+#include "DebugText.h"
+#include "Archive.h"
+#include "Encorder.h"
 
 #pragma comment ( lib, "winmm.lib" )
+
+using namespace DX12Library;
 
 //静的メンバ変数の実体
 IXAudio2* Sound::xAudio2;
@@ -156,13 +162,13 @@ void Sound::Set3DListenerVec(Camera& camera)
 	//正規化
 	up = up.Normalize();
 
-	//回転行列で回転
-	Quaternion rot(camera.GetRotMatrix());
-	Quaternion rotFront(front, rot);
-	Quaternion rotUp(up, rot);
+	////回転行列で回転
+	//Quaternion rot(camera.GetRotMatrix());
+	//Quaternion rotFront(front, rot);
+	//Quaternion rotUp(up, rot);
 
-	Set3DListenerFrontVec(rotFront.x, rotFront.y, rotFront.z);
-	Set3DListenerUpVec(rotUp.x, rotUp.y, rotUp.z);
+	Set3DListenerFrontVec(front.x, front.y, front.z);
+	Set3DListenerUpVec(up.x, up.y, up.z);
 }
 
 void Sound::Set3DListenerFrontVec(float x, float y, float z)
@@ -372,136 +378,118 @@ WaveData::~WaveData()
 	DeleteWave();
 }
 
-void WaveData::LoadWave(const wchar_t* filename)
+void WaveData::LoadWave(const std::wstring& filename)
 {
-	MMRESULT mmResult;
+	//チャンクヘッダ
+	struct ChunkHeader
+	{
+		char id[4]; //チャンク毎のID(4Byte)
+		unsigned int size; //チャンクサイズ(4Byte)
+	};
 
-	//wavファイルを開く
-	HMMIO mmioHandle = mmioOpen((LPWSTR)filename, NULL, MMIO_READ);
-	if (mmioHandle == NULL) {
-		assert(0);
-	}
+	//フォーマット情報
+	struct FormatInfo
+	{
+		//フォーマットコード(2Byte)
+		unsigned short formatCode;
+		//チャンネル数(2Byte)
+		unsigned short channel;
+		//サンプリングレート(4Byte)
+		unsigned int sampleRate;
+		//1秒分のデータサイズ(4Byte)
+		unsigned int bytePerSecond;
+		//ブロック境界(2Byte)
+		unsigned short blockAlignment;
+		//1サンプルのビット数(2Byte)
+		unsigned short bitPerSample;
+	};
 
-	MMCKINFO riffinfo;
-	riffinfo.fccType = mmioFOURCC('W', 'A', 'V', 'E');
-	//RIFFチャンクに進入
-	mmResult = mmioDescend(mmioHandle, &riffinfo, NULL, MMIO_FINDRIFF);
-	if (mmResult != NOERROR) {
-		assert(0);
-		//クローズ
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return;
-	}
+	bool isLoadedArchive = false;
+	std::stringstream ss;
+	std::ifstream file;
 
-	//fmtチャンク
-	MMCKINFO ckinfo;
-	ckinfo.ckid = mmioFOURCC('f', 'm', 't', ' ');
-	mmResult = mmioDescend(mmioHandle, &ckinfo, &riffinfo, MMIO_FINDCHUNK);
-	if (mmResult != NOERROR) {
-		assert(0);
-		//クローズ
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return;
-	}
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* data = Archive::GetPData(Encorder::WstrToStr(filename), &size);
 
-	//PCMWAVEFORMAT取得
-	PCMWAVEFORMAT pwf;
-	LONG size = mmioRead(mmioHandle, (HPSTR)&pwf, sizeof(pwf));
-	//読み込みサイズが正しいかチェック
-	if (size != sizeof(pwf)) {
-		assert(0);
-		//クローズ
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return;
-	}
+		if (data != nullptr) {
+			ss << Archive::GetDataAsString(data, size);
 
-	//余分なBYTEがあるか
-	if (pwf.wf.wFormatTag == WAVE_FORMAT_PCM) {
-		WAVEFORMATEX* p = (WAVEFORMATEX*)new CHAR[sizeof(WAVEFORMATEX)];
-		wfex.reset(p);
-		if (wfex == NULL) {
-			assert(0);
-			//クローズ
-			mmioClose(mmioHandle, MMIO_FHOPEN);
-			return;
-		}
-
-		//WAVEFORMATEXにコピー
-		memcpy(wfex.get(), &pwf, sizeof(pwf));
-		wfex->cbSize = 0;
-	}
-	else {
-		//余分なBYTE読み込み
-		WORD cbExtraBytes = 0L;
-		size = mmioRead(mmioHandle, (CHAR*)&cbExtraBytes, sizeof(WORD));
-		if (size != sizeof(WORD)) {
-			assert(0);
-			//クローズ
-			mmioClose(mmioHandle, MMIO_FHOPEN);
-			return;
-		}
-
-		WAVEFORMATEX* p = (WAVEFORMATEX*)new CHAR[sizeof(WAVEFORMATEX)];
-		wfex.reset(p);
-		if (wfex == NULL) {
-			assert(0);
-			//クローズ
-			mmioClose(mmioHandle, MMIO_FHOPEN);
-			return;
-		}
-
-		//WAVEFORMATEXにコピー
-		memcpy(wfex.get(), &pwf, sizeof(pwf));
-		wfex->cbSize = cbExtraBytes;
-
-		//余分なBYTE読み込み
-		size = mmioRead(mmioHandle, (CHAR*)(((BYTE*)&(wfex->cbSize)) + sizeof(WORD)), cbExtraBytes);
-		if (size != cbExtraBytes) {
-			assert(0);
-			//クローズ
-			mmioClose(mmioHandle, MMIO_FHOPEN);
-			return;
+			isLoadedArchive = true;
 		}
 	}
 
-	//読み込めたらfmtチャンクを抜ける
-	mmResult = mmioAscend(mmioHandle, &ckinfo, 0);
-	if (mmResult != MMSYSERR_NOERROR) {
-		assert(0);
-		//クローズ
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return;
+	if (isLoadedArchive == false) {
+		//.wavファイルをバイナリモードで開く
+		file.open(filename, std::ios_base::binary);
+		//ファイルオープン失敗を検出する
+		assert(file.is_open());
 	}
 
-	//dataチャンク
-	ckinfo.ckid = mmioFOURCC('d', 'a', 't', 'a');
-	mmResult = mmioDescend(mmioHandle, &ckinfo, &riffinfo, MMIO_FINDCHUNK);
-	if (mmResult != NOERROR) {
+	//一番最後までseek (ポインタを動かす)
+	isLoadedArchive ? ss.seekg(0, std::ios_base::end) : file.seekg(0, std::ios_base::end);
+	//現在のポインタ位置取得
+	std::streampos filesize = isLoadedArchive ? ss.tellg() : file.tellg();
+	//一番先頭までseek (ポインタを元に戻す)
+	isLoadedArchive ? ss.seekg(0, std::ios_base::beg) : file.seekg(0, std::ios_base::beg);
+
+	//現在カーソル位置から、チャンクヘッダを読み込む
+	ChunkHeader header;
+	isLoadedArchive ? ss.read((char*)&header, sizeof(header)) : file.read((char*)&header, sizeof(header));
+
+	//ファイルがRIFFかチェック
+	if (strncmp(header.id, "RIFF", 4) != 0) {
 		assert(0);
-		//クローズ
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return;
 	}
 
-	//音データの読み込み
-	soundBuffer.reset(new char[ckinfo.cksize]);
-	size = mmioRead(mmioHandle, (HPSTR)soundBuffer.get(), ckinfo.cksize);
-	if (size != ckinfo.cksize) {
-		soundBuffer.release();
+	//RIFFタイプ
+	char riffType[4];
+	isLoadedArchive ? ss.read((char*)&riffType, sizeof(riffType)) : file.read((char*)&riffType, sizeof(riffType));
+	//タイプがWAVEかチェック
+	if (strncmp(riffType, "WAVE", 4) != 0) {
 		assert(0);
-		//クローズ
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return;
 	}
 
-	//クローズ
-	mmioClose(mmioHandle, MMIO_FHOPEN);
-	mmioHandle = NULL;
+	//サブチャンクを順に読み込む
+	while (true) {
+		//現在位置から、次のチャンクヘッダを読み込む
+		isLoadedArchive ? ss.read((char*)&header, sizeof(header)) : file.read((char*)&header, sizeof(header));
 
-	audioBytes = ckinfo.cksize;
+		//fmtチャンク
+		if (strncmp(header.id, "fmt ", 4) == 0) {
+			FormatInfo fmt;
 
-	//Sound::AddWaveData(this);
+			//フォーマット情報読み取り
+			isLoadedArchive ? ss.read((char*)&fmt, sizeof(FormatInfo)) : file.read((char*)&fmt, sizeof(FormatInfo));
 
+			wfex.reset(new WAVEFORMATEX);
+			memcpy(wfex.get(), &fmt, sizeof(FormatInfo));
+
+			//fmtチャンクが16Byteより大きい場合は
+			if (header.size > sizeof(FormatInfo)) {
+				//fmtチャンクの末尾までの残りを読み飛ばす。
+				unsigned int restSize = header.size - sizeof(FormatInfo);
+				isLoadedArchive ? ss.seekg(restSize, std::ios_base::cur) : file.seekg(restSize, std::ios_base::cur);
+			}
+		}
+		//dataチャンク
+		else if (strncmp(header.id, "data", 4) == 0) {
+			audioBytes = header.size;
+			soundBuffer.reset(new char[audioBytes]);
+			isLoadedArchive ? ss.read(soundBuffer.get(), audioBytes) : file.read(soundBuffer.get(), audioBytes);
+		}
+		else {
+			//読み取り位置をチャンクの終わりまで進める（仮）
+			isLoadedArchive ? ss.seekg(header.size, std::ios_base::cur) : file.seekg(header.size, std::ios_base::cur);
+		}
+
+		//現在の読み取り位置を取得
+		std::streampos cur = isLoadedArchive ? ss.tellg() : file.tellg();
+		//末尾に達したら終了
+		if (cur >= filesize) {
+			break;
+		}
+	}
 }
 
 void WaveData::DeleteWave()
@@ -732,7 +720,7 @@ void SourceVoice::AddOutputSubmixVoice(SubmixVoice* pSubmixVoice)
 	}
 
 	//複数版
-	XAUDIO2_VOICE_SENDS sendlist = { (UINT32)send.size(), send.data() };
+	XAUDIO2_VOICE_SENDS sendlist = { send.size(), send.data() };
 
 	if (pSourceVoice == nullptr) {
 		assert(0);

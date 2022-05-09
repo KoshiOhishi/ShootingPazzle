@@ -1,6 +1,8 @@
 #include "ImguiHelper.h"
 #include "DX12Util.h"
 
+using namespace DX12Library;
+
 ImguiHelper::ComPtr<ID3D12DescriptorHeap> ImguiHelper::heapForImgui;
 ImguiHelper::string ImguiHelper::windowName;
 int ImguiHelper::drawPhase = DRAW_PHASE_NONE;

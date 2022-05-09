@@ -2,6 +2,9 @@
 #include "GameUtility.h"
 #include "GameSound.h"
 #include "FPSManager.h"
+#include "Encorder.h"
+
+using namespace DX12Library;
 
 ObjModel SquareBlock::modelBox[4];
 Particle3D SquareBlock::particle[5];
@@ -16,7 +19,7 @@ void SquareBlock::StaticInitialize()
 
 	//パーティクル
 	for (int i = 0; i < _countof(particle); i++) {
-		particle[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Square.png");
+		particle[i].LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Square.png");
 		particle[i].Initialize();
 		particle[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);

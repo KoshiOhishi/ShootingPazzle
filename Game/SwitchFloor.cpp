@@ -2,6 +2,8 @@
 #include "GameUtility.h"
 #include "FPSManager.h"
 
+using namespace DX12Library;
+
 ObjModel SwitchFloor::modelBox[2];
 
 void SwitchFloor::StaticInitialize()

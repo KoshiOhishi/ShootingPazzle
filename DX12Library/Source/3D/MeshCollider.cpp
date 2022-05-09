@@ -3,6 +3,7 @@
 #include "Matrix4.h"
 
 using namespace DirectX;
+using namespace DX12Library;
 
 void MeshCollider::ConstructTriangles(ObjModel* model)
 {
@@ -63,7 +64,7 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
 {
 	// オブジェクトのローカル座標系での球を得る（半径はXスケールを参照)
 	Sphere localSphere;
-	localSphere.center = Transform(sphere.center, invMatWorld);
+	localSphere.center = Matrix4Transform(sphere.center, invMatWorld);
 	localSphere.radius *= XMVector3Length(invMatWorld.r[0]).m128_f32[0];
 
 	std::vector<Triangle>::const_iterator it = triangles.cbegin();
@@ -75,7 +76,7 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
 			if (inter) {
 				const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
 
-				*inter = Transform(*inter, matWorld);
+				*inter = Matrix4Transform(*inter, matWorld);
 			}
 			pNowCollision = &triangle;
 			return true;
@@ -89,10 +90,10 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 {
 	// オブジェクトのローカル座標系でのレイを得る
 	Ray localRay;
-	localRay.start = Transform(ray.start, invMatWorld);
+	localRay.start = Matrix4Transform(ray.start, invMatWorld);
 	XMMATRIX m = invMatWorld;
 	m.r[3] = { 0,0,0,1 };
-	localRay.dir = Transform(ray.dir, m);
+	localRay.dir = Matrix4Transform(ray.dir, m);
 
 	std::vector<Triangle>::const_iterator it = triangles.cbegin();
 
@@ -114,7 +115,7 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 
 			const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
 
-			tempInter = Transform(tempInter, matWorld);
+			tempInter = Matrix4Transform(tempInter, matWorld);
 
 			pNowCollision = &triangle;
 			result = true;
@@ -140,11 +141,11 @@ const Triangle MeshCollider::GetNowCollisionTriangleInfo()
 	//ワールド座標系に変換して出力
 	Triangle t = *pNowCollision;
 	XMMATRIX m = GetObject3d()->GetMatWorld();
-	t.p0 = Transform(t.p0, m);
-	t.p1 = Transform(t.p1, m);
-	t.p2 = Transform(t.p2, m);
+	t.p0 = Matrix4Transform(t.p0, m);
+	t.p1 = Matrix4Transform(t.p1, m);
+	t.p2 = Matrix4Transform(t.p2, m);
 	m.r[3] = { 0,0,0,1 };
-	t.normal = Transform(t.normal, m);
+	t.normal = Matrix4Transform(t.normal, m);
 
 	return t;
 }

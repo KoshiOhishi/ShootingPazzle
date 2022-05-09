@@ -1,6 +1,8 @@
 #include "Vector3.h"
 #include <cmath>	// sqrt
 
+using namespace DX12Library;
+
 Vector3::Vector3()
 {
 	x = y = z = 0;

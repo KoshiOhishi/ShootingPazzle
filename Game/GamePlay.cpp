@@ -11,39 +11,42 @@
 #include "SceneManager.h"
 #include "Easing.h"
 #include "GameSound.h"
+#include "Encorder.h"
+
+using namespace DX12Library;
 
 GamePlay::GamePlay()
 {
 	modelBG.CreateFromOBJ(MODEL_DIR + "Sky/Sky.obj");
-	buttonReset.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_Arrow_Reset.png");
-	buttonBack.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_Arrow_Back.png");
-	buttonYes.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_Yes.png");
-	buttonNo.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_No.png");
-	buttonOK.LoadTexture(TEX_DIR_GAMEPLAY + L"UI_OK.png");
+	buttonReset.LoadTexture(TEX_DIR_GAMEPLAY + "UI_Arrow_Reset.png");
+	buttonBack.LoadTexture(TEX_DIR_GAMEPLAY + "UI_Arrow_Back.png");
+	buttonYes.LoadTexture(TEX_DIR_GAMEPLAY + "UI_Yes.png");
+	buttonNo.LoadTexture(TEX_DIR_GAMEPLAY + "UI_No.png");
+	buttonOK.LoadTexture(TEX_DIR_GAMEPLAY + "UI_OK.png");
 	sprWhite.Initialize();
-	sprWhite.SetTexture(TEX_DIR_UTIL + L"White1280x720.png");
+	sprWhite.SetTexture(TEX_DIR_UTIL + "White1280x720.png");
 	sprBlack.Initialize();
-	sprBlack.SetTexture(TEX_DIR_UTIL + L"Black1280x720.png");
+	sprBlack.SetTexture(TEX_DIR_UTIL + "Black1280x720.png");
 	sprPopUp.Initialize();
-	sprPopUp.SetTexture(TEX_DIR_GAMEPLAY + L"Game_PopUp.png");
+	sprPopUp.SetTexture(TEX_DIR_GAMEPLAY + "Game_PopUp.png");
 	sprUIRemainingBlock.Initialize();
-	sprUIRemainingBlock.SetTexture(TEX_DIR_GAMEPLAY + L"UI_RemainingBlock.png");
+	sprUIRemainingBlock.SetTexture(TEX_DIR_GAMEPLAY + "UI_RemainingBlock.png");
 	for (int i = 0; i < _countof(sprRemainingBlockCount); i++) {
 		sprRemainingBlockCount[i].Initialize();
-		sprRemainingBlockCount[i].SetTexture(TEX_DIR_GAMEPLAY + L"UI_Number.png");
+		sprRemainingBlockCount[i].SetTexture(TEX_DIR_GAMEPLAY + "UI_Number.png");
 	}
 	for (int i = 0; i < _countof(sprTextClear); i++) {
 		sprTextClear[i].Initialize();
-		sprTextClear[i].SetTexture(TEX_DIR_GAMEPLAY + L"Text_Clear.png");
+		sprTextClear[i].SetTexture(TEX_DIR_GAMEPLAY + "Text_Clear.png");
 	}
 	sprTextClearTime.Initialize();
-	sprTextClearTime.SetTexture(TEX_DIR_GAMEPLAY + L"Text_ClearTime.png");
+	sprTextClearTime.SetTexture(TEX_DIR_GAMEPLAY + "Text_ClearTime.png");
 	for (int i = 0; i < _countof(sprTextTimeNumber); i++) {
 		sprTextTimeNumber[i].Initialize();
-		sprTextTimeNumber[i].SetTexture(TEX_DIR_GAMEPLAY + L"Text_TimeNumber.png");
+		sprTextTimeNumber[i].SetTexture(TEX_DIR_GAMEPLAY + "Text_TimeNumber.png");
 	}
-	particle[0].LoadTexture(TEX_DIR_UTIL + L"Particle/Shine.png");
-	particle[1].LoadTexture(TEX_DIR_UTIL + L"Particle/Shine.png");
+	particle[0].LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Shine.png");
+	particle[1].LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Shine.png");
 }
 
 GamePlay::~GamePlay()
@@ -64,9 +67,7 @@ void GamePlay::Initialize()
 	camera.SetPClearEffectTimer(&clearEffectTimer);
 
 	//カメラをセット
-	Object3D::SetCamera(&camera);
-	Mouse::SetCamera(&camera);
-	Particle3D::SetCamera(&camera);
+	DX12Util::SetCameraAll(&camera);
 
 	//ライト初期化
 	light.Initialize();
@@ -187,6 +188,10 @@ void GamePlay::Update()
 	light.Update();
 	//3Dサウンドで使用するリスナーの位置更新
 	Sound::Set3DListenerPosAndVec(camera);
+
+	//サウンド更新
+	GameSound::Update();
+
 	//UpdateImgui();
 	//チュートリアル
 	tutorial.Update();
@@ -213,8 +218,6 @@ void GamePlay::Update()
 	//シーンチェンジ更新
 	UpdateChangeScene();
 	
-	//サウンド更新
-	GameSound::Update();
 }
 
 void GamePlay::Draw()
@@ -317,13 +320,6 @@ void GamePlay::UpdateTimer()
 		}
 		isEndFirstEffectOnce = true;
 	}
-
-	firstEffectTimer.Update();
-	scoreTimer.Update();
-	dispPopUpTimer.Update();
-	sceneChangeTimer.Update();
-	clearEffectTimer.Update();
-	addParticleTimer.Update();
 }
 
 void GamePlay::UpdateFirstEffect()

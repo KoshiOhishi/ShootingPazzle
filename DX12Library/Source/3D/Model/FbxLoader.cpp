@@ -2,6 +2,8 @@
 #include <cassert>
 
 using namespace DirectX;
+using namespace DX12Library;
+
 
 /// <summary>
 /// 静的メンバ変数の実体

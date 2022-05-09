@@ -2,6 +2,8 @@
 #include "Input.h"
 #include "DebugText.h"
 
+using namespace DX12Library;
+
 //コマンド格納コンテナ
 std::vector<CommandDetail> Command::commands;
 //編集するステージのポインタ
@@ -67,10 +69,8 @@ void Command::AddCommand(const CommandDetail& commandDetail)
 
 void Command::UpdateTimer()
 {
-	longPushTimer.Update();
-
 	//アンドゥ/リドゥキーが押されていたらタイマースタート
-	if ((Keyboard::IsKeyPush(DIK_LCONTROL) || Keyboard::IsKeyPush(DIK_RCONTROL)) && 
+	if ((Keyboard::IsKeyPush(DIK_LCONTROL) || Keyboard::IsKeyPush(DIK_RCONTROL)) &&
 		(Keyboard::IsKeyPush(DIK_Z) || Keyboard::IsKeyPush(DIK_Y))) {
 		if (longPushTimer.GetNowTime() <= longPushTimer.GetStartTime()) {
 			longPushTimer.Start();

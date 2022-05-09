@@ -1,5 +1,7 @@
 #include "AABBCollider.h"
 
+using namespace DX12Library;
+
 void AABBCollider::Update()
 {
 	//ワールド行列から座標を抽出

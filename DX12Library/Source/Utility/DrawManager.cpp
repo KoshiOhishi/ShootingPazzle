@@ -3,6 +3,10 @@
 #include "RenderText.h"
 #include "Particle3D.h"
 #include "Particle2D.h"
+#include "Object3D.h"
+#include "Line3D.h"
+
+using namespace DX12Library;
 
 std::vector<DrawManager::DrawObject> DrawManager::drawListBG;
 std::vector<DrawManager::DrawObject> DrawManager::drawList;
@@ -25,6 +29,13 @@ void DrawManager::DrawAll(bool isBG)
 	if (isBG) { l_drawList = &drawListBG; }
 	else { l_drawList = &drawList; }
 	int prevDrawType = -1;
+
+	if (isBG == false) {
+		Line3D::BeginDraw();
+		Line3D::DrawAll();
+		Line3D::Reset();
+		prevDrawType = DRAW_MANAGER_OBJECT_TYPE_LINE3D;
+	}
 
 	for (auto& v : *l_drawList) {
 		if (v.objectType == DRAW_MANAGER_OBJECT_TYPE_OBJECT3D) {

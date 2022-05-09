@@ -2,6 +2,8 @@
 #include "GameUtility.h"
 #include "FPSManager.h"
 
+using namespace DX12Library;
+
 ObjModel TurnFloor::modelBox[4];
 ObjModel TurnFloor::modelCover[4];
 

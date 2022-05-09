@@ -35,21 +35,21 @@ enum OptionMode {
 };
 
 class Editor :
-	public Scene
+	public DX12Library::Scene
 {
 private:
 	//ライト
-	Light light;
+	DX12Library::Light light;
 	//カメラ
-	Camera camera;
+	DX12Library::Camera camera;
 	//タイマー
-	Timer timer;
+	DX12Library::Timer timer;
 	//ステージ
 	EditorStage stage;
 
 	//背景
-	Object3D objBG;
-	ObjModel modelBG;
+	DX12Library::Object3D objBG;
+	DX12Library::ObjModel modelBG;
 
 	//Editor
 	//モード
@@ -66,9 +66,9 @@ private:
 	int optionMode = OPTION_CHANGE_STAGESIZE;
 
 	//表示用オブジェクト
-	Object3D objDispBlock;
-	Object3D objDispFloor;
-	Object3D objDispFloorSub;	//補助オブジェクト
+	DX12Library::Object3D objDispBlock;
+	DX12Library::Object3D objDispFloor;
+	DX12Library::Object3D objDispFloorSub;	//補助オブジェクト
 
 	//スタートレーン表示用
 	StartLane startLane[2];
@@ -87,7 +87,7 @@ private:
 	int sliderDepth;
 
 	//カーソル位置表示
-	RenderText txtCursol;
+	DX12Library::RenderText txtCursol;
 
 public:
 	Editor();

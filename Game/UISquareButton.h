@@ -10,14 +10,14 @@ class UISquareButton
 {
 private:
 	//ボタンテクスチャ
-	Sprite textureOn;
-	Sprite textureOff;
-	Sprite textureAdd;
+	DX12Library::Sprite textureOn;
+	DX12Library::Sprite textureOff;
+	DX12Library::Sprite textureAdd;
 
-	Vector2 pos;
-	Vector2 size;
+	DX12Library::Vector2 pos;
+	DX12Library::Vector2 size;
 
-	Timer pushedEffectTimer;
+	DX12Library::Timer pushedEffectTimer;
 
 	bool isEnable = true;
 
@@ -25,14 +25,14 @@ private:
 
 public:
 
-	void LoadTexture(const std::wstring& texturePath);
+	void LoadTexture(const std::string& texturePath);
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="texturePath">画像パス 画像は左半分にoff、右半分にon時の画像をつなげたものを使用/param>
 	/// <param name="pos">座標</param>
-	void Initialize(const Vector2& pos);
+	void Initialize(const DX12Library::Vector2& pos);
 
 	/// <summary>
 	/// 描画 各種更新も兼ねる
@@ -73,9 +73,9 @@ public:
 	/// </summary>
 	void UpdateSound();
 
-	void SetPosition(const Vector2& pos);
+	void SetPosition(const DX12Library::Vector2& pos);
 
-	void SetColor(const Vector4& color);
+	void SetColor(const DX12Library::Vector4& color);
 
 	/// <summary>
 	/// カーソルとボタンが重なったとき、テクスチャを変化させるか
@@ -88,8 +88,8 @@ public:
 		isEnable = flag;
 	}
 
-	const Vector2& GetPosition() { return pos; }
+	const DX12Library::Vector2& GetPosition() { return pos; }
 
-	const Vector2& GetTexSize() { return size; }
+	const DX12Library::Vector2& GetTexSize() { return size; }
 };
 

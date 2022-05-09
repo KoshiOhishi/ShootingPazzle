@@ -4,7 +4,9 @@
 #include "Easing.h"
 #include "GameSound.h"
 
-void UISquareButton::LoadTexture(const std::wstring& texturePath)
+using namespace DX12Library;
+
+void UISquareButton::LoadTexture(const std::string& texturePath)
 {
     //画像読み込み
     textureOff.Initialize();
@@ -50,7 +52,6 @@ void UISquareButton::Draw()
     }
 
     //加算合成エフェクト
-    pushedEffectTimer.Update();
     float alpha = Easing::GetEaseValue(EASE_OUTQUINT, 1, 0, pushedEffectTimer);
     float sizeX = Easing::GetEaseValue(EASE_OUTQUINT, size.x, size.x * 1.5, pushedEffectTimer);
     float sizeY = Easing::GetEaseValue(EASE_OUTQUINT, size.y, size.y * 1.5, pushedEffectTimer);

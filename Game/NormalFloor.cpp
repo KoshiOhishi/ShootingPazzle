@@ -1,6 +1,8 @@
 #include "NormalFloor.h"
 #include "GameUtility.h"
 
+using namespace DX12Library;
+
 ObjModel NormalFloor::modelBox;
 
 void NormalFloor::StaticInitialize()

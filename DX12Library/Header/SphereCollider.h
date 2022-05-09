@@ -4,31 +4,33 @@
 #include "CollisionPrimitive.h"
 #include "Vector3.h"
 
-/// <summary>
-/// 球衝突判定オブジェクト
-/// </summary>
-class SphereCollider : public BaseCollider, public Sphere
-{
-public:
-	SphereCollider(Vector3 offset = { 0,0,0 }, float radius = 1.0f) :
-		offset(offset),
-		radius(radius)
-	{
-		// 球形状をセット
-		shapeType = COLLISIONSHAPE_SPHERE;
-	}
+namespace DX12Library {
 
 	/// <summary>
-	/// 更新
+	/// 球衝突判定オブジェクト
 	/// </summary>
-	void Update() override;
+	class SphereCollider : public BaseCollider, public Sphere
+	{
+	public:
+		SphereCollider(Vector3 offset = { 0,0,0 }, float radius = 1.0f) :
+			offset(offset),
+			radius(radius)
+		{
+			// 球形状をセット
+			shapeType = COLLISIONSHAPE_SPHERE;
+		}
 
-	inline void SetRadius(float radius) { this->radius = radius; }
+		/// <summary>
+		/// 更新
+		/// </summary>
+		void Update() override;
 
-private:
-	// オブジェクト中心からのオフセット
-	Vector3 offset;
-	// 半径
-	float radius;
-};
+		inline void SetRadius(float radius) { this->radius = radius; }
 
+	private:
+		// オブジェクト中心からのオフセット
+		Vector3 offset;
+		// 半径
+		float radius;
+	};
+}

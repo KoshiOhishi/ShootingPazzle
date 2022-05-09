@@ -5,6 +5,9 @@
 #include "PostEffect.h"
 #include "DebugText.h"
 #include "DrawManager.h"
+#include "Timer.h"
+
+using namespace DX12Library;
 
 //静的メンバ変数の実体
 std::string SceneManager::nowScene;
@@ -42,6 +45,9 @@ void SceneManager::Update()
 		nowScene = nextScene;
 		Initialize();
 	}
+
+	//タイマーアップデート
+	Timer::UpdateAll();
 
 	scenes[nowScene]->Update();
 }

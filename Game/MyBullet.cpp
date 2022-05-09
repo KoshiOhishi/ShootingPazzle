@@ -12,6 +12,8 @@
 #include "BreakFloor.h"
 #include "Easing.h"
 
+using namespace DX12Library;
+
 ObjModel MyBullet::modelSphere;
 ObjModel MyBullet::modelArrow;
 const float MyBullet::RADIUS = ONE_CELL_LENGTH / 2;
@@ -637,7 +639,6 @@ void MyBullet::ChangeColor(int newColor)
 
 void MyBullet::UpdateColor()
 {
-	changeColorTimer.Update();
 
 	float r = 0, g = 0, b = 0;
 	double	start = changeColorTimer.GetStartTime(),

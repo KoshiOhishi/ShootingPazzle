@@ -1,6 +1,10 @@
 #include "RenderText.h"
 #include "DX12Util.h"
 #include "DrawManager.h"
+#include "Archive.h"
+#include "Encorder.h"
+
+using namespace DX12Library;
 
 //ルートシグネチャ
 Microsoft::WRL::ComPtr<ID3D12RootSignature> RenderText::rootSignature;
@@ -27,16 +31,41 @@ void RenderText::StaticInitialize()
 	vsBlob = nullptr; // 頂点シェーダオブジェクト
 	psBlob = nullptr; // ピクセルシェーダオブジェクト
 	errorBlob = nullptr; // エラーオブジェクト
-	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/TextVertexShader.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"VSmain", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
 
+	// 頂点シェーダの読み込みとコンパイル
+	bool isLoadedArchiveVS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/TextVertexShader.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/TextVertexShader.hlsl"));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&vsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveVS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchiveVS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/TextVertexShader.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&vsBlob, &errorBlob);
+	}
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー
@@ -52,15 +81,39 @@ void RenderText::StaticInitialize()
 	}
 
 	// ピクセルシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/TextPixelShader.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"PSmain", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&psBlob, &errorBlob);
+	bool isLoadedArchivePS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/TextPixelShader.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/TextPixelShader.hlsl"));
 
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&psBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchivePS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchivePS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/TextPixelShader.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&psBlob, &errorBlob);
+	}
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー

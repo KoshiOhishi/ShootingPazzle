@@ -5,8 +5,8 @@
 class StartLane
 {
 private:
-	Object3D object;
-	ObjModel model;
+	DX12Library::Object3D object;
+	DX12Library::ObjModel model;
 	StageVec2* stageSize;
 
 public:

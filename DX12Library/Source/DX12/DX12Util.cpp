@@ -25,6 +25,8 @@
 #include "ParticleManager.h"
 #include "Particle3D.h"
 #include "Particle2D.h"
+#include "Line3D.h"
+#include "Archive.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -32,6 +34,8 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "shlwapi.lib")
+
+using namespace DX12Library;
 
 int DX12Util::window_width = 1280;// 横幅
 int DX12Util::window_height = 720; // 縦幅
@@ -52,6 +56,9 @@ DX12Util::ComPtr<ID3D12Resource> DX12Util::depthBuffer[2];
 DX12Util::ComPtr <ID3D12DescriptorHeap> DX12Util::dsvHeap;
 DX12Util::ComPtr<ID3D12Fence> DX12Util::fence;
 UINT64 DX12Util::fenceVal;
+DX12Util::ComPtr<ID3D12Debug> DX12Util::debugController;
+DX12Util::ComPtr<ID3D12DebugDevice> DX12Util::mDebugDevice;
+std::unique_ptr<PostEffect> DX12Util::postEffect;
 
 //Imgui
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
@@ -77,8 +84,16 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	return DefWindowProc(hwnd, msg, wparam, lparam); //標準の処理を行う
 }
 
-void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int windowHeight)
+void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int windowHeight, double setfps)
 {
+#ifdef _DEBUG
+	//デバッグレイヤーをオンに
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(debugController.ReleaseAndGetAddressOf()))))
+	{
+		debugController->EnableDebugLayer();
+	}
+#endif
+
 	window_width = windowWidth;
 	window_height = windowHeight;
 
@@ -289,6 +304,8 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 			dsvHeap->GetCPUDescriptorHandleForHeapStart(), 1, DX12Util::GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV))
 	);
 
+	//アーカイブファイルが存在したら先に開いておく
+	Archive::OpenArchive();
 
 	//ImgUi初期化
 	ImguiHelper::Initialize();
@@ -315,13 +332,193 @@ void DX12Util::Initialize(const wchar_t* windowName, int windowWidth, int window
 	RenderText::StaticInitialize();
 
 	//デバッグテキスト初期化
-	DebugText::Initialize(L"Resources/System/debugfont.png");
+	DebugText::Initialize("Resources/System/debugfont.png");
 
 	//パーティクル初期化
 	ParticleManager::StaticInitialize();
 	Particle3D::StaticInitialize();
 	Particle2D::StaticInitialize();
 
+	//Line3D初期化
+	Line3D::StaticInitialize();
+
+	//ポストエフェクトの初期化
+	postEffect = std::make_unique<PostEffect>();
+	postEffect->Initialize();
+
+#ifdef _DEBUG
+	FPSManager::SetFPS(setfps, true);
+	DX12Util::GetDevice()->QueryInterface(mDebugDevice.GetAddressOf());
+#else
+	FPSManager::SetFPS(setfps, false);
+#endif
+
+#pragma region FBXパイプライン生成
+	{
+		//グラフィックパイプライン生成
+		DX12Util::PipelineData pipelineData;
+		pipelineData.vertexShaderFileName = L"Shader/FBXVS.hlsl";
+		pipelineData.pixelShaderFileName = L"Shader/FBXPS.hlsl";
+		pipelineData.inputLayout.resize(5);
+		pipelineData.inputLayout[0] =
+		{
+			// xy座標(1行で書いたほうが見やすい)
+			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+
+		pipelineData.inputLayout[1] =
+		{ // 法線ベクトル(1行で書いたほうが見やすい)
+			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+
+		pipelineData.inputLayout[2] =
+		{ // uv座標(1行で書いたほうが見やすい)
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+
+		pipelineData.inputLayout[3] =
+		{ // スキンインデックス
+			"BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+
+		pipelineData.inputLayout[4] =
+		{ // スキンウェイト
+			"BONEWEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+		//デスクリプタレンジ
+		pipelineData.descRanges.resize(2);
+		pipelineData.descRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+		pipelineData.descRanges[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
+
+		//ルートパラメータ
+		pipelineData.rootparams.resize(8);
+		// CBV（共有情報用）
+		pipelineData.rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（座標変換行列用）
+		pipelineData.rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（モデル用）
+		pipelineData.rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（ライト用）
+		pipelineData.rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（スキニング用）
+		pipelineData.rootparams[4].InitAsConstantBufferView(4, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（マテリアル用）
+		pipelineData.rootparams[5].InitAsConstantBufferView(5, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ用）
+		pipelineData.rootparams[6].InitAsDescriptorTable(1, &pipelineData.descRanges[0], D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ）
+		pipelineData.rootparams[7].InitAsDescriptorTable(1, &pipelineData.descRanges[1], D3D12_SHADER_VISIBILITY_ALL);
+		//パイプライン生成
+		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_FBX, pipelineData);
+
+		//シェーダ変えてインスタンシングも
+		pipelineData.vertexShaderFileName = L"Shader/InstancingFBXVS.hlsl";
+		pipelineData.pixelShaderFileName = L"Shader/InstancingFBXPS.hlsl";
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_INSTANCING_FBX, pipelineData);
+	}
+#pragma endregion
+#pragma region OBJパイプライン生成
+	{
+		//グラフィックパイプライン生成
+		DX12Util::PipelineData pipelineData;
+		pipelineData.vertexShaderFileName = L"Shader/OBJVS.hlsl";
+		//pipelineData.geometryShaderFileName = L"Shader/OBJGS.hlsl";
+		pipelineData.pixelShaderFileName = L"Shader/OBJPS.hlsl";
+		pipelineData.inputLayout.resize(3);
+		pipelineData.inputLayout[0] =
+		{
+			// xy座標(1行で書いたほうが見やすい)
+			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+
+		pipelineData.inputLayout[1] =
+		{ // 法線ベクトル(1行で書いたほうが見やすい)
+			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+
+		pipelineData.inputLayout[2] =
+		{ // uv座標(1行で書いたほうが見やすい)
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		};
+
+		//デスクリプタレンジ
+		pipelineData.descRanges.resize(2);
+		pipelineData.descRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+		pipelineData.descRanges[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
+
+		//ルートパラメータ
+		pipelineData.rootparams.resize(6);
+		// CBV（共有情報用）
+		pipelineData.rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（座標変換行列用）
+		pipelineData.rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（モデル用）
+		pipelineData.rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// CBV（ライト用）
+		pipelineData.rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ）
+		pipelineData.rootparams[4].InitAsDescriptorTable(1, &pipelineData.descRanges[0], D3D12_SHADER_VISIBILITY_ALL);
+		// SRV（テクスチャ）
+		pipelineData.rootparams[5].InitAsDescriptorTable(1, &pipelineData.descRanges[1], D3D12_SHADER_VISIBILITY_ALL);
+		//パイプライン生成
+		Object3D::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_OBJ, pipelineData);
+
+		//シェーダ変えてインスタンシングも
+		pipelineData.vertexShaderFileName = L"Shader/InstancingOBJVS.hlsl";
+		pipelineData.pixelShaderFileName = L"Shader/InstancingOBJPS.hlsl";
+		pipelineData.geometryShaderFileName = nullptr;// L"Shader/InstancingOBJGS.hlsl";
+		InstancingObjectDraw::CreateGraphicsPipeline(ObjectType::OBJECTTYPE_INSTANCING_OBJ, pipelineData);
+	}
+
+	Object3D::CreateShadowObjGraphicsPipeline();
+	Object3D::CreateShadowFbxGraphicsPipeline();
+	InstancingObjectDraw::CreateShadowObjGraphicsPipeline();
+	InstancingObjectDraw::CreateShadowFbxGraphicsPipeline();
+
+#pragma endregion
+
+}
+
+void DX12Library::DX12Util::Update()
+{
+	//インプット更新
+	Input::Update();
+
+	//シーン更新
+	SceneManager::Update();
+	//オブジェクト一括更新
+	Object3DManager::UpdateAllObject();
+
+	//ペラポリゴンへの描画
+	SceneManager::Draw();
+
+	//バックバッファへの描画
+	DX12Util::PreDrawBB();
+	//シーンを描画したペラポリゴンを描画
+	postEffect->Draw();
+	//デバッグテキストの描画
+
+	DebugText::DrawAll();
+	DX12Util::PostDrawBB();
+
+	//FPSを調整
+	FPSManager::Update();
 }
 
 void DX12Util::PreDrawBB()
@@ -392,6 +589,9 @@ void DX12Util::PostDrawBB()
 
 	//13.バッファをフリップ(裏表の入替え)
 	swapchain->Present(1, 0);
+
+	//Lineリセット
+	//Line3D::Reset();
 }
 
 void DX12Util::End()
@@ -423,6 +623,8 @@ void DX12Util::End()
 	cmdAllocator.Reset();
 	cmdQueue.Reset();
 	dev.Reset();
+
+	Archive::CloseArchive();
 
 	UnregisterClass(w.lpszClassName, w.hInstance);
 }
@@ -475,5 +677,13 @@ void DX12Util::ClearDepthBuffer(bool isShadow)
 	// 深度バッファのクリア
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
+}
+
+void DX12Util::SetCameraAll(Camera* camera)
+{
+	Mouse::SetCamera(camera);
+	Object3D::SetCamera(camera);
+	Particle3D::SetCamera(camera);
+	Line3D::SetCamera(camera);
 }
 

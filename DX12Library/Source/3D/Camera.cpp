@@ -3,6 +3,7 @@
 #include "Quaternion.h"
 
 using namespace DirectX;
+using namespace DX12Library;
 
 const float Camera::CAMERA_NEAR = 0.1f;
 const float Camera::CAMERA_FAR = 1000.0f;
@@ -195,7 +196,7 @@ void Camera::UpdateViewMatrix()
 #pragma endregion
 }
 
-const XMMATRIX Camera::GetViewProjection()const
+const XMMATRIX& Camera::GetViewProjection()const
 {
 	XMMATRIX tmp = matView * matProjection;
 	return tmp;

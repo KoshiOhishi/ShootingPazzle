@@ -1,6 +1,8 @@
 #include "Vector2.h"
 #include <cmath>	// sqrt
 
+using namespace DX12Library;
+
 Vector2::Vector2()
 {
 	x = y = 0;

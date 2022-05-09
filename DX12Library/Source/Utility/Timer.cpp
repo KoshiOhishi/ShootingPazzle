@@ -5,9 +5,9 @@
 
 #pragma comment(lib, "winmm.lib")
 
-Timer::Timer()
-{
-}
+using namespace DX12Library;
+
+std::vector<Timer*> Timer::timers;
 
 Timer::Timer(int start, int end, bool isLoop, float speed)
 {
@@ -17,6 +17,20 @@ Timer::Timer(int start, int end, bool isLoop, float speed)
 	updateSpeed = speed;
 	this->isLoop = isLoop;
 	isStart = false;
+
+	//—v‘f‚ª‚È‚©‚Á‚½‚ç’Ç‰Á
+	if (std::find(timers.begin(), timers.end(), this) == timers.end()) {
+		timers.emplace_back(this);
+	}
+}
+
+DX12Library::Timer::~Timer()
+{
+	auto itr = std::find(timers.begin(), timers.end(), this);
+	//—v‘f‚ª‚ ‚Á‚½‚çíœ
+	if (itr != timers.end()) {
+		timers.erase(itr);
+	}
 }
 
 void Timer::SetTimer(int start, int end, bool isLoop, float speed)
@@ -36,6 +50,11 @@ void Timer::SetTimer(int start, int end, bool isLoop, float speed)
 	}
 	else if (start == end) {
 		updateSpeed = 0;
+	}
+
+	//—v‘f‚ª‚È‚©‚Á‚½‚ç’Ç‰Á
+	if (std::find(timers.begin(), timers.end(), this) == timers.end()) {
+		timers.emplace_back(this);
 	}
 }
 
@@ -84,6 +103,13 @@ void Timer::SetNowTime(int time)
 	if (time > endTime) { time = endTime; }
 
 	nowTime = time;
+}
+
+void Timer::UpdateAll()
+{
+	for (auto& v : timers) {
+		v->Update();
+	}
 }
 
 int Timer::GetClockNowTime()

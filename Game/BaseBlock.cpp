@@ -2,6 +2,8 @@
 #include "GameUtility.h"
 #include "Easing.h"
 
+using namespace DX12Library;
+
 Stage* BaseBlock::pStage = nullptr;
 
 void BaseBlock::SetStagePos(const StageVec2& pos)
@@ -83,8 +85,6 @@ void BaseBlock::UpdateColor()
 		changeColorTimer.Reset();
 		changeColorTimer.Start();
 	}
-
-	changeColorTimer.Update();
 
 	//F•ÏX’†‚Ìˆ—
 	if (changeColorTimer.GetIsStart()) {

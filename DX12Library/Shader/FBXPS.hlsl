@@ -183,7 +183,7 @@ PSOutput main(VSOutput input)
 	
 	float3 posFromLightVP = input.tpos.xyz / input.tpos.w;
 	float2 shadowUV = (posFromLightVP + float2(1, -1)) * float2(0.5, -0.5);
-	float depthFromLight = lightDepthTex.SampleCmp(shadowSmp, shadowUV, posFromLightVP.z - 0.005f);
+	float depthFromLight = lightDepthTex.SampleCmp(shadowSmp, shadowUV, posFromLightVP.z - 0.025f);
 	float shadowWeight = lerp(0.5f, 1.0f, depthFromLight);
 	
 	//float depthFromLight = lightDepthTex.Sample(smp, shadowUV);
@@ -197,6 +197,9 @@ PSOutput main(VSOutput input)
 	//影有効なら0を、無効なら1を足して0～1にクリップ
 	shadowWeight += (float) (1.0f - isDrawShadowToMyself);
 	shadowWeight = clamp(shadowWeight, 0.0f, 1.0f);
+	
+	//影テクスチャのUV値が0～1の範囲外だったら影を描画しない
+	shadowWeight = (shadowUV.x < 0 || shadowUV.x > 1 || shadowUV.y < 0 || shadowUV.y > 1) ? 1 : shadowWeight;
 	
 	//シェーディングによる色で描画
 	output.target0 = float4(finalRGB * shadowWeight, 1);

@@ -1,4 +1,5 @@
 #include <fstream>
+#include <sstream>
 
 #include "Stage.h"
 #include "SquareBlock.h"
@@ -10,6 +11,9 @@
 #include "SwitchFloor.h"
 #include "GameUtility.h"
 #include "DebugText.h"
+#include "Archive.h"
+
+using namespace DX12Library;
 
 Stage::Stage()
 {
@@ -63,32 +67,48 @@ void Stage::LoadStage(std::string filename)
 	GameUtility::SetPStageSize(&stageSize);
 
 	std::ifstream file;
-	//バイナリモードで開く
-	file.open(filename, std::ios_base::binary);
-	//開けなかったらブロックなしデータを生成
-	if (!file.is_open()) {
-		stageSize.x = 20;
-		stageSize.y = 20;
-		startLaneZ = stageSize.y - 2;
-		//全マスに床ブロック(ノーマル)
-		for (int i = 0; i < stageSize.y; i++) {
-			for (int j = 0; j < stageSize.x; j++) {
-				StageVec2 pos = { i,j };
-				NormalFloor* newFloor = new NormalFloor;
-				newFloor->Initialize(pos);
-				newFloor->SetPInstancingObjectDraw(&iodNormalFloor);
-				floors.emplace_back(newFloor);
-			}
+	std::stringstream ss;
+
+	//アーカイブファイルが存在するなら開いてみる
+	bool isLoadedArchive = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(filename, &size);
+
+		if (pData != nullptr) {
+			ss << Archive::GetDataAsString(pData, size);
+			isLoadedArchive = true;
 		}
-		//床当たり判定初期化
-		floorCollision.distance = 0;
-		floorCollision.normal = { 0,1,0 };	//法線方向は上
-		return;
+	}
+
+	//バイナリモードで開く
+	if (isLoadedArchive == false) {
+		file.open(filename, std::ios_base::binary);
+		//開けなかったらブロックなしデータを生成
+		if (!file.is_open()) {
+			stageSize.x = 20;
+			stageSize.y = 20;
+			startLaneZ = stageSize.y - 2;
+			//全マスに床ブロック(ノーマル)
+			for (int i = 0; i < stageSize.y; i++) {
+				for (int j = 0; j < stageSize.x; j++) {
+					StageVec2 pos = { i,j };
+					NormalFloor* newFloor = new NormalFloor;
+					newFloor->Initialize(pos);
+					newFloor->SetPInstancingObjectDraw(&iodNormalFloor);
+					floors.emplace_back(newFloor);
+				}
+			}
+			//床当たり判定初期化
+			floorCollision.distance = 0;
+			floorCollision.normal = { 0,1,0 };	//法線方向は上
+			return;
+		}
 	}
 
 	//ステージ情報格納
 	StageHeader header;
-	file.read((char*)&header, sizeof(header));
+	isLoadedArchive ? ss.read((char*)&header, sizeof(header)) : file.read((char*)&header, sizeof(header));
 	stageSize.x = header.width;
 	stageSize.y = header.depth;
 	startLaneZ = header.startLineZ;
@@ -96,7 +116,7 @@ void Stage::LoadStage(std::string filename)
 	//ブロック情報格納
 	for (int i = 0; i < header.blockCount; i++) {
 		StageBlock object;
-		file.read((char*)&object, sizeof(object));
+		isLoadedArchive ? ss.read((char*)&object, sizeof(object)) : file.read((char*)&object, sizeof(object));
 
 		StageVec2 pos = { object.stagePosX, object.stagePosY };
 		AddBlock(pos, object.type, object.breakupCount, object.blockColor);
@@ -106,7 +126,7 @@ void Stage::LoadStage(std::string filename)
 	//ステージデータで指定された箇所は指定されたデータを格納、それ以外はノーマルブロック
 	for (int i = 0; i < header.floorCount; i++) {
 		StageFloor object;
-		file.read((char*)&object, sizeof(object));
+		isLoadedArchive ? ss.read((char*)&object, sizeof(object)) : file.read((char*)&object, sizeof(object));
 
 		StageVec2 pos = { object.stagePosX, object.stagePosY };
 		AddFloor(pos, object.type);

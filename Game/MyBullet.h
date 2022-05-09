@@ -18,9 +18,9 @@ private:
 	//壁などに衝突したときに参照する構造体
 	struct NextMoveInfo {
 		//次フレームの位置
-		Vector3 nextPos = {};
+		DX12Library::Vector3 nextPos = {};
 		//次フレームの移動量
-		Vector3 nextVel = {};
+		DX12Library::Vector3 nextVel = {};
 		//次フレームに衝突するか
 		bool isCollisionNextFrame = false;
 	};
@@ -30,14 +30,14 @@ private:
 	static const float RADIUS;
 
 	//球モデル
-	static ObjModel modelSphere;
+	static DX12Library::ObjModel modelSphere;
 	//矢印モデル
-	static ObjModel modelArrow;
+	static DX12Library::ObjModel modelArrow;
 
 	//座標
-	Vector3 position = {};
+	DX12Library::Vector3 position = {};
 	//移動量
-	Vector3 velocity = {};
+	DX12Library::Vector3 velocity = {};
 	//移動速度
 	float speed = 2.0f;
 	//射出角度
@@ -49,23 +49,23 @@ private:
 	//射出フラグ
 	bool isShoot = false;
 	//レイ
-	Ray ray;
+	DX12Library::Ray ray;
 	//衝突フレームの位置や移動量をまとめた構造体
 	NextMoveInfo nextMoveInfo;
 	//ステージデータ
 	Stage* stage = nullptr;
 	//球オブジェクト
-	Object3D objSphere;
+	DX12Library::Object3D objSphere;
 	//矢印オブジェクト
-	Object3D objArrow;
+	DX12Library::Object3D objArrow;
 
 	//エフェクトタイマー
-	Timer* pFirstEffectTimer;
+	DX12Library::Timer* pFirstEffectTimer;
 	//跳ねるエフェクトの初期Y座標 カメラの位置と同期させる
 	float bounceInitPosY = 200;
 
 	//色変更タイマー
-	Timer changeColorTimer;
+	DX12Library::Timer changeColorTimer;
 	//色変更に使用する変数 (0...前の色 1...今の色)
 	int myColor[2] = { STAGE_COLOR_NONE, STAGE_COLOR_NONE };
 
@@ -155,13 +155,13 @@ public:
 	/// <summary>
 	/// レイの位置方角更新
 	/// </summary>
-	void UpdateRay(const Vector3& pos, const Vector3& dir);
+	void UpdateRay(const DX12Library::Vector3& pos, const DX12Library::Vector3& dir);
 
 	/// <summary>
 	/// 引数の位置がステージの外にあるか
 	/// </summary>
 	/// <returns></returns>
-	bool IsOutStage(const Vector3& pos);
+	bool IsOutStage(const DX12Library::Vector3& pos);
 
 	/// <summary>
 	/// 色を変更する
@@ -187,7 +187,7 @@ public:
 	/// <param name="y"> 跳ねるエフェクトの初期Y座標</param>
 	void SetBounceInitPosY(float y) { bounceInitPosY = y; }
 
-	void SetPFirstEffectTimer(Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
+	void SetPFirstEffectTimer(DX12Library::Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
 #pragma endregion
 
 #pragma region Getter

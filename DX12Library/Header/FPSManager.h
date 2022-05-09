@@ -4,39 +4,42 @@
 #include <chrono>
 #pragma comment(lib,"winmm.lib")
 
-class FPSManager
-{
-private:
-	static double FRAME_TIME;
-	static std::chrono::steady_clock::time_point start;
-	static std::chrono::steady_clock::time_point end;
+namespace DX12Library {
 
-	static double nowFPS;
-	static bool isAdjust;
-	static bool isPrintFPS;
+	class FPSManager
+	{
+	private:
+		static double FRAME_TIME;
+		static std::chrono::steady_clock::time_point start;
+		static std::chrono::steady_clock::time_point end;
 
-public:
-	/// <summary>
-	/// FPSをセット(0以下で制限しない)
-	/// </summary>
-	/// <param name="fps">動作させるfps。0以下で制限なし</param>
-	static void SetFPS(double fps = -1, bool isPrintFPS = false);
+		static double nowFPS;
+		static bool isAdjust;
+		static bool isPrintFPS;
 
-	/// <summary>
-	/// プログラムループの終わりに記述する fpsの調整を行う
-	/// </summary>
-	static void Update();
+	public:
+		/// <summary>
+		/// FPSをセット(0以下で制限しない)
+		/// </summary>
+		/// <param name="fps">動作させるfps。0以下で制限なし</param>
+		static void SetFPS(double fps = -1, bool isPrintFPS = false);
 
-	/// <summary>
-	/// 現在のfpsを取得
-	/// </summary>
-	/// <returns></returns>
-	static double GetFPS() { return nowFPS; }
+		/// <summary>
+		/// プログラムループの終わりに記述する fpsの調整を行う
+		/// </summary>
+		static void Update();
 
-	/// <summary>
-	/// ある値を60fpsで動作させるために乗算させる数
-	/// </summary>
-	/// <returns></returns>
-	static double GetMulAdjust60FPS() { return 60.0 / nowFPS; }
-};
+		/// <summary>
+		/// 現在のfpsを取得
+		/// </summary>
+		/// <returns></returns>
+		static double GetFPS() { return nowFPS; }
 
+		/// <summary>
+		/// ある値を60fpsで動作させるために乗算させる数
+		/// </summary>
+		/// <returns></returns>
+		static double GetMulAdjust60FPS() { return 60.0 / nowFPS; }
+	};
+
+}

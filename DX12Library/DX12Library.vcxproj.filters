@@ -216,6 +216,15 @@
     <ClCompile Include="Source\Effect\Particle3D.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Source\3D\Line3D.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utility\Archive.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utility\Encorder.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -365,6 +374,15 @@
     <ClInclude Include="Header\Particle3D.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Line3D.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Archive.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Encorder.h">
+      <Filter>ヘッダー ファイル\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\BasicPixelShader.hlsl">
@@ -430,6 +448,9 @@
     <FxCompile Include="Shader\InstancingOBJVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Shader\OBJShadowTestVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
     <FxCompile Include="Shader\FBXShadowTestVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
@@ -439,7 +460,13 @@
     <FxCompile Include="Shader\InstancingOBJShadowTestVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\OBJShadowTestVS.hlsl">
+    <FxCompile Include="Shader\Particle3DGS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Particle3DVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="Shader\Particle2DGS.hlsl">
@@ -451,13 +478,10 @@
     <FxCompile Include="Shader\Particle2DVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\Particle3DGS.hlsl">
+    <FxCompile Include="Shader\LinePS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\Particle3DPS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Particle3DVS.hlsl">
+    <FxCompile Include="Shader\LineVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
@@ -489,6 +513,9 @@
     <None Include="Shader\InstancingOBJ.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
+    <None Include="Shader\OBJShadowTest.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
     <None Include="Shader\FBXShadowTest.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
@@ -498,13 +525,13 @@
     <None Include="Shader\InstancingOBJShadowTest.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
-    <None Include="Shader\OBJShadowTest.hlsli">
-      <Filter>リソース ファイル</Filter>
-    </None>
     <None Include="Shader\Particle2D.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
     <None Include="Shader\Particle3D.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="Shader\Line.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

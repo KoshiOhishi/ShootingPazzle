@@ -1,12 +1,15 @@
 #include "Particle2D.h"
 #include "DX12Util.h"
 #include "DrawManager.h"
+#include "Archive.h"
+#include "Encorder.h"
+
+using namespace DirectX;
+using namespace DX12Library;
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Particle2D::rootsignature;
 Microsoft::WRL::ComPtr<ID3D12PipelineState> Particle2D::pipelinestate[PIPELINE_COUNT];
 DirectX::XMMATRIX Particle2D::matProjection;
-
-using namespace DirectX;
 
 void Particle2D::StaticInitialize()
 {
@@ -41,37 +44,40 @@ void Particle2D::CreateGraphicsPipeline()
 	ID3D12Device* device = DX12Util::GetDevice();
 
 	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/Particle2DVS.hlsl",	// シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
-		std::string errstr;
-		errstr.resize(errorBlob->GetBufferSize());
+	bool isLoadedArchiveVS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/Particle2DVS.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/Particle2DVS.hlsl"));
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
-		errstr += "\n";
-		// エラー内容を出力ウィンドウに表示
-		OutputDebugStringA(errstr.c_str());
-		exit(1);
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&vsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveVS = true;
+			}
+		}
 	}
 
-	// ピクセルシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/Particle2DPS.hlsl",	// シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&psBlob, &errorBlob);
+	if (isLoadedArchiveVS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/Particle2DVS.hlsl",    // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&vsBlob, &errorBlob);
+	}
+
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
@@ -87,14 +93,88 @@ void Particle2D::CreateGraphicsPipeline()
 	}
 
 	// ジオメトリシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/Particle2DGS.hlsl",	// シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&gsBlob, &errorBlob);
+	bool isLoadedArchiveGS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/Particle2DGS.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/Particle2DGS.hlsl"));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "gs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&gsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveGS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchiveGS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/Particle2DGS.hlsl",	// シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&gsBlob, &errorBlob);
+	}
+
+	if (FAILED(result)) {
+		// errorBlobからエラー内容をstring型にコピー
+		std::string errstr;
+		errstr.resize(errorBlob->GetBufferSize());
+
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
+			errorBlob->GetBufferSize(),
+			errstr.begin());
+		errstr += "\n";
+		// エラー内容を出力ウィンドウに表示
+		OutputDebugStringA(errstr.c_str());
+		exit(1);
+	}
+
+	// ピクセルシェーダの読み込みとコンパイル
+	bool isLoadedArchivePS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/Particle2DPS.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/Particle2DPS.hlsl"));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&psBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchivePS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchivePS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/Particle2DPS.hlsl",    // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&psBlob, &errorBlob);
+	}
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
@@ -329,8 +409,8 @@ void Particle2D::Update()
 	for (std::forward_list<Particle>::iterator it = particles.begin();
 		it != particles.end(); it++)
 	{
-		//時間更新
-		it->life.Update();
+		////時間更新
+		//it->life.Update();
 		//速度に加速度を加算
 		it->velocity = it->velocity + it->accel;
 		//速度による移動

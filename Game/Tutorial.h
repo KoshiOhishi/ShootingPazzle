@@ -7,23 +7,23 @@ class Tutorial
 {
 private:
 	//ファイルディレクトリ
-	static const std::wstring DIR;
+	static const std::string DIR;
 	//位置調整
 	static const float ADJUST_POS;
 
 	//テクスチャ
-	Sprite popup;
-	Sprite mouse;
-	Sprite mouseCover;
-	Sprite text;
+	DX12Library::Sprite popup;
+	DX12Library::Sprite mouse;
+	DX12Library::Sprite mouseCover;
+	DX12Library::Sprite text;
 
 	//基準座標
-	Vector2 masterPos;
+	DX12Library::Vector2 masterPos;
 
 	//タイマー
-	Timer moveMasterPosTimer;
-	Timer roopEffectTimer;
-	Timer moveOverlapMouseTimer;
+	DX12Library::Timer moveMasterPosTimer;
+	DX12Library::Timer roopEffectTimer;
+	DX12Library::Timer moveOverlapMouseTimer;
 
 	//チュートリアル有効か
 	bool isEnable = false;
@@ -42,7 +42,7 @@ public:
 
 	void UpdateTexFromPhase();
 	void UpdateTexPos();
-	void UpdateTexPosOverlapMouse(Vector2& masterPos);
+	void UpdateTexPosOverlapMouse(DX12Library::Vector2& masterPos);
 
 	//マウスとチュートリアルが重なっているか
 	bool IsOverlapMouse();

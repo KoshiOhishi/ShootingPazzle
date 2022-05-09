@@ -20,7 +20,7 @@ class SwitchFloor :
     public BaseFloor
 {
 private:
-	static ObjModel modelBox[2];
+	static DX12Library::ObjModel modelBox[2];
 	int switchColor = SWITCH_COLOR_NONE;
 	int switchState = SWITCH_STATE_OFF;
 
@@ -28,7 +28,7 @@ private:
 
 public:
 	static void StaticInitialize();
-	static ObjModel* GetModel(int index) { return &modelBox[index]; }
+	static DX12Library::ObjModel* GetModel(int index) { return &modelBox[index]; }
 
 	/// <summary>
 	/// èâä˙âª

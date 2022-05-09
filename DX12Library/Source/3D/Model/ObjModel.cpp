@@ -6,16 +6,20 @@
 #include <d3dcompiler.h>
 #include <d3dx12.h>
 #include "Object3D.h"
+#include "Archive.h"
+#include "Encorder.h"
+#include <istream>
 
 using namespace DirectX;
+using namespace DX12Library;
 
 void ObjModel::Draw(int instancingCount, bool isShadow)
 {
 	//インデックスバッファのセットコマンド
 	DX12Util::GetCmdList()->IASetIndexBuffer(&ibView);
 
-	//プリミティブ形状の設定コマンド(三角形リスト)
-	DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	////プリミティブ形状の設定コマンド(三角形リスト)
+	//DX12Util::GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//頂点バッファの設定コマンド
 	DX12Util::GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
@@ -56,8 +60,9 @@ void ObjModel::CreateFromOBJ(const std::string& modelPath, bool smoothing)
 	vertices.clear();
 	indices.clear();
 
-	//ファイルストリーム
-	std::fstream file;
+	vector<Vector3> positions;	//頂点座標
+	vector<Vector3> normals;	//法線ベクトル
+	vector<Vector2> texcoords;	//テクスチャUV
 
 	//ディレクトリパス取得
 	string directoryPath;
@@ -78,109 +83,41 @@ void ObjModel::CreateFromOBJ(const std::string& modelPath, bool smoothing)
 		}
 	}
 
-	//.objファイルを開く
-	file.open(modelPath);
-	//ファイルオープン失敗をチェック
-	if (file.fail()) {
-		assert(0);
-	}
+	bool isLoadedArchive = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* data = Archive::GetPData(modelPath, &size);
 
-	vector<Vector3> positions;	//頂点座標
-	vector<Vector3> normals;	//法線ベクトル
-	vector<Vector2> texcoords;	//テクスチャUV
-	//1行ずつ読み込む
-	string line;
-	while (getline(file, line)) {
+		if (data != nullptr) {
+			isLoadedArchive = true;
+			std::stringstream ss(Archive::GetDataAsString(data, size));
 
-		//1行分の文字列をストリームに変換して解析しやすくする
-		std::istringstream line_stream(line);
-
-		//半角スペース区切りで行の先頭文字列を取得
-		string key;
-		getline(line_stream, key, ' ');
-
-		//先頭文字列がmtllibならマテリアル
-		if (key == "mtllib")
-		{
-			//マテリアルのファイル名読み込み
-			string filename;
-			line_stream >> filename;
-			//マテリアル読み込み
-			LoadMaterial(directoryPath, filename);
-		}
-
-		//先頭文字列がvなら頂点座標
-		if (key == "v") {
-			//X,Y,Z座標読み込み
-			Vector3 position{};
-			line_stream >> position.x;
-			line_stream >> position.y;
-			line_stream >> position.z;
-			//座標データに追加
-			positions.emplace_back(position);
-			////頂点データに追加
-			//VertexPosNormalUv vertex{};
-			//vertex.pos = position;
-			//vertices.emplace_back(vertex);
-		}
-
-		//先頭文字列がvtならテクスチャ
-		if (key == "vt") {
-			//U,V成分読み込み
-			Vector2 texcoord{};
-			line_stream >> texcoord.x;
-			line_stream >> texcoord.y;
-			//V方向反転
-			texcoord.y = 1.0f - texcoord.y;
-			//テクスチャ座標データに追加
-			texcoords.emplace_back(texcoord);
-		}
-
-		//先頭文字列がvnなら法線ベクトル
-		if (key == "vn") {
-			//X,Y,Z成分読み込み
-			Vector3 normal{};
-			line_stream >> normal.x;
-			line_stream >> normal.y;
-			line_stream >> normal.z;
-			//法線ベクトルデータに追加
-			normals.emplace_back(normal);
-		}
-
-		//先頭文字列がfならポリゴン(三角形)
-		if (key == "f")
-		{
-			//半角スペース区切りで行の続きを読み込む
-			string index_string;
-			while (getline(line_stream, index_string, ' ')) {
-
-				//頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
-				std::istringstream index_stream(index_string);
-				unsigned short indexPosition, indexNormal, indexTexcoord;
-				index_stream >> indexPosition;
-				index_stream.seekg(1, std::ios_base::cur);	//スラッシュを飛ばす
-				index_stream >> indexTexcoord;
-				index_stream.seekg(1, std::ios_base::cur);	//スラッシュを飛ばす
-				index_stream >> indexNormal;
-
-				//頂点データの追加
-				Vertex vertex{};
-				vertex.pos = positions[indexPosition - 1];
-				vertex.normal = normals[indexNormal - 1];
-				vertex.uv = texcoords[indexTexcoord - 1];
-				vertices.emplace_back(vertex);
-				//インデックスデータの追加
-				indices.emplace_back(indices.size());
-				//エッジ平滑化用のデータを追加
-				if (smoothing) {
-					//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
-					AddSmoothData(indexPosition, (unsigned short)vertices.size() - 1);
-				}
+			string line;
+			while (std::getline(ss, line)) {
+				ParseOBJ(line, directoryPath, smoothing, positions, normals, texcoords);
 			}
 		}
 	}
 
-	file.close();
+	//アーカイブから開けなかったら通常処理
+	if (isLoadedArchive == false) {
+		//.objファイルを開く
+		std::fstream file;
+		file.open(modelPath);
+		//ファイルオープン失敗をチェック
+		if (file.fail()) {
+			assert(0);
+		}
+
+		//1行ずつ読み込む
+		string line;
+		while (std::getline(file, line)) {
+			ParseOBJ(line, directoryPath, smoothing, positions, normals, texcoords);
+		}
+
+		file.close();
+	}
+
 
 	if (smoothing) {
 		CalculateSmoothedVertexNormals();
@@ -191,6 +128,96 @@ void ObjModel::CreateFromOBJ(const std::string& modelPath, bool smoothing)
 	positions.clear();
 	normals.clear();
 	texcoords.clear();
+}
+
+void ObjModel::ParseOBJ(const std::string& line, const std::string& directoryPath, bool smoothing, vector<Vector3>& positions, vector<Vector3>& normals, vector<Vector2>& texcoords)
+{
+	//1行分の文字列をストリームに変換して解析しやすくする
+	std::istringstream line_stream(line);
+
+	//半角スペース区切りで行の先頭文字列を取得
+	string key;
+	getline(line_stream, key, ' ');
+
+	//先頭文字列がmtllibならマテリアル
+	if (key == "mtllib")
+	{
+		//マテリアルのファイル名読み込み
+		string filename;
+		line_stream >> filename;
+		//マテリアル読み込み
+		LoadMaterial(directoryPath, filename);
+	}
+
+	//先頭文字列がvなら頂点座標
+	if (key == "v") {
+		//X,Y,Z座標読み込み
+		Vector3 position{};
+		line_stream >> position.x;
+		line_stream >> position.y;
+		line_stream >> position.z;
+		//座標データに追加
+		positions.emplace_back(position);
+		////頂点データに追加
+		//VertexPosNormalUv vertex{};
+		//vertex.pos = position;
+		//vertices.emplace_back(vertex);
+	}
+
+	//先頭文字列がvtならテクスチャ
+	if (key == "vt") {
+		//U,V成分読み込み
+		Vector2 texcoord{};
+		line_stream >> texcoord.x;
+		line_stream >> texcoord.y;
+		//V方向反転
+		texcoord.y = 1.0f - texcoord.y;
+		//テクスチャ座標データに追加
+		texcoords.emplace_back(texcoord);
+	}
+
+	//先頭文字列がvnなら法線ベクトル
+	if (key == "vn") {
+		//X,Y,Z成分読み込み
+		Vector3 normal{};
+		line_stream >> normal.x;
+		line_stream >> normal.y;
+		line_stream >> normal.z;
+		//法線ベクトルデータに追加
+		normals.emplace_back(normal);
+	}
+
+	//先頭文字列がfならポリゴン(三角形)
+	if (key == "f")
+	{
+		//半角スペース区切りで行の続きを読み込む
+		string index_string;
+		while (getline(line_stream, index_string, ' ')) {
+
+			//頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
+			std::istringstream index_stream(index_string);
+			unsigned short indexPosition, indexNormal, indexTexcoord;
+			index_stream >> indexPosition;
+			index_stream.seekg(1, std::ios_base::cur);	//スラッシュを飛ばす
+			index_stream >> indexTexcoord;
+			index_stream.seekg(1, std::ios_base::cur);	//スラッシュを飛ばす
+			index_stream >> indexNormal;
+
+			//頂点データの追加
+			Vertex vertex{};
+			vertex.pos = positions[indexPosition - 1];
+			vertex.normal = normals[indexNormal - 1];
+			vertex.uv = texcoords[indexTexcoord - 1];
+			vertices.emplace_back(vertex);
+			//インデックスデータの追加
+			indices.emplace_back(indices.size());
+			//エッジ平滑化用のデータを追加
+			if (smoothing) {
+				//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
+				AddSmoothData(indexPosition, (unsigned short)vertices.size() - 1);
+			}
+		}
+	}
 }
 
 void ObjModel::SetVertexUV(int vertexNum, const Vector2& uv)
@@ -207,19 +234,43 @@ void ObjModel::SetVertexUV(int vertexNum, const Vector2& uv)
 void ObjModel::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 	bool isLoadTexture = false;
-
-	//ファイルストリーム
+	bool isLoadedArchive = false;
+	std::stringstream ss;
 	std::ifstream file;
+
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* data = Archive::GetPData(directoryPath + filename, &size);
+
+		if (data != nullptr) {
+			ss << Archive::GetDataAsString(data, size);
+
+			isLoadedArchive = true;
+		}
+	}
+	
 	//マテリアルファイルを開く
-	file.open(directoryPath + filename);
-	//ファイルオープン失敗をチェック
-	if (file.fail()) {
-		assert(0);
+	if (isLoadedArchive == false) {
+		file.open(directoryPath + filename);
+		//ファイルオープン失敗をチェック
+		if (file.fail()) {
+			assert(0);
+		}
 	}
 
 	//1行ずつ読み込む
 	string line;
-	while (getline(file, line)) {
+	while (true) {
+		if (isLoadedArchive) {
+			if (std::getline(ss, line).eof()) {
+				break;
+			}
+		}
+		else {
+			if (std::getline(file, line).eof()) {
+				break;
+			}
+		}
 
 		//1行分の文字列をストリームに変換
 		std::istringstream line_stream(line);
@@ -294,11 +345,30 @@ bool ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 	wchar_t wfilepath[128];
 	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
-	result = LoadFromWICFile(
-		wfilepath, WIC_FLAGS_FORCE_RGB,
-		&metadata, scratchImg);
-	if (FAILED(result)) {
-		return result;
+	//まずアーカイブ読み込み
+	bool isLoaded = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(filepath, &size);
+		if (pData != nullptr) {
+			result = LoadFromWICMemory(
+				pData, size, WIC_FLAGS_FORCE_RGB,
+				&metadata, scratchImg);
+			if (FAILED(result)) {
+				return result;
+			}
+
+			isLoaded = true;
+		}
+	}
+	//アーカイブファイルから読み取れなかったら直接読み取る
+	if (isLoaded == false) {
+		result = LoadFromWICFile(
+			Encorder::StrToWstr(filepath).c_str(), WIC_FLAGS_FORCE_RGB,
+			&metadata, scratchImg);
+		if (FAILED(result)) {
+			return result;
+		}
 	}
 
 	const Image* img = scratchImg.GetImages(); // 生データ抽出
@@ -354,11 +424,29 @@ bool ObjModel::LoadTextureReturnTexSize(const std::string& directoryPath, const 
 	wchar_t wfilepath[128];
 	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
-	result = LoadFromWICFile(
-		wfilepath, WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-	if (FAILED(result)) {
-		return false;
+	//まずアーカイブ読み込み
+	bool isLoaded = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(filepath, &size);
+		if (pData != nullptr) {
+			result = LoadFromWICMemory(
+				pData, size, WIC_FLAGS_FORCE_RGB,
+				&metadata, scratchImg);
+
+			if (SUCCEEDED(result)) {
+				isLoaded = true;
+			}
+		}
+	}
+	//アーカイブファイルから読み取れなかったら直接読み取る
+	if (isLoaded == false) {
+		result = LoadFromWICFile(
+			wfilepath, WIC_FLAGS_FORCE_RGB,
+			&metadata, scratchImg);
+		if (FAILED(result)) {
+			return result;
+		}
 	}
 
 	const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出

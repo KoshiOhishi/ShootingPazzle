@@ -11,10 +11,10 @@ const float ONE_CELL_LENGTH = 5.0f;
 //モデルのディレクトリ
 const std::string MODEL_DIR = "Resources/Model/";
 //2Dテクスチャのディレクトリ
-const std::wstring TEX_DIR_UTIL = L"Resources/2DTexture/Utility/";
-const std::wstring TEX_DIR_TITLE = L"Resources/2DTexture/Title/";
-const std::wstring TEX_DIR_STAGESELECT = L"Resources/2DTexture/StageSelect/";
-const std::wstring TEX_DIR_GAMEPLAY = L"Resources/2DTexture/GamePlay/";
+const std::string TEX_DIR_UTIL = "Resources/2DTexture/Utility/";
+const std::string TEX_DIR_TITLE = "Resources/2DTexture/Title/";
+const std::string TEX_DIR_STAGESELECT = "Resources/2DTexture/StageSelect/";
+const std::string TEX_DIR_GAMEPLAY = "Resources/2DTexture/GamePlay/";
 const std::string TEX_DIR_GAMEPLAY_S = "Resources/2DTexture/GamePlay/";
 
 const std::string STAGE_DIR = "Resources/StageData/";
@@ -109,8 +109,8 @@ class GameUtility
 {
 	//定数
 public:
-	static const Vector4 COLOR_VALUE[5];
-	static const Vector4 COLOR_VALUE_BREAKABLE[5];
+	static const DX12Library::Vector4 COLOR_VALUE[5];
+	static const DX12Library::Vector4 COLOR_VALUE_BREAKABLE[5];
 
 private:
 	//現在のフェーズ

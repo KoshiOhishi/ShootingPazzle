@@ -3,7 +3,7 @@
 #include "Matrix4.h"
 #include <cmath>
 
-//Todo:
+using namespace DX12Library;
 
 Quaternion::Quaternion(float x, float y, float z, float w)
 {
@@ -51,6 +51,12 @@ Quaternion::Quaternion(const Matrix4& m)
 	int k = (j + 1) % 3;
 	tr = m.r[i].m128_f32[i] - m.r[j].m128_f32[j] - m.r[k].m128_f32[k] + 1.0f;
 	float fourD = 2.0f * sqrt(tr);
+
+	if (fourD == 0) {
+		*this = Quaternion();
+		return;
+	}
+
 	float qa[4];
 	qa[i] = fourD / 4.0f;
 	qa[j] = (m.r[j].m128_f32[i] + m.r[i].m128_f32[j]) / fourD;

@@ -6,10 +6,13 @@
 #include "Easing.h"
 #include "FPSManager.h"
 #include "GameSound.h"
+#include "Encorder.h"
 
 #include "SquareBlock.h"
 #include "TriangleBlock.h"
 #include "BreakFloor.h"
+
+using namespace DX12Library;
 
 const float Title::EFFECT_ACCEL = 0.005f;
 
@@ -19,29 +22,29 @@ Title::Title()
 	modelBG.CreateFromOBJ(MODEL_DIR + "Sky/Sky.obj");
 	//スプライト
 	sprTextTitle.Initialize();
-	sprTextTitle.SetTexture(TEX_DIR_TITLE + L"Text_Title.png");
+	sprTextTitle.SetTexture(TEX_DIR_TITLE + "Text_Title.png");
 	sprTextClick.Initialize();
-	sprTextClick.SetTexture(TEX_DIR_TITLE + L"Text_Click.png");
+	sprTextClick.SetTexture(TEX_DIR_TITLE + "Text_Click.png");
 	sprBlack.Initialize();
-	sprBlack.SetTexture(TEX_DIR_UTIL + L"Black1280x720.png");
+	sprBlack.SetTexture(TEX_DIR_UTIL + "Black1280x720.png");
 	sprWhite.Initialize();
-	sprWhite.SetTexture(TEX_DIR_UTIL + L"White1280x720.png");
+	sprWhite.SetTexture(TEX_DIR_UTIL + "White1280x720.png");
 	sprAttention.Initialize();
-	sprAttention.SetTexture(TEX_DIR_TITLE + L"Attention.png");
+	sprAttention.SetTexture(TEX_DIR_TITLE + "Attention.png");
 	//パーティクル
 	for (int i = 0; i < _countof(particleSquare); i++) {
-		particleSquare[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Square.png");
+		particleSquare[i].LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Square.png");
 		particleSquare[i].Initialize();
 		particleSquare[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particleSquare[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
 	}
 	for (int i = 0; i < _countof(particleTriangle); i++) {
-		particleTriangle[i].LoadTexture(TEX_DIR_UTIL + L"Particle/Triangle.png");
+		particleTriangle[i].LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Triangle.png");
 		particleTriangle[i].Initialize();
 		particleTriangle[i].SetColor(GameUtility::COLOR_VALUE[i]);
 		particleTriangle[i].SetBlendMode(PARTICLE_BLENDMODE_ADD);
 	}
-	particleBreak.LoadTexture(TEX_DIR_UTIL + L"Particle/Break.png");
+	particleBreak.LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Break.png");
 	particleBreak.Initialize();
 	particleBreak.SetColor({ 0.71f,0.47f, 0.2f, 1 });
 	particleBreak.SetBlendMode(PARTICLE_BLENDMODE_ADD);
@@ -61,9 +64,7 @@ void Title::Initialize()
 	camera.SetPositionAndDistance({ 0,150, -50 }, 15.0f);
 	camera.SetRotation(0, 0, 0);
 	//カメラをセット
-	Object3D::SetCamera(&camera);
-	Mouse::SetCamera(&camera);
-	Particle3D::SetCamera(&camera);
+	DX12Util::SetCameraAll(&camera);
 
 	//ライト初期化
 	light.Initialize();
@@ -149,14 +150,12 @@ void Title::UpdateTimer()
 {
 	//開幕演出終わったらエフェクトタイマー開始
 	//(以後はaddEffectTimer終了後に新しくランダムに開始される)
+	//エフェクト追加
 	if (firstEffectTimer.GetIsEnd() && addEffectTimer.GetIsStart() == false) {
+		AddEffectObject();
+		//タイマーセット
 		SetAndStartAddEffectTimer();
 	}
-
-	firstEffectTimer.Update();
-	sceneChangeTimer.Update();
-	clickAlphaTimer.Update();
-	addEffectTimer.Update();
 }
 
 void Title::UpdateTextTex()
@@ -229,13 +228,6 @@ void Title::UpdateFG()
 
 void Title::UpdateEffectObjects()
 {
-	//エフェクト追加
-	if (addEffectTimer.GetIsEnd()) {
-		AddEffectObject();
-		//タイマーセット
-		SetAndStartAddEffectTimer();
-	}
-
 	//エフェクトオブジェクト更新
 	for (int i = 0; i < effectObjects.size(); i++) {
 		//重力っぽいの適用
@@ -246,8 +238,6 @@ void Title::UpdateEffectObjects()
 		//回転更新
 		Vector3 setRot = effectObjects[i]->object.GetRotation() + effectObjects[i]->addRotVelocity;
 		effectObjects[i]->object.SetRotation(setRot);
-		//破壊するまでのタイマー更新
-		effectObjects[i]->breakTimer.Update();
 		//オブジェクト更新
 		effectObjects[i]->object.Update();
 	}

@@ -9,6 +9,8 @@
 #include "SwitchFloor.h"
 #include "HoleFloor.h"
 
+using namespace DX12Library;
+
 int GameUtility::nowPhase;
 StageVec2* GameUtility::pStageSize = nullptr;
 int GameUtility::stageColor = STAGE_COLOR_NONE;

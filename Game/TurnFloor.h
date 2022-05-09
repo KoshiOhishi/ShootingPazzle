@@ -13,15 +13,15 @@ class TurnFloor :
     public BaseFloor
 {
 private:
-	static ObjModel modelBox[4];
-	static ObjModel modelCover[4];
+	static DX12Library::ObjModel modelBox[4];
+	static DX12Library::ObjModel modelCover[4];
 
-	InstancingObject objCover;
+	DX12Library::InstancingObject objCover;
 	int turnType = -1;
 	float addUV = 0;
 public:
 	static void StaticInitialize();
-	static ObjModel* GetModel(int index) {
+	static DX12Library::ObjModel* GetModel(int index) {
 		if (index < 4)	{ return &modelBox[index]; }
 		else { return &modelCover[index - 4]; }
 	}

@@ -13,9 +13,9 @@ class BaseFloor
 {
 protected:
 	//インスタンシング描画オブジェクト
-	InstancingObject object;
+	DX12Library::InstancingObject object;
 	//インスタンシング描画親オブジェクトポインタ
-	InstancingObjectDraw* pIOD;
+	DX12Library::InstancingObjectDraw* pIOD;
 
 	//ステージポインタ
 	static Stage* pStage;
@@ -46,13 +46,13 @@ public:
 	/// <summary>
 	/// 出現エフェクトの更新
 	/// </summary>
-	virtual void UpdateFirstEffect(const Timer& timer);
+	virtual void UpdateFirstEffect(const DX12Library::Timer& timer);
 
 	/// <summary>
 	/// クリアエフェクトの更新
 	/// </summary>
 	/// <param name="timer"></param>
-	virtual void UpdateClearEffect(const Timer& timer);
+	virtual void UpdateClearEffect(const DX12Library::Timer& timer);
 
 	/// <summary>
 	/// 当たり判定更新
@@ -81,14 +81,14 @@ public:
 	/// 座標セット
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPosition(const Vector3& pos) { object.SetPosition(pos); }
+	void SetPosition(const DX12Library::Vector3& pos) { object.SetPosition(pos); }
 
 	/// <summary>
 	/// インスタンシング描画親オブジェクトのポインタセット
 	/// </summary>
 	/// <param name="pIOD"></param>
-	void SetPInstancingObjectDraw(InstancingObjectDraw* pIOD) { this->pIOD = pIOD; }
+	void SetPInstancingObjectDraw(DX12Library::InstancingObjectDraw* pIOD) { this->pIOD = pIOD; }
 
-	const Vector3& GetPosition() { return object.GetPosition(); }
+	const DX12Library::Vector3& GetPosition() { return object.GetPosition(); }
 };
 

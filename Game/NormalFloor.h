@@ -4,11 +4,11 @@ class NormalFloor :
     public BaseFloor
 {
 private:
-	static ObjModel modelBox;
+	static DX12Library::ObjModel modelBox;
 
 public:
 	static void StaticInitialize();
-	static ObjModel* GetModel() { return &modelBox; }
+	static DX12Library::ObjModel* GetModel() { return &modelBox; }
 
 	/// <summary>
 	/// èâä˙âª

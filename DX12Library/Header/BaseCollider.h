@@ -4,41 +4,44 @@
 #include "CollisionInfo.h"
 #include "Object3D.h"
 
-/// <summary>
-/// コライダー基底クラス
-/// </summary>
-class BaseCollider
-{
-public:
-	BaseCollider() = default;
-	virtual ~BaseCollider() = default;
-
-	inline void SetObject(Object3D* object) {
-		this->object3D = object;
-	}
-
-	inline Object3D* GetObject3d() {
-		return object3D;
-	}
+namespace DX12Library {
 
 	/// <summary>
-	/// 更新
+	/// コライダー基底クラス
 	/// </summary>
-	virtual void Update() = 0;
+	class BaseCollider
+	{
+	public:
+		BaseCollider() = default;
+		virtual ~BaseCollider() = default;
 
-	inline CollisionShapeType GetShapeType() { return shapeType; }
+		inline void SetObject(Object3D* object) {
+			this->object3D = object;
+		}
 
-	/// <summary>
-	/// 衝突時コールバック関数
-	/// </summary>
-	/// <param name="info">衝突情報</param>
-	inline void OnCollision(const CollisionInfo& info) {
-		object3D->OnCollision(info);
-	}
+		inline Object3D* GetObject3d() {
+			return object3D;
+		}
 
-protected:
-	Object3D* object3D = nullptr;
-	// 形状タイプ
-	CollisionShapeType shapeType = SHAPE_UNKNOWN;
-};
+		/// <summary>
+		/// 更新
+		/// </summary>
+		virtual void Update() = 0;
 
+		inline CollisionShapeType GetShapeType() { return shapeType; }
+
+		/// <summary>
+		/// 衝突時コールバック関数
+		/// </summary>
+		/// <param name="info">衝突情報</param>
+		inline void OnCollision(const CollisionInfo& info) {
+			object3D->OnCollision(info);
+		}
+
+	protected:
+		Object3D* object3D = nullptr;
+		// 形状タイプ
+		CollisionShapeType shapeType = SHAPE_UNKNOWN;
+	};
+
+}

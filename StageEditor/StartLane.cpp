@@ -1,5 +1,7 @@
 #include "StartLane.h"
 
+using namespace DX12Library;
+
 void StartLane::Initialize(StageVec2* stageSize)
 {
 	this->stageSize = stageSize;

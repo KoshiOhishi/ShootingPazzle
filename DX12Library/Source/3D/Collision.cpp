@@ -3,6 +3,7 @@
 #include "ObjModel.h"
 
 using namespace DirectX;
+using namespace DX12Library;
 
 bool Collision::CheckSphere2Sphere(const Sphere& sphere1, const Sphere& sphere2, Vector3* inter)
 {

@@ -18,6 +18,8 @@
 #include "../DX12Library/imgui/imgui_impl_win32.h"
 #include "../DX12Library/imgui/imgui_impl_dx12.h"
 
+using namespace DX12Library;
+
 Editor::Editor()
 {
 	modelBG.CreateFromOBJ(MODEL_DIR + "Sky/Sky.obj");
@@ -34,8 +36,7 @@ void Editor::Initialize()
 	camera.SetRotation(90, 0, 0);
 
 	//カメラをセット
-	Object3D::SetCamera(&camera);
-	Mouse::SetCamera(&camera);
+	DX12Util::SetCameraAll(&camera);
 
 	//ライト初期化
 	light.Initialize();
@@ -425,7 +426,7 @@ void Editor::Save()
 {
 	std::ofstream file;
 	//バイナリモードで開く
-	file.open(STAGE_DIR + ioname + ".spb", std::ios_base::binary);
+	file.open("StageData/" + ioname + ".spb", std::ios_base::binary);
 	//ファイルオープン失敗を検出する
 	assert(file.is_open());
 
@@ -478,7 +479,7 @@ void Editor::Save()
 void Editor::Load()
 {
 	//ステージロード
-	stage.LoadStage(STAGE_DIR + ioname + ".spb");
+	stage.LoadStage("StageData/" + ioname + ".spb");
 	//ImGuiのスライダーの値を初期化しておく
 	sliderWidth = stage.stageSize.x;
 	sliderDepth = stage.stageSize.y;

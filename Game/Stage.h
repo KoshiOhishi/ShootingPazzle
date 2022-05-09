@@ -21,22 +21,22 @@ private:
 	//床ブロックコンテナ
 	std::vector< std::unique_ptr<BaseFloor>> floors;
 	//マウスカーソルと判定を取る用の板コリジョン
-	Plane floorCollision;
+	DX12Library::Plane floorCollision;
 	//球のスタート奥行
 	unsigned short startLaneZ = stageSize.y - 2;
 	//残り目標破壊ブロック数
 	int targetBlockCount = 0;
 	//出現エフェクトタイマーのポインタ
-	Timer* pFirstEffectTimer;
+	DX12Library::Timer* pFirstEffectTimer;
 	//クリアエフェクトタイマーのポインタ
-	Timer* pClearEffectTimer;
+	DX12Library::Timer* pClearEffectTimer;
 
-	InstancingObjectDraw iodSquareBlock[4];
-	InstancingObjectDraw iodTriangleBlock[4];
-	InstancingObjectDraw iodNormalFloor;
-	InstancingObjectDraw iodSwitchFloor[2];
-	InstancingObjectDraw iodTurnFloor[8];
-	InstancingObjectDraw iodBreakFloor;
+	DX12Library::InstancingObjectDraw iodSquareBlock[4];
+	DX12Library::InstancingObjectDraw iodTriangleBlock[4];
+	DX12Library::InstancingObjectDraw iodNormalFloor;
+	DX12Library::InstancingObjectDraw iodSwitchFloor[2];
+	DX12Library::InstancingObjectDraw iodTurnFloor[8];
+	DX12Library::InstancingObjectDraw iodBreakFloor;
 
 public:
 	Stage();
@@ -138,7 +138,7 @@ public:
 	/// マウスと床の当たり判定に使用する板コリジョン取得
 	/// </summary>
 	/// <returns></returns>
-	const Plane& GetFloorCollision()const { return floorCollision; }
+	const DX12Library::Plane& GetFloorCollision()const { return floorCollision; }
 
 	/// <summary>
 	/// スタートレーンのz座標取得
@@ -162,7 +162,7 @@ public:
 	/// ブロック・床全てに適用されるマスター座標
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetMasterPosition(const Vector3& pos);
+	void SetMasterPosition(const DX12Library::Vector3& pos);
 
 	/// <summary>
 	/// 影を描画するか
@@ -170,6 +170,6 @@ public:
 	/// <param name="isDraw"></param>
 	void SetDrawShadow(bool isDraw);
 
-	void SetPFirstEffectTimer(Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
-	void SetPClearEffectTimer(Timer* pClearEffectTimer) { this->pClearEffectTimer = pClearEffectTimer; }
+	void SetPFirstEffectTimer(DX12Library::Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
+	void SetPClearEffectTimer(DX12Library::Timer* pClearEffectTimer) { this->pClearEffectTimer = pClearEffectTimer; }
 };

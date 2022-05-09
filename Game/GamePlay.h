@@ -21,11 +21,11 @@
 #include "Tutorial.h"
 
 class GamePlay :
-	public Scene
+	public DX12Library::Scene
 {
 private:
 	//ライト
-	Light light;
+	DX12Library::Light light;
 	//カメラ
 	GameCamera camera;
 	//弾
@@ -35,35 +35,35 @@ private:
 	Stage stage;
 
 	//背景
-	Object3D objBG;
-	ObjModel modelBG;
+	DX12Library::Object3D objBG;
+	DX12Library::ObjModel modelBG;
 
 	//UIのブロック
-	Object3D objUISquareBlock;
+	DX12Library::Object3D objUISquareBlock;
 
 	//残りブロックの数字 (3桁まで対応)
-	Sprite sprRemainingBlockCount[3];
+	DX12Library::Sprite sprRemainingBlockCount[3];
 
 	//前景(白)
-	Sprite sprWhite;
+	DX12Library::Sprite sprWhite;
 
 	//前景(半透明黒)
-	Sprite sprBlack;
+	DX12Library::Sprite sprBlack;
 
 	//残りブロック数のUI
-	Sprite sprUIRemainingBlock;
+	DX12Library::Sprite sprUIRemainingBlock;
 
 	//ステージセレクトに戻るかのポップアップ
-	Sprite sprPopUp;
+	DX12Library::Sprite sprPopUp;
 
 	//「Clear」文字 (エフェクト用に2こ分)
-	Sprite sprTextClear[2];
+	DX12Library::Sprite sprTextClear[2];
 
 	//「ClearText」文字
-	Sprite sprTextClearTime;
+	DX12Library::Sprite sprTextClearTime;
 
 	//クリアタイムの数字 (9999.999sまで対応)
-	Sprite sprTextTimeNumber[9];
+	DX12Library::Sprite sprTextTimeNumber[9];
 
 	//UI(リセット)
 	UISquareButton buttonReset;
@@ -81,22 +81,22 @@ private:
 	UISquareButton buttonOK;
 
 	//開幕エフェクトタイマー
-	Timer firstEffectTimer;
+	DX12Library::Timer firstEffectTimer;
 
 	//ポップアップ出現タイマー
-	Timer dispPopUpTimer;
+	DX12Library::Timer dispPopUpTimer;
 
 	//シーンチェンジタイマー
-	Timer sceneChangeTimer;
+	DX12Library::Timer sceneChangeTimer;
 
 	//クリアエフェクトタイマー
-	Timer clearEffectTimer;
+	DX12Library::Timer clearEffectTimer;
 
 	//スコアタイマー
-	Timer scoreTimer;
+	DX12Library::Timer scoreTimer;
 
 	//パーティクル追加タイマー
-	Timer addParticleTimer;
+	DX12Library::Timer addParticleTimer;
 
 	//1回目の開幕エフェクト終了フラグ
 	bool isEndFirstEffectOnce = false;
@@ -105,7 +105,7 @@ private:
 	bool isDispPopup = false;
 
 	//パーティクル
-	Particle2D particle[2];
+	DX12Library::Particle2D particle[2];
 
 	//クリアエフェクトのパーティクルが追加されたか
 	bool addedParticleClearEffect = false;
@@ -153,13 +153,13 @@ public:
 	/// <param name="pNumberTexArray"></param>
 	/// <param name="arraySize"></param>
 	/// <param name="drawNum"></param>
-	void SetRemainingBlockCountTex(Sprite* pNumberTexArray, int arraySize, int drawNum, float numWidth, float numHeight);
+	void SetRemainingBlockCountTex(DX12Library::Sprite* pNumberTexArray, int arraySize, int drawNum, float numWidth, float numHeight);
 
 	/// <summary>
 	/// 残りブロック数の座標一括セット
 	/// </summary>
 	/// <param name="leftUpPos"></param>
-	void SetRemainingBlockCountTexPos(Sprite* pNumberTexArray, int arraySizeconst, const Vector2& leftUpPos, float padding);
+	void SetRemainingBlockCountTexPos(DX12Library::Sprite* pNumberTexArray, int arraySizeconst, const DX12Library::Vector2& leftUpPos, float padding);
 
 	/// <summary>
 	/// スコアタイムのスプライトを準備する
@@ -167,7 +167,7 @@ public:
 	/// <param name="pNumberTexArray"></param>
 	/// <param name="arraySize"></param>
 	/// <param name="startDrawTime"></param>
-	void SetScoreTimeTex(Sprite* pNumberTexArray, int arraySize, int startDrawTime);
+	void SetScoreTimeTex(DX12Library::Sprite* pNumberTexArray, int arraySize, int startDrawTime);
 
 	/// <summary>
 	/// スコアタイムをketaで丸めて取得

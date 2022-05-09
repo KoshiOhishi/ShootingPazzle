@@ -5,20 +5,22 @@
 #include "GameUtility.h"
 #include "Input.h"
 
-const std::wstring Tutorial::DIR = TEX_DIR_GAMEPLAY + L"Tutorial/";
+using namespace DX12Library;
+
+const std::string Tutorial::DIR = TEX_DIR_GAMEPLAY + "Tutorial/";
 const float Tutorial::ADJUST_POS = 10;
 
 Tutorial::Tutorial()
 {
 	//画像読み込み
 	popup.Initialize();
-	popup.SetTexture(DIR + L"Popup.png");
+	popup.SetTexture(DIR + "Popup.png");
 	mouse.Initialize();
-	mouse.SetTexture(DIR + L"Mouse.png");
+	mouse.SetTexture(DIR + "Mouse.png");
 	mouseCover.Initialize();
-	mouseCover.SetTexture(DIR + L"MouseCover.png");
+	mouseCover.SetTexture(DIR + "MouseCover.png");
 	text.Initialize();
-	text.SetTexture(DIR + L"Text.png");
+	text.SetTexture(DIR + "Text.png");
 }
 
 void Tutorial::Initialize(bool isEnable)
@@ -74,12 +76,10 @@ void Tutorial::Draw()
 
 void Tutorial::UpdateTexPos()
 {
-	moveMasterPosTimer.Update();
 	//下地移動中はタイマーを初期値に
 	if (moveMasterPosTimer.GetIsStart()) {
 		roopEffectTimer.SetNowTime(0);
 	}
-	roopEffectTimer.Update();
 
 	//基本位置更新
 	if (reverseMove) {
@@ -160,8 +160,6 @@ void Tutorial::UpdateTexPosOverlapMouse(Vector2& masterPos)
 		moveOverlapMouseTimer.Reset();
 		moveOverlapMouseTimer.Start();
 	}
-
-	moveOverlapMouseTimer.Update();
 
 	//タイマーが動いていたらイージング使って値を動かす
 	if (moveOverlapMouseTimer.GetIsStart()) {

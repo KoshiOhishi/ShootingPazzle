@@ -3,11 +3,14 @@
 #include <DirectXTex.h>
 #include "DX12Util.h"
 #include "DrawManager.h"
+#include "Archive.h"
+#include "Encorder.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+using namespace DX12Library;
 
 /// <summary>
 /// 静的メンバ変数の実体
@@ -59,11 +62,28 @@ void ParticleManager::LoadTexture(const std::wstring& filename)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	result = LoadFromWICFile(
-		filename.c_str(), WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-	if (FAILED(result)) {
-		assert(0);
+	//まずアーカイブ読み込み
+	bool isLoaded = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(filename), &size);
+		if (pData != nullptr) {
+			result = LoadFromWICMemory(
+				pData, size, WIC_FLAGS_FORCE_RGB,
+				&metadata, scratchImg);
+			if (SUCCEEDED(result)) {
+				isLoaded = true;
+			}
+		}
+	}
+	//アーカイブファイルから読み取れなかったら直接読み取る
+	if (isLoaded == false) {
+		result = LoadFromWICFile(
+			filename.c_str(), WIC_FLAGS_FORCE_RGB,
+			&metadata, scratchImg);
+		if (FAILED(result)) {
+			assert(0);
+		}
 	}
 
 	const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出

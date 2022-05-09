@@ -2,6 +2,9 @@
 #include "GameUtility.h"
 #include "GameSound.h"
 #include "FPSManager.h"
+#include "Encorder.h"
+
+using namespace DX12Library;
 
 ObjModel BreakFloor::modelBox;
 Particle3D BreakFloor::particle;
@@ -12,7 +15,7 @@ void BreakFloor::StaticInitialize()
 	modelBox.CreateFromOBJ(MODEL_DIR + "BreakFloor/BreakFloor.obj");
 
 	//パーティクル
-	particle.LoadTexture(TEX_DIR_UTIL + L"/Particle/Break.png");
+	particle.LoadTexture(Encorder::StrToWstr(TEX_DIR_UTIL) + L"Particle/Break.png");
 	particle.Initialize();
 	particle.SetColor({ 0.71f,0.47f, 0.2f, 1 });
 	particle.SetBlendMode(PARTICLE_BLENDMODE_ADD);

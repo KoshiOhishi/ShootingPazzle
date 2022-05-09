@@ -2,6 +2,9 @@
 #include "DX12Util.h"
 #include "Object3D.h"
 
+using namespace DX12Library;
+
+
 FbxModel::~FbxModel()
 {
 	fbxScene->Destroy();

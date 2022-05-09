@@ -4,24 +4,27 @@
 #include "Scene.h"
 #include <memory>
 
-class SceneManager
-{
-	using string = std::string;
-	template <typename T,typename U>
-	using unordered_map = std::unordered_map<T,U>;
+namespace DX12Library {
 
-private:
-	static string nowScene;
-	static string nextScene;
-	static unordered_map<string, std::unique_ptr<Scene>> scenes;
+	class SceneManager
+	{
+		using string = std::string;
+		template <typename T, typename U>
+		using unordered_map = std::unordered_map<T, U>;
 
-public:
-	static void AddScene(Scene* scene, const string& sceneName);
-	static void ChangeScene(const string& sceneName);
-	static void DeleteScene();
+	private:
+		static string nowScene;
+		static string nextScene;
+		static unordered_map<string, std::unique_ptr<Scene>> scenes;
 
-	static void Initialize();
-	static void Update();
-	static void Draw();
-};
+	public:
+		static void AddScene(Scene* scene, const string& sceneName);
+		static void ChangeScene(const string& sceneName);
+		static void DeleteScene();
 
+		static void Initialize();
+		static void Update();
+		static void Draw();
+	};
+
+}

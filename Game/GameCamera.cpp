@@ -2,6 +2,8 @@
 #include "Easing.h"
 #include "GameSound.h"
 
+using namespace DX12Library;
+
 void GameCamera::Initialize()
 {
 	Camera::Initialize();

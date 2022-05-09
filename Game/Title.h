@@ -9,7 +9,7 @@
 #include <memory>
 
 class Title :
-    public Scene
+    public DX12Library::Scene
 {
     static const float EFFECT_ACCEL;
 
@@ -23,57 +23,57 @@ class Title :
     {
         int type = -1;          //パーティクルタイプ
         int colorType = -1;     //色
-        Object3D object;        //オブジェクト
-        Vector3 position;       //位置
-        Vector3 velocity;       //移動量
+        DX12Library::Object3D object;        //オブジェクト
+        DX12Library::Vector3 position;       //位置
+        DX12Library::Vector3 velocity;       //移動量
         float moveSpeed;        //移動スピード
-        Vector3 addRotVelocity; //加える回転量
-        Timer breakTimer;       //破壊までの時間を計測
+        DX12Library::Vector3 addRotVelocity; //加える回転量
+        DX12Library::Timer breakTimer;       //破壊までの時間を計測
     };
 
 private:
     //ライト
-    Light light;
+    DX12Library::Light light;
 
     //カメラ
-    Camera camera;
+    DX12Library::Camera camera;
 
     //テキスト
-    Sprite sprTextTitle;
-    Sprite sprTextClick;
+    DX12Library::Sprite sprTextTitle;
+    DX12Library::Sprite sprTextClick;
     //注意書き
-    Sprite sprAttention;
+    DX12Library::Sprite sprAttention;
 
     //前景(黒)
-    Sprite sprBlack;
+    DX12Library::Sprite sprBlack;
     //前景(白)
-    Sprite sprWhite;
+    DX12Library::Sprite sprWhite;
 
     //背景
-    Object3D objBG;
-    ObjModel modelBG;
+    DX12Library::Object3D objBG;
+    DX12Library::ObjModel modelBG;
 
     //開幕エフェクトタイマー
-    Timer firstEffectTimer;
+    DX12Library::Timer firstEffectTimer;
 
     //シーンチェンジタイマー
-    Timer sceneChangeTimer;
+    DX12Library::Timer sceneChangeTimer;
 
     //「Click」文字透明度タイマー
-    Timer clickAlphaTimer;
+    DX12Library::Timer clickAlphaTimer;
 
     //エフェクトに使用するオブジェクト配列
     std::vector<std::unique_ptr<EffectObject>> effectObjects;
 
     //エフェクト追加タイマー
-    Timer addEffectTimer;
+    DX12Library::Timer addEffectTimer;
 
     //パーティクル(四角)
-    Particle3D particleSquare[5];
+    DX12Library::Particle3D particleSquare[5];
     //パーティクル(三角)
-    Particle3D particleTriangle[5];
+    DX12Library::Particle3D particleTriangle[5];
     //パーティクル(ごつごつ)
-    Particle3D particleBreak;
+    DX12Library::Particle3D particleBreak;
 
 public:
 
@@ -120,6 +120,6 @@ public:
     /// <summary>
     /// 単位球上のランダムな位置を取得
     /// </summary>
-    Vector3 GetRandomOnUnitSpherePos();
+    DX12Library::Vector3 GetRandomOnUnitSpherePos();
 };
 

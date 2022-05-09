@@ -1,5 +1,7 @@
 #include "GameSound.h"
 
+using namespace DX12Library;
+
 static const std::wstring SE_DIR = L"Resources/Sound/SE/";
 static const std::wstring BGM_DIR = L"Resources/Sound/BGM/";
 
@@ -50,8 +52,6 @@ void GameSound::Update()
 		if (v->isUse3D) {
 			v->sourceVoice->Update3DAudio();
 		}
-		//タイマー更新
-		v->stopTimer.Update();
 
 		//Stop命令出されていたら
 		if (v->stopTimer.GetNowTime() > v->stopTimer.GetStartTime()) {

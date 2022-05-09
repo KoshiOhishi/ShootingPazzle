@@ -1,19 +1,22 @@
 #include "PostEffect.h"
 #include "DX12Util.h"
 #include "Input.h"
+#include "Archive.h"
+#include "Encorder.h"
 
 #include <d3dx12.h>
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3dcompiler.lib")
 
+using namespace DX12Library;
+
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
 ///
-
-
 PostEffect::ComPtr<ID3D12Resource> PostEffect::texBuff[RENDERCOUNT];
 PostEffect::ComPtr<ID3D12DescriptorHeap> PostEffect::descHeapRTV;
+Timer PostEffect::postEffectTimer;
 
 //										  Red	Green  Blue Alpha
 const float PostEffect::clearColor[4] = { 0.25f, 0.5f, 0.1f, 0.0f }; //緑っぽい色
@@ -22,6 +25,8 @@ using namespace DirectX;
 
 void PostEffect::Initialize(bool isDispDepthTex)
 {
+	HRESULT result;
+
 	//VBV作成
 	CreateVBV();
 	//定数バッファ生成
@@ -34,6 +39,9 @@ void PostEffect::Initialize(bool isDispDepthTex)
 	CreateRTV();
 	//パイプライン生成
 	CreateGraphicsPipelineState(isDispDepthTex);
+
+	postEffectTimer.SetTimer(0, INT_MAX, true);
+	postEffectTimer.Start();
 }
 
 void PostEffect::PreDrawScene()
@@ -128,7 +136,7 @@ void PostEffect::Draw()
 	//時間の転送
 	ConstBufferDataTime* constMapTime = nullptr;
 	result = constBuffTime->Map(0, nullptr, (void**)&constMapTime);
-	constMapTime->time = time / 1000;
+	constMapTime->time = (float)postEffectTimer.GetNowTime() / 1000;
 	constBuffTime->Unmap(0, nullptr);
 
 
@@ -369,16 +377,41 @@ void PostEffect::CreateGraphicsPipelineState(bool isDispDepthTex)
 	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> psBlob;    // ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
-	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/PostEffectTestVS.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
 
+	// 頂点シェーダの読み込みとコンパイル
+	bool isLoadedArchiveVS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/PostEffectTestVS.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/PostEffectTestVS.hlsl"));
+
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&vsBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchiveVS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchiveVS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/PostEffectTestVS.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&vsBlob, &errorBlob);
+	}
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー
@@ -397,15 +430,39 @@ void PostEffect::CreateGraphicsPipelineState(bool isDispDepthTex)
 	if (isDispDepthTex) { entry = "main_depth"; }
 
 	// ピクセルシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Shader/PostEffectTestPS.hlsl", // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		entry, "ps_5_0", // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&psBlob, &errorBlob);
+	bool isLoadedArchivePS = false;
+	if (Archive::IsOpenArchive()) {
+		int size;
+		void* pData = Archive::GetPData(Encorder::WstrToStr(L"Shader/PostEffectTestPS.hlsl"), &size);
+		std::string mergedHlsl = Encorder::GetMergedHLSLI(pData, size, Encorder::WstrToStr(L"Shader/PostEffectTestPS.hlsl"));
 
+		if (pData != nullptr) {
+
+			result = D3DCompile(
+				mergedHlsl.c_str(), mergedHlsl.size(), nullptr,
+				nullptr,
+				nullptr, // インクルード可能にする
+				entry, "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
+				D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+				0,
+				&psBlob, &errorBlob);
+
+			if (result == S_OK) {
+				isLoadedArchivePS = true;
+			}
+		}
+	}
+
+	if (isLoadedArchivePS == false) {
+		result = D3DCompileFromFile(
+			L"Shader/PostEffectTestPS.hlsl", // シェーダファイル名
+			nullptr,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+			entry, "ps_5_0", // エントリーポイント名、シェーダーモデル指定
+			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+			0,
+			&psBlob, &errorBlob);
+	}
 
 	if (FAILED(result)) {
 		// errorBlob からエラー内容を string 型にコピー

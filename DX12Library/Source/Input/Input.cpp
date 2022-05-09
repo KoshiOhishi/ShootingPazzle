@@ -6,6 +6,8 @@
 #include "Quaternion.h"
 #include "DebugText.h"
 
+using namespace DX12Library;
+
 //Input
 Microsoft::WRL::ComPtr<IDirectInput8> Input::dinput;
 
@@ -115,11 +117,11 @@ const Vector3 Mouse::CalcPosScreenToWorld(float fZ)
 
 	//スクリーン座標に逆行列を掛ける
 	Vector3 pos = { GetMousePos().x, GetMousePos().y, fZ};
-	pos = Transform(pos, invVp);
-	pos = Transform(pos, invPrj);
+	pos = Matrix4Transform(pos, invVp);
+	pos = Matrix4Transform(pos, invPrj);
 	//ここでカメラのw値(ニアー)で除算
 	pos /= Camera::CAMERA_NEAR;
-	pos = Transform(pos, invView);
+	pos = Matrix4Transform(pos, invView);
 
 	return pos;
 }

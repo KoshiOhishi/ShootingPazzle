@@ -1,6 +1,8 @@
 #include "FPSManager.h"
 #include "DebugText.h"
 
+using namespace DX12Library;
+
 double FPSManager::FRAME_TIME = 0.0f;
 std::chrono::steady_clock::time_point FPSManager::start;
 std::chrono::steady_clock::time_point FPSManager::end;

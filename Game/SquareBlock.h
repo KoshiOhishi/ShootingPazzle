@@ -6,20 +6,20 @@ class SquareBlock :
 {
 private:
 	//正四面体モデル
-	static ObjModel modelBox[4];
+	static DX12Library::ObjModel modelBox[4];
 	//パーティクル(各色)
-	static Particle3D particle[5];
+	static DX12Library::Particle3D particle[5];
 
 public:
 	static void StaticInitialize();
-	static ObjModel* GetModel(int index) { return &modelBox[index]; }
+	static DX12Library::ObjModel* GetModel(int index) { return &modelBox[index]; }
 
 	/// <summary>
 	/// パーティクル生成
 	/// </summary>
 	/// <param name="pos">生成位置</param>
 	/// <param name="colorIndex">色インデックス</param>
-	static void GenerateParticle(int num, const Vector3& pos, int colorIndex);
+	static void GenerateParticle(int num, const DX12Library::Vector3& pos, int colorIndex);
 
 	/// <summary>
 	/// パーティクル描画

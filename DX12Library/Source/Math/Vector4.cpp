@@ -1,5 +1,7 @@
 #include "Vector4.h"
 
+using namespace DX12Library;
+
 Vector4::Vector4()
 {
 	x = y = z = w = 0;

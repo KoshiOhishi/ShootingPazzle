@@ -2,7 +2,9 @@
 #include "Vector3.h"
 #include <cmath>
 
-Matrix4 Identity()
+using namespace DX12Library;
+
+Matrix4 DX12Library::Matrix4Identity()
 {
 	static const Matrix4 result
 	{
@@ -15,7 +17,7 @@ Matrix4 Identity()
 	return result;
 }
 
-Matrix4 Scale(const Vector3 & s)
+Matrix4 DX12Library::Matrix4Scale(const Vector3 & s)
 {
 	Matrix4 result
 	{
@@ -28,7 +30,7 @@ Matrix4 Scale(const Vector3 & s)
 	return result;
 }
 
-Matrix4 RotateX(float angle)
+Matrix4 DX12Library::Matrix4RotateX(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -45,7 +47,7 @@ Matrix4 RotateX(float angle)
 
 }
 
-Matrix4 RotateY(float angle)
+Matrix4 DX12Library::Matrix4RotateY(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -61,7 +63,7 @@ Matrix4 RotateY(float angle)
 	return result;
 }
 
-Matrix4 RotateZ(float angle)
+Matrix4 DX12Library::Matrix4RotateZ(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -78,7 +80,7 @@ Matrix4 RotateZ(float angle)
 
 }
 
-Matrix4 Translate(const Vector3 & t)
+Matrix4 DX12Library::Matrix4Translate(const Vector3 & t)
 {
 	Matrix4 result
 	{
@@ -91,7 +93,7 @@ Matrix4 Translate(const Vector3 & t)
 	return result;
 }
 
-Vector3 Transform(const Vector3 & v, const Matrix4 & m)
+Vector3 DX12Library::Matrix4Transform(const Vector3 & v, const Matrix4 & m)
 {
 	float w = v.x * m.r[0].m128_f32[3] + v.y * m.r[1].m128_f32[3] + v.z * m.r[2].m128_f32[3] + m.r[3].m128_f32[3];
 

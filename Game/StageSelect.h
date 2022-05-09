@@ -10,7 +10,7 @@
 #include "Particle2D.h"
 
 class StageSelect :
-    public Scene
+    public DX12Library::Scene
 {
 public:
     //ステージ数
@@ -18,16 +18,16 @@ public:
 
 private:
     //ライト
-    Light light;
+    DX12Library::Light light;
 
     //カメラ
-    Camera camera;
+    DX12Library::Camera camera;
 
     //ステージコンテナ
     std::vector<std::unique_ptr<Stage>> stages;
 
     //カメラの位置リスト
-    std::vector<Vector3> cameraPosList;
+    std::vector<DX12Library::Vector3> cameraPosList;
 
     //現在選択されているステージインデックス
     int nowSelectStageIndex = 1;
@@ -36,19 +36,19 @@ private:
     bool isMoveUp = false;
 
     //開幕エフェクトタイマー
-    Timer firstEffectTimer;
+    DX12Library::Timer firstEffectTimer;
 
     //選択されているステージが変わった時に開始するタイマー
-    Timer changeSelectPosTimer;
+    DX12Library::Timer changeSelectPosTimer;
 
     //ゲーム開始エフェクトタイマー
-    Timer startGameTimer;
+    DX12Library::Timer startGameTimer;
 
     //繰り返しエフェクトタイマー
-    Timer roopEffectTimer;
+    DX12Library::Timer roopEffectTimer;
 
     //矢印エフェクトタイマー
-    Timer arrowTimer;
+    DX12Library::Timer arrowTimer;
 
     //UI 上ボタン
     UISquareButton buttonUp;
@@ -60,26 +60,26 @@ private:
     UISquareButton buttonStart;
 
     //背景(白い丸)
-    Sprite sprStageBG;
+    DX12Library::Sprite sprStageBG;
 
     //背景(黒)
-    Sprite sprBackground;
+    DX12Library::Sprite sprBackground;
 
     //「Stage」文字
-    Sprite sprTextStage;
+    DX12Library::Sprite sprTextStage;
 
     //ステージ数字
-    Sprite sprStageNum[2];
+    DX12Library::Sprite sprStageNum[2];
 
     //矢印
-    Sprite sprArrowUp;
-    Sprite sprArrowDown;
+    DX12Library::Sprite sprArrowUp;
+    DX12Library::Sprite sprArrowDown;
 
     //前景(白)
-    Sprite sprWrite;
+    DX12Library::Sprite sprWrite;
 
     //前景(黒)
-    Sprite sprBlack;
+    DX12Library::Sprite sprBlack;
 
 public:
     StageSelect();

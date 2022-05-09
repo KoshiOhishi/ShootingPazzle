@@ -4,22 +4,22 @@
 #include "Timer.h"
 
 class GameCamera :
-    public Camera
+    public DX12Library::Camera
 {
 private:
     //出現エフェクトタイマーのポインタ
-    Timer* pFirstEffectTimer;
+    DX12Library::Timer* pFirstEffectTimer;
     //クリアエフェクトタイマーのポインタ
-    Timer* pClearEffectTimer;
+    DX12Library::Timer* pClearEffectTimer;
 
     //エフェクト前位置
-    Vector3 beforeFirstEffectPos;
+    DX12Library::Vector3 beforeFirstEffectPos;
     //エフェクト後位置
-    Vector3 afterFirstEffectPos;
+    DX12Library::Vector3 afterFirstEffectPos;
     //エフェクト前回転量
-    Vector3 beforeFirstEffectRot;
+    DX12Library::Vector3 beforeFirstEffectRot;
     //エフェクト後回転量
-    Vector3 afterFirstEffectRot;
+    DX12Library::Vector3 afterFirstEffectRot;
 
 public:
     void Initialize() override;
@@ -48,7 +48,7 @@ public:
     /// <returns>セットされたY座標</returns>
     float SetPosFromStageSize(const StageVec2& stageSize);
 
-    void SetPFirstEffectTimer(Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
-    void SetPClearEffectTimer(Timer* pClearEffectTimer) { this->pClearEffectTimer = pClearEffectTimer; }
+    void SetPFirstEffectTimer(DX12Library::Timer* pFirstEffectTimer) { this->pFirstEffectTimer = pFirstEffectTimer; }
+    void SetPClearEffectTimer(DX12Library::Timer* pClearEffectTimer) { this->pClearEffectTimer = pClearEffectTimer; }
 };
 
